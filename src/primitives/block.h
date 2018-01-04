@@ -10,6 +10,8 @@
 #include "serialize.h"
 #include "uint256.h"
 
+class CKeyStore;
+
 /** Nodes collect new transactions into a block, hash them into a hash tree,
  * and scan through nonce values to make the block's hash satisfy proof-of-work
  * requirements.  When they solve the proof-of-work, they broadcast the block
@@ -75,22 +77,19 @@ class CBlock : public CBlockHeader
 public:
     // network and disk
     std::vector<CTransaction> vtx;
+    std::vector<unsigned char> vchBlockSig;
+
+    uint256 tposTxContractHash;
+    COutPoint tposStakePoint;
 
     // memory only
     mutable CTxOut txoutMasternode; // masternode payment
     mutable std::vector<CTxOut> voutSuperblock; // superblock payment
     mutable bool fChecked;
 
-    CBlock()
-    {
-        SetNull();
-    }
+    CBlock();
 
-    CBlock(const CBlockHeader &header)
-    {
-        SetNull();
-        *((CBlockHeader*)this) = header;
-    }
+    CBlock(const CBlockHeader &header);
 
     ADD_SERIALIZE_METHODS;
 
@@ -98,28 +97,20 @@ public:
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
         READWRITE(*(CBlockHeader*)this);
         READWRITE(vtx);
+
+        if(vtx.size() > 1 && vtx[1].IsCoinStake())
+            READWRITE(vchBlockSig);
     }
 
-    void SetNull()
-    {
-        CBlockHeader::SetNull();
-        vtx.clear();
-        txoutMasternode = CTxOut();
-        voutSuperblock.clear();
-        fChecked = false;
-    }
+    void SetNull();
 
-    CBlockHeader GetBlockHeader() const
-    {
-        CBlockHeader block;
-        block.nVersion       = nVersion;
-        block.hashPrevBlock  = hashPrevBlock;
-        block.hashMerkleRoot = hashMerkleRoot;
-        block.nTime          = nTime;
-        block.nBits          = nBits;
-        block.nNonce         = nNonce;
-        return block;
-    }
+    CBlockHeader GetBlockHeader() const;
+
+    bool IsProofOfStake() const;
+    bool IsProofOfWork() const;
+
+    bool SignBlock(const CKeyStore& keystore);
+    bool CheckBlockSignature() const;
 
     std::string ToString() const;
 };

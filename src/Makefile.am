@@ -124,6 +124,7 @@ BITCOIN_CORE_H = \
   init.h \
   instantx.h \
   key.h \
+  kernel.h \
   keepass.h \
   keystore.h \
   dbwrapper.h \
@@ -286,6 +287,7 @@ libbitcoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libbitcoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_wallet_a_SOURCES = \
   keepass.cpp \
+  kernel.cpp \
   privatesend-client.cpp \
   privatesend-util.cpp \
   wallet/crypter.cpp \
@@ -393,6 +395,7 @@ libbitcoin_util_a_SOURCES = \
   sync.cpp \
   uint256.cpp \
   threadinterrupt.cpp \
+  tposutils.cpp \
   util.cpp \
   utilmoneystr.cpp \
   utilstrencodings.cpp \
@@ -427,7 +430,6 @@ dashd_LDADD = \
   $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_COMMON) \
   $(LIBUNIVALUE) \
-  $(LIBBITCOIN_UTIL) \
   $(LIBBITCOIN_CRYPTO) \
   $(LIBLEVELDB) \
   $(LIBMEMENV) \
@@ -440,6 +442,8 @@ endif
 if ENABLE_WALLET
 dashd_LDADD += libbitcoin_wallet.a
 endif
+
+dashd_LDADD += $(LIBBITCOIN_UTIL)
 
 dashd_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS)
 

@@ -7,6 +7,7 @@
 #define BITCOIN_INIT_H
 
 #include <string>
+#include <map>
 
 class CScheduler;
 class CWallet;
@@ -17,6 +18,7 @@ class thread_group;
 } // namespace boost
 
 extern CWallet* pwalletMain;
+extern std::map<unsigned int, unsigned int> mapHashedBlocks;
 
 void StartShutdown();
 bool ShutdownRequested();

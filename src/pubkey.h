@@ -171,6 +171,11 @@ public:
         return size() == 33;
     }
 
+    std::vector<unsigned char> Raw() const
+    {
+        return std::vector<unsigned char>(vch, vch + size());
+    }
+
     /**
      * Verify a DER signature (~72 bytes).
      * If this public key is not fully valid, the return value will be false.

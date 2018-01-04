@@ -1955,11 +1955,6 @@ void CConnman::ThreadMessageHandler()
     }
 }
 
-
-
-
-
-
 bool CConnman::BindListenPort(const CService &addrBind, std::string& strError, bool fWhitelisted)
 {
     strError = "";

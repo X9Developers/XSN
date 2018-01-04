@@ -8,6 +8,7 @@
 
 #include "crypto/common.h"
 #include "prevector.h"
+#include "pubkey.h"
 
 #include <assert.h>
 #include <climits>
@@ -472,6 +473,11 @@ public:
         return *this;
     }
 
+    CScript& operator<<(const CPubKey& key)
+    {
+        std::vector<unsigned char> vchKey = key.Raw();
+        return (*this) << vchKey;
+    }
 
     bool GetOp(iterator& pc, opcodetype& opcodeRet, std::vector<unsigned char>& vchRet)
     {
@@ -637,6 +643,8 @@ public:
     {
         return (size() > 0 && *begin() == OP_RETURN) || (size() > MAX_SCRIPT_SIZE);
     }
+
+    std::string ToString() const;
 
     void clear()
     {
