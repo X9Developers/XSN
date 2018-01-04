@@ -60,8 +60,8 @@ unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const Conse
         EventHorizonDeviationSlow = 1 / EventHorizonDeviation;
 
         if (PastBlocksMass >= PastBlocksMin) {
-                if ((PastRateAdjustmentRatio <= EventHorizonDeviationSlow) || (PastRateAdjustmentRatio >= EventHorizonDeviationFast))
-                { assert(BlockReading); break; }
+            if ((PastRateAdjustmentRatio <= EventHorizonDeviationSlow) || (PastRateAdjustmentRatio >= EventHorizonDeviationFast))
+            { assert(BlockReading); break; }
         }
         if (BlockReading->pprev == NULL) { assert(BlockReading); break; }
         BlockReading = BlockReading->pprev;
@@ -193,7 +193,7 @@ unsigned int GetNextWorkRequiredBTC(const CBlockIndex* pindexLast, const CBlockH
     const CBlockIndex* pindexFirst = pindexLast->GetAncestor(nHeightFirst);
     assert(pindexFirst);
 
-   return CalculateNextWorkRequired(pindexLast, pindexFirst->GetBlockTime(), params);
+    return CalculateNextWorkRequired(pindexLast, pindexFirst->GetBlockTime(), params);
 }
 
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
@@ -202,15 +202,15 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
     if(pindexLast->nHeight + 1 >= params.nLastPoWBlock) {
         return PoSWorkRequired(pindexLast, params);
     }
-    else if (pindexLast->nHeight + 1 >= params.nPowDGWHeight) {
-        return DarkGravityWave(pindexLast, params);
-    }
-    else if (pindexLast->nHeight + 1 >= params.nPowKGWHeight) {
-        return KimotoGravityWell(pindexLast, params);
-    }
-    else {
-        return GetNextWorkRequiredBTC(pindexLast, pblock, params);
-    }
+    //    else if (pindexLast->nHeight + 1 >= params.nPowDGWHeight) {
+    return DarkGravityWave(pindexLast, params);
+    //    }
+    //    else if (pindexLast->nHeight + 1 >= params.nPowKGWHeight) {
+    //        return KimotoGravityWell(pindexLast, params);
+    //    }
+    //    else {
+    //        return GetNextWorkRequiredBTC(pindexLast, pblock, params);
+    //    }
 }
 
 // for DIFF_BTC only!
