@@ -279,7 +279,7 @@ public:
         consensus.fPowNoRetargeting = false;
         consensus.nPowKGWHeight = 4001; // nPowKGWHeight >= nPowDGWHeight means "no KGW"
         consensus.nPowDGWHeight = 4001;
-        consensus.nLastPoWBlock = 200;
+        consensus.nLastPoWBlock = 50;
         consensus.nStakeMinAge = 60 * 60;
         consensus.nCoinbaseMaturity = 15;
         consensus.nRuleChangeActivationThreshold = 1512; // 75% for testchains

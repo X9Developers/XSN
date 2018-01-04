@@ -3683,7 +3683,7 @@ bool CWallet::CommitTransaction(CWalletTx& wtxNew, CReserveKey& reservekey, CCon
 
 CAmount GetStakeReward(int nHeight, unsigned int percentage)
 {
-    return (200 / 100) * percentage;
+    return (200 * COIN / 100) * percentage;
 }
 
 bool CWallet::CreateCoinStake(unsigned int nBits,
