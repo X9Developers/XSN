@@ -480,7 +480,6 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
                 } while (true);
             }
 
-
             //
             // Create new block
             //
@@ -499,6 +498,23 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
 
             LogPrintf("DashMiner -- Running miner with %u transactions in block (%u bytes)\n", pblock->vtx.size(),
                       ::GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION));
+
+            //Stake miner main
+            if (fProofOfStake)
+            {
+                LogPrintf("CPUMiner : proof-of-stake block found %s \n", pblock->GetHash().ToString().c_str());
+                if (!pblock->SignBlock(*pwallet)) {
+                    LogPrintf("BitcoinMiner(): Signing new block failed \n");
+                    continue;
+                }
+
+                LogPrintf("CPUMiner : proof-of-stake block was signed %s \n", pblock->GetHash().ToString().c_str());
+                SetThreadPriority(THREAD_PRIORITY_NORMAL);
+                bool ret = ProcessBlockFound(pblock, chainparams);
+                SetThreadPriority(THREAD_PRIORITY_LOWEST);
+
+                continue;
+            }
 
             //
             // Search
