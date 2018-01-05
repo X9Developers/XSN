@@ -201,7 +201,7 @@ public:
     };
 
     // proof-of-stake specific fields
-    uint256 GetBlockTrust() const;
+    arith_uint256 GetBlockTrust() const;
     uint64_t nStakeModifier;             // hash modifier for proof-of-stake
     unsigned int nStakeModifierChecksum; // checksum of index; in-memeory only
     COutPoint prevoutStake;

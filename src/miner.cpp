@@ -480,6 +480,12 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
                 } while (true);
             }
 
+            if(fProofOfStake && (chainActive.Tip()->nHeight < chainparams.GetConsensus().nLastPoWBlock || pwallet->IsLocked()))
+            {
+                MilliSleep(5000);
+                continue;
+            }
+
             //
             // Create new block
             //
@@ -491,7 +497,8 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
             if (!pblocktemplate.get())
             {
                 LogPrintf("DashMiner -- Keypool ran out, please call keypoolrefill before restarting the mining thread\n");
-                return;
+                MilliSleep(5000);
+                continue;
             }
             CBlock *pblock = &pblocktemplate->block;
             IncrementExtraNonce(pblock, pindexPrev, nExtraNonce);
@@ -617,7 +624,7 @@ void ThreadStakeMinter(const CChainParams &chainparams, CConnman &connman, CWall
     boost::this_thread::interruption_point();
     LogPrintf("ThreadStakeMinter started\n");
     try {
-        BitcoinMiner(chainparams, connman, pwallet, false);
+        BitcoinMiner(chainparams, connman, pwallet, true);
         boost::this_thread::interruption_point();
     } catch (std::exception& e) {
         LogPrintf("ThreadStakeMinter() exception %s\n", e.what());

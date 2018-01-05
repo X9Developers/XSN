@@ -128,3 +128,20 @@ void CBlockIndex::BuildSkip()
     if (pprev)
         pskip = pprev->GetAncestor(GetSkipHeight(nHeight));
 }
+
+arith_uint256 CBlockIndex::GetBlockTrust() const
+{
+    arith_uint256 bnTarget;
+    bnTarget.SetCompact(nBits);
+    if (bnTarget <= 0)
+        return 0;
+
+    if (IsProofOfStake()) {
+        // Return trust score as usual
+        return (arith_uint256(1) << 256) / (bnTarget + 1);
+    } else {
+        // Calculate work amount for block
+        arith_uint256 bnPoWTrust = ((~arith_uint256(0) >> 20) / (bnTarget + 1));
+        return bnPoWTrust > 1 ? bnPoWTrust : 1;
+    }
+}
