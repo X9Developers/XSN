@@ -104,7 +104,7 @@ static bool SelectBlockFromCandidates(
     bool fSelected = false;
     uint256 hashBest;
     *pindexSelected = (const CBlockIndex*)0;
-    BOOST_FOREACH (const PAIRTYPE(int64_t, uint256) & item, vSortedByTimestamp) {
+    for (const auto & item : vSortedByTimestamp) {
         if (!mapBlockIndex.count(item.second))
             return error("SelectBlockFromCandidates: failed to find block index for candidate block %s", item.second.ToString().c_str());
 
@@ -114,7 +114,7 @@ static bool SelectBlockFromCandidates(
 
         //if the lowest block height (vSortedByTimestamp[0]) is >= switch height, use new modifier calc
         if (fFirstRun){
-//            fModifierV2 = pindex->nHeight >= Params().ModifierUpgradeBlock();
+            //            fModifierV2 = pindex->nHeight >= Params().ModifierUpgradeBlock();
             fFirstRun = false;
         }
 
@@ -242,7 +242,7 @@ bool ComputeNextStakeModifier(const CBlockIndex* pindexPrev, uint64_t& nStakeMod
                 strSelectionMap.replace(pindex->nHeight - nHeightFirstCandidate, 1, "=");
             pindex = pindex->pprev;
         }
-        BOOST_FOREACH (const PAIRTYPE(uint256, const CBlockIndex*) & item, mapSelectedBlocks) {
+        for (const auto & item : mapSelectedBlocks) {
             // 'S' indicates selected proof-of-stake blocks
             // 'W' indicates selected proof-of-work blocks
             strSelectionMap.replace(item.second->nHeight - nHeightFirstCandidate, 1, item.second->IsProofOfStake() ? "S" : "W");
@@ -263,6 +263,7 @@ bool ComputeNextStakeModifier(const CBlockIndex* pindexPrev, uint64_t& nStakeMod
 bool GetKernelStakeModifier(uint256 hashBlockFrom, uint64_t& nStakeModifier, int& nStakeModifierHeight, int64_t& nStakeModifierTime, bool fPrintProofOfStake)
 {
     nStakeModifier = 0;
+
     if (!mapBlockIndex.count(hashBlockFrom))
         return error("GetKernelStakeModifier() : block not indexed");
     const CBlockIndex* pindexFrom = mapBlockIndex[hashBlockFrom];
@@ -271,6 +272,8 @@ bool GetKernelStakeModifier(uint256 hashBlockFrom, uint64_t& nStakeModifier, int
     int64_t nStakeModifierSelectionInterval = GetStakeModifierSelectionInterval();
     const CBlockIndex* pindex = pindexFrom;
     CBlockIndex* pindexNext = chainActive[pindexFrom->nHeight + 1];
+
+    LogPrintf("Trying to find stake: %d, pindexFrom: (%ld, %ld)", nStakeModifierSelectionInterval, pindexFrom->nHeight, pindexFrom->GetBlockTime());
 
     // loop to find the stake modifier later by a selection interval
     while (nStakeModifierTime < pindexFrom->GetBlockTime() + nStakeModifierSelectionInterval) {
@@ -284,6 +287,7 @@ bool GetKernelStakeModifier(uint256 hashBlockFrom, uint64_t& nStakeModifier, int
         if (pindex->GeneratedStakeModifier()) {
             nStakeModifierHeight = pindex->nHeight;
             nStakeModifierTime = pindex->GetBlockTime();
+            LogPrintf("Stake height: %ld, stake modifier time: %ld\n", nStakeModifierHeight, nStakeModifierTime);
         }
     }
     nStakeModifier = pindex->nStakeModifier;
@@ -359,7 +363,7 @@ bool CheckStakeKernelHash(unsigned int nBits,
     //if wallet is simply checking to make sure a hash is valid
     if (fCheck) {
         hashProofOfStake = stakeHash(nTimeTx, ss, prevout.n, prevout.hash, nTimeBlockFrom);
-        /*  std::cout << "Checking stake hash: " << nTimeTx << " "
+        std::cout << "Checking stake hash: " << nTimeTx << " "
                   << nStakeModifier << " "
                   << prevout.n << " "
                   << prevout.hash.ToString() << " "
@@ -367,7 +371,7 @@ bool CheckStakeKernelHash(unsigned int nBits,
                   << hashProofOfStake.ToString() << " "
                   << nValue << " "
                   << bnTargetPerCoinDay.ToString() << std::endl;
-      */
+
         return stakeTargetHit(hashProofOfStake, nValue, bnTargetPerCoinDay, fTPoS);
     }
 
@@ -384,7 +388,7 @@ bool CheckStakeKernelHash(unsigned int nBits,
         if (!stakeTargetHit(hashProofOfStake, nValue, bnTargetPerCoinDay, fTPoS))
             continue;
 
-        /*std::cout << "Hash kernel generated stake hash: " << nTimeTx << " "
+        std::cout << "Hash kernel generated stake hash: " << nTimeTx << " "
                   << nStakeModifier << " "
                   << prevout.n << " "
                   << prevout.hash.ToString() << " "
@@ -392,7 +396,7 @@ bool CheckStakeKernelHash(unsigned int nBits,
                   << hashProofOfStake.ToString() << " "
                   << nValue << " "
                   << bnTargetPerCoinDay.ToString() << std::endl;
-        */
+
         fSuccess = true; // if we make it this far then we have successfully created a stake hash
         nTimeTx = nTryTime;
         if (fPrintProofOfStake) {
@@ -467,21 +471,21 @@ bool CheckProofOfStake(CWallet *wallet, const CBlock block, uint256& hashProofOf
             }
             while(false);
 
-//            bool isTPoSStakeUnspent = IsTPoSDepositUnspent(tposCoinsTx.GetHash(), block.tposStakePoint.n);
-//            if(isTPoSStakeUnspent)
-//            {
-//                auto &nValue = txPrev.vout[txin.prevout.n].nValue;
-//                nValue = tposCoinsTx.vout[block.tposStakePoint.n].nValue;
-//            }
-//            else
-//            {
-//                return error("CheckProofOfStake() : tpos stake amount is already spent");
-//            }
+            //            bool isTPoSStakeUnspent = IsTPoSDepositUnspent(tposCoinsTx.GetHash(), block.tposStakePoint.n);
+            //            if(isTPoSStakeUnspent)
+            //            {
+            //                auto &nValue = txPrev.vout[txin.prevout.n].nValue;
+            //                nValue = tposCoinsTx.vout[block.tposStakePoint.n].nValue;
+            //            }
+            //            else
+            //            {
+            //                return error("CheckProofOfStake() : tpos stake amount is already spent");
+            //            }
 
-//            std::cout << HexStr(contract.merchantOutPoint.hash) << std::endl;
-//            std::cout << HexStr(txPrev.GetHash()) << std::endl;
-//            std::cout << txPrev.GetHash().ToString() << std::endl;
-//            std::cout << txPrev.ToString() << std::endl;
+            //            std::cout << HexStr(contract.merchantOutPoint.hash) << std::endl;
+            //            std::cout << HexStr(txPrev.GetHash()) << std::endl;
+            //            std::cout << txPrev.GetHash().ToString() << std::endl;
+            //            std::cout << txPrev.ToString() << std::endl;
 
 
         }

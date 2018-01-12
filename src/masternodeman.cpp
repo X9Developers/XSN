@@ -23,8 +23,8 @@ const std::string CMasternodeMan::SERIALIZATION_VERSION_STRING = "CMasternodeMan
 
 struct CompareLastPaidBlock
 {
-    bool operator()(const std::pair<int, CMasternode*>& t1,
-                    const std::pair<int, CMasternode*>& t2) const
+    bool operator()(const std::pair<int, const CMasternode*>& t1,
+                    const std::pair<int, const CMasternode*>& t2) const
     {
         return (t1.first != t2.first) ? (t1.first < t2.first) : (t1.second->vin < t2.second->vin);
     }
@@ -354,7 +354,7 @@ void CMasternodeMan::Clear()
     nLastWatchdogVoteTime = 0;
 }
 
-int CMasternodeMan::CountMasternodes(int nProtocolVersion)
+int CMasternodeMan::CountMasternodes(int nProtocolVersion) const
 {
     LOCK(cs);
     int nCount = 0;
@@ -368,7 +368,7 @@ int CMasternodeMan::CountMasternodes(int nProtocolVersion)
     return nCount;
 }
 
-int CMasternodeMan::CountEnabled(int nProtocolVersion)
+int CMasternodeMan::CountEnabled(int nProtocolVersion) const
 {
     LOCK(cs);
     int nCount = 0;
@@ -485,12 +485,12 @@ bool CMasternodeMan::Has(const COutPoint& outpoint)
 //
 // Deterministically select the oldest/best masternode to pay on the network
 //
-bool CMasternodeMan::GetNextMasternodeInQueueForPayment(bool fFilterSigTime, int& nCountRet, masternode_info_t& mnInfoRet)
+bool CMasternodeMan::GetNextMasternodeInQueueForPayment(bool fFilterSigTime, int& nCountRet, masternode_info_t& mnInfoRet) const
 {
     return GetNextMasternodeInQueueForPayment(nCachedBlockHeight, fFilterSigTime, nCountRet, mnInfoRet);
 }
 
-bool CMasternodeMan::GetNextMasternodeInQueueForPayment(int nBlockHeight, bool fFilterSigTime, int& nCountRet, masternode_info_t& mnInfoRet)
+bool CMasternodeMan::GetNextMasternodeInQueueForPayment(int nBlockHeight, bool fFilterSigTime, int& nCountRet, masternode_info_t& mnInfoRet) const
 {
     mnInfoRet = masternode_info_t();
     nCountRet = 0;
@@ -503,7 +503,7 @@ bool CMasternodeMan::GetNextMasternodeInQueueForPayment(int nBlockHeight, bool f
     // Need LOCK2 here to ensure consistent locking order because the GetBlockHash call below locks cs_main
     LOCK2(cs_main,cs);
 
-    std::vector<std::pair<int, CMasternode*> > vecMasternodeLastPaid;
+    std::vector<std::pair<int, const CMasternode*> > vecMasternodeLastPaid;
 
     /*
         Make a vector with all of the last paid times
@@ -511,7 +511,7 @@ bool CMasternodeMan::GetNextMasternodeInQueueForPayment(int nBlockHeight, bool f
 
     int nMnCount = CountMasternodes();
 
-    for (auto& mnpair : mapMasternodes) {
+    for (const auto& mnpair : mapMasternodes) {
         if(!mnpair.second.IsValidForPayment()) continue;
 
         //check protocol version
@@ -550,8 +550,8 @@ bool CMasternodeMan::GetNextMasternodeInQueueForPayment(int nBlockHeight, bool f
     int nTenthNetwork = nMnCount/10;
     int nCountTenth = 0;
     arith_uint256 nHighest = 0;
-    CMasternode *pBestMasternode = NULL;
-    BOOST_FOREACH (PAIRTYPE(int, CMasternode*)& s, vecMasternodeLastPaid){
+    const CMasternode *pBestMasternode = NULL;
+    for (const auto& s : vecMasternodeLastPaid) {
         arith_uint256 nScore = s.second->CalculateScore(blockHash);
         if(nScore > nHighest){
             nHighest = nScore;

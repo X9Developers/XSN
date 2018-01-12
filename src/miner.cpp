@@ -112,11 +112,11 @@ CBlockTemplate* CreateNewBlock(CWallet *wallet, const CChainParams& chainparams,
             unsigned int nTxNewTime = 0;
             COutPoint tposCoinStake;
             if (wallet->CreateCoinStake(pblock->nBits,
-                                       nSearchTime - nLastCoinStakeSearchTime,
-                                       txCoinStake,
-                                       nTxNewTime,
-                                       tposContract,
-                                       tposCoinStake))
+                                        nSearchTime - nLastCoinStakeSearchTime,
+                                        txCoinStake,
+                                        nTxNewTime,
+                                        tposContract,
+                                        tposCoinStake))
             {
                 pblock->nTime = nTxNewTime;
                 txNew.vout[0].SetEmpty();
@@ -131,7 +131,7 @@ CBlockTemplate* CreateNewBlock(CWallet *wallet, const CChainParams& chainparams,
                 fStakeFound = true;
             }
 
-//            nLastCoinStakeSearchInterval = nSearchTime - nLastCoinStakeSearchTime;
+            //            nLastCoinStakeSearchInterval = nSearchTime - nLastCoinStakeSearchTime;
             nLastCoinStakeSearchTime = nSearchTime;
         }
 
@@ -335,12 +335,13 @@ CBlockTemplate* CreateNewBlock(CWallet *wallet, const CChainParams& chainparams,
         if(!fProofOfStake)
         {
             txNew.vout[0].nValue = blockReward;
-            pblock->vtx[0] = txNew;
         }
+
+        pblock->vtx[0] = txNew;
 
         // Update coinbase transaction with additional info about masternode and governance payments,
         // get some info back to pass to getblocktemplate
-//        FillBlockPayments(txNew, nHeight, blockReward, pblock->txoutMasternode, pblock->voutSuperblock);
+        //        FillBlockPayments(txNew, nHeight, blockReward, pblock->txoutMasternode, pblock->voutSuperblock);
         // LogPrintf("CreateNewBlock -- nBlockHeight %d blockReward %lld txoutMasternode %s txNew %s",
         //             nHeight, blockReward, pblock->txoutMasternode.ToString(), txNew.ToString());
 
@@ -461,14 +462,14 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
     boost::shared_ptr<CReserveScript> coinbaseScript;
     GetMainSignals().ScriptForMining(coinbaseScript);
 
-    try {
-        // Throw an error if no script was provided.  This can happen
-        // due to some internal error but also if the keypool is empty.
-        // In the latter case, already the pointer is NULL.
-        if (!coinbaseScript || coinbaseScript->reserveScript.empty())
-            throw std::runtime_error("No coinbase script available (mining requires a wallet)");
+    while (true) {
+        try {
+            // Throw an error if no script was provided.  This can happen
+            // due to some internal error but also if the keypool is empty.
+            // In the latter case, already the pointer is NULL.
+            if (!coinbaseScript || coinbaseScript->reserveScript.empty())
+                throw std::runtime_error("No coinbase script available (mining requires a wallet)");
 
-        while (true) {
             if (chainparams.MiningRequiresPeers()) {
                 // Busy-wait for the network to come online so we don't waste time mining
                 // on an obsolete chain. In regtest mode we expect to fly solo.
@@ -480,10 +481,15 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
                 } while (true);
             }
 
-            if(fProofOfStake && (chainActive.Tip()->nHeight < chainparams.GetConsensus().nLastPoWBlock || pwallet->IsLocked()))
+            if(fProofOfStake && ((chainActive.Tip()->nHeight < chainparams.GetConsensus().nLastPoWBlock) || pwallet->IsLocked()))
             {
                 MilliSleep(5000);
                 continue;
+            }
+
+            if(!fProofOfStake && chainActive.Tip()->nHeight >= chainparams.GetConsensus().nLastPoWBlock)
+            {
+                return;
             }
 
             //
@@ -579,18 +585,19 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
                     // Changing pblock->nTime can change work required on testnet:
                     hashTarget.SetCompact(pblock->nBits);
                 }
+
             }
         }
-    }
-    catch (const boost::thread_interrupted&)
-    {
-        LogPrintf("DashMiner -- terminated\n");
-        throw;
-    }
-    catch (const std::runtime_error &e)
-    {
-        LogPrintf("DashMiner -- runtime error: %s\n", e.what());
-        return;
+        catch (const boost::thread_interrupted&)
+        {
+            LogPrintf("DashMiner -- terminated\n");
+            throw;
+        }
+        catch (const std::runtime_error &e)
+        {
+            LogPrintf("DashMiner -- runtime error: %s\n", e.what());
+//            return;
+        }
     }
 }
 

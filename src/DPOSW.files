@@ -90,6 +90,8 @@ instantx.cpp
 instantx.h
 keepass.cpp
 keepass.h
+kernel.h
+kernel.cpp
 key.cpp
 key.h
 keystore.cpp

@@ -279,8 +279,8 @@ public:
         consensus.fPowNoRetargeting = false;
         consensus.nPowKGWHeight = 4001; // nPowKGWHeight >= nPowDGWHeight means "no KGW"
         consensus.nPowDGWHeight = 4001;
-        consensus.nLastPoWBlock = 50;
-        consensus.nStakeMinAge = 60 * 60;
+        consensus.nLastPoWBlock = 75;
+        consensus.nStakeMinAge = 60 /** 60*/;
         consensus.nCoinbaseMaturity = 15;
         consensus.nRuleChangeActivationThreshold = 1512; // 75% for testchains
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
@@ -316,12 +316,12 @@ public:
         nDelayGetHeadersTime = 24 * 60 * 60;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1515086003, 228390, 0x1e0ffff0, 1, 50 * COIN);
+        genesis = CreateGenesisBlock(1515690818, 1922625, 0x1e0ffff0, 1, 50 * COIN);
 
 //        MineGenesis(genesis, 0x1e0ffff0, false);
 
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x0000068196e980cffa9325d5625744de760654e0200fb7650cbc5df94dda3080"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000004d3527b18a8b8eee101159c1d2f6a576999f31ba6655a1d29f373c05907"));
         assert(genesis.hashMerkleRoot == uint256S("0xe0028eb9648db56b1ac77cf090b99048a8007e2bb64b68f092c03c7f56a662c7"));
 
         vFixedSeeds.clear();
@@ -357,8 +357,8 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            (0, uint256S("0x0000068196e980cffa9325d5625744de760654e0200fb7650cbc5df94dda3080")),
-            1514888232, // * UNIX timestamp of last checkpoint block
+            (0, uint256S("0x000004d3527b18a8b8eee101159c1d2f6a576999f31ba6655a1d29f373c05907")),
+            1515690818, // * UNIX timestamp of last checkpoint block
             0,       // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             500         // * estimated number of transactions per day after checkpoint
