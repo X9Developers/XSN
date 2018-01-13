@@ -316,17 +316,17 @@ public:
         nDelayGetHeadersTime = 24 * 60 * 60;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1515690818, 1922625, 0x1e0ffff0, 1, 50 * COIN);
+        genesis = CreateGenesisBlock(1515830833, 248233, 0x1e0ffff0, 1, 50 * COIN);
 
 //        MineGenesis(genesis, 0x1e0ffff0, false);
 
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000004d3527b18a8b8eee101159c1d2f6a576999f31ba6655a1d29f373c05907"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000004f4244ba75353873d26a5b24e3d72c44a6f783ff19e37881b2da0923e1e"));
         assert(genesis.hashMerkleRoot == uint256S("0xe0028eb9648db56b1ac77cf090b99048a8007e2bb64b68f092c03c7f56a662c7"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
-        vSeeds.push_back(CDNSSeedData("18.195.52.21",  "18.195.52.21"));
+//        vSeeds.push_back(CDNSSeedData("18.195.52.21",  "18.195.52.21"));
 //        vSeeds.push_back(CDNSSeedData("masternode.io", "test.dnsseed.masternode.io"));
 
         // Testnet Dash addresses start with 'y'
@@ -357,8 +357,8 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            (0, uint256S("0x000004d3527b18a8b8eee101159c1d2f6a576999f31ba6655a1d29f373c05907")),
-            1515690818, // * UNIX timestamp of last checkpoint block
+            (0, uint256S("0x000004f4244ba75353873d26a5b24e3d72c44a6f783ff19e37881b2da0923e1e")),
+            1515830833, // * UNIX timestamp of last checkpoint block
             0,       // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             500         // * estimated number of transactions per day after checkpoint
