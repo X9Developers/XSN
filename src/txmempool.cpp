@@ -982,7 +982,7 @@ bool CCoinsViewMemPool::GetCoin(const COutPoint &outpoint, Coin &coin) const {
     CTransaction tx;
     if (mempool.lookup(outpoint.hash, tx)) {
         if (outpoint.n < tx.vout.size()) {
-            coin = Coin(tx.vout[outpoint.n], MEMPOOL_HEIGHT, false);
+            coin = Coin(tx.vout[outpoint.n], MEMPOOL_HEIGHT, false, false);
             return true;
         } else {
             return false;

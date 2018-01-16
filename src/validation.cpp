@@ -489,6 +489,9 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state)
     CAmount nValueOut = 0;
     BOOST_FOREACH(const CTxOut& txout, tx.vout)
     {
+        if (txout.IsEmpty() && !tx.IsCoinBase() && !tx.IsCoinStake())
+            return state.DoS(100, error("txout empty for user transaction"));
+
         if (txout.nValue < 0)
             return state.DoS(100, false, REJECT_INVALID, "bad-txns-vout-negative");
         if (txout.nValue > MAX_MONEY)
@@ -567,6 +570,11 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
     // Coinbase is only valid in a block, not as a loose transaction
     if (tx.IsCoinBase())
         return state.DoS(100, false, REJECT_INVALID, "coinbase");
+
+    //Coinstake is also only valid in a block, not as a loose transaction
+    if (tx.IsCoinStake())
+        return state.DoS(100, error("AcceptToMemoryPoolWorker: coinstake as individual tx"),
+                         REJECT_INVALID, "coinstake");
 
     // Rather not work on nonstandard transactions (unless -testnet/-regtest)
     string reason;
@@ -724,7 +732,7 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
         nSigOps += GetP2SHSigOpCount(tx, view);
 
         CAmount nValueOut = tx.GetValueOut();
-        CAmount nFees = nValueIn-nValueOut;
+        CAmount nFees = nValueIn - nValueOut;
         // nModifiedFees includes any fee deltas from PrioritiseTransaction
         CAmount nModifiedFees = nFees;
         double nPriorityDummy = 0;
@@ -1484,7 +1492,7 @@ bool CheckTxInputs(const CTransaction& tx, CValidationState& state, const CCoins
         assert(!coin.IsSpent());
 
         // If prev is coinbase, check that it's matured
-        if (coin.IsCoinBase() /*|| coin.IsCoinStake()*/) {
+        if (coin.IsCoinBase() || coin.IsCoinStake()) {
             if (nSpendHeight - coin.nHeight < COINBASE_MATURITY)
                 return state.Invalid(false,
                                      REJECT_INVALID, "bad-txns-premature-spend-of-coinbase",
@@ -2100,6 +2108,8 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
 
     bool fDIP0001Active_context = (VersionBitsState(pindex->pprev, chainparams.GetConsensus(), Consensus::DEPLOYMENT_DIP0001, versionbitscache) == THRESHOLD_ACTIVE);
 
+    CAmount nValueOut = 0;
+    CAmount nValueIn = 0;
     for (unsigned int i = 0; i < block.vtx.size(); i++)
     {
         const CTransaction &tx = block.vtx[i];
@@ -2178,7 +2188,9 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
                                      REJECT_INVALID, "bad-blk-sigops");
             }
 
-            nFees += view.GetValueIn(tx)-tx.GetValueOut();
+            if (!tx.IsCoinStake())
+                nFees += view.GetValueIn(tx) - tx.GetValueOut();
+            nValueIn += view.GetValueIn(tx);
 
             std::vector<CScriptCheck> vChecks;
             bool fCacheResults = fJustCheck; /* Don't cache results if we're actually connecting blocks (still consult the cache, though) */
@@ -2187,6 +2199,8 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
                              tx.GetHash().ToString(), FormatStateMessage(state));
             control.Add(vChecks);
         }
+
+        nValueOut += tx.GetValueOut();
 
         if (fAddressIndex) {
             for (unsigned int k = 0; k < tx.vout.size(); k++) {
@@ -2226,6 +2240,12 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
         vPos.push_back(std::make_pair(tx.GetHash(), pos));
         pos.nTxOffset += ::GetSerializeSize(tx, SER_DISK, CLIENT_VERSION);
     }
+
+    // ppcoin: track money supply and mint amount info
+    CAmount nMoneySupplyPrev = pindex->pprev ? pindex->pprev->nMoneySupply : 0;
+    pindex->nMoneySupply = nMoneySupplyPrev + nValueOut - nValueIn;
+    pindex->nMint = pindex->nMoneySupply - nMoneySupplyPrev;
+
     int64_t nTime3 = GetTimeMicros(); nTimeConnect += nTime3 - nTime2;
     LogPrint("bench", "      - Connect %u transactions: %.2fms (%.3fms/tx, %.3fms/txin) [%.2fs]\n", (unsigned)block.vtx.size(), 0.001 * (nTime3 - nTime2), 0.001 * (nTime3 - nTime2) / block.vtx.size(), nInputs <= 1 ? 0 : 0.001 * (nTime3 - nTime2) / (nInputs-1), nTimeConnect * 0.000001);
 
@@ -2237,7 +2257,13 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
     // the peer who sent us this block is missing some data and wasn't able
     // to recognize that block is actually invalid.
     // TODO: resync data (both ways?) and try to reprocess this block later.
-    CAmount blockReward = nFees + GetBlockSubsidy(pindex->pprev->nBits, pindex->pprev->nHeight, chainparams.GetConsensus());
+    CAmount blockReward = GetBlockSubsidy(pindex->pprev->nBits,
+                                          pindex->pprev->nHeight,
+                                          chainparams.GetConsensus());
+
+    if(block.IsProofOfWork())
+        blockReward += nFees;
+
     std::string strError = "";
     if (!IsBlockValueValid(block, pindex->nHeight, blockReward, strError)) {
         return state.DoS(0, error("ConnectBlock(DASH): %s", strError), REJECT_INVALID, "bad-cb-amount");
@@ -2517,7 +2543,7 @@ bool static DisconnectTip(CValidationState& state, const Consensus::Params& cons
         // ignore validation errors in resurrected transactions
         list<CTransaction> removed;
         CValidationState stateDummy;
-        if (tx.IsCoinBase() || !AcceptToMemoryPool(mempool, stateDummy, tx, false, NULL, true)) {
+        if (tx.IsCoinBase() || tx.IsCoinStake() || !AcceptToMemoryPool(mempool, stateDummy, tx, false, NULL, true)) {
             mempool.remove(tx, removed, true);
         } else if (mempool.exists(tx.GetHash())) {
             vHashUpdate.push_back(tx.GetHash());
@@ -2968,8 +2994,8 @@ CBlockIndex* AddToBlockIndex(const CBlockHeader& block)
     BlockMap::iterator mi = mapBlockIndex.insert(make_pair(hash, pindexNew)).first;
 
     //    //mark as PoS seen
-    //    if (pindexNew->IsProofOfStake())
-    //        setStakeSeen.insert(make_pair(pindexNew->prevoutStake, pindexNew->nStakeTime));
+//    if (pindexNew->IsProofOfStake())
+//        setStakeSeen.insert(make_pair(pindexNew->prevoutStake, pindexNew->nStakeTime));
 
     pindexNew->phashBlock = &((*mi).first);
     BlockMap::iterator miPrev = mapBlockIndex.find(block.hashPrevBlock);
@@ -3214,6 +3240,20 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
         if (block.vtx[i].IsCoinBase())
             return state.DoS(100, error("CheckBlock(): more than one coinbase"),
                              REJECT_INVALID, "bad-cb-multiple");
+
+    if (block.IsProofOfStake()) {
+        // Coinbase output should be empty if proof-of-stake block
+        if (block.vtx[0].vout.size() != 1 || !block.vtx[0].vout[0].IsEmpty())
+            return state.DoS(100, error("CheckBlock() : coinbase output not empty for proof-of-stake block"));
+
+        // Second transaction must be coinstake, the rest must not be
+        if (block.vtx.empty() || !block.vtx[1].IsCoinStake())
+            return state.DoS(100, error("CheckBlock() : second tx is not coinstake"));
+        for (unsigned int i = 2; i < block.vtx.size(); i++)
+            if (block.vtx[i].IsCoinStake())
+                return state.DoS(100, error("CheckBlock() : more than one coinstake"));
+    }
+
 
 
     // DASH : CHECK TRANSACTIONS FOR INSTANTSEND

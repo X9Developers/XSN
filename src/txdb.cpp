@@ -390,7 +390,6 @@ bool CBlockTreeDB::LoadBlockIndexGuts(boost::function<CBlockIndex*(const uint256
                 }
 
                 // ppcoin: build setStakeSeen
-                // TODO_POS: fix this
 //                if (pindexNew->IsProofOfStake())
 //                    setStakeSeen.insert(make_pair(pindexNew->prevoutStake, pindexNew->nStakeTime));
 
@@ -504,7 +503,7 @@ bool CCoinsViewDB::Upgrade() {
             COutPoint outpoint(key.second, 0);
             for (size_t i = 0; i < old_coins.vout.size(); ++i) {
                 if (!old_coins.vout[i].IsNull() && !old_coins.vout[i].scriptPubKey.IsUnspendable()) {
-                    Coin newcoin(std::move(old_coins.vout[i]), old_coins.nHeight, old_coins.fCoinBase);
+                    Coin newcoin(std::move(old_coins.vout[i]), old_coins.nHeight, old_coins.fCoinBase, false);
                     outpoint.n = i;
                     CoinEntry entry(&outpoint);
                     batch.Write(entry, newcoin);

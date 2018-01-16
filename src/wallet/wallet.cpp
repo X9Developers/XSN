@@ -3941,7 +3941,7 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
     //        //subtract mn payment from the stake reward
     //        auto masternodePayment = txNew.vout.back().nValue;
     //        int i = txNew.vout.size() - 2;
-    //        if(!tposContract.IsValid())
+    //        if(tposContract.IsValid())
     //        {
     //            masternodePayment /= 100; // to calculate percentage
     //            txNew.vout[i - 1].nValue -= masternodePayment * (100 - tposContract.stakePercentage); // adjust reward for merchant.
