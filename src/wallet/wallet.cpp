@@ -3805,7 +3805,7 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
             uint256 hashProofOfStake = ArithToUint256(0);
             nTxNewTime = GetAdjustedTime();
             //iterates each utxo inside of CheckStakeKernelHash()
-            if (CheckStakeKernelHash(nBits, block, tposProxyTx, prevoutStake, nTxNewTime, nHashDrift, false, hashProofOfStake, true, tposContract.IsValid()))
+            if (CheckStakeKernelHash(nBits, block, sizeof(CBlock), tposProxyTx, prevoutStake, nTxNewTime, hashProofOfStake, true))
             {
                 //Double check that this will pass time requirements
                 if (nTxNewTime <= chainActive.Tip()->GetMedianTimePast()) {

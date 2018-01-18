@@ -61,6 +61,7 @@ struct Params {
     int nMajorityRejectBlockOutdated;
     int nMajorityWindow;
     int nStakeMinAge;
+    int nStakeMaxAge;
     int nCoinbaseMaturity;
     /** Block height and hash at which BIP34 becomes active */
     int BIP34Height;
@@ -81,6 +82,8 @@ struct Params {
     bool fPowNoRetargeting;
     int64_t nPowTargetSpacing;
     int64_t nPowTargetTimespan;
+    int64_t nPosTargetSpacing;
+    int64_t nPosTargetTimespan;
     int nPowKGWHeight;
     int nPowDGWHeight;
     int nLastPoWBlock;

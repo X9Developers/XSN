@@ -82,8 +82,8 @@ unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const Conse
 
 unsigned int static PoSWorkRequired(const CBlockIndex* pindexLast, const Consensus::Params& params) {
     arith_uint256 bnTargetLimit = (~arith_uint256(0) >> 24);
-    int64_t nTargetSpacing = 60;
-    int64_t nTargetTimespan = 60 * 40;
+    int64_t nTargetSpacing = Params().GetConsensus().nPosTargetSpacing;
+    int64_t nTargetTimespan = Params().GetConsensus().nPosTargetTimespan;
 
     int64_t nActualSpacing = 0;
     if (pindexLast->nHeight != 0)

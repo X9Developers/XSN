@@ -275,12 +275,15 @@ public:
         consensus.powLimit = uint256S("00000fffff000000000000000000000000000000000000000000000000000000");
         consensus.nPowTargetTimespan = 24 * 60 * 60; // Dash: 1 day
         consensus.nPowTargetSpacing = 1 * 60; // Dash: 1 minutes
+        consensus.nPosTargetSpacing = 1 * 60; // PoSW: 1 minutes
+        consensus.nPosTargetTimespan = 60 * 40;
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = false;
         consensus.nPowKGWHeight = 4001; // nPowKGWHeight >= nPowDGWHeight means "no KGW"
         consensus.nPowDGWHeight = 4001;
         consensus.nLastPoWBlock = 75;
-        consensus.nStakeMinAge = 60 /** 60*/;
+        consensus.nStakeMinAge = 60 * 60;
+        consensus.nStakeMaxAge = 60 * 60 * 24 * 7; // one week
         consensus.nCoinbaseMaturity = 15;
         consensus.nRuleChangeActivationThreshold = 1512; // 75% for testchains
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
@@ -316,12 +319,12 @@ public:
         nDelayGetHeadersTime = 0;//24 * 60 * 60; TODO_POS: // check this
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1515830833, 248233, 0x1e0ffff0, 1, 50 * COIN);
+        genesis = CreateGenesisBlock(1516111682, 1421717, 0x1e0ffff0, 1, 50 * COIN);
 
 //        MineGenesis(genesis, 0x1e0ffff0, false);
 
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000004f4244ba75353873d26a5b24e3d72c44a6f783ff19e37881b2da0923e1e"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00000630fe0eb0c62cee0a2d5eeddac30fe2695d99f2026371b04a52bc3a5d13"));
         assert(genesis.hashMerkleRoot == uint256S("0xe0028eb9648db56b1ac77cf090b99048a8007e2bb64b68f092c03c7f56a662c7"));
 
         vFixedSeeds.clear();
@@ -357,8 +360,8 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            (0, uint256S("0x000004f4244ba75353873d26a5b24e3d72c44a6f783ff19e37881b2da0923e1e")),
-            1515830833, // * UNIX timestamp of last checkpoint block
+            (0, uint256S("0x00000630fe0eb0c62cee0a2d5eeddac30fe2695d99f2026371b04a52bc3a5d13")),
+            1516111682, // * UNIX timestamp of last checkpoint block
             0,       // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             500         // * estimated number of transactions per day after checkpoint
