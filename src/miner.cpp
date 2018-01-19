@@ -98,12 +98,12 @@ CBlockTemplate* CreateNewBlock(CWallet *wallet, const CChainParams& chainparams,
     pblocktemplate->vTxFees.push_back(-1); // updated at end
     pblocktemplate->vTxSigOps.push_back(-1); // updated at end
     pblock->nVersion = ComputeBlockVersion(pindexPrev, chainparams.GetConsensus());
+    pblock->nTime = GetAdjustedTime();
 
     static int64_t nLastCoinStakeSearchTime = GetAdjustedTime(); // only initialized at startup
     if (fProofOfStake)
     {
         boost::this_thread::interruption_point();
-        pblock->nTime = GetAdjustedTime();
         pblock->nBits = GetNextWorkRequired(pindexPrev, pblock, chainparams.GetConsensus());
         CMutableTransaction txCoinStake;
         int64_t nSearchTime = pblock->nTime; // search to current time
@@ -178,7 +178,6 @@ CBlockTemplate* CreateNewBlock(CWallet *wallet, const CChainParams& chainparams,
 
         CBlockIndex* pindexPrev = chainActive.Tip();
         const int nHeight = pindexPrev->nHeight + 1;
-        pblock->nTime = GetAdjustedTime();
         const int64_t nMedianTimePast = pindexPrev->GetMedianTimePast();
 
         // -regtest only: allow overriding block.nVersion with

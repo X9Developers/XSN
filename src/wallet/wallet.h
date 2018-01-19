@@ -660,6 +660,21 @@ private:
     /* HD derive new child key (on internal or external chain) */
     void DeriveNewChildKey(const CKeyMetadata& metadata, CKey& secretRet, uint32_t nAccountIndex, bool fInternal /*= false*/);
 
+    bool CreateCoinStakeKernel(CScript &kernelScript,
+                               const CScript &stakeScript,
+                               unsigned int nBits,
+                               const CBlock& blockFrom,
+                               unsigned int nTxPrevOffset,
+                               const CTransaction& txPrev,
+                               const COutPoint& prevout,
+                               unsigned int &nTimeTx,
+                               bool fPrintProofOfStake) const;
+
+    void FillCoinStakePayments(CMutableTransaction &transaction,
+                               const TPoSContract &tposContract,
+                               const CScript &kernelScript,
+                               const COutPoint &stakePrevout) const;
+
 public:
     /*
      * Main wallet lock.

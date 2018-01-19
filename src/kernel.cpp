@@ -269,10 +269,13 @@ static bool GetKernelStakeModifierV05(unsigned int nTimeTx, uint64_t& nStakeModi
     nStakeModifierTime = pindex->GetBlockTime();
     int64_t nStakeModifierSelectionInterval = GetStakeModifierSelectionInterval();
 
-    LogPrintf("stake modifier time: %s interval: %d, time: %s\n",
-              DateTimeStrFormat("%Y-%m-%d %H:%M:%S", nStakeModifierTime).c_str(),
-              nStakeModifierSelectionInterval,
-              DateTimeStrFormat("%Y-%m-%d %H:%M:%S", nTimeTx).c_str());
+    if(fPrintProofOfStake)
+    {
+        LogPrintf("stake modifier time: %s interval: %d, time: %s\n",
+                  DateTimeStrFormat("%Y-%m-%d %H:%M:%S", nStakeModifierTime).c_str(),
+                  nStakeModifierSelectionInterval,
+                  DateTimeStrFormat("%Y-%m-%d %H:%M:%S", nTimeTx).c_str());
+    }
 
     if (nStakeModifierTime + nStakeMinAge - nStakeModifierSelectionInterval <= nTimeTx)
     {
@@ -409,15 +412,15 @@ bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned 
     if (UintToArith256(hashProofOfStake) > bnCoinDayWeight * bnTargetPerCoinDay)
         return false;
 
-    if (fDebug && !fPrintProofOfStake)
+    if (fDebug && fPrintProofOfStake)
     {
-        LogPrintf("CheckStakeKernelHash() : using modifier 0x%016" PRI64x" at height=%d timestamp=%s for block from height=%d timestamp=%s\n",
+        LogPrintf("CheckStakeKernelHash() : Generated using modifier 0x%016" PRI64x" at height=%d timestamp=%s for block from height=%d timestamp=%s\n",
                   nStakeModifier, nStakeModifierHeight,
                   DateTimeStrFormat("%Y-%m-%d %H:%M:%S", nStakeModifierTime).c_str(),
                   mapBlockIndex[blockFrom.GetHash()]->nHeight,
                 DateTimeStrFormat("%Y-%m-%d %H:%M:%S", blockFrom.GetBlockTime()).c_str());
-        LogPrintf("CheckStakeKernelHash() : pass protocol=%s modifier=0x%016" PRI64x" nTimeBlockFrom=%u nTxPrevOffset=%u nTimeTxPrev=%u nPrevout=%u nTimeTx=%u hashProof=%s\n",
-                  "0.3",
+        LogPrintf("CheckStakeKernelHash() : Generated pass protocol=%s modifier=0x%016" PRI64x" nTimeBlockFrom=%u nTxPrevOffset=%u nTimeTxPrev=%u nPrevout=%u nTimeTx=%u hashProof=%s\n",
+                  "0.5",
                   nStakeModifier,
                   nTimeBlockFrom, nTxPrevOffset, txPrevTime, prevout.n, nTimeTx,
                   hashProofOfStake.ToString().c_str());
