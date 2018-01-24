@@ -277,16 +277,17 @@ static bool GetKernelStakeModifierV05(unsigned int nTimeTx, uint64_t& nStakeModi
                   DateTimeStrFormat("%Y-%m-%d %H:%M:%S", nTimeTx).c_str());
     }
 
-    if (nStakeModifierTime + nStakeMinAge - nStakeModifierSelectionInterval <= nTimeTx)
-    {
-        // Best block is still more than
-        // (nStakeMinAge minus a selection interval) older than kernel timestamp
-        if (fPrintProofOfStake)
-            return error("GetKernelStakeModifier() : best block %s at height %d too old for stake",
-                         pindex->GetBlockHash().ToString().c_str(), pindex->nHeight);
-        else
-            return false;
-    }
+//    TODO_POS: check this
+//    if (nStakeModifierTime + nStakeMinAge - nStakeModifierSelectionInterval <= nTimeTx)
+//    {
+//        // Best block is still more than
+//        // (nStakeMinAge minus a selection interval) older than kernel timestamp
+//        if (fPrintProofOfStake)
+//            return error("GetKernelStakeModifier() : best block %s at height %d too old for stake",
+//                         pindex->GetBlockHash().ToString().c_str(), pindex->nHeight);
+//        else
+//            return false;
+//    }
     // loop to find the stake modifier earlier by
     // (nStakeMinAge minus a selection interval)
     while (nStakeModifierTime + nStakeMinAge - nStakeModifierSelectionInterval > nTimeTx)
@@ -378,7 +379,7 @@ bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned 
     // this change increases active coins participating the hash and helps
     // to secure the network when proof-of-stake difficulty is low
     int64_t nTimeWeight = std::min<int64_t>(nTimeTx - txPrevTime, nStakeMaxAge - nStakeMinAge);
-    arith_uint256 bnCoinDayWeight = nValueIn * nTimeWeight / COIN / (24 * 60 * 60);
+    arith_uint256 bnCoinDayWeight = nValueIn * nTimeWeight / COIN / (12 * 60 * 60);
     // Calculate hash
     CDataStream ss(SER_GETHASH, 0);
     uint64_t nStakeModifier = 0;
