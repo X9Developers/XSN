@@ -269,6 +269,7 @@ rpc/client.cpp
 rpc/client.h
 rpc/governance.cpp
 rpc/masternode.cpp
+rpc/merchantnode.cpp
 rpc/mining.cpp
 rpc/misc.cpp
 rpc/net.cpp

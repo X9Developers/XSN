@@ -5,6 +5,7 @@
 #include "activemerchantnode.h"
 #include "merchantnode.h"
 #include "merchantnode-sync.h"
+#include "merchantnodeman.h"
 #include "protocol.h"
 
 // Keep track of the active Merchantnode
@@ -12,13 +13,13 @@ CActiveMerchantnode activeMerchantnode;
 
 void CActiveMerchantnode::ManageState(CConnman& connman)
 {
-    LogPrint("masternode", "CActiveMerchantnode::ManageState -- Start\n");
-    if(!fMasterNode) {
-        LogPrint("masternode", "CActiveMerchantnode::ManageState -- Not a masternode, returning\n");
+    LogPrint("merchantnode", "CActiveMerchantnode::ManageState -- Start\n");
+    if(!fMerchantNode) {
+        LogPrint("merchantnode", "CActiveMerchantnode::ManageState -- Not a masternode, returning\n");
         return;
     }
 
-    if(Params().NetworkIDString() != CBaseChainParams::REGTEST && !masternodeSync.IsBlockchainSynced()) {
+    if(Params().NetworkIDString() != CBaseChainParams::REGTEST && !merchantnodeSync.IsBlockchainSynced()) {
         nState = ACTIVE_MERCHANTNODE_SYNC_IN_PROCESS;
         LogPrintf("CActiveMerchantnode::ManageState -- %s: %s\n", GetStateString(), GetStatus());
         return;
@@ -28,7 +29,7 @@ void CActiveMerchantnode::ManageState(CConnman& connman)
         nState = ACTIVE_MERCHANTNODE_INITIAL;
     }
 
-    LogPrint("masternode", "CActiveMerchantnode::ManageState -- status = %s, type = %s, pinger enabled = %d\n", GetStatus(), GetTypeString(), fPingerEnabled);
+    LogPrint("merchantnode", "CActiveMerchantnode::ManageState -- status = %s, type = %s, pinger enabled = %d\n", GetStatus(), GetTypeString(), fPingerEnabled);
 
     if(eType == MERCHANTNODE_UNKNOWN) {
         ManageStateInitial(connman);
@@ -86,7 +87,7 @@ bool CActiveMerchantnode::SendMerchantnodePing(CConnman& connman)
         return false;
     }
 
-    if(!mnodeman.Has(outpoint)) {
+    if(!merchantnodeman.Has(outpoint)) {
         strNotCapableReason = "Merchantnode not in masternode list";
         nState = ACTIVE_MERCHANTNODE_NOT_CAPABLE;
         LogPrintf("CActiveMerchantnode::SendMerchantnodePing -- %s: %s\n", GetStateString(), strNotCapableReason);
@@ -103,12 +104,12 @@ bool CActiveMerchantnode::SendMerchantnodePing(CConnman& connman)
     }
 
     // Update lastPing for our masternode in Merchantnode list
-    if(mnodeman.IsMerchantnodePingedWithin(outpoint, MERCHANTNODE_MIN_MNP_SECONDS, mnp.sigTime)) {
+    if(merchantnodeman.IsMerchantnodePingedWithin(outpoint, MERCHANTNODE_MIN_MNP_SECONDS, mnp.sigTime)) {
         LogPrintf("CActiveMerchantnode::SendMerchantnodePing -- Too early to send Merchantnode Ping\n");
         return false;
     }
 
-    mnodeman.SetMerchantnodeLastPing(outpoint, mnp);
+    merchantnodeman.SetMerchantnodeLastPing(outpoint, mnp);
 
     LogPrintf("CActiveMerchantnode::SendMerchantnodePing -- Relaying ping, collateral=%s\n", outpoint.ToStringShort());
     mnp.Relay(connman);
@@ -199,9 +200,9 @@ void CActiveMerchantnode::ManageStateRemote()
     LogPrint("masternode", "CActiveMerchantnode::ManageStateRemote -- Start status = %s, type = %s, pinger enabled = %d, pubKeyMerchantnode.GetID() = %s\n",
              GetStatus(), GetTypeString(), fPingerEnabled, pubKeyMerchantnode.GetID().ToString());
 
-    mnodeman.CheckMerchantnode(pubKeyMerchantnode, true);
-    masternode_info_t infoMn;
-    if(mnodeman.GetMerchantnodeInfo(pubKeyMerchantnode, infoMn)) {
+    merchantnodeman.CheckMerchantnode(pubKeyMerchantnode, true);
+    merchantnode_info_t infoMn;
+    if(merchantnodeman.GetMerchantnodeInfo(pubKeyMerchantnode, infoMn)) {
         if(infoMn.nProtocolVersion != PROTOCOL_VERSION) {
             nState = ACTIVE_MERCHANTNODE_NOT_CAPABLE;
             strNotCapableReason = "Invalid protocol version";

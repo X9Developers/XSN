@@ -179,6 +179,7 @@ BITCOIN_CORE_H = \
   tinyformat.h \
   torcontrol.h \
   txdb.h \
+  tpos/activemerchantnode.h \
   tpos/merchantnode.h \
   tpos/merchantnode-sync.h \
   tpos/merchantnodeman.h \
@@ -254,6 +255,7 @@ libbitcoin_server_a_SOURCES = \
   rest.cpp \
   rpc/blockchain.cpp \
   rpc/masternode.cpp \
+  rpc/merchantnode.cpp \
   rpc/governance.cpp \
   rpc/mining.cpp \
   rpc/misc.cpp \
@@ -267,6 +269,7 @@ libbitcoin_server_a_SOURCES = \
   torcontrol.cpp \
   txdb.cpp \
   txmempool.cpp \
+  tpos/activemerchantnode.cpp \
   tpos/merchantnode.cpp \
   tpos/merchantnode-sync.cpp \
   tpos/merchantnodeman.cpp \

@@ -83,19 +83,6 @@ bool CMerchantnode::UpdateFromNewBroadcast(CMerchantnodeBroadcast& mnb, CConnman
     return true;
 }
 
-//
-// Deterministically calculate a given "score" for a Masternode depending on how close it's hash is to
-// the proof of work for that block. The further away they are the better, the furthest will win the election
-// and get paid this block
-//
-arith_uint256 CMerchantnode::CalculateScore(const uint256& blockHash) const
-{
-    // Deterministically calculate a "score" for a Masternode based on any given (block)hash
-    CHashWriter ss(SER_GETHASH, PROTOCOL_VERSION);
-    ss << vin.prevout << nCollateralMinConfBlockHash << blockHash;
-    return UintToArith256(ss.GetHash());
-}
-
 CMerchantnode::CollateralStatus CMerchantnode::CheckCollateral(const COutPoint& outpoint)
 {
     int nHeight;
