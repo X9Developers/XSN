@@ -107,6 +107,7 @@ using namespace std;
 //Dash only features
 bool fMasterNode = false;
 bool fLiteMode = false;
+bool fMerchantNode = false;
 /**
     nWalletBackups:
         1..10   - number of automatic backups to keep

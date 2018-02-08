@@ -44,6 +44,7 @@
 //Dash only features
 
 extern bool fMasterNode;
+extern bool fMerchantNode;
 extern bool fLiteMode;
 extern int nWalletBackups;
 

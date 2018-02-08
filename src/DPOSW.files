@@ -315,6 +315,14 @@ timedata.h
 tinyformat.h
 torcontrol.cpp
 torcontrol.h
+tpos/activemerchantnode.cpp
+tpos/activemerchantnode.h
+tpos/merchantnode-sync.cpp
+tpos/merchantnode-sync.h
+tpos/merchantnode.cpp
+tpos/merchantnode.h
+tpos/merchantnodeman.cpp
+tpos/merchantnodeman.h
 txdb.cpp
 txdb.h
 txmempool.cpp

@@ -179,6 +179,9 @@ BITCOIN_CORE_H = \
   tinyformat.h \
   torcontrol.h \
   txdb.h \
+  tpos/merchantnode.h \
+  tpos/merchantnode-sync.h \
+  tpos/merchantnodeman.h \
   txmempool.h \
   ui_interface.h \
   uint256.h \
@@ -264,6 +267,9 @@ libbitcoin_server_a_SOURCES = \
   torcontrol.cpp \
   txdb.cpp \
   txmempool.cpp \
+  tpos/merchantnode.cpp \
+  tpos/merchantnode-sync.cpp \
+  tpos/merchantnodeman.cpp \
   validation.cpp \
   validationinterface.cpp \
   versionbits.cpp \

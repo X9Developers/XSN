@@ -134,7 +134,7 @@ public:
     void Stop();
     void Interrupt();
     bool BindListenPort(const CService &bindAddr, std::string& strError, bool fWhitelisted = false);
-    bool GetNetworkActive() const { return fNetworkActive; };
+    bool GetNetworkActive() const { return fNetworkActive; }
     void SetNetworkActive(bool active);
     bool OpenNetworkConnection(const CAddress& addrConnect, CSemaphoreGrant *grantOutbound = NULL, const char *strDest = NULL, bool fOneShot = false, bool fFeeler = false);
     bool CheckIncomingNonce(uint64_t nonce);
@@ -143,7 +143,7 @@ public:
     // and/or you want it to be disconnected on CMasternodeMan::ProcessMasternodeConnections()
     // Unfortunately, can't make this method private like in Bitcoin,
     // because it's used in many Dash-specific places (masternode, privatesend).
-    CNode* ConnectNode(CAddress addrConnect, const char *pszDest = NULL, bool fConnectToMasternode = false);
+    CNode* ConnectNode(CAddress addrConnect, const char *pszDest = NULL, bool fConnectToMasternode = false, bool fConnectToMerchantnode = false);
 
     struct CFullyConnectedOnly {
         bool operator() (const CNode* pnode) const {
@@ -710,6 +710,7 @@ public:
     bool fRelayTxes;
     // If 'true' this node will be disconnected on CMasternodeMan::ProcessMasternodeConnections()
     bool fMasternode;
+    bool fMerchantnode;
     CSemaphoreGrant grantOutbound;
     CSemaphoreGrant grantMasternodeOutbound;
     CCriticalSection cs_filter;

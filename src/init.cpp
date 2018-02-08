@@ -1894,6 +1894,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 
     // ********************************************************* Step 11a: setup PrivateSend
     fMasterNode = GetBoolArg("-masternode", false);
+    fMerchantNode = GetBoolArg("-merchantnode", false);
     // TODO: masternode should have no wallet
 
     if((fMasterNode || masternodeConfig.getCount() > -1) && fTxIndex == false) {

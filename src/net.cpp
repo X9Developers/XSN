@@ -343,7 +343,7 @@ bool CConnman::CheckIncomingNonce(uint64_t nonce)
     return true;
 }
 
-CNode* CConnman::ConnectNode(CAddress addrConnect, const char *pszDest, bool fConnectToMasternode)
+CNode* CConnman::ConnectNode(CAddress addrConnect, const char *pszDest, bool fConnectToMasternode, bool fConnectToMerchantnode)
 {
     // TODO: This is different from what we have in Bitcoin which only calls ConnectNode from OpenNetworkConnection
     //       If we ever switch to using OpenNetworkConnection for MNs as well, this can be removed
@@ -367,6 +367,12 @@ CNode* CConnman::ConnectNode(CAddress addrConnect, const char *pszDest, bool fCo
             if(fConnectToMasternode && !pnode->fMasternode) {
                 pnode->AddRef();
                 pnode->fMasternode = true;
+            }
+
+            if(fConnectToMerchantnode && !pnode->fMerchantnode)
+            {
+                pnode->AddRef();
+                pnode->fMerchantnode = true;
             }
             return pnode;
         }
@@ -404,6 +410,11 @@ CNode* CConnman::ConnectNode(CAddress addrConnect, const char *pszDest, bool fCo
                     pnode->AddRef();
                     pnode->fMasternode = true;
                 }
+                if(fConnectToMerchantnode && !pnode->fMerchantnode) {
+                    pnode->AddRef();
+                    pnode->fMerchantnode = true;
+                }
+
                 if (pnode->addrName.empty()) {
                     pnode->addrName = std::string(pszDest);
                 }
@@ -422,6 +433,10 @@ CNode* CConnman::ConnectNode(CAddress addrConnect, const char *pszDest, bool fCo
         if(fConnectToMasternode) {
             pnode->AddRef();
             pnode->fMasternode = true;
+        }
+        if(fConnectToMerchantnode) {
+            pnode->AddRef();
+            pnode->fMerchantnode = true;
         }
 
         GetNodeSignals().InitializeNode(pnode, *this);
@@ -2704,6 +2719,7 @@ CNode::CNode(NodeId idIn, ServiceFlags nLocalServicesIn, int nMyStartingHeightIn
     nPingUsecTime = 0;
     fPingQueued = false;
     fMasternode = false;
+    fMerchantnode = false;
     nMinPingUsecTime = std::numeric_limits<int64_t>::max();
     vchKeyedNetGroup = CalculateKeyedNetGroup(addr);
     id = idIn;
