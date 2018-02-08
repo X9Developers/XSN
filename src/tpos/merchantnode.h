@@ -193,9 +193,6 @@ public:
         READWRITE(mapGovernanceObjectsVotedOn);
     }
 
-    // CALCULATE A RANK AGAINST OF GIVEN BLOCK
-    arith_uint256 CalculateScore(const uint256& blockHash) const;
-
     bool UpdateFromNewBroadcast(CMerchantnodeBroadcast& mnb, CConnman& connman);
 
     static CollateralStatus CheckCollateral(const COutPoint& outpoint);
