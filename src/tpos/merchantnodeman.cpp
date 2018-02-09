@@ -12,6 +12,7 @@
 #include "script/standard.h"
 #include "messagesigner.h"
 #include "util.h"
+#include "init.h"
 
 /** Merchantnode manager */
 CMerchantnodeMan merchantnodeman;
@@ -1228,4 +1229,47 @@ void CMerchantnodeMan::UpdatedBlockTip(const CBlockIndex *pindex)
     LogPrint("masternode", "CMerchantnodeMan::UpdatedBlockTip -- nCachedBlockHeight=%d\n", nCachedBlockHeight);
 
     CheckSameAddr();
+}
+
+void ThreadMerchantnodeCheck(CConnman &connman)
+{
+    if(fLiteMode) return; // disable all Dash specific functionality
+
+    static bool fOneThread;
+    if(fOneThread) return;
+    fOneThread = true;
+
+    RenameThread("dash-tpos");
+
+    unsigned int nTick = 0;
+
+    while (true)
+    {
+        MilliSleep(1000);
+
+        // try to sync from all available nodes, one step at a time
+        merchantnodeSync.ProcessTick(connman);
+
+        if(merchantnodeSync.IsBlockchainSynced() && !ShutdownRequested()) {
+
+            nTick++;
+
+            // make sure to check all masternodes first
+            merchantnodeman.Check();
+
+            // check if we should activate or ping every few minutes,
+            // slightly postpone first run to give net thread a chance to connect to some peers
+            if(nTick % MERCHANTNODE_MIN_MNP_SECONDS == 15)
+                activeMerchantnode.ManageState(connman);
+
+            if(nTick % 60 == 0) {
+                merchantnodeman.ProcessMerchantnodeConnections(connman);
+                merchantnodeman.CheckAndRemove(connman);
+            }
+            if(fMerchantNode && (nTick % (60 * 5) == 0)) {
+                merchantnodeman.DoFullVerificationStep(connman);
+            }
+        }
+    }
+
 }

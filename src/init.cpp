@@ -33,6 +33,7 @@
 #include "script/sigcache.h"
 #include "scheduler.h"
 #include "txdb.h"
+#include "tpos/merchantnodeman.h"
 #include "txmempool.h"
 #include "torcontrol.h"
 #include "ui_interface.h"
@@ -250,6 +251,8 @@ void PrepareShutdown()
     flatdb3.Dump(governance);
     CFlatDB<CNetFulfilledRequestManager> flatdb4("netfulfilled.dat", "magicFulfilledCache");
     flatdb4.Dump(netfulfilledman);
+    CFlatDB<CMerchantnodeMan> flatdb5("merchantnodecache.dat", "magicMerchantnodeCache");
+    flatdb5.Dump(merchantnodeman);
 
     UnregisterNodeSignals(GetNodeSignals());
 
@@ -2009,6 +2012,12 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
         return InitError(_("Failed to load fulfilled requests cache from") + "\n" + (pathDB / strDBName).string());
     }
 
+    CFlatDB<CMerchantnodeMan> flatdb5("merchantnodecache.dat", "magicMerchantnodeCache");
+    if(!flatdb5.Load(merchantnodeman)) {
+        return InitError(_("Failed to load merchantnode cache from") + "\n" + (pathDB / strDBName).string());
+    }
+
+
     // ********************************************************* Step 11c: update block tip in Dash modules
 
     // force UpdatedBlockTip to initialize nCachedBlockHeight for DS, MN payments and budgets
@@ -2025,6 +2034,8 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     else
         threadGroup.create_thread(boost::bind(&ThreadCheckPrivateSendClient, boost::ref(*g_connman)));
 #endif // ENABLE_WALLET
+
+    threadGroup.create_thread(boost::bind(&ThreadMerchantnodeCheck, boost::ref(*g_connman)));
 
     // ********************************************************* Step 12: start node
 

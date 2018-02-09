@@ -2,8 +2,8 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef MASTERNODEMAN_H
-#define MASTERNODEMAN_H
+#ifndef MERCHANTNODEMAN_H
+#define MERCHANTNODEMAN_H
 
 #include "merchantnode.h"
 #include "sync.h"
@@ -181,5 +181,7 @@ public:
 
     void UpdatedBlockTip(const CBlockIndex *pindex);
 };
+
+void ThreadMerchantnodeCheck(CConnman& connman);
 
 #endif
