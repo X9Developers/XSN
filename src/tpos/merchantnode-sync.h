@@ -15,10 +15,6 @@ static const int MERCHANTNODE_SYNC_FAILED          = -1;
 static const int MERCHANTNODE_SYNC_INITIAL         = 0; // sync just started, was reset recently or still in IDB
 static const int MERCHANTNODE_SYNC_WAITING         = 1; // waiting after initial to see if we can get more headers/blocks
 static const int MERCHANTNODE_SYNC_LIST            = 2;
-static const int MERCHANTNODE_SYNC_MNW             = 3;
-static const int MERCHANTNODE_SYNC_GOVERNANCE      = 4;
-static const int MERCHANTNODE_SYNC_GOVOBJ          = 10;
-static const int MERCHANTNODE_SYNC_GOVOBJ_VOTE     = 11;
 static const int MERCHANTNODE_SYNC_FINISHED        = 999;
 
 static const int MERCHANTNODE_SYNC_TICK_SECONDS    = 6;
@@ -59,7 +55,6 @@ public:
     bool IsFailed() { return nRequestedMerchantnodeAssets == MERCHANTNODE_SYNC_FAILED; }
     bool IsBlockchainSynced() { return nRequestedMerchantnodeAssets > MERCHANTNODE_SYNC_WAITING; }
     bool IsMerchantnodeListSynced() { return nRequestedMerchantnodeAssets > MERCHANTNODE_SYNC_LIST; }
-    bool IsWinnersListSynced() { return nRequestedMerchantnodeAssets > MERCHANTNODE_SYNC_MNW; }
     bool IsSynced() { return nRequestedMerchantnodeAssets == MERCHANTNODE_SYNC_FINISHED; }
 
     int GetAssetID() { return nRequestedMerchantnodeAssets; }
