@@ -469,7 +469,7 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDa
 {
     if(fLiteMode) return; // disable all Dash specific functionality
 
-    if (strCommand == NetMsgType::MNANNOUNCE) { //Merchantnode Broadcast
+    if (strCommand == NetMsgType::MERCHANTNODEANNOUNCE) { //Merchantnode Broadcast
 
         CMerchantnodeBroadcast mnb;
         vRecv >> mnb;
@@ -478,7 +478,7 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDa
 
         if(!merchantnodeSync.IsBlockchainSynced()) return;
 
-        LogPrint("masternode", "MNANNOUNCE -- Merchantnode announce, masternode=%s\n", mnb.vin.prevout.ToStringShort());
+        LogPrint("masternode", "MERCHANTNODEANNOUNCE -- Merchantnode announce, masternode=%s\n", mnb.vin.prevout.ToStringShort());
 
         int nDos = 0;
 
@@ -489,7 +489,7 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDa
             Misbehaving(pfrom->GetId(), nDos);
         }
 
-    } else if (strCommand == NetMsgType::MNPING) { //Merchantnode Ping
+    } else if (strCommand == NetMsgType::MERCHANTNODEPING) { //Merchantnode Ping
 
         CMerchantnodePing mnp;
         vRecv >> mnp;
@@ -500,7 +500,7 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDa
 
         if(!merchantnodeSync.IsBlockchainSynced()) return;
 
-        LogPrint("masternode", "MNPING -- Merchantnode ping, masternode=%s\n", mnp.vin.prevout.ToStringShort());
+        LogPrint("masternode", "MERCHANTNODEPING -- Merchantnode ping, masternode=%s\n", mnp.vin.prevout.ToStringShort());
 
         // Need LOCK2 here to ensure consistent locking order because the CheckAndUpdate call below locks cs_main
         LOCK2(cs_main, cs);
@@ -508,7 +508,7 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDa
         if(mapSeenMerchantnodePing.count(nHash)) return; //seen
         mapSeenMerchantnodePing.insert(std::make_pair(nHash, mnp));
 
-        LogPrint("masternode", "MNPING -- Merchantnode ping, masternode=%s new\n", mnp.vin.prevout.ToStringShort());
+        LogPrint("masternode", "MERCHANTNODEPING -- Merchantnode ping, masternode=%s new\n", mnp.vin.prevout.ToStringShort());
 
         // see if we have this Merchantnode
         CMerchantnode* pmn = Find(mnp.vin.prevout);
@@ -519,7 +519,7 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDa
         if(pmn && mnp.fSentinelIsCurrent)
             UpdateWatchdogVoteTime(mnp.vin.prevout, mnp.sigTime);
 
-        // too late, new MNANNOUNCE is required
+        // too late, new MERCHANTNODEANNOUNCE is required
         if(pmn && pmn->IsNewStartRequired()) return;
 
         int nDos = 0;

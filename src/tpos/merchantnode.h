@@ -22,7 +22,7 @@ static const int MERCHANTNODE_NEW_START_REQUIRED_SECONDS  = 180 * 60;
 static const int MERCHANTNODE_POSE_BAN_MAX_SCORE          = 5;
 
 //
-// The Merchantnode Ping Class : Contains a different serialize method for sending pings from masternodes throughout the network
+// The Merchantnode Ping Class : Contains a different serialize method for sending pings from merchantnodes throughout the network
 //
 
 // sentinel version before sentinel ping implementation
@@ -243,7 +243,7 @@ public:
         return false;
     }
 
-    /// Is the input associated with collateral public key? (and there is 1000 DASH - checking if valid masternode)
+    /// Is the input associated with collateral public key? (and there is 1000 DASH - checking if valid merchantnode)
     bool IsInputAssociatedWithPubkey() const;
 
     bool IsValidNetAddr() const;
@@ -287,7 +287,7 @@ inline bool operator!=(const CMerchantnode& a, const CMerchantnode& b)
 
 
 //
-// The Merchantnode Broadcast Class : Contains a different serialize method for sending masternodes through the network
+// The Merchantnode Broadcast Class : Contains a different serialize method for sending merchantnodes through the network
 //
 
 class CMerchantnodeBroadcast : public CMerchantnode

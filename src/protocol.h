@@ -244,7 +244,10 @@ extern const char *MNGOVERNANCESYNC;
 extern const char *MNGOVERNANCEOBJECT;
 extern const char *MNGOVERNANCEOBJECTVOTE;
 extern const char *MNVERIFY;
-};
+extern const char *MERCHANTNODEVERIFY;
+extern const char *MERCHANTNODEANNOUNCE;
+extern const char *MERCHANTNODEPING;
+}
 
 /* Get a vector of all valid message types (see above) */
 const std::vector<std::string> &getAllNetMessageTypes();

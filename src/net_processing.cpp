@@ -35,6 +35,7 @@
 #include "masternode-payments.h"
 #include "masternode-sync.h"
 #include "masternodeman.h"
+#include "merchantnodeman.h"
 #ifdef ENABLE_WALLET
 #include "privatesend-client.h"
 #endif // ENABLE_WALLET
@@ -732,9 +733,13 @@ bool static AlreadyHave(const CInv& inv) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
 
     case MSG_MASTERNODE_ANNOUNCE:
         return mnodeman.mapSeenMasternodeBroadcast.count(inv.hash) && !mnodeman.IsMnbRecoveryRequested(inv.hash);
+    case MSG_MERCHANTNODE_ANNOUNCE:
+        return merchantnodeman.mapSeenMerchantnodeBroadcast.count(inv.hash) && !merchantnodeman.IsMnbRecoveryRequested(inv.hash);
 
     case MSG_MASTERNODE_PING:
         return mnodeman.mapSeenMasternodePing.count(inv.hash);
+    case MSG_MERCHANTNODE_PING:
+        return merchantnodeman.mapSeenMerchantnodePing.count(inv.hash);
 
     case MSG_DSTX: {
         return static_cast<bool>(CPrivateSend::GetDSTX(inv.hash));
@@ -746,6 +751,8 @@ bool static AlreadyHave(const CInv& inv) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
 
     case MSG_MASTERNODE_VERIFY:
         return mnodeman.mapSeenMasternodeVerification.count(inv.hash);
+    case MSG_MERCHANTNODE_VERIFY:
+        return merchantnodeman.mapSeenMerchantnodeVerification.count(inv.hash);
     }
 
     // Don't know what it is, just say we already got one
@@ -980,12 +987,33 @@ void static ProcessGetData(CNode* pfrom, const Consensus::Params& consensusParam
                     }
                 }
 
+                if (!pushed && inv.type == MSG_MERCHANTNODE_ANNOUNCE) {
+                    if(mnodeman.mapSeenMasternodeBroadcast.count(inv.hash)){
+                        CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
+                        ss.reserve(1000);
+                        ss << merchantnodeman.mapSeenMerchantnodeBroadcast[inv.hash].second;
+                        connman.PushMessage(pfrom, NetMsgType::MERCHANTNODEANNOUNCE, ss);
+                        pushed = true;
+                    }
+                }
+
+
                 if (!pushed && inv.type == MSG_MASTERNODE_PING) {
                     if(mnodeman.mapSeenMasternodePing.count(inv.hash)) {
                         CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
                         ss.reserve(1000);
                         ss << mnodeman.mapSeenMasternodePing[inv.hash];
                         connman.PushMessage(pfrom, NetMsgType::MNPING, ss);
+                        pushed = true;
+                    }
+                }
+
+                if (!pushed && inv.type == MSG_MERCHANTNODE_PING) {
+                    if(mnodeman.mapSeenMasternodePing.count(inv.hash)) {
+                        CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
+                        ss.reserve(1000);
+                        ss << merchantnodeman.mapSeenMerchantnodePing[inv.hash];
+                        connman.PushMessage(pfrom, NetMsgType::MERCHANTNODEPING, ss);
                         pushed = true;
                     }
                 }
@@ -1044,6 +1072,16 @@ void static ProcessGetData(CNode* pfrom, const Consensus::Params& consensusParam
                         ss.reserve(1000);
                         ss << mnodeman.mapSeenMasternodeVerification[inv.hash];
                         connman.PushMessage(pfrom, NetMsgType::MNVERIFY, ss);
+                        pushed = true;
+                    }
+                }
+
+                if(!pushed && inv.type == MSG_MERCHANTNODE_VERIFY) {
+                    if(merchantnodeman.mapSeenMerchantnodeVerification.count(inv.hash)) {
+                        CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
+                        ss.reserve(1000);
+                        ss << merchantnodeman.mapSeenMerchantnodeVerification[inv.hash];
+                        connman.PushMessage(pfrom, NetMsgType::MERCHANTNODEVERIFY, ss);
                         pushed = true;
                     }
                 }

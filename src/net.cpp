@@ -25,6 +25,8 @@
 #include "instantx.h"
 #include "masternode-sync.h"
 #include "masternodeman.h"
+#include "tpos/merchantnode-sync.h"
+#include "tpos/merchantnodeman.h"
 #include "privatesend.h"
 
 #ifdef WIN32
@@ -1896,6 +1898,49 @@ void CConnman::ThreadMnbRequestConnections()
     }
 }
 
+void CConnman::ThreadMerchantnodeRequestConnections()
+{
+    // Connecting to specific addresses, no merchantnode connections available
+    if (mapArgs.count("-connect") && mapMultiArgs["-connect"].size() > 0)
+        return;
+
+    while (!interruptNet)
+    {
+        if (!interruptNet.sleep_for(std::chrono::milliseconds(1000)))
+            return;
+
+        CSemaphoreGrant grant(*semMerchatnodeOutbound);
+        if (interruptNet)
+            return;
+
+        std::pair<CService, std::set<uint256> > p = merchantnodeman.PopScheduledMnbRequestConnection();
+        if(p.first == CService() || p.second.empty()) continue;
+
+        ConnectNode(CAddress(p.first, NODE_NETWORK), NULL, true);
+
+        LOCK(cs_vNodes);
+
+        CNode *pnode = FindNode(p.first);
+        if(!pnode || pnode->fDisconnect) continue;
+
+        grant.MoveTo(pnode->grantMerchantnodeOutbound);
+
+        // compile request vector
+        std::vector<CInv> vToFetch;
+        std::set<uint256>::iterator it = p.second.begin();
+        while(it != p.second.end()) {
+            if(*it != uint256()) {
+                vToFetch.push_back(CInv(MSG_MERCHANTNODE_ANNOUNCE, *it));
+                LogPrint("merchantnode", "ThreadMerchantnodeRequestConnections -- asking for mnb %s from addr=%s\n", it->ToString(), p.first.ToString());
+            }
+            ++it;
+        }
+
+        // ask for data
+        PushMessage(pnode, NetMsgType::GETDATA, vToFetch);
+    }
+}
+
 // if successful, this moves the passed grant to the constructed node
 bool CConnman::OpenNetworkConnection(const CAddress& addrConnect, CSemaphoreGrant *grantOutbound, const char *pszDest, bool fOneShot, bool fFeeler)
 {
@@ -2150,6 +2195,7 @@ CConnman::CConnman()
     nReceiveFloodSize = 0;
     semOutbound = NULL;
     semMasternodeOutbound = NULL;
+    semMerchatnodeOutbound = nullptr;
     nMaxConnections = 0;
     nMaxOutbound = 0;
     nBestHeight = 0;
@@ -2228,6 +2274,10 @@ bool CConnman::Start(CScheduler& scheduler, std::string& strNodeError, Options c
         semMasternodeOutbound = new CSemaphore(MAX_OUTBOUND_MASTERNODE_CONNECTIONS);
     }
 
+    if(!semMerchatnodeOutbound) {
+        semMerchatnodeOutbound = new CSemaphore(MAX_OUTBOUND_MASTERNODE_CONNECTIONS);
+    }
+
     if (pnodeLocalHost == NULL) {
         CNetAddr local;
         LookupHost("127.0.0.1", local, false);
@@ -2263,6 +2313,8 @@ bool CConnman::Start(CScheduler& scheduler, std::string& strNodeError, Options c
 
     // Initiate masternode connections
     threadMnbRequestConnections = std::thread(&TraceThread<std::function<void()> >, "mnbcon", std::function<void()>(std::bind(&CConnman::ThreadMnbRequestConnections, this)));
+
+    threadMerchantnodeRequestConnections = std::thread(&TraceThread<std::function<void()> >, "mrncon", std::function<void()>(std::bind(&CConnman::ThreadMerchantnodeRequestConnections, this)));
 
     // Process messages
     threadMessageHandler = std::thread(&TraceThread<std::function<void()> >, "msghand", std::function<void()>(std::bind(&CConnman::ThreadMessageHandler, this)));
@@ -2318,6 +2370,8 @@ void CConnman::Stop()
         threadMessageHandler.join();
     if (threadMnbRequestConnections.joinable())
         threadMnbRequestConnections.join();
+    if(threadMerchantnodeRequestConnections.joinable())
+        threadMerchantnodeRequestConnections.join();
     if (threadOpenConnections.joinable())
         threadOpenConnections.join();
     if (threadOpenAddedConnections.joinable())
@@ -2330,6 +2384,10 @@ void CConnman::Stop()
     if (semMasternodeOutbound)
         for (int i=0; i<MAX_OUTBOUND_MASTERNODE_CONNECTIONS; i++)
             semMasternodeOutbound->post();
+
+    if(semMerchatnodeOutbound)
+        for(int i = 0; i < MAX_OUTBOUND_MASTERNODE_CONNECTIONS; ++i)
+            semMerchatnodeOutbound->post();
 
     if (fAddressesInitialized)
     {
@@ -2360,6 +2418,8 @@ void CConnman::Stop()
     semOutbound = NULL;
     delete semMasternodeOutbound;
     semMasternodeOutbound = NULL;
+    delete semMerchatnodeOutbound;
+    semMerchatnodeOutbound = nullptr;
     if(pnodeLocalHost)
         DeleteNode(pnodeLocalHost);
     pnodeLocalHost = NULL;

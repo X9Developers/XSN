@@ -403,6 +403,7 @@ private:
     void ThreadSocketHandler();
     void ThreadDNSAddressSeed();
     void ThreadMnbRequestConnections();
+    void ThreadMerchantnodeRequestConnections();
 
     void WakeMessageHandler();
 
@@ -484,6 +485,7 @@ private:
 
     CSemaphore *semOutbound;
     CSemaphore *semMasternodeOutbound;
+    CSemaphore *semMerchatnodeOutbound;
     int nMaxConnections;
     int nMaxOutbound;
     int nMaxFeeler;
@@ -504,6 +506,7 @@ private:
     std::thread threadOpenAddedConnections;
     std::thread threadOpenConnections;
     std::thread threadMnbRequestConnections;
+    std::thread threadMerchantnodeRequestConnections;
     std::thread threadMessageHandler;
 };
 extern std::unique_ptr<CConnman> g_connman;
@@ -713,6 +716,7 @@ public:
     bool fMerchantnode;
     CSemaphoreGrant grantOutbound;
     CSemaphoreGrant grantMasternodeOutbound;
+    CSemaphoreGrant grantMerchantnodeOutbound;
     CCriticalSection cs_filter;
     CBloomFilter* pfilter;
     int nRefCount;
