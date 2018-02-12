@@ -9,6 +9,8 @@
 #include "masternodeman.h"
 #include "masternode-payments.h"
 #include "masternode-sync.h"
+#include "tpos/merchantnode-sync.h"
+#include "tpos/merchantnodeman.h"
 #include "privatesend.h"
 #ifdef ENABLE_WALLET
 #include "privatesend-client.h"
@@ -23,11 +25,13 @@ void CDSNotificationInterface::InitializeCurrentBlockTip()
 void CDSNotificationInterface::AcceptedBlockHeader(const CBlockIndex *pindexNew)
 {
     masternodeSync.AcceptedBlockHeader(pindexNew);
+    merchantnodeSync.AcceptedBlockHeader(pindexNew);
 }
 
 void CDSNotificationInterface::NotifyHeaderTip(const CBlockIndex *pindexNew, bool fInitialDownload)
 {
     masternodeSync.NotifyHeaderTip(pindexNew, fInitialDownload, connman);
+    merchantnodeSync.NotifyHeaderTip(pindexNew, fInitialDownload, connman);
 }
 
 void CDSNotificationInterface::UpdatedBlockTip(const CBlockIndex *pindexNew, const CBlockIndex *pindexFork, bool fInitialDownload)
@@ -36,6 +40,7 @@ void CDSNotificationInterface::UpdatedBlockTip(const CBlockIndex *pindexNew, con
         return;
 
     masternodeSync.UpdatedBlockTip(pindexNew, fInitialDownload, connman);
+    merchantnodeSync.UpdatedBlockTip(pindexNew, fInitialDownload, connman);
 
     // Update global DIP0001 activation status
     fDIP0001ActiveAtTip = (VersionBitsState(pindexNew, Params().GetConsensus(), Consensus::DEPLOYMENT_DIP0001, versionbitscache) == THRESHOLD_ACTIVE);
@@ -44,6 +49,7 @@ void CDSNotificationInterface::UpdatedBlockTip(const CBlockIndex *pindexNew, con
         return;
 
     mnodeman.UpdatedBlockTip(pindexNew);
+    merchantnodeman.UpdatedBlockTip(pindexNew);
     CPrivateSend::UpdatedBlockTip(pindexNew);
 #ifdef ENABLE_WALLET
     privateSendClient.UpdatedBlockTip(pindexNew);
