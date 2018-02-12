@@ -2541,7 +2541,6 @@ void CWallet::AvailableCoins(vector<COutput>& vCoins, bool fOnlyConfirmed, const
         }
     }
 }
-}
 
 map<CBitcoinAddress, vector<COutput>> CWallet::AvailableCoinsByAddress(bool fConfirmed, CAmount maxCoinValue) const
 {
