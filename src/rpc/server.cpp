@@ -89,8 +89,8 @@ void RPCTypeCheck(const UniValue& params,
 }
 
 void RPCTypeCheckObj(const UniValue& o,
-                  const map<string, UniValue::VType>& typesExpected,
-                  bool fAllowNull)
+                     const map<string, UniValue::VType>& typesExpected,
+                     bool fAllowNull)
 {
     BOOST_FOREACH(const PAIRTYPE(string, UniValue::VType)& t, typesExpected)
     {
@@ -126,7 +126,7 @@ UniValue ValueFromAmount(const CAmount& amount)
     int64_t quotient = n_abs / COIN;
     int64_t remainder = n_abs % COIN;
     return UniValue(UniValue::VNUM,
-            strprintf("%s%d.%08d", sign ? "-" : "", quotient, remainder));
+                    strprintf("%s%d.%08d", sign ? "-" : "", quotient, remainder));
 }
 
 uint256 ParseHashV(const UniValue& v, string strName)
@@ -221,13 +221,13 @@ UniValue help(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() > 1)
         throw runtime_error(
-            "help ( \"command\" )\n"
-            "\nList all commands, or get help for a specified command.\n"
-            "\nArguments:\n"
-            "1. \"command\"     (string, optional) The command to get help on\n"
-            "\nResult:\n"
-            "\"text\"     (string) The help text\n"
-        );
+                "help ( \"command\" )\n"
+                "\nList all commands, or get help for a specified command.\n"
+                "\nArguments:\n"
+                "1. \"command\"     (string, optional) The command to get help on\n"
+                "\nResult:\n"
+                "\"text\"     (string) The help text\n"
+                );
 
     string strCommand;
     if (params.size() > 0)
@@ -242,8 +242,8 @@ UniValue stop(const UniValue& params, bool fHelp)
     // Accept the deprecated and ignored 'detach' boolean argument
     if (fHelp || params.size() > 1)
         throw runtime_error(
-            "stop\n"
-            "\nStop Dash Core server.");
+                "stop\n"
+                "\nStop Dash Core server.");
     // Event loop will exit after current HTTP requests have been handled, so
     // this reply will get back to the client.
     StartShutdown();
@@ -256,155 +256,157 @@ UniValue stop(const UniValue& params, bool fHelp)
 static const CRPCCommand vRPCCommands[] =
 { //  category              name                      actor (function)         okSafeMode
   //  --------------------- ------------------------  -----------------------  ----------
-    /* Overall control/query calls */
-    { "control",            "getinfo",                &getinfo,                true  }, /* uses wallet if enabled */
-    { "control",            "debug",                  &debug,                  true  },
-    { "control",            "help",                   &help,                   true  },
-    { "control",            "stop",                   &stop,                   true  },
+  /* Overall control/query calls */
+  { "control",            "getinfo",                &getinfo,                true  }, /* uses wallet if enabled */
+  { "control",            "debug",                  &debug,                  true  },
+  { "control",            "help",                   &help,                   true  },
+  { "control",            "stop",                   &stop,                   true  },
 
-    /* P2P networking */
-    { "network",            "getnetworkinfo",         &getnetworkinfo,         true  },
-    { "network",            "addnode",                &addnode,                true  },
-    { "network",            "disconnectnode",         &disconnectnode,         true  },
-    { "network",            "getaddednodeinfo",       &getaddednodeinfo,       true  },
-    { "network",            "getconnectioncount",     &getconnectioncount,     true  },
-    { "network",            "getnettotals",           &getnettotals,           true  },
-    { "network",            "getpeerinfo",            &getpeerinfo,            true  },
-    { "network",            "ping",                   &ping,                   true  },
-    { "network",            "setban",                 &setban,                 true  },
-    { "network",            "listbanned",             &listbanned,             true  },
-    { "network",            "clearbanned",            &clearbanned,            true  },
-    { "network",            "setnetworkactive",       &setnetworkactive,       true  },
+  /* P2P networking */
+  { "network",            "getnetworkinfo",         &getnetworkinfo,         true  },
+  { "network",            "addnode",                &addnode,                true  },
+  { "network",            "disconnectnode",         &disconnectnode,         true  },
+  { "network",            "getaddednodeinfo",       &getaddednodeinfo,       true  },
+  { "network",            "getconnectioncount",     &getconnectioncount,     true  },
+  { "network",            "getnettotals",           &getnettotals,           true  },
+  { "network",            "getpeerinfo",            &getpeerinfo,            true  },
+  { "network",            "ping",                   &ping,                   true  },
+  { "network",            "setban",                 &setban,                 true  },
+  { "network",            "listbanned",             &listbanned,             true  },
+  { "network",            "clearbanned",            &clearbanned,            true  },
+  { "network",            "setnetworkactive",       &setnetworkactive,       true  },
 
-    /* Block chain and UTXO */
-    { "blockchain",         "getblockchaininfo",      &getblockchaininfo,      true  },
-    { "blockchain",         "getbestblockhash",       &getbestblockhash,       true  },
-    { "blockchain",         "getblockcount",          &getblockcount,          true  },
-    { "blockchain",         "getblock",               &getblock,               true  },
-    { "blockchain",         "getblockhashes",         &getblockhashes,         true  },
-    { "blockchain",         "getblockhash",           &getblockhash,           true  },
-    { "blockchain",         "getblockheader",         &getblockheader,         true  },
-    { "blockchain",         "getblockheaders",        &getblockheaders,        true  },
-    { "blockchain",         "getchaintips",           &getchaintips,           true  },
-    { "blockchain",         "getdifficulty",          &getdifficulty,          true  },
-    { "blockchain",         "getmempoolinfo",         &getmempoolinfo,         true  },
-    { "blockchain",         "getrawmempool",          &getrawmempool,          true  },
-    { "blockchain",         "gettxout",               &gettxout,               true  },
-    { "blockchain",         "gettxoutproof",          &gettxoutproof,          true  },
-    { "blockchain",         "verifytxoutproof",       &verifytxoutproof,       true  },
-    { "blockchain",         "gettxoutsetinfo",        &gettxoutsetinfo,        true  },
-    { "blockchain",         "verifychain",            &verifychain,            true  },
-    { "blockchain",         "getspentinfo",           &getspentinfo,           false },
+  /* Block chain and UTXO */
+  { "blockchain",         "getblockchaininfo",      &getblockchaininfo,      true  },
+  { "blockchain",         "getbestblockhash",       &getbestblockhash,       true  },
+  { "blockchain",         "getblockcount",          &getblockcount,          true  },
+  { "blockchain",         "getblock",               &getblock,               true  },
+  { "blockchain",         "getblockhashes",         &getblockhashes,         true  },
+  { "blockchain",         "getblockhash",           &getblockhash,           true  },
+  { "blockchain",         "getblockheader",         &getblockheader,         true  },
+  { "blockchain",         "getblockheaders",        &getblockheaders,        true  },
+  { "blockchain",         "getchaintips",           &getchaintips,           true  },
+  { "blockchain",         "getdifficulty",          &getdifficulty,          true  },
+  { "blockchain",         "getmempoolinfo",         &getmempoolinfo,         true  },
+  { "blockchain",         "getrawmempool",          &getrawmempool,          true  },
+  { "blockchain",         "gettxout",               &gettxout,               true  },
+  { "blockchain",         "gettxoutproof",          &gettxoutproof,          true  },
+  { "blockchain",         "verifytxoutproof",       &verifytxoutproof,       true  },
+  { "blockchain",         "gettxoutsetinfo",        &gettxoutsetinfo,        true  },
+  { "blockchain",         "verifychain",            &verifychain,            true  },
+  { "blockchain",         "getspentinfo",           &getspentinfo,           false },
 
-    /* Mining */
-    { "mining",             "getblocktemplate",       &getblocktemplate,       true  },
-    { "mining",             "getmininginfo",          &getmininginfo,          true  },
-    { "mining",             "getnetworkhashps",       &getnetworkhashps,       true  },
-    { "mining",             "prioritisetransaction",  &prioritisetransaction,  true  },
-    { "mining",             "submitblock",            &submitblock,            true  },
+  /* Mining */
+  { "mining",             "getblocktemplate",       &getblocktemplate,       true  },
+  { "mining",             "getmininginfo",          &getmininginfo,          true  },
+  { "mining",             "getnetworkhashps",       &getnetworkhashps,       true  },
+  { "mining",             "prioritisetransaction",  &prioritisetransaction,  true  },
+  { "mining",             "submitblock",            &submitblock,            true  },
 
-    /* Coin generation */
-    { "generating",         "getgenerate",            &getgenerate,            true  },
-    { "generating",         "setgenerate",            &setgenerate,            true  },
-    { "generating",         "generate",               &generate,               true  },
+  /* Coin generation */
+  { "generating",         "getgenerate",            &getgenerate,            true  },
+  { "generating",         "setgenerate",            &setgenerate,            true  },
+  { "generating",         "generate",               &generate,               true  },
 
-    /* Raw transactions */
-    { "rawtransactions",    "createrawtransaction",   &createrawtransaction,   true  },
-    { "rawtransactions",    "decoderawtransaction",   &decoderawtransaction,   true  },
-    { "rawtransactions",    "decodescript",           &decodescript,           true  },
-    { "rawtransactions",    "getrawtransaction",      &getrawtransaction,      true  },
-    { "rawtransactions",    "sendrawtransaction",     &sendrawtransaction,     false },
-    { "rawtransactions",    "signrawtransaction",     &signrawtransaction,     false }, /* uses wallet if enabled */
-#ifdef ENABLE_WALLET
-    { "rawtransactions",    "fundrawtransaction",     &fundrawtransaction,     false },
-#endif
+  /* Raw transactions */
+  { "rawtransactions",    "createrawtransaction",   &createrawtransaction,   true  },
+  { "rawtransactions",    "decoderawtransaction",   &decoderawtransaction,   true  },
+  { "rawtransactions",    "decodescript",           &decodescript,           true  },
+  { "rawtransactions",    "getrawtransaction",      &getrawtransaction,      true  },
+  { "rawtransactions",    "sendrawtransaction",     &sendrawtransaction,     false },
+  { "rawtransactions",    "signrawtransaction",     &signrawtransaction,     false }, /* uses wallet if enabled */
+  #ifdef ENABLE_WALLET
+  { "rawtransactions",    "fundrawtransaction",     &fundrawtransaction,     false },
+  #endif
 
-    /* Address index */
-    { "addressindex",       "getaddressmempool",      &getaddressmempool,      true  },
-    { "addressindex",       "getaddressutxos",        &getaddressutxos,        false },
-    { "addressindex",       "getaddressdeltas",       &getaddressdeltas,       false },
-    { "addressindex",       "getaddresstxids",        &getaddresstxids,        false },
-    { "addressindex",       "getaddressbalance",      &getaddressbalance,      false },
+  /* Address index */
+  { "addressindex",       "getaddressmempool",      &getaddressmempool,      true  },
+  { "addressindex",       "getaddressutxos",        &getaddressutxos,        false },
+  { "addressindex",       "getaddressdeltas",       &getaddressdeltas,       false },
+  { "addressindex",       "getaddresstxids",        &getaddresstxids,        false },
+  { "addressindex",       "getaddressbalance",      &getaddressbalance,      false },
 
-    /* Utility functions */
-    { "util",               "createmultisig",         &createmultisig,         true  },
-    { "util",               "validateaddress",        &validateaddress,        true  }, /* uses wallet if enabled */
-    { "util",               "verifymessage",          &verifymessage,          true  },
-    { "util",               "estimatefee",            &estimatefee,            true  },
-    { "util",               "estimatepriority",       &estimatepriority,       true  },
-    { "util",               "estimatesmartfee",       &estimatesmartfee,       true  },
-    { "util",               "estimatesmartpriority",  &estimatesmartpriority,  true  },
+  /* Utility functions */
+  { "util",               "createmultisig",         &createmultisig,         true  },
+  { "util",               "validateaddress",        &validateaddress,        true  }, /* uses wallet if enabled */
+  { "util",               "verifymessage",          &verifymessage,          true  },
+  { "util",               "estimatefee",            &estimatefee,            true  },
+  { "util",               "estimatepriority",       &estimatepriority,       true  },
+  { "util",               "estimatesmartfee",       &estimatesmartfee,       true  },
+  { "util",               "estimatesmartpriority",  &estimatesmartpriority,  true  },
 
-    /* Not shown in help */
-    { "hidden",             "invalidateblock",        &invalidateblock,        true  },
-    { "hidden",             "reconsiderblock",        &reconsiderblock,        true  },
-    { "hidden",             "setmocktime",            &setmocktime,            true  },
-#ifdef ENABLE_WALLET
-    { "hidden",             "resendwallettransactions", &resendwallettransactions, true},
-#endif
+  /* Not shown in help */
+  { "hidden",             "invalidateblock",        &invalidateblock,        true  },
+  { "hidden",             "reconsiderblock",        &reconsiderblock,        true  },
+  { "hidden",             "setmocktime",            &setmocktime,            true  },
+  #ifdef ENABLE_WALLET
+  { "hidden",             "resendwallettransactions", &resendwallettransactions, true},
+  #endif
 
-    /* Dash features */
-    { "dash",               "masternode",             &masternode,             true  },
-    { "dash",               "masternodelist",         &masternodelist,         true  },
-    { "dash",               "masternodebroadcast",    &masternodebroadcast,    true  },
-    { "dash",               "gobject",                &gobject,                true  },
-    { "dash",               "getgovernanceinfo",      &getgovernanceinfo,      true  },
-    { "dash",               "getsuperblockbudget",    &getsuperblockbudget,    true  },
-    { "dash",               "voteraw",                &voteraw,                true  },
-    { "dash",               "mnsync",                 &mnsync,                 true  },
-    { "dash",               "spork",                  &spork,                  true  },
-    { "dash",               "getpoolinfo",            &getpoolinfo,            true  },
-    { "dash",               "sentinelping",           &sentinelping,           true  },
-#ifdef ENABLE_WALLET
-    { "dash",               "privatesend",            &privatesend,            false },
+  /* Dash features */
+  { "dash",               "merchantnode",           &merchantnode,             true  },
+  { "dash",               "merchantnodelist",       &merchantnodelist,         true  },
+  { "dash",               "masternode",             &masternode,             true  },
+  { "dash",               "masternodelist",         &masternodelist,         true  },
+  { "dash",               "masternodebroadcast",    &masternodebroadcast,    true  },
+  { "dash",               "gobject",                &gobject,                true  },
+  { "dash",               "getgovernanceinfo",      &getgovernanceinfo,      true  },
+  { "dash",               "getsuperblockbudget",    &getsuperblockbudget,    true  },
+  { "dash",               "voteraw",                &voteraw,                true  },
+  { "dash",               "mnsync",                 &mnsync,                 true  },
+  { "dash",               "spork",                  &spork,                  true  },
+  { "dash",               "getpoolinfo",            &getpoolinfo,            true  },
+  { "dash",               "sentinelping",           &sentinelping,           true  },
+  #ifdef ENABLE_WALLET
+  { "dash",               "privatesend",            &privatesend,            false },
 
-    /* Wallet */
-    { "wallet",             "keepass",                &keepass,                true },
-    { "wallet",             "instantsendtoaddress",   &instantsendtoaddress,   false },
-    { "wallet",             "addmultisigaddress",     &addmultisigaddress,     true  },
-    { "wallet",             "backupwallet",           &backupwallet,           true  },
-    { "wallet",             "dumpprivkey",            &dumpprivkey,            true  },
-    { "wallet",             "dumphdinfo",             &dumphdinfo,             true  },
-    { "wallet",             "dumpwallet",             &dumpwallet,             true  },
-    { "wallet",             "encryptwallet",          &encryptwallet,          true  },
-    { "wallet",             "getaccountaddress",      &getaccountaddress,      true  },
-    { "wallet",             "getaccount",             &getaccount,             true  },
-    { "wallet",             "getaddressesbyaccount",  &getaddressesbyaccount,  true  },
-    { "wallet",             "getbalance",             &getbalance,             false },
-    { "wallet",             "getnewaddress",          &getnewaddress,          true  },
-    { "wallet",             "getrawchangeaddress",    &getrawchangeaddress,    true  },
-    { "wallet",             "getreceivedbyaccount",   &getreceivedbyaccount,   false },
-    { "wallet",             "getreceivedbyaddress",   &getreceivedbyaddress,   false },
-    { "wallet",             "gettransaction",         &gettransaction,         false },
-    { "wallet",             "abandontransaction",     &abandontransaction,     false },
-    { "wallet",             "getunconfirmedbalance",  &getunconfirmedbalance,  false },
-    { "wallet",             "getwalletinfo",          &getwalletinfo,          false },
-    { "wallet",             "importprivkey",          &importprivkey,          true  },
-    { "wallet",             "importwallet",           &importwallet,           true  },
-    { "wallet",             "importelectrumwallet",   &importelectrumwallet,   true  },
-    { "wallet",             "importaddress",          &importaddress,          true  },
-    { "wallet",             "importpubkey",           &importpubkey,           true  },
-    { "wallet",             "keypoolrefill",          &keypoolrefill,          true  },
-    { "wallet",             "listaccounts",           &listaccounts,           false },
-    { "wallet",             "listaddressgroupings",   &listaddressgroupings,   false },
-    { "wallet",             "listlockunspent",        &listlockunspent,        false },
-    { "wallet",             "listreceivedbyaccount",  &listreceivedbyaccount,  false },
-    { "wallet",             "listreceivedbyaddress",  &listreceivedbyaddress,  false },
-    { "wallet",             "listsinceblock",         &listsinceblock,         false },
-    { "wallet",             "listtransactions",       &listtransactions,       false },
-    { "wallet",             "listunspent",            &listunspent,            false },
-    { "wallet",             "lockunspent",            &lockunspent,            true  },
-    { "wallet",             "move",                   &movecmd,                false },
-    { "wallet",             "sendfrom",               &sendfrom,               false },
-    { "wallet",             "sendmany",               &sendmany,               false },
-    { "wallet",             "sendtoaddress",          &sendtoaddress,          false },
-    { "wallet",             "setaccount",             &setaccount,             true  },
-    { "wallet",             "settxfee",               &settxfee,               true  },
-    { "wallet",             "signmessage",            &signmessage,            true  },
-    { "wallet",             "walletlock",             &walletlock,             true  },
-    { "wallet",             "walletpassphrasechange", &walletpassphrasechange, true  },
-    { "wallet",             "walletpassphrase",       &walletpassphrase,       true  },
-#endif // ENABLE_WALLET
+  /* Wallet */
+  { "wallet",             "keepass",                &keepass,                true },
+  { "wallet",             "instantsendtoaddress",   &instantsendtoaddress,   false },
+  { "wallet",             "addmultisigaddress",     &addmultisigaddress,     true  },
+  { "wallet",             "backupwallet",           &backupwallet,           true  },
+  { "wallet",             "dumpprivkey",            &dumpprivkey,            true  },
+  { "wallet",             "dumphdinfo",             &dumphdinfo,             true  },
+  { "wallet",             "dumpwallet",             &dumpwallet,             true  },
+  { "wallet",             "encryptwallet",          &encryptwallet,          true  },
+  { "wallet",             "getaccountaddress",      &getaccountaddress,      true  },
+  { "wallet",             "getaccount",             &getaccount,             true  },
+  { "wallet",             "getaddressesbyaccount",  &getaddressesbyaccount,  true  },
+  { "wallet",             "getbalance",             &getbalance,             false },
+  { "wallet",             "getnewaddress",          &getnewaddress,          true  },
+  { "wallet",             "getrawchangeaddress",    &getrawchangeaddress,    true  },
+  { "wallet",             "getreceivedbyaccount",   &getreceivedbyaccount,   false },
+  { "wallet",             "getreceivedbyaddress",   &getreceivedbyaddress,   false },
+  { "wallet",             "gettransaction",         &gettransaction,         false },
+  { "wallet",             "abandontransaction",     &abandontransaction,     false },
+  { "wallet",             "getunconfirmedbalance",  &getunconfirmedbalance,  false },
+  { "wallet",             "getwalletinfo",          &getwalletinfo,          false },
+  { "wallet",             "importprivkey",          &importprivkey,          true  },
+  { "wallet",             "importwallet",           &importwallet,           true  },
+  { "wallet",             "importelectrumwallet",   &importelectrumwallet,   true  },
+  { "wallet",             "importaddress",          &importaddress,          true  },
+  { "wallet",             "importpubkey",           &importpubkey,           true  },
+  { "wallet",             "keypoolrefill",          &keypoolrefill,          true  },
+  { "wallet",             "listaccounts",           &listaccounts,           false },
+  { "wallet",             "listaddressgroupings",   &listaddressgroupings,   false },
+  { "wallet",             "listlockunspent",        &listlockunspent,        false },
+  { "wallet",             "listreceivedbyaccount",  &listreceivedbyaccount,  false },
+  { "wallet",             "listreceivedbyaddress",  &listreceivedbyaddress,  false },
+  { "wallet",             "listsinceblock",         &listsinceblock,         false },
+  { "wallet",             "listtransactions",       &listtransactions,       false },
+  { "wallet",             "listunspent",            &listunspent,            false },
+  { "wallet",             "lockunspent",            &lockunspent,            true  },
+  { "wallet",             "move",                   &movecmd,                false },
+  { "wallet",             "sendfrom",               &sendfrom,               false },
+  { "wallet",             "sendmany",               &sendmany,               false },
+  { "wallet",             "sendtoaddress",          &sendtoaddress,          false },
+  { "wallet",             "setaccount",             &setaccount,             true  },
+  { "wallet",             "settxfee",               &settxfee,               true  },
+  { "wallet",             "signmessage",            &signmessage,            true  },
+  { "wallet",             "walletlock",             &walletlock,             true  },
+  { "wallet",             "walletpassphrasechange", &walletpassphrasechange, true  },
+  { "wallet",             "walletpassphrase",       &walletpassphrase,       true  },
+  #endif // ENABLE_WALLET
 };
 
 CRPCTable::CRPCTable()
@@ -573,8 +575,8 @@ std::vector<std::string> CRPCTable::listCommands() const
     typedef std::map<std::string, const CRPCCommand*> commandMap;
 
     std::transform( mapCommands.begin(), mapCommands.end(),
-                   std::back_inserter(commandList),
-                   boost::bind(&commandMap::value_type::first,_1) );
+                    std::back_inserter(commandList),
+                    boost::bind(&commandMap::value_type::first,_1) );
     return commandList;
 }
 
@@ -586,7 +588,7 @@ std::string HelpExampleCli(const std::string& methodname, const std::string& arg
 std::string HelpExampleRpc(const std::string& methodname, const std::string& args)
 {
     return "> curl --user myusername --data-binary '{\"jsonrpc\": \"1.0\", \"id\":\"curltest\", "
-        "\"method\": \"" + methodname + "\", \"params\": [" + args + "] }' -H 'content-type: text/plain;' http://127.0.0.1:9998/\n";
+           "\"method\": \"" + methodname + "\", \"params\": [" + args + "] }' -H 'content-type: text/plain;' http://127.0.0.1:9998/\n";
 }
 
 void RPCRegisterTimerInterface(RPCTimerInterface *iface)
