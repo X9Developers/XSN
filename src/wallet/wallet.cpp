@@ -2520,46 +2520,47 @@ void CWallet::AvailableCoins(vector<COutput>& vCoins, bool fOnlyConfirmed, const
                     found = !CPrivateSend::IsDenominatedAmount(pcoin->vout[i].nValue);
                 } else if(nCoinType == ONLY_1000) {
                     found = pcoin->vout[i].nValue == 1000*COIN;
-                } else if(nCoinType == ONLY_MERCHANTNODE_COLLATERAL)
+                } else if(nCoinType == ONLY_MERCHANTNODE_COLLATERAL) {
                     found = pcoin->vout[i].nValue == 1 * COIN;
-            } else if(nCoinType == ONLY_PRIVATESEND_COLLATERAL) {
-                found = CPrivateSend::IsCollateralAmount(pcoin->vout[i].nValue);
-            } else {
-                found = true;
-            }
-            if(!found) continue;
+                } else if(nCoinType == ONLY_PRIVATESEND_COLLATERAL) {
+                    found = CPrivateSend::IsCollateralAmount(pcoin->vout[i].nValue);
+                } else {
+                    found = true;
+                }
+                if(!found) continue;
 
-            isminetype mine = IsMine(pcoin->vout[i]);
-            if (!(IsSpent(wtxid, i)) && mine != ISMINE_NO &&
-                    (!IsLockedCoin((*it).first, i) || nCoinType == ONLY_1000 || nCoinType == ONLY_MERCHANTNODE_COLLATERAL) &&
-                    (pcoin->vout[i].nValue > 0 || fIncludeZeroValue) &&
-                    (!coinControl || !coinControl->HasSelected() || coinControl->fAllowOtherInputs || coinControl->IsSelected(COutPoint((*it).first, i))))
-                vCoins.push_back(COutput(pcoin, i, nDepth,
-                                         ((mine & ISMINE_SPENDABLE) != ISMINE_NO) ||
-                                         (coinControl && coinControl->fAllowWatchOnly && (mine & ISMINE_WATCH_SOLVABLE) != ISMINE_NO),
-                                         (mine & (ISMINE_SPENDABLE | ISMINE_WATCH_SOLVABLE)) != ISMINE_NO));
+                isminetype mine = IsMine(pcoin->vout[i]);
+                if (!(IsSpent(wtxid, i)) && mine != ISMINE_NO &&
+                        (!IsLockedCoin((*it).first, i) || nCoinType == ONLY_1000 || nCoinType == ONLY_MERCHANTNODE_COLLATERAL) &&
+                        (pcoin->vout[i].nValue > 0 || fIncludeZeroValue) &&
+                        (!coinControl || !coinControl->HasSelected() || coinControl->fAllowOtherInputs || coinControl->IsSelected(COutPoint((*it).first, i))))
+                    vCoins.push_back(COutput(pcoin, i, nDepth,
+                                             ((mine & ISMINE_SPENDABLE) != ISMINE_NO) ||
+                                             (coinControl && coinControl->fAllowWatchOnly && (mine & ISMINE_WATCH_SOLVABLE) != ISMINE_NO),
+                                             (mine & (ISMINE_SPENDABLE | ISMINE_WATCH_SOLVABLE)) != ISMINE_NO));
+            }
         }
     }
-}
 
-map<CBitcoinAddress, vector<COutput>> CWallet::AvailableCoinsByAddress(bool fConfirmed, CAmount maxCoinValue) const
-{
-    vector<COutput> vCoins;
-    AvailableCoins(vCoins, fConfirmed);
+    map<CBitcoinAddress, vector<COutput>> CWallet::AvailableCoinsByAddress(bool fConfirmed, CAmount maxCoinValue) const
+    {
+        vector<COutput> vCoins;
+        AvailableCoins(vCoins, fConfirmed);
 
-    map<CBitcoinAddress, vector<COutput> > mapCoins;
-    BOOST_FOREACH (COutput out, vCoins) {
-        if (maxCoinValue > 0 && out.tx->vout[out.i].nValue > maxCoinValue)
-            continue;
+        map<CBitcoinAddress, vector<COutput> > mapCoins;
+        BOOST_FOREACH (COutput out, vCoins) {
+            if (maxCoinValue > 0 && out.tx->vout[out.i].nValue > maxCoinValue)
+                continue;
 
-        CTxDestination address;
-        if (!ExtractDestination(out.tx->vout[out.i].scriptPubKey, address))
-            continue;
+            CTxDestination address;
+            if (!ExtractDestination(out.tx->vout[out.i].scriptPubKey, address))
+                continue;
 
-        mapCoins[CBitcoinAddress(address)].push_back(out);
+            mapCoins[CBitcoinAddress(address)].push_back(out);
+        }
+
+        return mapCoins;
     }
-
-    return mapCoins;
 }
 
 static void ApproximateBestSubset(vector<pair<CAmount, pair<const CWalletTx*,unsigned int> > >vValue, const CAmount& nTotalLower, const CAmount& nTargetValue,
