@@ -98,7 +98,7 @@ CMerchantnode::CollateralStatus CMerchantnode::CheckCollateral(const COutPoint& 
         return COLLATERAL_UTXO_NOT_FOUND;
     }
 
-    if(coin.out.nValue != 1000 * COIN) {
+    if(coin.out.nValue != 1 * COIN) {
         return COLLATERAL_INVALID_AMOUNT;
     }
 
@@ -234,7 +234,7 @@ bool CMerchantnode::IsInputAssociatedWithPubkey() const
     uint256 hash;
     if(GetTransaction(vin.prevout.hash, tx, Params().GetConsensus(), hash, true)) {
         for(const CTxOut &out : tx.vout)
-            if(out.nValue == 1000*COIN && out.scriptPubKey == payee) return true;
+            if(out.nValue == 1*COIN && out.scriptPubKey == payee) return true;
     }
 
     return false;

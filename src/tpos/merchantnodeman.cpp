@@ -784,7 +784,7 @@ bool CMerchantnodeMan::SendVerifyRequest(const CAddress& addr, const std::vector
 void CMerchantnodeMan::SendVerifyReply(CNode* pnode, CMerchantnodeVerification& mnv, CConnman& connman)
 {
     // only merchantnodes can sign this, why would someone ask regular node?
-    if(!fMasterNode) {
+    if(!fMerchantNode) {
         // do not ban, malicious node might be using my IP
         // and trying to confuse the node which tries to verify it
         return;
@@ -1141,7 +1141,7 @@ bool CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList(CNode* pfrom, CMerchant
         Add(mnb);
         merchantnodeSync.BumpAssetLastTime("CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList - new");
         // if it matches our Merchantnode privkey...
-        if(fMasterNode && mnb.pubKeyMerchantnode == activeMerchantnode.pubKeyMerchantnode) {
+        if(fMerchantNode && mnb.pubKeyMerchantnode == activeMerchantnode.pubKeyMerchantnode) {
             mnb.nPoSeBanScore = -MERCHANTNODE_POSE_BAN_MAX_SCORE;
             if(mnb.nProtocolVersion == PROTOCOL_VERSION) {
                 // ... and PROTOCOL_VERSION, then we've been remotely activated ...
