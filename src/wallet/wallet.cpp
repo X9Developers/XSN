@@ -2541,26 +2541,26 @@ void CWallet::AvailableCoins(vector<COutput>& vCoins, bool fOnlyConfirmed, const
             }
         }
     }
+}
 
-    map<CBitcoinAddress, vector<COutput>> CWallet::AvailableCoinsByAddress(bool fConfirmed, CAmount maxCoinValue) const
-    {
-        vector<COutput> vCoins;
-        AvailableCoins(vCoins, fConfirmed);
+map<CBitcoinAddress, vector<COutput>> CWallet::AvailableCoinsByAddress(bool fConfirmed, CAmount maxCoinValue) const
+{
+    vector<COutput> vCoins;
+    AvailableCoins(vCoins, fConfirmed);
 
-        map<CBitcoinAddress, vector<COutput> > mapCoins;
-        BOOST_FOREACH (COutput out, vCoins) {
-            if (maxCoinValue > 0 && out.tx->vout[out.i].nValue > maxCoinValue)
-                continue;
+    map<CBitcoinAddress, vector<COutput> > mapCoins;
+    BOOST_FOREACH (COutput out, vCoins) {
+        if (maxCoinValue > 0 && out.tx->vout[out.i].nValue > maxCoinValue)
+            continue;
 
-            CTxDestination address;
-            if (!ExtractDestination(out.tx->vout[out.i].scriptPubKey, address))
-                continue;
+        CTxDestination address;
+        if (!ExtractDestination(out.tx->vout[out.i].scriptPubKey, address))
+            continue;
 
-            mapCoins[CBitcoinAddress(address)].push_back(out);
-        }
-
-        return mapCoins;
+        mapCoins[CBitcoinAddress(address)].push_back(out);
     }
+
+    return mapCoins;
 }
 
 static void ApproximateBestSubset(vector<pair<CAmount, pair<const CWalletTx*,unsigned int> > >vValue, const CAmount& nTotalLower, const CAmount& nTargetValue,
