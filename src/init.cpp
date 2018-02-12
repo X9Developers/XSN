@@ -47,6 +47,7 @@
 #include "wallet/walletdb.h"
 #endif
 
+#include "tpos/activemerchantnode.h"
 #include "activemasternode.h"
 #include "dsnotificationinterface.h"
 #include "flat-database.h"
@@ -1916,6 +1917,20 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
             LogPrintf("  pubKeyMasternode: %s\n", CBitcoinAddress(activeMasternode.pubKeyMasternode.GetID()).ToString());
         } else {
             return InitError(_("You must specify a masternodeprivkey in the configuration. Please see documentation for help."));
+        }
+    }
+
+    if(fMerchantNode) {
+        LogPrintf("MERCHANTNODE:\n");
+
+        std::string strMerchantNodePrivKey = GetArg("-merchantnodeprivkey", "");
+        if(!strMerchantNodePrivKey.empty()) {
+            if(!CMessageSigner::GetKeysFromSecret(strMerchantNodePrivKey, activeMerchantnode.keyMerchantnode, activeMerchantnode.pubKeyMerchantnode))
+                return InitError(_("Invalid merchantnodeprivkey. Please see documenation."));
+
+            LogPrintf("  pubKeyMerchantnode: %s\n", CBitcoinAddress(activeMerchantnode.pubKeyMerchantnode.GetID()).ToString());
+        } else {
+            return InitError(_("You must specify a merchantnodeprivkey in the configuration. Please see documentation for help."));
         }
     }
 

@@ -100,7 +100,7 @@ void CMerchantnodeMan::AskForMN(CNode* pnode, const COutPoint& outpoint, CConnma
     }
     mWeAskedForMerchantnodeListEntry[outpoint][pnode->addr] = GetTime() + DSEG_UPDATE_SECONDS;
 
-    connman.PushMessage(pnode, NetMsgType::DSEG, CTxIn(outpoint));
+    connman.PushMessage(pnode, NetMsgType::MERCHANTNODESEG, CTxIn(outpoint));
 }
 
 bool CMerchantnodeMan::PoSeBan(const COutPoint &outpoint)
@@ -355,7 +355,7 @@ void CMerchantnodeMan::DsegUpdate(CNode* pnode, CConnman& connman)
         }
     }
 
-    connman.PushMessage(pnode, NetMsgType::DSEG, CTxIn());
+    connman.PushMessage(pnode, NetMsgType::MERCHANTNODESEG, CTxIn());
     int64_t askAgain = GetTime() + DSEG_UPDATE_SECONDS;
     mWeAskedForMerchantnodeList[pnode->addr] = askAgain;
 
@@ -537,7 +537,7 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDa
         // we might have to ask for a merchantnode entry once
         AskForMN(pfrom, mnp.vin.prevout, connman);
 
-    } else if (strCommand == NetMsgType::DSEG) { //Get Merchantnode list or specific entry
+    } else if (strCommand == NetMsgType::MERCHANTNODESEG) { //Get Merchantnode list or specific entry
         // Ignore such requests until we are fully synced.
         // We could start processing this after merchantnode list is synced
         // but this is a heavy one so it's better to finish sync first.

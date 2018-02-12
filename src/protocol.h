@@ -247,6 +247,7 @@ extern const char *MNVERIFY;
 extern const char *MERCHANTNODEVERIFY;
 extern const char *MERCHANTNODEANNOUNCE;
 extern const char *MERCHANTNODEPING;
+extern const char *MERCHANTNODESEG;
 }
 
 /* Get a vector of all valid message types (see above) */
