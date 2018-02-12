@@ -327,7 +327,7 @@ void CWallet::FillCoinStakePayments(CMutableTransaction &transaction,
     if(tposContract.IsValid())
     {
         transaction.vout.emplace_back(GetStakeReward(pIndex0->nHeight, tposContract.stakePercentage),
-                                p2shScript);
+                                      p2shScript);
     }
 }
 
@@ -2520,25 +2520,27 @@ void CWallet::AvailableCoins(vector<COutput>& vCoins, bool fOnlyConfirmed, const
                     found = !CPrivateSend::IsDenominatedAmount(pcoin->vout[i].nValue);
                 } else if(nCoinType == ONLY_1000) {
                     found = pcoin->vout[i].nValue == 1000*COIN;
-                } else if(nCoinType == ONLY_PRIVATESEND_COLLATERAL) {
-                    found = CPrivateSend::IsCollateralAmount(pcoin->vout[i].nValue);
-                } else {
-                    found = true;
-                }
-                if(!found) continue;
-
-                isminetype mine = IsMine(pcoin->vout[i]);
-                if (!(IsSpent(wtxid, i)) && mine != ISMINE_NO &&
-                        (!IsLockedCoin((*it).first, i) || nCoinType == ONLY_1000) &&
-                        (pcoin->vout[i].nValue > 0 || fIncludeZeroValue) &&
-                        (!coinControl || !coinControl->HasSelected() || coinControl->fAllowOtherInputs || coinControl->IsSelected(COutPoint((*it).first, i))))
-                    vCoins.push_back(COutput(pcoin, i, nDepth,
-                                             ((mine & ISMINE_SPENDABLE) != ISMINE_NO) ||
-                                             (coinControl && coinControl->fAllowWatchOnly && (mine & ISMINE_WATCH_SOLVABLE) != ISMINE_NO),
-                                             (mine & (ISMINE_SPENDABLE | ISMINE_WATCH_SOLVABLE)) != ISMINE_NO));
+                } else if(nCoinType == ONLY_MERCHANTNODE_COLLATERAL)
+                    found = pcoin->vout[i].nValue == 1 * COIN;
+            } else if(nCoinType == ONLY_PRIVATESEND_COLLATERAL) {
+                found = CPrivateSend::IsCollateralAmount(pcoin->vout[i].nValue);
+            } else {
+                found = true;
             }
+            if(!found) continue;
+
+            isminetype mine = IsMine(pcoin->vout[i]);
+            if (!(IsSpent(wtxid, i)) && mine != ISMINE_NO &&
+                    (!IsLockedCoin((*it).first, i) || nCoinType == ONLY_1000 || nCoinType == ONLY_MERCHANTNODE_COLLATERAL) &&
+                    (pcoin->vout[i].nValue > 0 || fIncludeZeroValue) &&
+                    (!coinControl || !coinControl->HasSelected() || coinControl->fAllowOtherInputs || coinControl->IsSelected(COutPoint((*it).first, i))))
+                vCoins.push_back(COutput(pcoin, i, nDepth,
+                                         ((mine & ISMINE_SPENDABLE) != ISMINE_NO) ||
+                                         (coinControl && coinControl->fAllowWatchOnly && (mine & ISMINE_WATCH_SOLVABLE) != ISMINE_NO),
+                                         (mine & (ISMINE_SPENDABLE | ISMINE_WATCH_SOLVABLE)) != ISMINE_NO));
         }
     }
+}
 }
 
 map<CBitcoinAddress, vector<COutput>> CWallet::AvailableCoinsByAddress(bool fConfirmed, CAmount maxCoinValue) const
@@ -3252,6 +3254,34 @@ bool CWallet::GetMasternodeOutpointAndKeys(COutPoint& outpointRet, CPubKey& pubK
             return GetOutpointAndKeysFromOutput(out, outpointRet, pubKeyRet, keyRet);
 
     LogPrintf("CWallet::GetMasternodeOutpointAndKeys -- Could not locate specified masternode vin\n");
+    return false;
+}
+
+bool CWallet::GetMerchantnodeOutpointAndKeys(COutPoint &outpointRet, CPubKey &pubKeyRet, CKey &keyRet, string strTxHash, string strOutputIndex)
+{
+    // wait for reindex and/or import to finish
+    if (fImporting || fReindex) return false;
+
+    // Find possible candidates
+    std::vector<COutput> vPossibleCoins;
+    AvailableCoins(vPossibleCoins, true, NULL, false, ONLY_MERCHANTNODE_COLLATERAL);
+    if(vPossibleCoins.empty()) {
+        LogPrintf("CWallet::GetMerchantnodeOutpointAndKeys -- Could not locate any valid masternode vin\n");
+        return false;
+    }
+
+    if(strTxHash.empty()) // No output specified, select the first one
+        return GetOutpointAndKeysFromOutput(vPossibleCoins[0], outpointRet, pubKeyRet, keyRet);
+
+    // Find specific vin
+    uint256 txHash = uint256S(strTxHash);
+    int nOutputIndex = atoi(strOutputIndex.c_str());
+
+    for(const COutput& out : vPossibleCoins)
+        if(out.tx->GetHash() == txHash && out.i == nOutputIndex) // found it!
+            return GetOutpointAndKeysFromOutput(out, outpointRet, pubKeyRet, keyRet);
+
+    LogPrintf("CWallet::GetMerchantnodeOutpointAndKeys -- Could not locate specified masternode vin\n");
     return false;
 }
 

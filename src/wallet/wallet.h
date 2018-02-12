@@ -98,6 +98,7 @@ enum AvailableCoinsType
     ONLY_DENOMINATED,
     ONLY_NONDENOMINATED,
     ONLY_1000, // find masternode outputs including locked ones (use with caution)
+    ONLY_MERCHANTNODE_COLLATERAL,
     ONLY_PRIVATESEND_COLLATERAL
 };
 
@@ -813,6 +814,8 @@ public:
 
     /// Get 1000DASH output and keys which can be used for the Masternode
     bool GetMasternodeOutpointAndKeys(COutPoint& outpointRet, CPubKey& pubKeyRet, CKey& keyRet, std::string strTxHash = "", std::string strOutputIndex = "");
+
+    bool GetMerchantnodeOutpointAndKeys(COutPoint& outpointRet, CPubKey& pubKeyRet, CKey& keyRet, std::string strTxHash = "", std::string strOutputIndex = "");
     /// Extract txin information and keys from output
     bool GetOutpointAndKeysFromOutput(const COutput& out, COutPoint& outpointRet, CPubKey& pubKeyRet, CKey& keyRet);
 
