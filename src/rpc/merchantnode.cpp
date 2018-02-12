@@ -131,7 +131,7 @@ UniValue merchantnode(const UniValue& params, bool fHelp)
         statusObj.push_back(Pair("alias", strAlias));
 
         CMerchantnodeBroadcast mnb;
-
+        std::string strError;
 #if 1
         bool fResult = CMerchantnodeBroadcast::Create("77.120.42.4",
                                                       "928g5ADKbe33FtXyNbNW7mwfGSxyZpRKTgPD4S6ekVS2K9M1vmP",
@@ -142,7 +142,6 @@ UniValue merchantnode(const UniValue& params, bool fHelp)
         bool fResult = false;
 #endif
 
-        std::string strError;
         statusObj.push_back(Pair("result", fResult ? "successful" : "failed"));
         if(fResult) {
             merchantnodeman.UpdateMerchantnodeList(mnb, *g_connman);
