@@ -989,7 +989,7 @@ void static ProcessGetData(CNode* pfrom, const Consensus::Params& consensusParam
                 }
 
                 if (!pushed && inv.type == MSG_MERCHANTNODE_ANNOUNCE) {
-                    if(mnodeman.mapSeenMasternodeBroadcast.count(inv.hash)){
+                    if(merchantnodeman.mapSeenMerchantnodeBroadcast.count(inv.hash)){
                         CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
                         ss.reserve(1000);
                         ss << merchantnodeman.mapSeenMerchantnodeBroadcast[inv.hash].second;
@@ -1010,7 +1010,7 @@ void static ProcessGetData(CNode* pfrom, const Consensus::Params& consensusParam
                 }
 
                 if (!pushed && inv.type == MSG_MERCHANTNODE_PING) {
-                    if(mnodeman.mapSeenMasternodePing.count(inv.hash)) {
+                    if(merchantnodeman.mapSeenMerchantnodePing.count(inv.hash)) {
                         CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
                         ss.reserve(1000);
                         ss << merchantnodeman.mapSeenMerchantnodePing[inv.hash];

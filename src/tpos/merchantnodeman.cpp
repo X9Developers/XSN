@@ -599,7 +599,7 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDa
         // smth weird happen - someone asked us for vin we have no idea about?
         LogPrint("merchantnode", "DSEG -- No invs sent to peer %d\n", pfrom->id);
 
-    } else if (strCommand == NetMsgType::MNVERIFY) { // Merchantnode Verify
+    } else if (strCommand == NetMsgType::MERCHANTNODEVERIFY) { // Merchantnode Verify
 
         // Need LOCK2 here to ensure consistent locking order because the all functions below call GetBlockHash which locks cs_main
         LOCK2(cs_main, cs);
