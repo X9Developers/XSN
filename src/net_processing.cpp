@@ -36,6 +36,7 @@
 #include "masternode-sync.h"
 #include "masternodeman.h"
 #include "tpos/merchantnodeman.h"
+#include "tpos/merchantnode-sync.h"
 #ifdef ENABLE_WALLET
 #include "privatesend-client.h"
 #endif // ENABLE_WALLET
@@ -2209,9 +2210,11 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
             privateSendServer.ProcessMessage(pfrom, strCommand, vRecv, connman);
             mnodeman.ProcessMessage(pfrom, strCommand, vRecv, connman);
             mnpayments.ProcessMessage(pfrom, strCommand, vRecv, connman);
+            merchantnodeman.ProcessMessage(pfrom, strCommand, vRecv, connman);
             instantsend.ProcessMessage(pfrom, strCommand, vRecv, connman);
             sporkManager.ProcessSpork(pfrom, strCommand, vRecv, connman);
             masternodeSync.ProcessMessage(pfrom, strCommand, vRecv);
+            merchantnodeSync.ProcessMessage(pfrom, strCommand, vRecv);
             governance.ProcessMessage(pfrom, strCommand, vRecv, connman);
         }
         else

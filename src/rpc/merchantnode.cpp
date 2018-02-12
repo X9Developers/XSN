@@ -136,7 +136,7 @@ UniValue merchantnode(const UniValue& params, bool fHelp)
         bool fResult = CMerchantnodeBroadcast::Create("77.120.42.4",
                                                       "928g5ADKbe33FtXyNbNW7mwfGSxyZpRKTgPD4S6ekVS2K9M1vmP",
                                                       "caccdbab8f60973009cf295e29f26dc7cc26e7e49de9f54b3306db041fc121c9",
-                                                      0,
+                                                      "0",
                                                       strError, mnb);
 #else
         bool fResult = false;
