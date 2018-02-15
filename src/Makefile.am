@@ -183,6 +183,7 @@ BITCOIN_CORE_H = \
   tpos/merchantnode.h \
   tpos/merchantnode-sync.h \
   tpos/merchantnodeman.h \
+  tpos/merchantnodeconfig.h \
   txmempool.h \
   ui_interface.h \
   uint256.h \
@@ -273,6 +274,7 @@ libbitcoin_server_a_SOURCES = \
   tpos/merchantnode.cpp \
   tpos/merchantnode-sync.cpp \
   tpos/merchantnodeman.cpp \
+  tpos/merchantnodeconfig.cpp \
   validation.cpp \
   validationinterface.cpp \
   versionbits.cpp \
