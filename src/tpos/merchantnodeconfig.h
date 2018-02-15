@@ -19,17 +19,14 @@ public:
     private:
         std::string alias;
         std::string ip;
-        std::string privKey;
-        std::string txHash;
-        std::string outputIndex;
+        std::string merchantAddress;
+
     public:
 
-        CMerchantnodeEntry(std::string alias, std::string ip, std::string privKey, std::string txHash, std::string outputIndex) {
+        CMerchantnodeEntry(std::string alias, std::string ip, std::string merchantAddress) {
             this->alias = alias;
             this->ip = ip;
-            this->privKey = privKey;
-            this->txHash = txHash;
-            this->outputIndex = outputIndex;
+            this->merchantAddress = merchantAddress;
         }
 
         const std::string& getAlias() const {
@@ -40,28 +37,12 @@ public:
             this->alias = alias;
         }
 
-        const std::string& getOutputIndex() const {
-            return outputIndex;
+        const std::string& getMerchantAddress() const {
+            return merchantAddress;
         }
 
-        void setOutputIndex(const std::string& outputIndex) {
-            this->outputIndex = outputIndex;
-        }
-
-        const std::string& getPrivKey() const {
-            return privKey;
-        }
-
-        void setPrivKey(const std::string& privKey) {
-            this->privKey = privKey;
-        }
-
-        const std::string& getTxHash() const {
-            return txHash;
-        }
-
-        void setTxHash(const std::string& txHash) {
-            this->txHash = txHash;
+        void setMerchantAddress(const std::string& merchantAddress) {
+            this->merchantAddress = merchantAddress;
         }
 
         const std::string& getIp() const {
@@ -79,7 +60,7 @@ public:
 
     void clear();
     bool read(std::string& strErr);
-    void add(std::string alias, std::string ip, std::string privKey, std::string txHash, std::string outputIndex);
+    void add(std::string alias, std::string ip, std::string merchantAddress);
 
     std::vector<CMerchantnodeEntry>& getEntries() {
         return entries;

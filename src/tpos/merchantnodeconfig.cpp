@@ -9,8 +9,8 @@
 
 CMerchantnodeConfig merchantnodeConfig;
 
-void CMerchantnodeConfig::add(std::string alias, std::string ip, std::string privKey, std::string txHash, std::string outputIndex) {
-    CMerchantnodeEntry cme(alias, ip, privKey, txHash, outputIndex);
+void CMerchantnodeConfig::add(std::string alias, std::string ip, std::string merchantAddress) {
+    CMerchantnodeEntry cme(alias, ip, merchantAddress);
     entries.push_back(cme);
 }
 
@@ -23,8 +23,8 @@ bool CMerchantnodeConfig::read(std::string& strErr) {
         FILE* configFile = fopen(pathMerchantnodeConfigFile.string().c_str(), "a");
         if (configFile != NULL) {
             std::string strHeader = "# Merchantnode config file\n"
-                          "# Format: alias IP:port merchantnodeprivkey collateral_output_txid collateral_output_index\n"
-                          "# Example: mn1 127.0.0.2:19999 93HaYBVUCYjEMeeH1Y4sBGLALQZE1Yc1K64xiqgX37tGBDQL8Xg 2bcd3c84c84f87eaa86e4e56834c92927a07f9e18718810b92e0d0324456a67c 0\n";
+                          "# Format: alias IP:port merchantaddress\n"
+                          "# Example: mn1 127.0.0.2:19999 \n";
             fwrite(strHeader.c_str(), std::strlen(strHeader.c_str()), 1, configFile);
             fclose(configFile);
         }
@@ -36,7 +36,7 @@ bool CMerchantnodeConfig::read(std::string& strErr) {
         if(line.empty()) continue;
 
         std::istringstream iss(line);
-        std::string comment, alias, ip, privKey, txHash, outputIndex;
+        std::string comment, alias, ip, merchantAddr;
 
         if (iss >> comment) {
             if(comment.at(0) == '#') continue;
@@ -44,10 +44,10 @@ bool CMerchantnodeConfig::read(std::string& strErr) {
             iss.clear();
         }
 
-        if (!(iss >> alias >> ip >> privKey >> txHash >> outputIndex)) {
+        if (!(iss >> alias >> ip >> merchantAddr)) {
             iss.str(line);
             iss.clear();
-            if (!(iss >> alias >> ip >> privKey >> txHash >> outputIndex)) {
+            if (!(iss >> alias >> ip >> merchantAddr)) {
                 strErr = _("Could not parse merchantnode.conf") + "\n" +
                         strprintf(_("Line: %d"), linenumber) + "\n\"" + line + "\"";
                 streamConfig.close();
@@ -83,7 +83,7 @@ bool CMerchantnodeConfig::read(std::string& strErr) {
         }
 
 
-        add(alias, ip, privKey, txHash, outputIndex);
+        add(alias, ip, merchantAddr);
     }
 
     streamConfig.close();
