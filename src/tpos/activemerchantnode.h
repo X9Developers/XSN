@@ -50,7 +50,6 @@ public:
     CKey keyMerchantnode;
 
     // Initialized while registering Merchantnode
-    COutPoint outpoint;
     CService service;
 
     int nState; // should be one of ACTIVE_MERCHANTNODE_XXXX
@@ -62,7 +61,6 @@ public:
           fPingerEnabled(false),
           pubKeyMerchantnode(),
           keyMerchantnode(),
-          outpoint(),
           service(),
           nState(ACTIVE_MERCHANTNODE_INITIAL)
     {}

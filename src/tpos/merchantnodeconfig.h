@@ -7,7 +7,7 @@
 #define SRC_MERCHANTNODECONFIG_H_
 
 class CMerchantnodeConfig;
-extern CMerchantnodeConfig masternodeConfig;
+extern CMerchantnodeConfig merchantnodeConfig;
 
 class CMerchantnodeConfig
 {
@@ -19,14 +19,14 @@ public:
     private:
         std::string alias;
         std::string ip;
-        std::string merchantAddress;
+        std::string merchantPrivKey;
 
     public:
 
-        CMerchantnodeEntry(std::string alias, std::string ip, std::string merchantAddress) {
+        CMerchantnodeEntry(std::string alias, std::string ip, std::string merchantPrivKey) {
             this->alias = alias;
             this->ip = ip;
-            this->merchantAddress = merchantAddress;
+            this->merchantPrivKey = merchantPrivKey;
         }
 
         const std::string& getAlias() const {
@@ -37,12 +37,12 @@ public:
             this->alias = alias;
         }
 
-        const std::string& getMerchantAddress() const {
-            return merchantAddress;
+        const std::string& getMerchantPrivKey() const {
+            return merchantPrivKey;
         }
 
-        void setMerchantAddress(const std::string& merchantAddress) {
-            this->merchantAddress = merchantAddress;
+        void setMerchantPrivKey(const std::string& merchantPrivKey) {
+            this->merchantPrivKey = merchantPrivKey;
         }
 
         const std::string& getIp() const {
@@ -60,7 +60,7 @@ public:
 
     void clear();
     bool read(std::string& strErr);
-    void add(std::string alias, std::string ip, std::string merchantAddress);
+    void add(std::string alias, std::string ip, std::string merchantPrivKey);
 
     std::vector<CMerchantnodeEntry>& getEntries() {
         return entries;

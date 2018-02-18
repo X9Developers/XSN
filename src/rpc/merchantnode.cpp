@@ -10,6 +10,7 @@
 #include "tpos/merchantnode-sync.h"
 #include "tpos/merchantnodeman.h"
 #include "tpos/merchantnode.h"
+#include "tpos/merchantnodeconfig.h"
 #include "rpc/server.h"
 #include "util.h"
 #include "utilmoneystr.h"
@@ -126,30 +127,42 @@ UniValue merchantnode(const UniValue& params, bool fHelp)
 
         std::string strAlias = params[1].get_str();
 
+        bool fFound = false;
 
         UniValue statusObj(UniValue::VOBJ);
         statusObj.push_back(Pair("alias", strAlias));
 
-        CMerchantnodeBroadcast mnb;
-        std::string strError;
-#if 1
-        bool fResult = CMerchantnodeBroadcast::Create("77.120.42.4:29999",
-                                                      "928g5ADKbe33FtXyNbNW7mwfGSxyZpRKTgPD4S6ekVS2K9M1vmP",
-                                                      "caccdbab8f60973009cf295e29f26dc7cc26e7e49de9f54b3306db041fc121c9",
-                                                      "0",
-                                                      strError, mnb);
-#else
-        bool fResult = false;
-#endif
+        for(auto && mrne : merchantnodeConfig.getEntries()) {
+            if(mrne.getAlias() == strAlias) {
+                fFound = true;
+                std::string strError;
+                CMerchantnodeBroadcast mnb;
 
-        statusObj.push_back(Pair("result", fResult ? "successful" : "failed"));
-        if(fResult) {
-            merchantnodeman.UpdateMerchantnodeList(mnb, *g_connman);
-            mnb.Relay(*g_connman);
-        } else {
-            statusObj.push_back(Pair("errorMessage", strError));
+                bool fResult = CMerchantnodeBroadcast::Create(mrne.getIp(), mrne.getMerchantPrivKey(), strError, mnb);
+
+                statusObj.push_back(Pair("result", fResult ? "successful" : "failed"));
+                if(fResult) {
+                    merchantnodeman.UpdateMerchantnodeList(mnb, *g_connman);
+                    mnb.Relay(*g_connman);
+                } else {
+                    statusObj.push_back(Pair("errorMessage", strError));
+                }
+
+                break;
+            }
         }
+
+        if(!fFound) {
+            statusObj.push_back(Pair("result", "failed"));
+            statusObj.push_back(Pair("errorMessage", "Could not find alias in config. Verify with list-conf."));
+        }
+
         return statusObj;
+//        bool fResult = CMerchantnodeBroadcast::Create("77.120.42.4:29999",
+//                                                      "928g5ADKbe33FtXyNbNW7mwfGSxyZpRKTgPD4S6ekVS2K9M1vmP",
+//                                                      "caccdbab8f60973009cf295e29f26dc7cc26e7e49de9f54b3306db041fc121c9",
+//                                                      "0",
+//                                                      strError, mnb);
     }
 
     if (strCommand == "genkey")
@@ -182,12 +195,13 @@ UniValue merchantnode(const UniValue& params, bool fHelp)
 
         UniValue mnObj(UniValue::VOBJ);
 
-        mnObj.push_back(Pair("outpoint", activeMerchantnode.outpoint.ToStringShort()));
+        mnObj.push_back(Pair("pubkey", HexStr(activeMerchantnode.pubKeyMerchantnode.Raw())));
         mnObj.push_back(Pair("service", activeMerchantnode.service.ToString()));
 
         CMerchantnode mn;
-        if(merchantnodeman.Get(activeMerchantnode.outpoint, mn)) {
-            mnObj.push_back(Pair("payee", CBitcoinAddress(mn.pubKeyCollateralAddress.GetID()).ToString()));
+        auto pubKey = activeMerchantnode.pubKeyMerchantnode;
+        if(merchantnodeman.Get(pubKey, mn)) {
+            mnObj.push_back(Pair("merchantAddress", CBitcoinAddress(pubKey.GetID()).ToString()));
         }
 
         mnObj.push_back(Pair("status", activeMerchantnode.GetStatus()));
@@ -248,10 +262,10 @@ UniValue merchantnodelist(const UniValue& params, bool fHelp)
     }
 
     UniValue obj(UniValue::VOBJ);
-    std::map<COutPoint, CMerchantnode> mapMerchantnodes = merchantnodeman.GetFullMerchantnodeMap();
+    auto mapMerchantnodes = merchantnodeman.GetFullMerchantnodeMap();
     for (auto& mnpair : mapMerchantnodes) {
         CMerchantnode mn = mnpair.second;
-        std::string strOutpoint = mnpair.first.ToStringShort();
+        std::string strOutpoint = HexStr(mnpair.first.Raw());
         if (strMode == "activeseconds") {
             if (strFilter !="" && strOutpoint.find(strFilter) == std::string::npos) continue;
             obj.push_back(Pair(strOutpoint, (int64_t)(mn.lastPing.sigTime - mn.sigTime)));
@@ -265,7 +279,7 @@ UniValue merchantnodelist(const UniValue& params, bool fHelp)
             streamFull << std::setw(18) <<
                           mn.GetStatus() << " " <<
                           mn.nProtocolVersion << " " <<
-                          CBitcoinAddress(mn.pubKeyCollateralAddress.GetID()).ToString() << " " <<
+                          CBitcoinAddress(mn.pubKeyMerchantnode.GetID()).ToString() << " " <<
                           (int64_t)mn.lastPing.sigTime << " " << std::setw(8) <<
                           (int64_t)(mn.lastPing.sigTime - mn.sigTime) << " " << std::setw(10) <<
                           mn.addr.ToString();
@@ -278,7 +292,7 @@ UniValue merchantnodelist(const UniValue& params, bool fHelp)
             streamInfo << std::setw(18) <<
                           mn.GetStatus() << " " <<
                           mn.nProtocolVersion << " " <<
-                          CBitcoinAddress(mn.pubKeyCollateralAddress.GetID()).ToString() << " " <<
+                          CBitcoinAddress(mn.pubKeyMerchantnode.GetID()).ToString() << " " <<
                           (int64_t)mn.lastPing.sigTime << " " << std::setw(8) <<
                           (int64_t)(mn.lastPing.sigTime - mn.sigTime) << " " <<
                           SafeIntVersionToString(mn.lastPing.nSentinelVersion) << " "  <<
@@ -292,7 +306,7 @@ UniValue merchantnodelist(const UniValue& params, bool fHelp)
             if (strFilter !="" && strOutpoint.find(strFilter) == std::string::npos) continue;
             obj.push_back(Pair(strOutpoint, (int64_t)mn.lastPing.sigTime));
         } else if (strMode == "payee") {
-            CBitcoinAddress address(mn.pubKeyCollateralAddress.GetID());
+            CBitcoinAddress address(mn.pubKeyMerchantnode.GetID());
             std::string strPayee = address.ToString();
             if (strFilter !="" && strPayee.find(strFilter) == std::string::npos &&
                     strOutpoint.find(strFilter) == std::string::npos) continue;

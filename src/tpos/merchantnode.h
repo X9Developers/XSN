@@ -8,6 +8,7 @@
 #include "key.h"
 #include "validation.h"
 #include "spork.h"
+#include "base58.h"
 
 class CMerchantnode;
 class CMerchantnodeBroadcast;
@@ -17,6 +18,7 @@ static const int MERCHANTNODE_CHECK_SECONDS               =   5;
 static const int MERCHANTNODE_MIN_MNB_SECONDS             =   5 * 60;
 static const int MERCHANTNODE_MIN_MNP_SECONDS             =   1 * 60;
 static const int MERCHANTNODE_EXPIRATION_SECONDS          =  65 * 60;
+static const int MERCHANTNODE_MAX_EXPIRATION_SECONDS      =  25 * 60 * 60;
 static const int MERCHANTNODE_WATCHDOG_MAX_SECONDS        = 120 * 60;
 static const int MERCHANTNODE_NEW_START_REQUIRED_SECONDS  = 180 * 60;
 static const int MERCHANTNODE_POSE_BAN_MAX_SCORE          = 5;
@@ -31,7 +33,7 @@ static const int MERCHANTNODE_POSE_BAN_MAX_SCORE          = 5;
 class CMerchantnodePing
 {
 public:
-    CTxIn vin{};
+    CPubKey merchantPubKey{};
     uint256 blockHash{};
     int64_t sigTime{}; //mnb message times
     std::vector<unsigned char> vchSig{};
@@ -41,13 +43,13 @@ public:
 
     CMerchantnodePing() = default;
 
-    CMerchantnodePing(const COutPoint& outpoint);
+    CMerchantnodePing(const CPubKey& merchantPubKey);
 
     ADD_SERIALIZE_METHODS;
 
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
-        READWRITE(vin);
+        READWRITE(merchantPubKey);
         READWRITE(blockHash);
         READWRITE(sigTime);
         READWRITE(vchSig);
@@ -64,12 +66,13 @@ public:
     uint256 GetHash() const
     {
         CHashWriter ss(SER_GETHASH, PROTOCOL_VERSION);
-        ss << vin;
+        ss << merchantPubKey;
         ss << sigTime;
         return ss.GetHash();
     }
 
     bool IsExpired() const { return GetAdjustedTime() - sigTime > MERCHANTNODE_NEW_START_REQUIRED_SECONDS; }
+    bool IsSignificantlyExpired() const { return GetAdjustedTime() - sigTime > MERCHANTNODE_MAX_EXPIRATION_SECONDS; }
 
     bool Sign(const CKey& keyMerchantnode, const CPubKey& pubKeyMerchantnode);
     bool CheckSignature(CPubKey& pubKeyMerchantnode, int &nDos);
@@ -80,7 +83,7 @@ public:
 
 inline bool operator==(const CMerchantnodePing& a, const CMerchantnodePing& b)
 {
-    return a.vin == b.vin && a.blockHash == b.blockHash;
+    return a.merchantPubKey == b.merchantPubKey && a.blockHash == b.blockHash;
 }
 inline bool operator!=(const CMerchantnodePing& a, const CMerchantnodePing& b)
 {
@@ -98,21 +101,17 @@ struct merchantnode_info_t
         nActiveState{activeState}, nProtocolVersion{protoVer}, sigTime{sTime} {}
 
     merchantnode_info_t(int activeState, int protoVer, int64_t sTime,
-                      COutPoint const& outpoint, CService const& addr,
-                      CPubKey const& pkCollAddr, CPubKey const& pkMN,
+                        CService const& addr, CPubKey const& pkMN,
                       int64_t tWatchdogV = 0) :
         nActiveState{activeState}, nProtocolVersion{protoVer}, sigTime{sTime},
-        vin{outpoint}, addr{addr},
-        pubKeyCollateralAddress{pkCollAddr}, pubKeyMerchantnode{pkMN},
+        addr{addr}, pubKeyMerchantnode{pkMN},
         nTimeLastWatchdogVote{tWatchdogV} {}
 
     int nActiveState = 0;
     int nProtocolVersion = 0;
     int64_t sigTime = 0; //mnb message time
 
-    CTxIn vin{};
     CService addr{};
-    CPubKey pubKeyCollateralAddress{};
     CPubKey pubKeyMerchantnode{};
     int64_t nTimeLastWatchdogVote = 0;
 
@@ -137,45 +136,31 @@ public:
         MERCHANTNODE_PRE_ENABLED,
         MERCHANTNODE_ENABLED,
         MERCHANTNODE_EXPIRED,
-        MERCHANTNODE_OUTPOINT_SPENT,
+        MERCHANTNODE_SIGNIFICANTLY_EXPIRED,
         MERCHANTNODE_UPDATE_REQUIRED,
         MERCHANTNODE_WATCHDOG_EXPIRED,
         MERCHANTNODE_NEW_START_REQUIRED,
         MERCHANTNODE_POSE_BAN
     };
 
-    enum CollateralStatus {
-        COLLATERAL_OK,
-        COLLATERAL_UTXO_NOT_FOUND,
-        COLLATERAL_INVALID_AMOUNT
-    };
-
-
     CMerchantnodePing lastPing{};
     std::vector<unsigned char> vchSig{};
 
-    uint256 nCollateralMinConfBlockHash{};
-    int nBlockLastPaid{};
     int nPoSeBanScore{};
     int nPoSeBanHeight{};
     bool fUnitTest = false;
 
-    // KEEP TRACK OF GOVERNANCE ITEMS EACH MERCHANTNODE HAS VOTE UPON FOR RECALCULATION
-    std::map<uint256, int> mapGovernanceObjectsVotedOn;
-
     CMerchantnode();
     CMerchantnode(const CMerchantnode& other);
     CMerchantnode(const CMerchantnodeBroadcast& mnb);
-    CMerchantnode(CService addrNew, COutPoint outpointNew, CPubKey pubKeyCollateralAddressNew, CPubKey pubKeyMerchantnodeNew, int nProtocolVersionIn);
+    CMerchantnode(CService addrNew, CPubKey pubKeyMerchantnodeNew, int nProtocolVersionIn);
 
     ADD_SERIALIZE_METHODS;
 
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
         LOCK(cs);
-        READWRITE(vin);
         READWRITE(addr);
-        READWRITE(pubKeyCollateralAddress);
         READWRITE(pubKeyMerchantnode);
         READWRITE(lastPing);
         READWRITE(vchSig);
@@ -184,19 +169,14 @@ public:
         READWRITE(nTimeLastChecked);
         READWRITE(nTimeLastWatchdogVote);
         READWRITE(nActiveState);
-        READWRITE(nCollateralMinConfBlockHash);
-        READWRITE(nBlockLastPaid);
         READWRITE(nProtocolVersion);
         READWRITE(nPoSeBanScore);
         READWRITE(nPoSeBanHeight);
         READWRITE(fUnitTest);
-        READWRITE(mapGovernanceObjectsVotedOn);
     }
 
     bool UpdateFromNewBroadcast(CMerchantnodeBroadcast& mnb, CConnman& connman);
 
-    static CollateralStatus CheckCollateral(const COutPoint& outpoint);
-    static CollateralStatus CheckCollateral(const COutPoint& outpoint, int& nHeightRet);
     void Check(bool fForce = false);
 
     bool IsBroadcastedWithin(int nSeconds) const { return GetAdjustedTime() - sigTime < nSeconds; }
@@ -217,10 +197,10 @@ public:
     // NOTE: this one relies on nPoSeBanScore, not on nActiveState as everything else here
     bool IsPoSeVerified() const { return nPoSeBanScore <= -MERCHANTNODE_POSE_BAN_MAX_SCORE; }
     bool IsExpired() const { return nActiveState == MERCHANTNODE_EXPIRED; }
-    bool IsOutpointSpent() const { return nActiveState == MERCHANTNODE_OUTPOINT_SPENT; }
     bool IsUpdateRequired() const { return nActiveState == MERCHANTNODE_UPDATE_REQUIRED; }
     bool IsWatchdogExpired() const { return nActiveState == MERCHANTNODE_WATCHDOG_EXPIRED; }
     bool IsNewStartRequired() const { return nActiveState == MERCHANTNODE_NEW_START_REQUIRED; }
+    bool IsSignificanltyExpired() const { return nActiveState == MERCHANTNODE_SIGNIFICANTLY_EXPIRED; }
 
     static bool IsValidStateForAutoStart(int nActiveStateIn)
     {
@@ -243,9 +223,6 @@ public:
         return false;
     }
 
-    /// Is the input associated with collateral public key? (and there is 1000 DASH - checking if valid merchantnode)
-    bool IsInputAssociatedWithPubkey() const;
-
     bool IsValidNetAddr() const;
     static bool IsValidNetAddr(CService addrIn);
 
@@ -266,23 +243,20 @@ public:
         static_cast<merchantnode_info_t&>(*this)=from;
         lastPing = from.lastPing;
         vchSig = from.vchSig;
-        nCollateralMinConfBlockHash = from.nCollateralMinConfBlockHash;
-        nBlockLastPaid = from.nBlockLastPaid;
         nPoSeBanScore = from.nPoSeBanScore;
         nPoSeBanHeight = from.nPoSeBanHeight;
         fUnitTest = from.fUnitTest;
-        mapGovernanceObjectsVotedOn = from.mapGovernanceObjectsVotedOn;
         return *this;
     }
 };
 
 inline bool operator==(const CMerchantnode& a, const CMerchantnode& b)
 {
-    return a.vin == b.vin;
+    return a.addr == b.addr && a.pubKeyMerchantnode == b.pubKeyMerchantnode;
 }
 inline bool operator!=(const CMerchantnode& a, const CMerchantnode& b)
 {
-    return !(a.vin == b.vin);
+    return !(a == b);
 }
 
 
@@ -298,16 +272,14 @@ public:
 
     CMerchantnodeBroadcast() : CMerchantnode(), fRecovery(false) {}
     CMerchantnodeBroadcast(const CMerchantnode& mn) : CMerchantnode(mn), fRecovery(false) {}
-    CMerchantnodeBroadcast(CService addrNew, COutPoint outpointNew, CPubKey pubKeyCollateralAddressNew, CPubKey pubKeyMerchantnodeNew, int nProtocolVersionIn) :
-        CMerchantnode(addrNew, outpointNew, pubKeyCollateralAddressNew, pubKeyMerchantnodeNew, nProtocolVersionIn), fRecovery(false) {}
+    CMerchantnodeBroadcast(CService addrNew, CPubKey pubKeyMerchantnodeNew, int nProtocolVersionIn) :
+        CMerchantnode(addrNew, pubKeyMerchantnodeNew, nProtocolVersionIn), fRecovery(false) {}
 
     ADD_SERIALIZE_METHODS;
 
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
-        READWRITE(vin);
         READWRITE(addr);
-        READWRITE(pubKeyCollateralAddress);
         READWRITE(pubKeyMerchantnode);
         READWRITE(vchSig);
         READWRITE(sigTime);
@@ -318,19 +290,19 @@ public:
     uint256 GetHash() const
     {
         CHashWriter ss(SER_GETHASH, PROTOCOL_VERSION);
-        ss << vin;
-        ss << pubKeyCollateralAddress;
+        ss << pubKeyMerchantnode;
+
         ss << sigTime;
         return ss.GetHash();
     }
 
     /// Create Merchantnode broadcast, needs to be relayed manually after that
-    static bool Create(const COutPoint& outpoint, const CService& service, const CKey& keyCollateralAddressNew, const CPubKey& pubKeyCollateralAddressNew, const CKey& keyMerchantnodeNew, const CPubKey& pubKeyMerchantnodeNew, std::string &strErrorRet, CMerchantnodeBroadcast &mnbRet);
-    static bool Create(std::string strService, std::string strKey, std::string strTxHash, std::string strOutputIndex, std::string& strErrorRet, CMerchantnodeBroadcast &mnbRet, bool fOffline = false);
+    static bool Create(const CService& service, const CKey& keyMerchantnodeNew, const CPubKey& pubKeyMerchantnodeNew, std::string &strErrorRet, CMerchantnodeBroadcast &mnbRet);
+    static bool Create(std::string strService, std::string strMerchantAddress, std::string& strErrorRet, CMerchantnodeBroadcast &mnbRet, bool fOffline = false);
 
     bool SimpleCheck(int& nDos);
     bool Update(CMerchantnode* pmn, int& nDos, CConnman& connman);
-    bool CheckOutpoint(int& nDos);
+    bool CheckMerchantnode(int &nDos);
 
     bool Sign(const CKey& keyCollateralAddress);
     bool CheckSignature(int& nDos);
@@ -340,8 +312,8 @@ public:
 class CMerchantnodeVerification
 {
 public:
-    CTxIn vin1{};
-    CTxIn vin2{};
+    CPubKey pubKeyMerchantnode1{};
+    CPubKey pubKeyMerchantnode2{};
     CService addr{};
     int nonce{};
     int nBlockHeight{};
@@ -360,8 +332,8 @@ public:
 
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
-        READWRITE(vin1);
-        READWRITE(vin2);
+        READWRITE(pubKeyMerchantnode1);
+        READWRITE(pubKeyMerchantnode2);
         READWRITE(addr);
         READWRITE(nonce);
         READWRITE(nBlockHeight);
@@ -372,8 +344,8 @@ public:
     uint256 GetHash() const
     {
         CHashWriter ss(SER_GETHASH, PROTOCOL_VERSION);
-        ss << vin1;
-        ss << vin2;
+        ss << pubKeyMerchantnode1;
+        ss << pubKeyMerchantnode2;
         ss << addr;
         ss << nonce;
         ss << nBlockHeight;

@@ -87,14 +87,14 @@ bool CActiveMerchantnode::SendMerchantnodePing(CConnman& connman)
         return false;
     }
 
-    if(!merchantnodeman.Has(outpoint)) {
+    if(!merchantnodeman.Has(pubKeyMerchantnode)) {
         strNotCapableReason = "Merchantnode not in masternode list";
         nState = ACTIVE_MERCHANTNODE_NOT_CAPABLE;
         LogPrintf("CActiveMerchantnode::SendMerchantnodePing -- %s: %s\n", GetStateString(), strNotCapableReason);
         return false;
     }
 
-    CMerchantnodePing mnp(outpoint);
+    CMerchantnodePing mnp(pubKeyMerchantnode);
     mnp.nSentinelVersion = nSentinelVersion;
     mnp.fSentinelIsCurrent =
             (abs(GetAdjustedTime() - nSentinelPingTime) < MERCHANTNODE_WATCHDOG_MAX_SECONDS);
@@ -104,14 +104,14 @@ bool CActiveMerchantnode::SendMerchantnodePing(CConnman& connman)
     }
 
     // Update lastPing for our masternode in Merchantnode list
-    if(merchantnodeman.IsMerchantnodePingedWithin(outpoint, MERCHANTNODE_MIN_MNP_SECONDS, mnp.sigTime)) {
+    if(merchantnodeman.IsMerchantnodePingedWithin(pubKeyMerchantnode, MERCHANTNODE_MIN_MNP_SECONDS, mnp.sigTime)) {
         LogPrintf("CActiveMerchantnode::SendMerchantnodePing -- Too early to send Merchantnode Ping\n");
         return false;
     }
 
-    merchantnodeman.SetMerchantnodeLastPing(outpoint, mnp);
+    merchantnodeman.SetMerchantnodeLastPing(pubKeyMerchantnode, mnp);
 
-    LogPrintf("CActiveMerchantnode::SendMerchantnodePing -- Relaying ping, collateral=%s\n", outpoint.ToStringShort());
+    LogPrintf("CActiveMerchantnode::SendMerchantnodePing -- Relaying ping, collateral=%s\n", HexStr(pubKeyMerchantnode.Raw()));
     mnp.Relay(connman);
 
     return true;
@@ -223,7 +223,7 @@ void CActiveMerchantnode::ManageStateRemote()
         }
         if(nState != ACTIVE_MERCHANTNODE_STARTED) {
             LogPrintf("CActiveMerchantnode::ManageStateRemote -- STARTED!\n");
-            outpoint = infoMn.vin.prevout;
+            pubKeyMerchantnode = infoMn.pubKeyMerchantnode;
             service = infoMn.addr;
             fPingerEnabled = true;
             nState = ACTIVE_MERCHANTNODE_STARTED;

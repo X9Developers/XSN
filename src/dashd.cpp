@@ -12,6 +12,7 @@
 #include "scheduler.h"
 #include "util.h"
 #include "masternodeconfig.h"
+#include "tpos/merchantnodeconfig.h"
 #include "httpserver.h"
 #include "httprpc.h"
 
@@ -125,6 +126,11 @@ bool AppInit(int argc, char* argv[])
         std::string strErr;
         if(!masternodeConfig.read(strErr)) {
             fprintf(stderr,"Error reading masternode configuration file: %s\n", strErr.c_str());
+            return false;
+        }
+
+        if(!merchantnodeConfig.read(strErr)) {
+            fprintf(stderr,"Error reading merchantnode configuration file: %s\n", strErr.c_str());
             return false;
         }
 

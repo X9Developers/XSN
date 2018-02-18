@@ -1004,3 +1004,9 @@ std::string SafeIntVersionToString(uint32_t nVersion)
     }
 }
 
+boost::filesystem::path GetMerchantnodeConfigFile()
+{
+    boost::filesystem::path pathConfigFile(GetArg("-merchantnodeconf", "merchantnode.conf"));
+    if (!pathConfigFile.is_complete()) pathConfigFile = GetDataDir() / pathConfigFile;
+    return pathConfigFile;
+}

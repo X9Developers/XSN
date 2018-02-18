@@ -9,8 +9,8 @@
 
 CMerchantnodeConfig merchantnodeConfig;
 
-void CMerchantnodeConfig::add(std::string alias, std::string ip, std::string merchantAddress) {
-    CMerchantnodeEntry cme(alias, ip, merchantAddress);
+void CMerchantnodeConfig::add(std::string alias, std::string ip, std::string merchantPrivKey) {
+    CMerchantnodeEntry cme(alias, ip, merchantPrivKey);
     entries.push_back(cme);
 }
 
@@ -23,7 +23,7 @@ bool CMerchantnodeConfig::read(std::string& strErr) {
         FILE* configFile = fopen(pathMerchantnodeConfigFile.string().c_str(), "a");
         if (configFile != NULL) {
             std::string strHeader = "# Merchantnode config file\n"
-                          "# Format: alias IP:port merchantaddress\n"
+                          "# Format: alias IP:port merchantPrivkey\n"
                           "# Example: mn1 127.0.0.2:19999 \n";
             fwrite(strHeader.c_str(), std::strlen(strHeader.c_str()), 1, configFile);
             fclose(configFile);
@@ -36,7 +36,7 @@ bool CMerchantnodeConfig::read(std::string& strErr) {
         if(line.empty()) continue;
 
         std::istringstream iss(line);
-        std::string comment, alias, ip, merchantAddr;
+        std::string comment, alias, ip, merchantPrivKey;
 
         if (iss >> comment) {
             if(comment.at(0) == '#') continue;
@@ -44,10 +44,10 @@ bool CMerchantnodeConfig::read(std::string& strErr) {
             iss.clear();
         }
 
-        if (!(iss >> alias >> ip >> merchantAddr)) {
+        if (!(iss >> alias >> ip >> merchantPrivKey)) {
             iss.str(line);
             iss.clear();
-            if (!(iss >> alias >> ip >> merchantAddr)) {
+            if (!(iss >> alias >> ip >> merchantPrivKey)) {
                 strErr = _("Could not parse merchantnode.conf") + "\n" +
                         strprintf(_("Line: %d"), linenumber) + "\n\"" + line + "\"";
                 streamConfig.close();
@@ -83,7 +83,7 @@ bool CMerchantnodeConfig::read(std::string& strErr) {
         }
 
 
-        add(alias, ip, merchantAddr);
+        add(alias, ip, merchantPrivKey);
     }
 
     streamConfig.close();

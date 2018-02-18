@@ -43,13 +43,13 @@ private:
     int nCachedBlockHeight;
 
     // map to hold all MNs
-    std::map<COutPoint, CMerchantnode> mapMerchantnodes;
+    std::map<CPubKey, CMerchantnode> mapMerchantnodes;
     // who's asked for the Merchantnode list and the last time
     std::map<CNetAddr, int64_t> mAskedUsForMerchantnodeList;
     // who we asked for the Merchantnode list and the last time
     std::map<CNetAddr, int64_t> mWeAskedForMerchantnodeList;
     // which Merchantnodes we've asked for
-    std::map<COutPoint, std::map<CNetAddr, int64_t> > mWeAskedForMerchantnodeListEntry;
+    std::map<CPubKey, std::map<CNetAddr, int64_t> > mWeAskedForMerchantnodeListEntry;
     // who we asked for the masternode verification
     std::map<CNetAddr, CMerchantnodeVerification> mWeAskedForVerification;
 
@@ -62,7 +62,7 @@ private:
 
     friend class CMerchantnodeSync;
     /// Find an entry
-    CMerchantnode* Find(const COutPoint& outpoint);
+    CMerchantnode* Find(const CPubKey &pubKeyMerchantnode);
 public:
     // Keep track of all broadcasts I've seen
     std::map<uint256, std::pair<int64_t, CMerchantnodeBroadcast> > mapSeenMerchantnodeBroadcast;
@@ -110,10 +110,10 @@ public:
     bool Add(CMerchantnode &mn);
 
     /// Ask (source) node for mnb
-    void AskForMN(CNode *pnode, const COutPoint& outpoint, CConnman& connman);
+    void AskForMN(CNode *pnode, const CPubKey &pubKeyMerchantnode, CConnman& connman);
     void AskForMnb(CNode *pnode, const uint256 &hash);
 
-    bool PoSeBan(const COutPoint &outpoint);
+    bool PoSeBan(const CPubKey &pubKeyMerchantnode);
 
     /// Check all Merchantnodes
     void Check();
@@ -139,14 +139,13 @@ public:
     void DsegUpdate(CNode* pnode, CConnman& connman);
 
     /// Versions of Find that are safe to use from outside the class
-    bool Get(const COutPoint& outpoint, CMerchantnode& masternodeRet);
-    bool Has(const COutPoint& outpoint);
+    bool Get(const CPubKey &pubKeyMerchantnode, CMerchantnode& masternodeRet);
+    bool Has(const CPubKey &pubKeyMerchantnode);
 
-    bool GetMerchantnodeInfo(const COutPoint& outpoint, merchantnode_info_t& mnInfoRet);
     bool GetMerchantnodeInfo(const CPubKey& pubKeyMerchantnode, merchantnode_info_t& mnInfoRet);
     bool GetMerchantnodeInfo(const CScript& payee, merchantnode_info_t& mnInfoRet);
 
-    std::map<COutPoint, CMerchantnode> GetFullMerchantnodeMap() { return mapMerchantnodes; }
+    std::map<CPubKey, CMerchantnode> GetFullMerchantnodeMap() { return mapMerchantnodes; }
 
     void ProcessMerchantnodeConnections(CConnman& connman);
     std::pair<CService, std::set<uint256> > PopScheduledMnbRequestConnection();
@@ -172,12 +171,12 @@ public:
     bool IsMnbRecoveryRequested(const uint256& hash) { return mMnbRecoveryRequests.count(hash); }
 
     bool IsWatchdogActive();
-    void UpdateWatchdogVoteTime(const COutPoint& outpoint, uint64_t nVoteTime = 0);
+    void UpdateWatchdogVoteTime(const CPubKey &pubKeyMerchantnode, uint64_t nVoteTime = 0);
 
     void CheckMerchantnode(const CPubKey& pubKeyMerchantnode, bool fForce);
 
-    bool IsMerchantnodePingedWithin(const COutPoint& outpoint, int nSeconds, int64_t nTimeToCheckAt = -1);
-    void SetMerchantnodeLastPing(const COutPoint& outpoint, const CMerchantnodePing& mnp);
+    bool IsMerchantnodePingedWithin(const CPubKey &pubKeyMerchantnode, int nSeconds, int64_t nTimeToCheckAt = -1);
+    void SetMerchantnodeLastPing(const CPubKey &pubKeyMerchantnode, const CMerchantnodePing& mnp);
 
     void UpdatedBlockTip(const CBlockIndex *pindex);
 };
