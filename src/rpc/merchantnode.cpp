@@ -364,3 +364,80 @@ UniValue merchantsentinelping(const UniValue& params, bool fHelp)
     activeMerchantnode.UpdateSentinelPing(StringVersionToInt(params[0].get_str()));
     return true;
 }
+
+#ifdef ENABLE_WALLET
+UniValue tposcontract(const UniValue& params, bool fHelp)
+{
+    std::string strCommand;
+    if (params.size() >= 1) {
+        strCommand = params[0].get_str();
+    }
+
+    if (fHelp  || (strCommand != "list" && strCommand != "create" && strCommand != "merchant-prepare"))
+        throw std::runtime_error(
+                "tposcontract \"command\"...\n"
+                "Set of commands to execute merchantnode related actions\n"
+                "\nArguments:\n"
+                "1. \"command\"        (string or set of strings, required) The command to execute\n"
+                "\nAvailable commands:\n"
+                "  create           - Create tpos transaction\n"
+                "  list             - Print list of all tpos contracts that you are owner or merchant\n"
+                "  merchant-prepare - Prepare a magic string which constists of txid and outpoint index of merchant address\n"
+                );
+
+    if (strCommand == "list")
+    {
+        UniValue newParams(UniValue::VARR);
+        // forward params but skip "list"
+        for (unsigned int i = 1; i < params.size(); i++) {
+            newParams.push_back(params[i]);
+        }
+        return merchantnodelist(newParams, fHelp);
+    }
+    else if(strCommand == "create")
+    {
+        if (params.size() < 3)
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Merchantnode address required");
+
+        std::string strAddress = params[1].get_str();
+
+        CService addr;
+        if (!Lookup(strAddress.c_str(), addr, 0, false))
+            throw JSONRPCError(RPC_INTERNAL_ERROR, strprintf("Incorrect merchantnode address %s", strAddress));
+
+        // TODO: Pass CConnman instance somehow and don't use global variable.
+        CNode *pnode = g_connman->ConnectNode(CAddress(addr, NODE_NETWORK), NULL);
+        if(!pnode)
+            throw JSONRPCError(RPC_INTERNAL_ERROR, strprintf("Couldn't connect to merchantnode %s", strAddress));
+
+        return "successfully connected";
+    }
+    else if(strCommand == "merchant-prepare")
+    {
+        if (params.size() < 2)
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Transaction id and outpoint index required for merchantnode address.");
+
+        auto txId = ParseHashV(params[1], "parameter 1");
+        std::string outpointIndexStr = params[2].get_str();
+
+        int outpointIndex = std::stoi(outpointIndexStr);
+
+        assert(pwalletMain != NULL);
+        LOCK2(cs_main, pwalletMain->cs_wallet);
+
+        auto walletTx = pwalletMain->GetWalletTx(uint256(txId));
+
+        if (!walletTx)
+            return "invalid hash tx id, this transaction is not recorded into wallet.";
+
+        const CTxOut& txOut = walletTx->vout.at(outpointIndex);
+        if (pwalletMain->IsMine(txOut) != ISMINE_SPENDABLE)
+            return "coin is not spendable";
+
+        return EncodeBase64(HexStr(txId) + " " + outpointIndexStr);
+    }
+
+    return NullUniValue;
+}
+
+#endif

@@ -344,8 +344,9 @@ static const CRPCCommand vRPCCommands[] =
   #endif
 
   /* Dash features */
-  { "dash",               "merchantnode",           &merchantnode,             true  },
-  { "dash",               "merchantnodelist",       &merchantnodelist,         true  },
+  { "dash",               "tposcontract",           &tposcontract,           true  },
+  { "dash",               "merchantnode",           &merchantnode,           true  },
+  { "dash",               "merchantnodelist",       &merchantnodelist,       true  },
   { "dash",               "masternode",             &masternode,             true  },
   { "dash",               "masternodelist",         &masternodelist,         true  },
   { "dash",               "masternodebroadcast",    &masternodebroadcast,    true  },

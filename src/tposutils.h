@@ -23,7 +23,6 @@ struct TPoSContract {
 
     bool IsValid() const;
 
-
     static TPoSContract FromTPoSContractTx(const CTransaction &tx);
 
     CTransaction rawTx;
