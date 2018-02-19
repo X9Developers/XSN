@@ -168,6 +168,7 @@ public:
     void UpdateMerchantnodeList(CMerchantnodeBroadcast mnb, CConnman& connman);
     /// Perform complete check and only then update list and maps
     bool CheckMnbAndUpdateMerchantnodeList(CNode* pfrom, CMerchantnodeBroadcast mnb, int& nDos, CConnman& connman);
+    bool CheckMnbIPAddressAndRemoveDuplicatedEntry(CMerchantnodeBroadcast mnb, int &nDos);
     bool IsMnbRecoveryRequested(const uint256& hash) { return mMnbRecoveryRequests.count(hash); }
 
     bool IsWatchdogActive();

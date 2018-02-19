@@ -411,7 +411,7 @@ bool CMerchantnodeBroadcast::Update(CMerchantnode* pmn, int& nDos, CConnman& con
 bool CMerchantnodeBroadcast::CheckMerchantnode(int &nDos)
 {
     nDos = 0;
-    return true;
+    return CheckSignature(nDos);
 }
 
 bool CMerchantnodeBroadcast::Sign(const CKey& keyCollateralAddress)
