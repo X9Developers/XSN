@@ -15,6 +15,7 @@
 #include "util.h"
 #include "utilmoneystr.h"
 #include "wallet/wallet.h"
+#include "core_io.h"
 
 #include <fstream>
 #include <iomanip>
@@ -398,26 +399,44 @@ UniValue tposcontract(const UniValue& params, bool fHelp)
     }
     else if(strCommand == "create")
     {
-        if (params.size() < 4)
+        if (params.size() < 5)
             throw JSONRPCError(RPC_INVALID_PARAMETER,
-                               "Expected format: tposcontract create magic_string 5000 5");
+                               "Expected format: tposcontract create tpos_address magic_string 5000 5");
 
-        std::string merchantMagicStr = params[1].get_str();
-        CAmount amount = AmountFromValue(params[2]);
-        CAmount commission = AmountFromValue(params[3]);
+        CBitcoinAddress tposAddress(params[1].get_str());
+        std::string merchantMagicStr = DecodeBase64(params[2].get_str());
+        CAmount amount = AmountFromValue(params[3]);
+        int commission = std::stoi(params[4].get_str());
 
+        if(!tposAddress.IsValid())
+            throw JSONRPCError(RPC_INVALID_PARAMETER,
+                               "tpos address is not valid, won't continue");
+
+        std::stringstream ss(merchantMagicStr);
+        std::string hashId;
+        std::string outpointIndex;
+        if(!(ss >> hashId >> outpointIndex) || !IsHex(hashId))
+            throw JSONRPCError(RPC_INVALID_PARAMETER,
+                               "Malformed magic string");
+
+
+        uint256 txHash(ParseHex(hashId));
+        COutPoint merchantOutpoint(txHash, std::stoi(outpointIndex));
         CReserveKey reserveKey(pwalletMain);
 
-        //        TPoSUtils::CreateTPoSTransaction(pwalletMain, reserveKey, )
+        std::string strError;
+        auto walletTx = TPoSUtils::CreateTPoSTransaction(pwalletMain, reserveKey,
+                                                         GetScriptForDestination(tposAddress.Get()), amount,
+                                                         merchantOutpoint, commission, strError);
 
-        //        CScript metadataScriptPubKey;
-        //        metadataScriptPubKey << OP_RETURN
-        //                             << (100 - merchantCommission)
-        //                             << std::vector<unsigned char>(merchantAddrAsStr.begin(), merchantAddrAsStr.end())
-        //                             << ParseHex(merchantTxOutPoint.hash.GetHex())
-        //                             << merchantTxOutPoint.n;
-
-        return "successfully connected";
+        if(walletTx)
+        {
+            return EncodeHexTx(*walletTx);
+        }
+        else
+        {
+            return "Failed to create tpos transaction, reason: " + strError;
+        }
     }
     else if(strCommand == "merchant-prepare")
     {
