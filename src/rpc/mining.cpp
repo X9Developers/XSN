@@ -23,7 +23,7 @@
 #include "util.h"
 #include "utilstrencodings.h"
 #include "validationinterface.h"
-#include "tposutils.h"
+#include "tpos/tposutils.h"
 
 #include "governance-classes.h"
 #include "masternode-payments.h"

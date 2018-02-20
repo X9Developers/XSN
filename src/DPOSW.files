@@ -316,6 +316,8 @@ timedata.h
 tinyformat.h
 torcontrol.cpp
 torcontrol.h
+tpos/tposutils.h
+tpos/tposutils.cpp
 tpos/activemerchantnode.cpp
 tpos/activemerchantnode.h
 tpos/merchantnode-sync.cpp

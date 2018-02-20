@@ -27,7 +27,7 @@
 #include "masternode-payments.h"
 #include "masternode-sync.h"
 #include "validationinterface.h"
-#include "tposutils.h"
+#include "tpos/tposutils.h"
 #include "wallet/wallet.h"
 
 #include <boost/thread.hpp>

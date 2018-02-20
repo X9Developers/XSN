@@ -73,6 +73,31 @@ UniValue merchantnode(const UniValue& params, bool fHelp)
         return merchantnodelist(newParams, fHelp);
     }
 
+    if (strCommand == "list-conf")
+    {
+        UniValue resultObj(UniValue::VOBJ);
+
+        for(auto &&mne : merchantnodeConfig.getEntries())
+        {
+            CMerchantnode mn;
+            CBitcoinSecret privKey;
+            privKey.SetString(mne.getMerchantPrivKey());
+            CPubKey pubKey = privKey.GetKey().GetPubKey();
+            bool fFound = merchantnodeman.Get(pubKey, mn);
+
+            std::string strStatus = fFound ? mn.GetStatus() : "MISSING";
+
+            UniValue mnObj(UniValue::VOBJ);
+            mnObj.push_back(Pair("alias", mne.getAlias()));
+            mnObj.push_back(Pair("address", mne.getIp()));
+            mnObj.push_back(Pair("privateKey", mne.getMerchantPrivKey()));
+            mnObj.push_back(Pair("status", strStatus));
+            resultObj.push_back(Pair("merchantnode", mnObj));
+        }
+
+        return resultObj;
+    }
+
     if(strCommand == "connect")
     {
         if (params.size() < 2)
@@ -158,35 +183,12 @@ UniValue merchantnode(const UniValue& params, bool fHelp)
         }
 
         return statusObj;
-//        bool fResult = CMerchantnodeBroadcast::Create("77.120.42.4:29999",
-//                                                      "928g5ADKbe33FtXyNbNW7mwfGSxyZpRKTgPD4S6ekVS2K9M1vmP",
-//                                                      "caccdbab8f60973009cf295e29f26dc7cc26e7e49de9f54b3306db041fc121c9",
-//                                                      "0",
-//                                                      strError, mnb);
+        //        bool fResult = CMerchantnodeBroadcast::Create("77.120.42.4:29999",
+        //                                                      "928g5ADKbe33FtXyNbNW7mwfGSxyZpRKTgPD4S6ekVS2K9M1vmP",
+        //                                                      "caccdbab8f60973009cf295e29f26dc7cc26e7e49de9f54b3306db041fc121c9",
+        //                                                      "0",
+        //                                                      strError, mnb);
     }
-
-    if (strCommand == "genkey")
-    {
-        CKey secret;
-        secret.MakeNewKey(false);
-
-        return CBitcoinSecret(secret).ToString();
-    }
-
-#ifdef ENABLE_WALLET
-    if (strCommand == "outputs") {
-        // Find possible candidates
-        std::vector<COutput> vPossibleCoins;
-        pwalletMain->AvailableCoins(vPossibleCoins, true, NULL, false, ONLY_1000);
-
-        UniValue obj(UniValue::VOBJ);
-        BOOST_FOREACH(COutput& out, vPossibleCoins) {
-            obj.push_back(Pair(out.tx->GetHash().ToString(), strprintf("%d", out.i)));
-        }
-
-        return obj;
-    }
-#endif // ENABLE_WALLET
 
     if (strCommand == "status")
     {
@@ -396,19 +398,24 @@ UniValue tposcontract(const UniValue& params, bool fHelp)
     }
     else if(strCommand == "create")
     {
-        if (params.size() < 3)
-            throw JSONRPCError(RPC_INVALID_PARAMETER, "Merchantnode address required");
+        if (params.size() < 4)
+            throw JSONRPCError(RPC_INVALID_PARAMETER,
+                               "Expected format: tposcontract create magic_string 5000 5");
 
-        std::string strAddress = params[1].get_str();
+        std::string merchantMagicStr = params[1].get_str();
+        CAmount amount = AmountFromValue(params[2]);
+        CAmount commission = AmountFromValue(params[3]);
 
-        CService addr;
-        if (!Lookup(strAddress.c_str(), addr, 0, false))
-            throw JSONRPCError(RPC_INTERNAL_ERROR, strprintf("Incorrect merchantnode address %s", strAddress));
+        CReserveKey reserveKey(pwalletMain);
 
-        // TODO: Pass CConnman instance somehow and don't use global variable.
-        CNode *pnode = g_connman->ConnectNode(CAddress(addr, NODE_NETWORK), NULL);
-        if(!pnode)
-            throw JSONRPCError(RPC_INTERNAL_ERROR, strprintf("Couldn't connect to merchantnode %s", strAddress));
+        //        TPoSUtils::CreateTPoSTransaction(pwalletMain, reserveKey, )
+
+        //        CScript metadataScriptPubKey;
+        //        metadataScriptPubKey << OP_RETURN
+        //                             << (100 - merchantCommission)
+        //                             << std::vector<unsigned char>(merchantAddrAsStr.begin(), merchantAddrAsStr.end())
+        //                             << ParseHex(merchantTxOutPoint.hash.GetHex())
+        //                             << merchantTxOutPoint.n;
 
         return "successfully connected";
     }
@@ -425,7 +432,7 @@ UniValue tposcontract(const UniValue& params, bool fHelp)
         assert(pwalletMain != NULL);
         LOCK2(cs_main, pwalletMain->cs_wallet);
 
-        auto walletTx = pwalletMain->GetWalletTx(uint256(txId));
+        auto walletTx = pwalletMain->GetWalletTx(txId);
 
         if (!walletTx)
             return "invalid hash tx id, this transaction is not recorded into wallet.";
@@ -433,6 +440,9 @@ UniValue tposcontract(const UniValue& params, bool fHelp)
         const CTxOut& txOut = walletTx->vout.at(outpointIndex);
         if (pwalletMain->IsMine(txOut) != ISMINE_SPENDABLE)
             return "coin is not spendable";
+
+        if (pwalletMain->IsSpent(txId, outpointIndex))
+            return "coin is already spent";
 
         return EncodeBase64(HexStr(txId) + " " + outpointIndexStr);
     }

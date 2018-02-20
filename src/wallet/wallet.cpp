@@ -32,7 +32,6 @@
 #include "privatesend-client.h"
 #include "spork.h"
 #include "kernel.h"
-#include "tposutils.h"
 
 #include <assert.h>
 

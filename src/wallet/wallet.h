@@ -20,7 +20,7 @@
 #include "wallet/walletdb.h"
 
 #include "privatesend.h"
-#include "tposutils.h"
+#include "tpos/tposutils.h"
 
 #include <algorithm>
 #include <map>

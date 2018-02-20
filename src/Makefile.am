@@ -406,7 +406,7 @@ libbitcoin_util_a_SOURCES = \
   sync.cpp \
   uint256.cpp \
   threadinterrupt.cpp \
-  tposutils.cpp \
+  tpos/tposutils.cpp \
   util.cpp \
   utilmoneystr.cpp \
   utilstrencodings.cpp \
