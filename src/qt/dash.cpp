@@ -27,6 +27,7 @@
 #include "walletmodel.h"
 #endif
 #include "masternodeconfig.h"
+#include "merchantnodeconfig.h"
 
 #include "init.h"
 #include "rpc/server.h"
@@ -671,6 +672,13 @@ int main(int argc, char *argv[])
                               QObject::tr("Error reading masternode configuration file: %1").arg(strErr.c_str()));
         return EXIT_FAILURE;
     }
+
+    if(!merchantnodeConfig.read(strErr)) {
+        QMessageBox::critical(0, QObject::tr("Dash Core"),
+                              QObject::tr("Error reading merchantnode configuration file: %1").arg(strErr.c_str()));
+        return EXIT_FAILURE;
+    }
+
 
     /// 8. URI IPC sending
     // - Do this early as we don't want to bother initializing if we are just calling IPC
