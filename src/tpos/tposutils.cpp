@@ -155,7 +155,7 @@ std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
 
     std::stringstream stringStream(metadataScriptPubKey.ToString());
 
-    std::string tokens[5];
+    std::string tokens[4];
 
     for(auto &token : tokens)
     {
@@ -245,7 +245,7 @@ TPoSContract TPoSContract::FromTPoSContractTx(const CTransaction &tx)
                     // Here we can have a chance that it is transaction which is a tpos contract, let's check if it has
                     std::stringstream stringStream(metadataOut.scriptPubKey.ToString());
 
-                    std::string tokens[5];
+                    std::string tokens[4];
 
                     for(auto &token : tokens)
                     {
@@ -254,16 +254,10 @@ TPoSContract TPoSContract::FromTPoSContractTx(const CTransaction &tx)
                     }
 //                    std::cout << std::endl;
 
-                    auto merhantAddrRaw = ParseHex(tokens[2]);
-                    std::string merchantAddrAsStr(merhantAddrRaw.size(), '0');
-
-                    for(size_t i = 0; i < merhantAddrRaw.size(); ++i)
-                        merchantAddrAsStr[i] = static_cast<char>(merhantAddrRaw[i]);
-
                     int commission = std::stoi(tokens[1]);
-                    CBitcoinAddress merchantAddress(merchantAddrAsStr);
-                    uint256 merchantTxId(ParseHex(tokens[3]));
-                    int outIndex = std::stoi(tokens[4]);
+                    uint256 merchantTxId(ParseHex(tokens[2]));
+                    int outIndex = std::stoi(tokens[3]);
+                    CBitcoinAddress merchantAddress(tx.vout.at(outIndex).scriptPubKey);
 
                     if(tokens[0] == GetOpName(OP_RETURN) &&
                             commission > 0 && commission < 100 &&

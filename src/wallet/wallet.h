@@ -641,6 +641,11 @@ private:
     mutable bool fAnonymizableTallyCachedNonDenom;
     mutable std::vector<CompactTallyItem> vecAnonymizableTallyCachedNonDenom;
 
+    std::vector<CWalletTx> tposContractsTxLoadedFromDB;
+
+    // we need this function, because at time when we are reading from DB, we don't have public keys and redeem scripts for multisign addresses
+    void finishLoadingTPoSContractsFromDB();
+
     /**
      * Used to keep track of spent outpoints, and
      * detect and report conflicts (double-spends or
@@ -837,6 +842,11 @@ public:
     void UnlockAllCoins();
     void ListLockedCoins(std::vector<COutPoint>& vOutpts);
 
+    void LoadTPoSContract(const CWalletTx &walletTx);
+    void LoadTPoSContractFromDB(CWalletTx walletTx);
+
+    bool RemoveTPoSContract(const uint256 &contractTxId);
+
     /**
      * keystore implementation
      * Generate a new key
@@ -897,6 +907,7 @@ public:
 
     void MarkDirty();
     bool AddToWallet(const CWalletTx& wtxIn, bool fFromLoadWallet, CWalletDB* pwalletdb);
+    bool AddToWalletIfTPoSContract(const CTransaction &tx, const CBlock *pblock);
     void SyncTransaction(const CTransaction& tx, const CBlock* pblock);
     bool AddToWalletIfInvolvingMe(const CTransaction& tx, const CBlock* pblock, bool fUpdate);
     int ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate = false);

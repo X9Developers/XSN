@@ -390,12 +390,37 @@ UniValue tposcontract(const UniValue& params, bool fHelp)
 
     if (strCommand == "list")
     {
-        UniValue newParams(UniValue::VARR);
-        // forward params but skip "list"
-        for (unsigned int i = 1; i < params.size(); i++) {
-            newParams.push_back(params[i]);
+        UniValue result(UniValue::VOBJ);
+        UniValue merchantArray(UniValue::VARR);
+        UniValue ownerArray(UniValue::VARR);
+
+        auto parseContract = [](const TPoSContract &contract) {
+            UniValue object(UniValue::VOBJ);
+
+            object.push_back(Pair("txid", contract.rawTx.GetHash().ToString()));
+            object.push_back(Pair("tposAddress", contract.tposAddress.ToString()));
+            object.push_back(Pair("merchantAddress", contract.merchantAddress.ToString()));
+            object.push_back(Pair("merchantTxId", HexStr(contract.merchantOutPoint.hash)));
+            object.push_back(Pair("merchantTxOut", static_cast<int>(contract.merchantOutPoint.n)));
+            object.push_back(Pair("commission", contract.stakePercentage));
+
+            return object;
+        };
+
+        for(auto &&it : pwalletMain->tposMerchantContracts)
+        {
+            merchantArray.push_back(parseContract(it.second));
         }
-        return merchantnodelist(newParams, fHelp);
+
+        for(auto &&it : pwalletMain->tposOwnerContracts)
+        {
+            ownerArray.push_back(parseContract(it.second));
+        }
+
+        result.push_back(Pair("as_merchant", merchantArray));
+        result.push_back(Pair("as_owner", ownerArray));
+
+        return result;
     }
     else if(strCommand == "create")
     {

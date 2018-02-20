@@ -105,6 +105,9 @@ public:
 
     bool WriteOrderPosNext(int64_t nOrderPosNext);
 
+    bool WriteTPoSContractTx(uint256 hash, const CWalletTx& wtx);
+    bool EraseTPoSContractTx(uint256 hash);
+
     bool WriteDefaultKey(const CPubKey& vchPubKey);
 
     bool ReadPool(int64_t nPool, CKeyPool& keypool);

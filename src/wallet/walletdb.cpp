@@ -148,6 +148,18 @@ bool CWalletDB::WriteOrderPosNext(int64_t nOrderPosNext)
     return Write(std::string("orderposnext"), nOrderPosNext);
 }
 
+bool CWalletDB::WriteTPoSContractTx(uint256 hash, const CWalletTx &wtx)
+{
+    nWalletDBUpdated++;
+    return Write(std::make_pair(std::string("tpsctx"), hash), wtx);
+}
+
+bool CWalletDB::EraseTPoSContractTx(uint256 hash)
+{
+    nWalletDBUpdated++;
+    return Erase(std::make_pair(std::string("tpsctx"), hash));
+}
+
 bool CWalletDB::WriteDefaultKey(const CPubKey& vchPubKey)
 {
     nWalletDBUpdated++;
@@ -401,6 +413,22 @@ ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue,
                 wss.fAnyUnordered = true;
 
             pwallet->AddToWallet(wtx, true, NULL);
+        }
+        else if (strType == "tpsctx")
+        {
+            uint256 hash;
+            ssKey >> hash;
+            CWalletTx wtx;
+            ssValue >> wtx;
+
+            CValidationState state;
+            if (!(CheckTransaction(wtx, state) && (wtx.GetHash() == hash) && state.IsValid()))
+            {
+                return false;
+            }
+
+            pwallet->LoadTPoSContractFromDB(wtx);
+
         }
         else if (strType == "acentry")
         {
