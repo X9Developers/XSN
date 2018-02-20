@@ -27,7 +27,7 @@
 #include "walletmodel.h"
 #endif
 #include "masternodeconfig.h"
-#include "merchantnodeconfig.h"
+#include "tpos/merchantnodeconfig.h"
 
 #include "init.h"
 #include "rpc/server.h"
