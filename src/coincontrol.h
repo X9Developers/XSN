@@ -14,6 +14,7 @@ public:
     CTxDestination destChange;
     bool fUsePrivateSend;
     bool fUseInstantSend;
+    bool fUseRandomChangePosition;
     //! If false, allows unselected inputs, but requires all selected inputs be used
     bool fAllowOtherInputs;
     //! Includes watch only addresses which match the ISMINE_WATCH_SOLVABLE criteria
@@ -34,6 +35,7 @@ public:
         setSelected.clear();
         fUseInstantSend = false;
         fUsePrivateSend = true;
+        fUseRandomChangePosition = true;
         nMinimumTotalFee = 0;
     }
 

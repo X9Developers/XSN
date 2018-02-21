@@ -107,7 +107,7 @@ std::string CMerchantnodeSync::GetSyncStatus()
 
 void CMerchantnodeSync::ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStream& vRecv)
 {
-    if (strCommand == NetMsgType::SYNCSTATUSCOUNT) { //Sync status count
+    if (strCommand == NetMsgType::MERCHANTSYNCSTATUSCOUNT) { //Sync status count
 
         //do not care about stats if sync process finished or failed
         if(IsSynced() || IsFailed()) return;
@@ -116,7 +116,7 @@ void CMerchantnodeSync::ProcessMessage(CNode* pfrom, std::string& strCommand, CD
         int nCount;
         vRecv >> nItemID >> nCount;
 
-        LogPrintf("SYNCSTATUSCOUNT -- got inventory count: nItemID=%d  nCount=%d  peer=%d\n", nItemID, nCount, pfrom->id);
+        LogPrintf("MERCHANTSYNCSTATUSCOUNT -- got inventory count: nItemID=%d  nCount=%d  peer=%d\n", nItemID, nCount, pfrom->id);
     }
 }
 

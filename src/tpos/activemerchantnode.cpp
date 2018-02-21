@@ -60,7 +60,7 @@ std::string CActiveMerchantnode::GetStatus() const
         case ACTIVE_MERCHANTNODE_INITIAL:         return "Node just started, not yet activated";
         case ACTIVE_MERCHANTNODE_SYNC_IN_PROCESS: return "Sync in progress. Must wait until sync is complete to start Merchantnode";
         case ACTIVE_MERCHANTNODE_INPUT_TOO_NEW:   return strprintf("Merchantnode input must have at least %d confirmations", Params().GetConsensus().nMerchantnodeMinimumConfirmations);
-        case ACTIVE_MERCHANTNODE_NOT_CAPABLE:     return "Not capable masternode: " + strNotCapableReason;
+        case ACTIVE_MERCHANTNODE_NOT_CAPABLE:     return "Not capable merchantnode: " + strNotCapableReason;
         case ACTIVE_MERCHANTNODE_STARTED:         return "Merchantnode successfully started";
         default:                                return "Unknown";
     }

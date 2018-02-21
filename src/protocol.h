@@ -248,6 +248,7 @@ extern const char *MERCHANTNODEVERIFY;
 extern const char *MERCHANTNODEANNOUNCE;
 extern const char *MERCHANTNODEPING;
 extern const char *MERCHANTNODESEG;
+extern const char *MERCHANTSYNCSTATUSCOUNT;
 }
 
 /* Get a vector of all valid message types (see above) */

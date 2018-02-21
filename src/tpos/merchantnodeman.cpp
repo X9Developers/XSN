@@ -563,7 +563,7 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDa
         }
 
         if(!pubKeyMerchantnode.IsValid()) {
-            connman.PushMessage(pfrom, NetMsgType::SYNCSTATUSCOUNT, MERCHANTNODE_SYNC_LIST, nInvCount);
+            connman.PushMessage(pfrom, NetMsgType::MERCHANTSYNCSTATUSCOUNT, MERCHANTNODE_SYNC_LIST, nInvCount);
             LogPrintf("DSEG -- Sent %d Merchantnode invs to peer %d\n", nInvCount, pfrom->id);
             return;
         }
