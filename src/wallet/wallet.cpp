@@ -2864,12 +2864,12 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins,
         if (out.nDepth < (out.tx->IsCoinStake() ? Params().GetConsensus().nCoinbaseMaturity : 10))
             continue;
 
-        auto it = std::find_if(tposMerchantContracts.begin(), tposMerchantContracts.end(), [&scriptPubKeyKernel](const std::pair<uint256, TPoSContract> &entry) {
-            return GetScriptForDestination(entry.second.merchantAddress.Get()) == scriptPubKeyKernel;
-        });
+//        auto it = std::find_if(tposMerchantContracts.begin(), tposMerchantContracts.end(), [&scriptPubKeyKernel](const std::pair<uint256, TPoSContract> &entry) {
+//            return GetScriptForDestination(entry.second.merchantAddress.Get()) == scriptPubKeyKernel;
+//        });
 
-        if(it != tposMerchantContracts.end())
-            continue;
+//        if(it != tposMerchantContracts.end())
+//            continue;
 
         nAmountSelected += out.tx->vout[out.i].nValue; //maybe change here for tpos
         setCoins.insert(make_pair(out.tx, out.i));
@@ -2882,7 +2882,14 @@ bool CWallet::SelectStakeTPoSCoins(CWallet::StakeCoinsSet &setCoins, CWallet::St
     auto coinsMap = AvailableCoinsByAddress();
 
     {
-        const std::vector<COutput> &coins = coinsMap[contract.merchantAddress];
+
+        auto walletTx = GetWalletTx(contract.merchantOutPoint.hash);
+        if(!walletTx)
+            return false;
+
+        CBitcoinAddress merchantAddress(CScriptID(walletTx->vout[contract.merchantOutPoint.n].scriptPubKey));
+
+        const std::vector<COutput> &coins = coinsMap[merchantAddress];
 
         for(auto &&out : coins)
         {

@@ -17,7 +17,6 @@ struct TPoSContract {
     TPoSContract() = default;
     TPoSContract(CTransaction tx,
                  COutPoint merchantOutPoint,
-                 CBitcoinAddress merchantAddress,
                  CBitcoinAddress tposAddress,
                  short stakePercentage);
 
@@ -27,7 +26,6 @@ struct TPoSContract {
 
     CTransaction rawTx;
     COutPoint merchantOutPoint;
-    CBitcoinAddress merchantAddress;
     CBitcoinAddress tposAddress;
     int stakePercentage = 0;
 };

@@ -1876,6 +1876,7 @@ UniValue gettransaction(const UniValue& params, bool fHelp)
     UniValue entry(UniValue::VOBJ);
     if (!pwalletMain->mapWallet.count(hash))
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid or non-wallet transaction id");
+    std::cout << HexStr(hash) << std::endl;
     const CWalletTx& wtx = pwalletMain->mapWallet[hash];
 
     CAmount nCredit = wtx.GetCredit(filter);

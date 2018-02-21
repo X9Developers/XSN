@@ -105,8 +105,21 @@ bool TPoSUtils::GetTPoSPayments(const CWallet *wallet,
 bool TPoSUtils::IsTPoSMerchantContract(CWallet *wallet, const CTransaction &tx)
 {
     TPoSContract contract = TPoSContract::FromTPoSContractTx(tx);
+    auto walletTx = wallet->GetWalletTx(contract.merchantOutPoint.hash);
+
+    if(!walletTx)
+        return false;
+
+    CTxDestination dest;
+    if(!ExtractDestination(walletTx->vout[contract.merchantOutPoint.n].scriptPubKey, dest))
+        return false;
+
+    CBitcoinAddress merchantAddress(dest);
+
     CKeyID keyID;
-    contract.merchantAddress.GetKeyID(keyID);
+    merchantAddress.GetKeyID(keyID);
+
+//    std::cout << "Merchant address: " << merchantAddress.ToString() << std::endl;
 
     return contract.IsValid() && wallet->HaveKey(keyID);
 }
@@ -203,21 +216,19 @@ std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
 
 #endif
 
-TPoSContract::TPoSContract(CTransaction tx, COutPoint merchantOutPoint, CBitcoinAddress merchantAddress, CBitcoinAddress tposAddress, short stakePercentage)
+TPoSContract::TPoSContract(CTransaction tx, COutPoint merchantOutPoint, CBitcoinAddress tposAddress, short stakePercentage)
 {
     this->rawTx = tx;
     this->merchantOutPoint = merchantOutPoint;
     this->tposAddress = tposAddress;
     this->stakePercentage = stakePercentage;
-    this->merchantAddress = merchantAddress;
 }
 
 bool TPoSContract::IsValid() const
 {
-    return !rawTx.IsNull() /*&& !merchantOutPoint.hash.IsNull()*/ &&
-            tposAddress.IsValid() && merchantAddress.IsValid() &&
-            stakePercentage > 0 && stakePercentage < 100 /*&&
-            merchantOutPoint.n >= 0*/;
+    return !rawTx.IsNull() && !merchantOutPoint.hash.IsNull() &&
+            tposAddress.IsValid() &&
+            stakePercentage > 0 && stakePercentage < 100;
 }
 
 TPoSContract TPoSContract::FromTPoSContractTx(const CTransaction &tx)
@@ -259,13 +270,11 @@ TPoSContract TPoSContract::FromTPoSContractTx(const CTransaction &tx)
 //                    std::cout << std::endl;
 
                     int commission = std::stoi(tokens[1]);
-                    uint256 merchantTxId(ParseHex(tokens[2]));
+                    uint256 merchantTxId;
+                    merchantTxId.SetHex(tokens[2]);
                     int outIndex = std::stoi(tokens[3]);
-                    CBitcoinAddress merchantAddress(tx.vout.at(outIndex).scriptPubKey);
-
                     if(tokens[0] == GetOpName(OP_RETURN) &&
-                            commission > 0 && commission < 100 &&
-                            merchantAddress.IsValid() /*&& !merchantTxId.IsNull() && outIndex >= 0*/)
+                            commission > 0 && commission < 100 && !merchantTxId.IsNull() && outIndex >= 0)
                     {
                         if(Solver(tposOut.scriptPubKey, whichType, vSolutions))
                         {
@@ -273,7 +282,7 @@ TPoSContract TPoSContract::FromTPoSContractTx(const CTransaction &tx)
                             tposAddress.Set(CScriptID(uint160(vSolutions[0])));
 
                             // if we get to this point, it means that we have found tpos contract that was created for us to act as merchant.
-                            return TPoSContract(tx, COutPoint(merchantTxId, outIndex), merchantAddress, tposAddress, commission);
+                            return TPoSContract(tx, COutPoint(merchantTxId, outIndex), tposAddress, commission);
                         }
                     }
                 }
