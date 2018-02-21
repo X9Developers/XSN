@@ -83,7 +83,7 @@ std::string CActiveMerchantnode::GetTypeString() const
 bool CActiveMerchantnode::SendMerchantnodePing(CConnman& connman)
 {
     if(!fPingerEnabled) {
-        LogPrint("masternode", "CActiveMerchantnode::SendMerchantnodePing -- %s: masternode ping service is disabled, skipping...\n", GetStateString());
+        LogPrint("merchantnode", "CActiveMerchantnode::SendMerchantnodePing -- %s: masternode ping service is disabled, skipping...\n", GetStateString());
         return false;
     }
 
@@ -127,7 +127,7 @@ bool CActiveMerchantnode::UpdateSentinelPing(int version)
 
 void CActiveMerchantnode::ManageStateInitial(CConnman& connman)
 {
-    LogPrint("masternode", "CActiveMerchantnode::ManageStateInitial -- status = %s, type = %s, pinger enabled = %d\n", GetStatus(), GetTypeString(), fPingerEnabled);
+    LogPrint("merchantnode", "CActiveMerchantnode::ManageStateInitial -- status = %s, type = %s, pinger enabled = %d\n", GetStatus(), GetTypeString(), fPingerEnabled);
 
     // Check that our local network configuration is correct
     if (!fListen) {
@@ -192,12 +192,12 @@ void CActiveMerchantnode::ManageStateInitial(CConnman& connman)
     // Default to REMOTE
     eType = MERCHANTNODE_REMOTE;
 
-    LogPrint("masternode", "CActiveMerchantnode::ManageStateInitial -- End status = %s, type = %s, pinger enabled = %d\n", GetStatus(), GetTypeString(), fPingerEnabled);
+    LogPrint("merchantnode", "CActiveMerchantnode::ManageStateInitial -- End status = %s, type = %s, pinger enabled = %d\n", GetStatus(), GetTypeString(), fPingerEnabled);
 }
 
 void CActiveMerchantnode::ManageStateRemote()
 {
-    LogPrint("masternode", "CActiveMerchantnode::ManageStateRemote -- Start status = %s, type = %s, pinger enabled = %d, pubKeyMerchantnode.GetID() = %s\n",
+    LogPrint("merchantnode", "CActiveMerchantnode::ManageStateRemote -- Start status = %s, type = %s, pinger enabled = %d, pubKeyMerchantnode.GetID() = %s\n",
              GetStatus(), GetTypeString(), fPingerEnabled, pubKeyMerchantnode.GetID().ToString());
 
     merchantnodeman.CheckMerchantnode(pubKeyMerchantnode, true);

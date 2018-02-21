@@ -176,9 +176,9 @@ void CMerchantnodeSync::ProcessTick(CConnman& connman)
 
     for(CNode* pnode : vNodesCopy)
     {
-        // Don't try to sync any data from outbound "masternode" connections -
+        // Don't try to sync any data from outbound "merchantnode" connections -
         // they are temporary and should be considered unreliable for a sync process.
-        // Inbound connection this early is most likely a "masternode" connection
+        // Inbound connection this early is most likely a "merchantnode" connection
         // initiated from another node, so skip it too.
         if(pnode->fMerchantnode || (fMasterNode && pnode->fInbound)) continue;
 
@@ -242,7 +242,7 @@ void CMerchantnodeSync::ProcessTick(CConnman& connman)
             // MNLIST : SYNC MERCHANTNODE LIST FROM OTHER CONNECTED CLIENTS
 
             if(nRequestedMerchantnodeAssets == MERCHANTNODE_SYNC_LIST) {
-                LogPrint("masternode", "CMerchantnodeSync::ProcessTick -- nTick %d nRequestedMerchantnodeAssets %d nTimeLastBumped %lld GetTime() %lld diff %lld\n", nTick, nRequestedMerchantnodeAssets, nTimeLastBumped, GetTime(), GetTime() - nTimeLastBumped);
+                LogPrint("merchantnode", "CMerchantnodeSync::ProcessTick -- nTick %d nRequestedMerchantnodeAssets %d nTimeLastBumped %lld GetTime() %lld diff %lld\n", nTick, nRequestedMerchantnodeAssets, nTimeLastBumped, GetTime(), GetTime() - nTimeLastBumped);
                 // check for timeout first
                 if(GetTime() - nTimeLastBumped > MERCHANTNODE_SYNC_TIMEOUT_SECONDS) {
                     LogPrintf("CMerchantnodeSync::ProcessTick -- nTick %d nRequestedMerchantnodeAssets %d -- timeout\n", nTick, nRequestedMerchantnodeAssets);

@@ -281,6 +281,7 @@ bool LogAcceptCategory(const char* category)
                 ptrCategory->insert(string("keepass"));
                 ptrCategory->insert(string("mnpayments"));
                 ptrCategory->insert(string("gobject"));
+                ptrCategory->insert(string("merchantnode"));
             }
         }
         const set<string>& setCategories = *ptrCategory.get();
