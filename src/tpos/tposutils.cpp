@@ -110,25 +110,17 @@ bool TPoSUtils::IsTPoSMerchantContract(CWallet *wallet, const CTransaction &tx)
     if(!walletTx)
         return false;
 
-    CTxDestination dest;
-    if(!ExtractDestination(walletTx->vout[contract.merchantOutPoint.n].scriptPubKey, dest))
+    CTxDestination txDestination;
+    if(!ExtractDestination(walletTx->vout[contract.merchantOutPoint.n].scriptPubKey, txDestination))
         return false;
 
-    CBitcoinAddress merchantAddress(dest);
-
-    CKeyID keyID;
-    merchantAddress.GetKeyID(keyID);
-
-//    std::cout << "Merchant address: " << merchantAddress.ToString() << std::endl;
-
-    return contract.IsValid() && wallet->HaveKey(keyID);
+    return contract.IsValid() && IsMine(*wallet, txDestination) == ISMINE_SPENDABLE;
 }
 
 bool TPoSUtils::IsTPoSOwnerContract(CWallet *wallet, const CTransaction &tx)
 {
     TPoSContract contract = TPoSContract::FromTPoSContractTx(tx);
     auto txDestination = contract.tposAddress.Get();
-
 
     class HelperVisitor : public boost::static_visitor<bool>
     {
@@ -147,7 +139,7 @@ bool TPoSUtils::IsTPoSOwnerContract(CWallet *wallet, const CTransaction &tx)
     boost::apply_visitor(HelperVisitor(scriptId), txDestination);
 
     return contract.IsValid() &&
-            wallet->HaveCScript(scriptId);
+            IsMine(*wallet, txDestination) == ISMINE_SPENDABLE;
 }
 
 std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
@@ -240,11 +232,12 @@ TPoSContract TPoSContract::FromTPoSContractTx(const CTransaction &tx)
             const CTxOut *metadataOutPtr = nullptr;
             const CTxOut *tposOutPtr = nullptr;
 
-            for(const CTxOut &txOut : tx.vout)
+            for(size_t i = 0; i < tx.vout.size(); ++i)
             {
+                const CTxOut &txOut = tx.vout.at(i);
                 if(txOut.scriptPubKey.IsUnspendable())
                     metadataOutPtr = &txOut;
-                else if(txOut.scriptPubKey.IsPayToScriptHash())
+                else if(i == 0)
                     tposOutPtr = &txOut;
             }
 
@@ -255,7 +248,7 @@ TPoSContract TPoSContract::FromTPoSContractTx(const CTransaction &tx)
                 std::vector<std::vector<unsigned char>> vSolutions;
                 txnouttype whichType;
                 if (Solver(metadataOut.scriptPubKey, whichType, vSolutions) && whichType == TX_NULL_DATA &&
-                        tposOut.scriptPubKey.IsPayToScriptHash())
+                        (tposOut.scriptPubKey.IsPayToScriptHash() || tposOut.scriptPubKey.IsPayToPublicKeyHash()))
                 {
                     // Here we can have a chance that it is transaction which is a tpos contract, let's check if it has
                     std::stringstream stringStream(metadataOut.scriptPubKey.ToString());
@@ -276,10 +269,10 @@ TPoSContract TPoSContract::FromTPoSContractTx(const CTransaction &tx)
                     if(tokens[0] == GetOpName(OP_RETURN) &&
                             commission > 0 && commission < 100 && !merchantTxId.IsNull() && outIndex >= 0)
                     {
-                        if(Solver(tposOut.scriptPubKey, whichType, vSolutions))
+                        CTxDestination txDestination;
+                        if(ExtractDestination(tposOut.scriptPubKey, txDestination))
                         {
-                            CBitcoinAddress tposAddress;
-                            tposAddress.Set(CScriptID(uint160(vSolutions[0])));
+                            CBitcoinAddress tposAddress(txDestination);
 
                             // if we get to this point, it means that we have found tpos contract that was created for us to act as merchant.
                             return TPoSContract(tx, COutPoint(merchantTxId, outIndex), tposAddress, commission);
