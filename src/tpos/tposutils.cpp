@@ -2,6 +2,7 @@
 #include "wallet/wallet.h"
 #include "utilmoneystr.h"
 #include "policy/policy.h"
+#include "coincontrol.h"
 #include <sstream>
 
 static const std::string TPOSEXPORTHEADER("TPOSOWNERINFO");
@@ -178,7 +179,10 @@ std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
 
     CAmount nFeeRequired;
     int nChangePos;
-    if (!wallet->CreateTransaction(vecSend, wtxNew, reservekey, nFeeRequired, nChangePos, strError))
+    CCoinControl coinControl;
+    coinControl.fUseRandomChangePosition = false;
+
+    if (!wallet->CreateTransaction(vecSend, wtxNew, reservekey, nFeeRequired, nChangePos, strError, &coinControl))
     {
         if (nValue + nFeeRequired > wallet->GetBalance())
             strError = strprintf("Error: This transaction requires a transaction fee of at least %s because of its amount, complexity, or use of recently received funds!", FormatMoney(nFeeRequired));

@@ -1111,8 +1111,8 @@ bool CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList(CNode* pfrom, CMerchant
     if(mnb.CheckMerchantnode(nDos)) {
 
         // Check if we have merchantnode with this IP, any pubkey will work. We need to be sure that one merchantnode holds one public key.
-        if(CheckMnbIPAddressAndRemoveDuplicatedEntry(mnb, nDos))
-            return false;
+//        if(CheckMnbIPAddressAndRemoveDuplicatedEntry(mnb, nDos))
+//            return false;
 
         Add(mnb);
         merchantnodeSync.BumpAssetLastTime("CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList - new");
