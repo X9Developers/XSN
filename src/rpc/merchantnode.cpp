@@ -193,7 +193,7 @@ UniValue merchantnode(const UniValue& params, bool fHelp)
 
     if (strCommand == "status")
     {
-        if (!fMasterNode)
+        if (!fMerchantNode)
             throw JSONRPCError(RPC_INTERNAL_ERROR, "This is not a merchantnode");
 
         UniValue mnObj(UniValue::VOBJ);
