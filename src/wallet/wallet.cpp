@@ -1356,7 +1356,7 @@ bool CWallet::AddToWalletIfTPoSContract(const CTransaction &tx, const CBlock *pb
                 walletDb.WriteTPoSContractTx(wtx.GetHash(), wtx);
                 LoadTPoSContract(wtx);
 
-                if(isMerchant)
+                if(isMerchant && !isOwner)
                     AddWatchOnly(GetScriptForDestination(TPoSContract::FromTPoSContractTx(tx).tposAddress.Get()));
 
                 return true;
@@ -2861,7 +2861,7 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins,
             continue;
 
         //check that it is matured
-        if (out.nDepth < (out.tx->IsCoinStake() ? Params().GetConsensus().nCoinbaseMaturity : 10))
+        if (out.nDepth < (out.tx->IsCoinStake() ? COINBASE_MATURITY : 10))
             continue;
 
 //        auto it = std::find_if(tposMerchantContracts.begin(), tposMerchantContracts.end(), [&scriptPubKeyKernel](const std::pair<uint256, TPoSContract> &entry) {
@@ -2898,7 +2898,7 @@ bool CWallet::SelectStakeTPoSCoins(CWallet::StakeCoinsSet &setCoins, CWallet::St
                 continue;
 
             //check that it is matured
-            if (out.nDepth < (out.tx->IsCoinStake() ? Params().GetConsensus().nCoinbaseMaturity : 10))
+            if (out.nDepth < (out.tx->IsCoinStake() ? COINBASE_MATURITY : 10))
                 continue;
 
             //            // if it's not a coinstake this has to be out of tpos contract
@@ -2916,7 +2916,7 @@ bool CWallet::SelectStakeTPoSCoins(CWallet::StakeCoinsSet &setCoins, CWallet::St
         for(auto &&out : coins)
         {
             //check that it is matured
-            if (out.nDepth < (out.tx->IsCoinStake() ? Params().GetConsensus().nCoinbaseMaturity : 10))
+            if (out.nDepth < (out.tx->IsCoinStake() ? COINBASE_MATURITY : 10))
                 continue;
 
             tposCoins.emplace(out.tx, out.i);
@@ -3722,7 +3722,7 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
                         else
                         {
                             // Insert change txn at random position:
-                            nChangePosRet = coinControl && !coinControl->fUseRandomChangePosition ? txNew.vout.size() : GetRandInt(txNew.vout.size()+1);
+                            nChangePosRet = GetRandInt(txNew.vout.size()+1);
                             vector<CTxOut>::iterator position = txNew.vout.begin()+nChangePosRet;
                             txNew.vout.insert(position, newTxOut);
                         }

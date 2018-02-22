@@ -285,7 +285,7 @@ public:
         consensus.nLastPoWBlock = 75;
         consensus.nStakeMinAge = 60 * 60;
         consensus.nStakeMaxAge = 60 * 60 * 24 * 7; // one week
-        consensus.nCoinbaseMaturity = 15;
+        consensus.nCoinbaseMaturity = 20;
         consensus.nRuleChangeActivationThreshold = 1512; // 75% for testchains
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;

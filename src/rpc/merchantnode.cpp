@@ -451,7 +451,7 @@ UniValue tposcontract(const UniValue& params, bool fHelp)
 
         std::string strError;
         auto walletTx = TPoSUtils::CreateTPoSTransaction(pwalletMain, reserveKey,
-                                                         GetScriptForDestination(tposAddress.Get()), amount,
+                                                         tposAddress, amount,
                                                          merchantOutpoint, commission, strError);
 
         if(walletTx)

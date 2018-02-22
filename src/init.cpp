@@ -1901,7 +1901,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     fMerchantNode = GetBoolArg("-merchantnode", false);
     // TODO: masternode should have no wallet
 
-    if((fMasterNode || masternodeConfig.getCount() > -1) && fTxIndex == false) {
+    if((fMasterNode || masternodeConfig.getCount() > 0) && fTxIndex == false) {
         return InitError("Enabling Masternode support requires turning on transaction indexing."
                   "Please add txindex=1 to your configuration and start with -reindex");
     }
