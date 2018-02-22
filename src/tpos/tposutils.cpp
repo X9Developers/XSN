@@ -232,7 +232,6 @@ TPoSContract TPoSContract::FromTPoSContractTx(const CTransaction &tx)
                 }
             }
 
-
             if(metadataOutPtr && colateralFound)
             {
                 const auto &metadataOut = *metadataOutPtr;

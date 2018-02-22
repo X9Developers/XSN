@@ -6,6 +6,7 @@
 
 #include "wallet/wallet.h"
 
+#include "tpos/activemerchantnode.h"
 #include "base58.h"
 #include "checkpoints.h"
 #include "chain.h"
@@ -205,9 +206,9 @@ void CWallet::DeriveNewChildKey(const CKeyMetadata& metadata, CKey& secretRet, u
         throw std::runtime_error(std::string(__func__) + ": AddHDPubKey failed");
 }
 
-CAmount GetStakeReward(int nHeight, unsigned int percentage)
+CAmount GetStakeReward(CAmount blockReward, unsigned int percentage)
 {
-    return (200 * COIN / 100) * percentage;
+    return (blockReward / 100) * percentage;
 }
 
 bool CWallet::CreateCoinStakeKernel(CScript &kernelScript,
@@ -279,18 +280,11 @@ bool CWallet::CreateCoinStakeKernel(CScript &kernelScript,
 void CWallet::FillCoinStakePayments(CMutableTransaction &transaction,
                                     const TPoSContract &tposContract,
                                     const CScript &scriptPubKeyOut,
-                                    const COutPoint &stakePrevout) const
+                                    const COutPoint &stakePrevout,
+                                    CAmount blockReward) const
 {
-
-    CScript p2shScript;
-
     const CWalletTx *walletTx = GetWalletTx(stakePrevout.hash);
     CTxOut txOut = walletTx->vout[stakePrevout.n];
-
-    if(tposContract.IsValid())
-    {
-        p2shScript = GetScriptForDestination(tposContract.tposAddress.Get());
-    }
 
     auto nCredit = txOut.nValue;
 
@@ -302,8 +296,7 @@ void CWallet::FillCoinStakePayments(CMutableTransaction &transaction,
 
     // if this is tpos, we need to age coin, without paying reward to this address.
     //                if(!tposContract.IsValid())
-    const CBlockIndex* pIndex0 = chainActive.Tip();
-    auto nCoinStakeReward = nCredit + GetStakeReward(pIndex0->nHeight, percentage);
+    auto nCoinStakeReward = nCredit + GetStakeReward(blockReward, percentage);
 
     transaction.vin.push_back(CTxIn(stakePrevout));
 
@@ -331,8 +324,8 @@ void CWallet::FillCoinStakePayments(CMutableTransaction &transaction,
 
     if(tposContract.IsValid())
     {
-        transaction.vout.emplace_back(GetStakeReward(pIndex0->nHeight, tposContract.stakePercentage),
-                                      p2shScript);
+        transaction.vout.emplace_back(GetStakeReward(blockReward, tposContract.stakePercentage),
+                                      GetScriptForDestination(tposContract.tposAddress.Get()));
     }
 }
 
@@ -2880,14 +2873,9 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins,
 bool CWallet::SelectStakeTPoSCoins(CWallet::StakeCoinsSet &setCoins, CWallet::StakeCoinsSet &tposCoins, const TPoSContract &contract) const
 {
     auto coinsMap = AvailableCoinsByAddress();
-
     {
-
-        auto walletTx = GetWalletTx(contract.merchantOutPoint.hash);
-        if(!walletTx)
-            return false;
-
-        CBitcoinAddress merchantAddress(CScriptID(walletTx->vout[contract.merchantOutPoint.n].scriptPubKey));
+        CBitcoinAddress merchantAddress;
+        merchantAddress.Set(activeMerchantnode.pubKeyMerchantnode.GetID());
 
         const std::vector<COutput> &coins = coinsMap[merchantAddress];
 
@@ -4015,20 +4003,14 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
             //iterates each utxo inside of CheckStakeKernelHash()
             CScript kernelScript;
             auto stakeScript = pcoin.first->vout[pcoin.second].scriptPubKey;
-            fKernelFound = CreateCoinStakeKernel(kernelScript,
-                                                 stakeScript,
-                                                 nBits,
-                                                 block,
-                                                 sizeof(CBlock),
-                                                 tposProxyTx,
-                                                 prevoutStake,
-                                                 nTxNewTime,
-                                                 false);
+            fKernelFound = CreateCoinStakeKernel(kernelScript, stakeScript, nBits,
+                                                 block, sizeof(CBlock), tposProxyTx,
+                                                 prevoutStake, nTxNewTime, false);
 
             if(fKernelFound)
             {
                 vwtxPrev.push_back(pcoin);
-                FillCoinStakePayments(txNew, tposContract, kernelScript, prevoutStake);
+                FillCoinStakePayments(txNew, tposContract, kernelScript, prevoutStake, blockReward);
                 break;
             }
         }

@@ -679,7 +679,7 @@ private:
     void FillCoinStakePayments(CMutableTransaction &transaction,
                                const TPoSContract &tposContract,
                                const CScript &kernelScript,
-                               const COutPoint &stakePrevout) const;
+                               const COutPoint &stakePrevout, CAmount blockReward) const;
 
 public:
     /*
