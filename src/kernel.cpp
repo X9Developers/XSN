@@ -277,17 +277,17 @@ static bool GetKernelStakeModifierV05(unsigned int nTimeTx, uint64_t& nStakeModi
                   DateTimeStrFormat("%Y-%m-%d %H:%M:%S", nTimeTx).c_str());
     }
 
-//    TODO_POS: check this
-//    if (nStakeModifierTime + nStakeMinAge - nStakeModifierSelectionInterval <= nTimeTx)
-//    {
-//        // Best block is still more than
-//        // (nStakeMinAge minus a selection interval) older than kernel timestamp
-//        if (fPrintProofOfStake)
-//            return error("GetKernelStakeModifier() : best block %s at height %d too old for stake",
-//                         pindex->GetBlockHash().ToString().c_str(), pindex->nHeight);
-//        else
-//            return false;
-//    }
+    //    TODO_POS: check this
+    //    if (nStakeModifierTime + nStakeMinAge - nStakeModifierSelectionInterval <= nTimeTx)
+    //    {
+    //        // Best block is still more than
+    //        // (nStakeMinAge minus a selection interval) older than kernel timestamp
+    //        if (fPrintProofOfStake)
+    //            return error("GetKernelStakeModifier() : best block %s at height %d too old for stake",
+    //                         pindex->GetBlockHash().ToString().c_str(), pindex->nHeight);
+    //        else
+    //            return false;
+    //    }
     // loop to find the stake modifier earlier by
     // (nStakeMinAge minus a selection interval)
     while (nStakeModifierTime + nStakeMinAge - nStakeModifierSelectionInterval > nTimeTx)
@@ -448,59 +448,6 @@ bool CheckProofOfStake(CWallet *wallet, const CBlock &block, uint256& hashProofO
     if (!GetTransaction(txin.prevout.hash, txPrev, cons, hashBlock, true))
         return error("CheckProofOfStake() : INFO: read txPrev failed");
 
-#if 0
-    if(tx.IsTPoSCoinStake() && wallet)
-    {
-        CTransaction tposContractTx;
-        CTransaction tposCoinsTx;
-        uint256 dummy;
-        if(GetTransaction(block.tposTxContractHash, tposContractTx, cons, dummy) &&
-                GetTransaction(block.tposStakePoint.hash, tposCoinsTx, cons, dummy))
-        {
-            auto contract = TPoSContract::FromTPoSContractTx(tposContractTx);
-
-            if(!contract.IsValid() || tposCoinsTx.vout[block.tposStakePoint.n].scriptPubKey !=
-                    GetScriptForDestination(contract.tposAddress.Get()))
-            {
-                return error("CheckProofOfStake() : tpos block formed with wrong tpos stake point");
-            }
-
-            txnouttype type;
-            vector<vector<unsigned char> > vSolutions;
-            Solver(txPrev.vout[txin.prevout.n].scriptPubKey, type, vSolutions);
-
-            do
-            {
-                if(type == TX_PUBKEY && contract.merchantAddress == CBitcoinAddress(CPubKey(vSolutions[0]).GetID()))
-                    break;
-                else if(type == TX_PUBKEYHASH && contract.merchantAddress == CBitcoinAddress(CKeyID(uint160(vSolutions[0]))))
-                    break;
-
-                return error("CheckProofOfStake() : tpos coinstake is not valid, used address for coinstake");
-            }
-            while(false);
-
-            //            bool isTPoSStakeUnspent = IsTPoSDepositUnspent(tposCoinsTx.GetHash(), block.tposStakePoint.n);
-            //            if(isTPoSStakeUnspent)
-            //            {
-            //                auto &nValue = txPrev.vout[txin.prevout.n].nValue;
-            //                nValue = tposCoinsTx.vout[block.tposStakePoint.n].nValue;
-            //            }
-            //            else
-            //            {
-            //                return error("CheckProofOfStake() : tpos stake amount is already spent");
-            //            }
-
-            //            std::cout << HexStr(contract.merchantOutPoint.hash) << std::endl;
-            //            std::cout << HexStr(txPrev.GetHash()) << std::endl;
-            //            std::cout << txPrev.GetHash().ToString() << std::endl;
-            //            std::cout << txPrev.ToString() << std::endl;
-
-
-        }
-    }
-#endif
-
     //verify signature and script
     if (!VerifyScript(txin.scriptSig, txPrev.vout[txin.prevout.n].scriptPubKey, STANDARD_SCRIPT_VERIFY_FLAGS, TransactionSignatureChecker(&tx, 0)))
         return error("CheckProofOfStake() : VerifySignature failed on coinstake %s", tx.GetHash().ToString().c_str());
@@ -517,8 +464,21 @@ bool CheckProofOfStake(CWallet *wallet, const CBlock &block, uint256& hashProofO
     if (!ReadBlockFromDisk(blockprev, pindex->GetBlockPos(), cons))
         return error("CheckProofOfStake(): INFO: failed to find block");
 
+    CMutableTransaction proxyTx(txPrev);
+    if(block.IsTPoSBlock())
+    {
+        CTransaction tposTransaction;
+        uint256 hashBlock;
+        if(!GetTransaction(block.tposStakePoint.hash, tposTransaction, Params().GetConsensus(), hashBlock))
+            return error("CheckProofOfStake(): failed to find transaction of tpos stake point: (%s, %d)", block.tposStakePoint.hash.ToString().c_str(), block.tposStakePoint.n);
+
+
+        auto &nValue = proxyTx.vout[txin.prevout.n].nValue;
+        nValue = tposTransaction.vout[block.tposStakePoint.n].nValue;
+    }
+
     unsigned int nTime = block.nTime;
-    if (!CheckStakeKernelHash(block.nBits, blockprev, /*postx.nTxOffset + */sizeof(CBlock), txPrev, txin.prevout, nTime, hashProofOfStake, fDebug))
+    if (!CheckStakeKernelHash(block.nBits, blockprev, /*postx.nTxOffset + */sizeof(CBlock), proxyTx, txin.prevout, nTime, hashProofOfStake, fDebug))
         return error("CheckProofOfStake() : INFO: check kernel failed on coinstake %s, hashProof=%s \n", tx.GetHash().ToString().c_str(), hashProofOfStake.ToString().c_str()); // may occur during initial download or if behind on block chain sync
 
     return true;
