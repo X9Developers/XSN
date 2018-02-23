@@ -362,7 +362,8 @@ static const CRPCCommand vRPCCommands[] =
   { "dash",               "privatesend",            &privatesend,            false },
 
   /* Wallet */
-  { "wallet",             "keepass",                &keepass,                true },
+  { "wallet",             "checkposblock",          &checkposblock,          true  },
+  { "wallet",             "keepass",                &keepass,                true  },
   { "wallet",             "instantsendtoaddress",   &instantsendtoaddress,   false },
   { "wallet",             "addmultisigaddress",     &addmultisigaddress,     true  },
   { "wallet",             "backupwallet",           &backupwallet,           true  },

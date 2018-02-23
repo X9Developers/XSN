@@ -283,6 +283,7 @@ extern UniValue merchantnode(const UniValue& params, bool fHelp);
 extern UniValue merchantnodelist(const UniValue& params, bool fHelp);
 extern UniValue merchantsentinelping(const UniValue& params, bool fHelp);
 extern UniValue tposcontract(const UniValue& params, bool fHelp);
+extern UniValue checkposblock(const UniValue& params, bool fHelp);
 
 extern UniValue getblockcount(const UniValue& params, bool fHelp); // in rpc/blockchain.cpp
 extern UniValue getbestblockhash(const UniValue& params, bool fHelp);

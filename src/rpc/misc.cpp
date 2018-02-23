@@ -15,6 +15,8 @@
 #include "util.h"
 #include "utilstrencodings.h"
 #include "validation.h"
+#include "kernel.h"
+#include "policy/policy.h"
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
 #include "wallet/walletdb.h"
@@ -1000,4 +1002,89 @@ UniValue getspentinfo(const UniValue& params, bool fHelp)
     obj.push_back(Pair("height", value.blockHeight));
 
     return obj;
+}
+
+UniValue checkposblock(const UniValue& params, bool fHelp)
+{
+    if (fHelp || params.size() < 1 || params.size() > 2)
+        throw runtime_error(
+            "checkposblock \"hash\"\n"
+            "\nExamples:\n"
+            + HelpExampleCli("checkposblock", "\"00000000000fd08c2fb661d2fcb0d49abb3a91e5f27082ce64feed3b4dede2e2\"")
+            + HelpExampleRpc("checkposblock", "\"00000000000fd08c2fb661d2fcb0d49abb3a91e5f27082ce64feed3b4dede2e2\"")
+        );
+
+    LOCK(cs_main);
+
+    std::string strHash = params[0].get_str();
+    uint256 hash(uint256S(strHash));
+
+    bool fVerbose = true;
+    if (params.size() > 1)
+        fVerbose = params[1].get_bool();
+
+    if (mapBlockIndex.count(hash) == 0)
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Block not found");
+
+    CBlock block;
+    CBlockIndex* pblockindex = mapBlockIndex[hash];
+
+    if (fHavePruned && !(pblockindex->nStatus & BLOCK_HAVE_DATA) && pblockindex->nTx > 0)
+        throw JSONRPCError(RPC_INTERNAL_ERROR, "Block not available (pruned data)");
+
+    if(!ReadBlockFromDisk(block, pblockindex, Params().GetConsensus()))
+        throw JSONRPCError(RPC_INTERNAL_ERROR, "Can't read block from disk");
+
+    const CTransaction tx = block.vtx[1];
+    if (!tx.IsCoinStake())
+        return error("CheckProofOfStake() : called on non-coinstake %s", tx.GetHash().ToString().c_str());
+
+    // Kernel (input 0) must match the stake hash target per coin age (nBits)
+    const CTxIn& txin = tx.vin[0];
+
+    // First try finding the previous transaction in database
+    uint256 hashBlock;
+    CTransaction txPrev;
+
+    const auto &cons = Params().GetConsensus();
+
+    if (!GetTransaction(txin.prevout.hash, txPrev, cons, hashBlock, true))
+        return error("CheckProofOfStake() : INFO: read txPrev failed");
+
+    //verify signature and script
+    if (!VerifyScript(txin.scriptSig, txPrev.vout[txin.prevout.n].scriptPubKey, STANDARD_SCRIPT_VERIFY_FLAGS, TransactionSignatureChecker(&tx, 0)))
+        return error("CheckProofOfStake() : VerifySignature failed on coinstake %s", tx.GetHash().ToString().c_str());
+
+    CBlockIndex* pindex = NULL;
+    BlockMap::iterator it = mapBlockIndex.find(hashBlock);
+    if (it != mapBlockIndex.end())
+        pindex = it->second;
+    else
+        return error("CheckProofOfStake() : read block failed");
+
+    // Read block header
+    CBlock blockprev;
+    if (!ReadBlockFromDisk(blockprev, pindex->GetBlockPos(), cons))
+        return error("CheckProofOfStake(): INFO: failed to find block");
+
+    CMutableTransaction proxyTx(txPrev);
+    if(block.IsTPoSBlock())
+    {
+        CTransaction tposTransaction;
+        uint256 hashBlock;
+        if(!GetTransaction(block.tposStakePoint.hash, tposTransaction, Params().GetConsensus(), hashBlock))
+            return error("CheckProofOfStake(): failed to find transaction of tpos stake point: (%s, %d)", block.tposStakePoint.hash.ToString().c_str(), block.tposStakePoint.n);
+
+
+        auto &nValue = proxyTx.vout[txin.prevout.n].nValue;
+        nValue = tposTransaction.vout[block.tposStakePoint.n].nValue;
+    }
+
+    uint256 hashProofOfStake;
+
+    unsigned int nTime = block.nTime;
+    if (!CheckStakeKernelHash(block.nBits, blockprev, /*postx.nTxOffset + */sizeof(CBlock), proxyTx, txin.prevout, nTime, hashProofOfStake, true))
+        return error("CheckProofOfStake() : INFO: check kernel failed on coinstake %s, hashProof=%s \n", tx.GetHash().ToString().c_str(), hashProofOfStake.ToString().c_str()); // may occur during initial download or if behind on block chain sync
+
+    return true;
 }
