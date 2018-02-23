@@ -56,6 +56,11 @@ bool CBlock::IsProofOfStake() const
     return (vtx.size() > 1 && vtx[1].IsCoinStake());
 }
 
+bool CBlock::IsTPoSBlock() const
+{
+    return !tposTxContractHash.IsNull() && !tposStakePoint.IsNull();
+}
+
 bool CBlock::IsProofOfWork() const
 {
     return !IsProofOfStake();

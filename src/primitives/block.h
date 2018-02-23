@@ -107,6 +107,7 @@ public:
     CBlockHeader GetBlockHeader() const;
 
     bool IsProofOfStake() const;
+    bool IsTPoSBlock() const;
     bool IsProofOfWork() const;
 
     bool SignBlock(const CKeyStore& keystore);
