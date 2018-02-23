@@ -76,35 +76,6 @@ int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParam
     return nNewTime - nOldTime;
 }
 
-static void AdjustMasternodePayment(CMutableTransaction &tx, const CTxOut& txoutMasternodePayment, bool fProofOfStake, const TPoSContract &tposContract)
-{
-    auto it = std::find(std::begin(tx.vout), std::end(tx.vout), txoutMasternodePayment);
-
-    if(it != std::end(tx.vout))
-    {
-        int mnPaymentOutIndex = std::distance(std::begin(tx.vout), it);
-        auto masternodePayment = tx.vout[mnPaymentOutIndex].nValue;
-        if(fProofOfStake)
-        {
-            int i = tx.vout.size() - 2;
-            if(tposContract.IsValid()) // here we have 3 outputs, first as stake reward, second as tpos reward, third as MN reward
-            {
-                masternodePayment /= 100; // to calculate percentage
-                tx.vout[i - 1].nValue -= masternodePayment * (100 - tposContract.stakePercentage); // adjust reward for merchant.
-                tx.vout[i].nValue -= masternodePayment * tposContract.stakePercentage; // adjust reward for owner
-            }
-            else // here we have 2 outputs, first as stake reward, second as MN reward
-            {
-                tx.vout[i].nValue -= masternodePayment; // last vout is mn payment.
-            }
-        }
-        else
-        {
-            tx.vout[0].nValue -= masternodePayment;
-        }
-    }
-}
-
 CBlockTemplate* CreateNewBlock(CWallet *wallet, const CChainParams& chainparams, const CScript& scriptPubKeyIn, bool fProofOfStake, const TPoSContract &tposContract)
 {
     // Create new block
@@ -362,20 +333,24 @@ CBlockTemplate* CreateNewBlock(CWallet *wallet, const CChainParams& chainparams,
             // Update block coinbase
             txNew.vout[0].nValue = nFees + blockReward;
             pblocktemplate->vTxFees[0] = -nFees;
+
+            // Update coinbase transaction with additional info about masternode and governance payments,
+            // get some info back to pass to getblocktemplate
+
+            FillBlockPayments(txNew, nHeight, blockReward, pblock->txoutMasternode, pblock->voutSuperblock);
+            auto it = std::find(std::begin(txNew.vout), std::end(txNew.vout), pblock->txoutMasternode);
+
+            if(it != std::end(txNew.vout))
+            {
+                txNew.vout[0].nValue -= pblock->txoutMasternode.nValue;
+            }
+
+            LogPrintf("CreateNewBlock -- nBlockHeight %d blockReward %lld txoutMasternode %s txNew %s",
+                      nHeight, blockReward, pblock->txoutMasternode.ToString(), txNew.ToString());
+
         }
 
         pblock->vtx[0] = txNew;
-
-        CMutableTransaction coinbaseTransaction(fProofOfStake ? pblock->vtx[1] : pblock->vtx[0]);
-
-        // Update coinbase transaction with additional info about masternode and governance payments,
-        // get some info back to pass to getblocktemplate
-        FillBlockPayments(coinbaseTransaction, nHeight, blockReward, pblock->txoutMasternode, pblock->voutSuperblock);
-        AdjustMasternodePayment(coinbaseTransaction, pblock->txoutMasternode, fProofOfStake, tposContract);
-        LogPrintf("CreateNewBlock -- nBlockHeight %d blockReward %lld txoutMasternode %s txNew %s",
-                  nHeight, blockReward, pblock->txoutMasternode.ToString(), txNew.ToString());
-
-        pblock->vtx[fProofOfStake ? 1 : 0] = coinbaseTransaction;
 
         nLastBlockTx = nBlockTx;
         nLastBlockSize = nBlockSize;

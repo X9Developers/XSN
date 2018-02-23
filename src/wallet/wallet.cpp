@@ -26,6 +26,7 @@
 #include "txmempool.h"
 #include "util.h"
 #include "utilmoneystr.h"
+#include "masternode-payments.h"
 
 #include "governance.h"
 #include "instantx.h"
@@ -49,7 +50,7 @@ unsigned int nTxConfirmTarget = DEFAULT_TX_CONFIRM_TARGET;
 bool bSpendZeroConfChange = DEFAULT_SPEND_ZEROCONF_CHANGE;
 bool fSendFreeTransactions = DEFAULT_SEND_FREE_TRANSACTIONS;
 
-/** 
+/**
  * Fees smaller than this (in duffs) are considered zero fee (for transaction creation)
  * Override with -mintxfee
  */
@@ -86,6 +87,30 @@ void CWallet::finishLoadingTPoSContractsFromDB()
 std::string COutput::ToString() const
 {
     return strprintf("COutput(%s, %d, %d) [%s]", tx->GetHash().ToString(), i, nDepth, FormatMoney(tx->vout[i].nValue));
+}
+
+
+static void AdjustMasternodePayment(CMutableTransaction &tx, const CTxOut& txoutMasternodePayment, const TPoSContract &tposContract)
+{
+    auto it = std::find(std::begin(tx.vout), std::end(tx.vout), txoutMasternodePayment);
+
+    if(it != std::end(tx.vout))
+    {
+        int mnPaymentOutIndex = std::distance(std::begin(tx.vout), it);
+        auto masternodePayment = tx.vout[mnPaymentOutIndex].nValue;
+
+        int i = tx.vout.size() - 2;
+        if(tposContract.IsValid()) // here we have 3 outputs, first as stake reward, second as tpos reward, third as MN reward
+        {
+            masternodePayment /= 100; // to calculate percentage
+            tx.vout[i - 1].nValue -= masternodePayment * (100 - tposContract.stakePercentage); // adjust reward for merchant.
+            tx.vout[i].nValue -= masternodePayment * tposContract.stakePercentage; // adjust reward for owner
+        }
+        else // here we have 2 outputs, first as stake reward, second as MN reward
+        {
+            tx.vout[i].nValue -= masternodePayment; // last vout is mn payment.
+        }
+    }
 }
 
 int COutput::Priority() const
@@ -734,7 +759,7 @@ bool CWallet::Verify(const string& walletFile, string& warningString, string& er
         } catch (const boost::filesystem::filesystem_error&) {
             // failure is ok (well, not really, but it's not worse than what we started with)
         }
-        
+
         // try again
         if (!bitdb.Open(GetDataDir())) {
             // if it still fails, it probably means we can't even create the database env
@@ -743,14 +768,14 @@ bool CWallet::Verify(const string& walletFile, string& warningString, string& er
             return true;
         }
     }
-    
+
     if (GetBoolArg("-salvagewallet", false))
     {
         // Recover readable keypairs:
         if (!CWalletDB::Recover(bitdb, walletFile, true))
             return false;
     }
-    
+
     if (boost::filesystem::exists(GetDataDir() / walletFile))
     {
         CDBEnv::VerifyResult r = bitdb.Verify(walletFile, CWalletDB::Recover);
@@ -764,7 +789,7 @@ bool CWallet::Verify(const string& walletFile, string& warningString, string& er
         if (r == CDBEnv::RECOVER_FAIL)
             errorString += _("wallet.dat corrupt, salvage failed");
     }
-    
+
     return true;
 }
 
@@ -2857,12 +2882,12 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins,
         if (out.nDepth < (out.tx->IsCoinStake() ? COINBASE_MATURITY : 10))
             continue;
 
-//        auto it = std::find_if(tposMerchantContracts.begin(), tposMerchantContracts.end(), [&scriptPubKeyKernel](const std::pair<uint256, TPoSContract> &entry) {
-//            return GetScriptForDestination(entry.second.merchantAddress.Get()) == scriptPubKeyKernel;
-//        });
+        //        auto it = std::find_if(tposMerchantContracts.begin(), tposMerchantContracts.end(), [&scriptPubKeyKernel](const std::pair<uint256, TPoSContract> &entry) {
+        //            return GetScriptForDestination(entry.second.merchantAddress.Get()) == scriptPubKeyKernel;
+        //        });
 
-//        if(it != tposMerchantContracts.end())
-//            continue;
+        //        if(it != tposMerchantContracts.end())
+        //            continue;
 
         nAmountSelected += out.tx->vout[out.i].nValue; //maybe change here for tpos
         setCoins.insert(make_pair(out.tx, out.i));
@@ -4055,7 +4080,17 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
 
     if(tposContract.IsValid())
         cout << "this is tpos" << endl;
-    //txNew needs to be pubkeyhash instead of scripthash
+
+    // Update coinbase transaction with additional info about masternode and governance payments,
+    // get some info back to pass to getblocktemplate
+    CTxOut txoutMasternode;
+    std::vector<CTxOut> voutSuperblock;
+    int nHeight = chainActive.Tip()->nHeight + 1;
+    FillBlockPayments(txNew, nHeight, blockReward, txoutMasternode, voutSuperblock);
+    AdjustMasternodePayment(txNew, txoutMasternode, tposContract);
+    LogPrintf("CreateCoinStake -- nBlockHeight %d blockReward %lld txoutMasternode %s txNew %s",
+              nHeight, blockReward, txoutMasternode.ToString(), txNew.ToString());
+
     // Sign
     int nIn = 0;
 
