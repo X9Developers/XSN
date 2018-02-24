@@ -352,7 +352,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../dash.qrc"/>
+  <include location="../xsn.qrc"/>
  </resources>
  <connections/>
 </ui>

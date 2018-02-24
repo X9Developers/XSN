@@ -28,7 +28,7 @@
  *
  * \section intro_sec Introduction
  *
- * This is the developer documentation of the reference client for an experimental new digital currency called Dash (https://www.dash.org/),
+ * This is the developer documentation of the reference client for an experimental new digital currency called Dash (https://www.xsn.org/),
  * which enables instant payments to anyone, anywhere in the world. Dash uses peer-to-peer technology to operate
  * with no central authority: managing transactions and issuing money are carried out collectively by the network.
  *
@@ -70,7 +70,7 @@ bool AppInit(int argc, char* argv[])
     //
     // Parameters
     //
-    // If Qt is used, parameters/dash.conf are parsed in qt/dash.cpp's main()
+    // If Qt is used, parameters/xsn.conf are parsed in qt/xsn.cpp's main()
     ParseParameters(argc, argv);
 
     // Process help and version before taking care about datadir
@@ -85,7 +85,7 @@ bool AppInit(int argc, char* argv[])
         else
         {
             strUsage += "\n" + _("Usage:") + "\n" +
-                  "  dashd [options]                     " + _("Start Dash Core Daemon") + "\n";
+                  "  xsnd [options]                     " + _("Start Dash Core Daemon") + "\n";
 
             strUsage += "\n" + HelpMessage(HMM_BITCOIND);
         }
@@ -137,12 +137,12 @@ bool AppInit(int argc, char* argv[])
         // Command-line RPC
         bool fCommandLine = false;
         for (int i = 1; i < argc; i++)
-            if (!IsSwitchChar(argv[i][0]) && !boost::algorithm::istarts_with(argv[i], "dash:"))
+            if (!IsSwitchChar(argv[i][0]) && !boost::algorithm::istarts_with(argv[i], "xsn:"))
                 fCommandLine = true;
 
         if (fCommandLine)
         {
-            fprintf(stderr, "Error: There is no RPC client functionality in dashd anymore. Use the dash-cli utility instead.\n");
+            fprintf(stderr, "Error: There is no RPC client functionality in xsnd anymore. Use the xsn-cli utility instead.\n");
             exit(EXIT_FAILURE);
         }
 #ifndef WIN32
@@ -200,7 +200,7 @@ int main(int argc, char* argv[])
 {
     SetupEnvironment();
 
-    // Connect dashd signal handlers
+    // Connect xsnd signal handlers
     noui_connect();
 
     return (AppInit(argc, argv) ? EXIT_SUCCESS : EXIT_FAILURE);

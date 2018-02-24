@@ -1238,7 +1238,7 @@ void ThreadMerchantnodeCheck(CConnman &connman)
     if(fOneThread) return;
     fOneThread = true;
 
-    RenameThread("dash-tpos");
+    RenameThread("xsn-tpos");
 
     unsigned int nTick = 0;
 

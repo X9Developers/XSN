@@ -47,9 +47,9 @@ core_io.h
 core_memusage.h
 core_read.cpp
 core_write.cpp
-dash-cli.cpp
-dash-tx.cpp
-dashd.cpp
+xsn-cli.cpp
+xsn-tx.cpp
+xsnd.cpp
 dbwrapper.cpp
 dbwrapper.h
 drafted/governance-categories.h
@@ -177,8 +177,8 @@ qt/csvmodelwriter.cpp
 qt/csvmodelwriter.h
 qt/darksendconfig.cpp
 qt/darksendconfig.h
-qt/dash.cpp
-qt/dashstrings.cpp
+qt/xsn.cpp
+qt/xsnstrings.cpp
 qt/editaddressdialog.cpp
 qt/editaddressdialog.h
 qt/guiconstants.h
@@ -280,8 +280,8 @@ rpc/server.cpp
 rpc/server.h
 scheduler.cpp
 scheduler.h
-script/dashconsensus.cpp
-script/dashconsensus.h
+script/xsnconsensus.cpp
+script/xsnconsensus.h
 script/interpreter.cpp
 script/interpreter.h
 script/script.cpp

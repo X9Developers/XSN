@@ -1,566 +1,570 @@
-<TS language="pt" version="2.0">
+<TS language="zh_CN" version="2.0">
 <context>
     <name>AddressBookPage</name>
     <message>
         <source>Right-click to edit address or label</source>
-        <translation>Clique com o botão direito para editar o endereço ou o rótulo</translation>
+        <translation>右键点击编辑地址或标签</translation>
     </message>
     <message>
         <source>Create a new address</source>
-        <translation>Criar novo endereço</translation>
+        <translation>创建新地址</translation>
     </message>
     <message>
         <source>&amp;New</source>
-        <translation>&amp;Novo</translation>
+        <translation>新建(&amp;N)</translation>
     </message>
     <message>
         <source>Copy the currently selected address to the system clipboard</source>
-        <translation>Copiar o endereço seleccionado para a área de transferência</translation>
+        <translation>复制当前选中的地址到系统剪贴板</translation>
     </message>
     <message>
         <source>&amp;Copy</source>
-        <translation>&amp;Copiar</translation>
+        <translation>复制(&amp;C)</translation>
     </message>
     <message>
         <source>Delete the currently selected address from the list</source>
-        <translation>Apagar o endereço seleccionado</translation>
+        <translation>从列表中删除选中的地址</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Apagar</translation>
+        <translation>删除(&amp;D)</translation>
     </message>
     <message>
         <source>Export the data in the current tab to a file</source>
-        <translation>Exportar os dados do separador actual para um ficheiro</translation>
+        <translation>导出当前数据到文件</translation>
     </message>
     <message>
         <source>&amp;Export</source>
-        <translation>&amp;Exportar</translation>
+        <translation>导出(&amp;E)</translation>
     </message>
     <message>
         <source>C&amp;lose</source>
-        <translation>&amp;Fechar</translation>
+        <translation>关闭(&amp;C)</translation>
     </message>
     <message>
         <source>Choose the address to send coins to</source>
-        <translation>Escolha o endereço para onde enviar as moedas</translation>
+        <translation>选择发款地址</translation>
     </message>
     <message>
         <source>Choose the address to receive coins with</source>
-        <translation>Escolha o endereço onde deseja receber as moedas</translation>
+        <translation>选择收款地址</translation>
     </message>
     <message>
         <source>C&amp;hoose</source>
-        <translation>E&amp;scolha</translation>
+        <translation>选择(&amp;H)</translation>
     </message>
     <message>
         <source>Sending addresses</source>
-        <translation>Endereços para envio</translation>
+        <translation>正在发送地址</translation>
     </message>
     <message>
         <source>Receiving addresses</source>
-        <translation>Endereços para recepção</translation>
+        <translation>正在接收地址</translation>
     </message>
     <message>
         <source>These are your Dash addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Estes são os endereços Dash para envio de pagamentos. Confirme sempre a quantia e o endereço antes de enviar as moedas.</translation>
+        <translation>这些是你要付款过去的达世币地址。在付款之前，务必要检查金额和收款地址是否正确。</translation>
     </message>
     <message>
         <source>These are your Dash addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Estes são os seus endereços Dash para receber pagamentos. É recomendado que seja usado um novo endereço para cada transacção.</translation>
+        <translation>这些是你用来收款的达世币地址。建议在每次交易时，都使用一个新的收款地址。</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
-        <translation>&amp;Copiar Endereço</translation>
+        <translation>复制地址(&amp;C)</translation>
     </message>
     <message>
         <source>Copy &amp;Label</source>
-        <translation>Copiar &amp;Rótulo</translation>
+        <translation>复制标签(&amp;L)</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Editar</translation>
+        <translation>编辑(&amp;E)</translation>
     </message>
     <message>
         <source>Export Address List</source>
-        <translation>Exportar lista de endereços</translation>
+        <translation>导出地址列表</translation>
     </message>
     <message>
         <source>Comma separated file (*.csv)</source>
-        <translation>Ficheiro separado por vírgulas (*.csv)</translation>
+        <translation>逗号分隔文件 (*.csv)</translation>
     </message>
     <message>
         <source>Exporting Failed</source>
-        <translation>A exportação falhou</translation>
+        <translation>导出失败</translation>
     </message>
     <message>
         <source>There was an error trying to save the address list to %1. Please try again.</source>
-        <translation>Ocorreu um erro ao tentar gravar a lista de endereços para %1. Por favor, tente de novo.</translation>
+        <translation>尝试保存地址列表至%1.时发生错误,请重新执行操作.</translation>
     </message>
 </context>
 <context>
     <name>AddressTableModel</name>
     <message>
         <source>Label</source>
-        <translation>Rótulo</translation>
+        <translation>标签</translation>
     </message>
     <message>
         <source>Address</source>
-        <translation>Endereço</translation>
+        <translation>地址</translation>
     </message>
     <message>
         <source>(no label)</source>
-        <translation>(sem rótulo)</translation>
+        <translation>(没有标签)</translation>
     </message>
 </context>
 <context>
     <name>AskPassphraseDialog</name>
     <message>
         <source>Passphrase Dialog</source>
-        <translation>Diálogo de Palavra Passe</translation>
+        <translation>密码对话框</translation>
     </message>
     <message>
         <source>Enter passphrase</source>
-        <translation>Palavra Passe Actual</translation>
+        <translation>输入密码</translation>
     </message>
     <message>
         <source>New passphrase</source>
-        <translation>Nova Palavra Passe</translation>
+        <translation>新密码</translation>
     </message>
     <message>
         <source>Repeat new passphrase</source>
-        <translation>Repita a Nova Palavra Passe</translation>
+        <translation>重复新密码</translation>
     </message>
     <message>
         <source>Serves to disable the trivial sendmoney when OS account compromised. Provides no real security.</source>
-        <translation>Serve para desactivar o envio de dinheiro quando a conta do SO for comprometida. Não oferece segurança real.</translation>
+        <translation>当OS帐号被盗就禁止发送币。这并不提供真正的安全性。</translation>
     </message>
     <message>
         <source>For anonymization only</source>
-        <translation>Apenas para anonimização</translation>
+        <translation>仅限匿名</translation>
     </message>
     <message>
         <source>Enter the new passphrase to the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;ten or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
-        <translation>Insira a nova palavra-passe para a carteira.&lt;br/&gt;Por favor use uma palavra-chave com &lt;b&gt;10 ou mais caracteres aleatórios&lt;/b&gt;, ou &lt;b&gt;8 ou mais palavras&lt;/b&gt;.</translation>
+        <translation>输入钱包的新密码。&lt;br/&gt;使用的密码请至少包含&lt;b&gt;10个以上随机字符&lt;/&gt;，或者是&lt;b&gt;8个以上的单词&lt;/b&gt;。</translation>
     </message>
     <message>
         <source>Encrypt wallet</source>
-        <translation>Cifrar carteira</translation>
+        <translation>加密钱包</translation>
     </message>
     <message>
         <source>This operation needs your wallet passphrase to unlock the wallet.</source>
-        <translation>Esta operação necessita da sua palavra-passe para desbloquear a carteira.</translation>
+        <translation>此操作需要您首先使用密码解锁该钱包。</translation>
     </message>
     <message>
         <source>Unlock wallet</source>
-        <translation>Desbloquear carteira</translation>
+        <translation>解锁钱包</translation>
     </message>
     <message>
         <source>This operation needs your wallet passphrase to decrypt the wallet.</source>
-        <translation>Esta operação necessita da sua palavra-passe para decifrar a carteira.</translation>
+        <translation>该操作需要您首先使用密码解密钱包。</translation>
     </message>
     <message>
         <source>Decrypt wallet</source>
-        <translation>Decifrar carteira</translation>
+        <translation>解密钱包</translation>
     </message>
     <message>
         <source>Change passphrase</source>
-        <translation>Mudar palavra-passe</translation>
+        <translation>更改密码</translation>
     </message>
     <message>
         <source>Enter the old and new passphrase to the wallet.</source>
-        <translation>Insira a antiga e a nova palavra-passe para a carteira.</translation>
+        <translation>请输入该钱包的旧密码与新密码。</translation>
     </message>
     <message>
         <source>Confirm wallet encryption</source>
-        <translation>Confirme cifra da carteira</translation>
+        <translation>确认加密钱包</translation>
     </message>
     <message>
         <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR DASH&lt;/b&gt;!</source>
-        <translation>Atenção: Se cifrar a carteira e perder a palavra-passe, irá &lt;b&gt;PERDER TODAS AS SUAS MOEDAS DASH&lt;/b&gt;!</translation>
+        <translation>警告:如果把钱包加​​密后又忘记密码，你就会从此&lt;b&gt;失去所有的达世币了&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
-        <translation>Tem a certeza que quer cifrar a carteira?</translation>
+        <translation>您确定需要为钱包加密吗？</translation>
     </message>
     <message>
         <source>Wallet encrypted</source>
-        <translation>Carteira cifrada</translation>
+        <translation>钱包已加密</translation>
     </message>
     <message>
-        <source>Dash will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your dashs from being stolen by malware infecting your computer.</source>
-        <translation>O cliente Dash irá fechar para finalizar o processo de cifra. Lembre-se que cifrar a sua carteira não consegue proteger totalmente as suas dashs contra roubos feitos por malware presente no seu computador.</translation>
+        <source>Dash will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your xsns from being stolen by malware infecting your computer.</source>
+        <translation>达世币软体现在要关闭，以完成加密过程。请注意，加密钱包不能完全防止恶意软件入侵你的电脑盗取你的达世币。</translation>
     </message>
     <message>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
-        <translation>IMPORTANTE: Quaisquer copias de segurança feitas anteriormente à sua carteira, devem ser substituídas pelo novo ficheiro cifrado. Por razões de segurança, as copias de segurança anteriores não cifradas ficarão obsoletas assim que comece a usar a nova carteira cifrada,</translation>
+        <translation>重要提示：您以前备份的钱包文件应该替换成最新生成的加密钱包文件（重新备份）。从安全性上考虑，您以前备份的未加密的钱包文件，在您使用新的加密钱包后将无效，请重新备份。</translation>
     </message>
     <message>
         <source>Wallet encryption failed</source>
-        <translation>Cifra da carteira falhou</translation>
+        <translation>钱包加密失败</translation>
     </message>
     <message>
         <source>Wallet encryption failed due to an internal error. Your wallet was not encrypted.</source>
-        <translation>A cifra da carteira falhou devido a um erro interno. A sua carteira não foi cifrada.</translation>
+        <translation>由于一个本地错误，加密钱包的操作已经失败。您的钱包没能被加密。</translation>
     </message>
     <message>
         <source>The supplied passphrases do not match.</source>
-        <translation>As palavras-passe fornecidas não coincidem.</translation>
+        <translation>密码不匹配。</translation>
     </message>
     <message>
         <source>Wallet unlock failed</source>
-        <translation>O desbloqueio da carteira falhou</translation>
+        <translation>钱包解锁失败</translation>
     </message>
     <message>
         <source>The passphrase entered for the wallet decryption was incorrect.</source>
-        <translation>A palavra-passe fornecida para decifrar a carteira está incorrecta.</translation>
+        <translation>用于解密钱包的密码不正确。</translation>
     </message>
     <message>
         <source>Wallet decryption failed</source>
-        <translation>Decifra da carteira falhou</translation>
+        <translation>钱包解密失败。</translation>
     </message>
     <message>
         <source>Wallet passphrase was successfully changed.</source>
-        <translation>A palavra-passe foi alterada com sucesso.</translation>
+        <translation>修改钱包密码成功。</translation>
     </message>
     <message>
         <source>Warning: The Caps Lock key is on!</source>
-        <translation>Atenção: O Caps Lock está activo!</translation>
+        <translation>警告：大写锁定键处于打开状态！</translation>
     </message>
 </context>
 <context>
     <name>BitcoinGUI</name>
     <message>
         <source>Dash Core</source>
-        <translation>Dash Core</translation>
+        <translation>达世币核心</translation>
     </message>
     <message>
         <source>Wallet</source>
-        <translation>Carteira</translation>
+        <translation>钱包</translation>
     </message>
     <message>
         <source>Node</source>
-        <translation>Nó</translation>
+        <translation>节点</translation>
     </message>
     <message>
         <source>&amp;Overview</source>
-        <translation>&amp;Global</translation>
+        <translation>概况(&amp;O)</translation>
     </message>
     <message>
         <source>Show general overview of wallet</source>
-        <translation>Mostrar visão global da carteira</translation>
+        <translation>显示钱包概况</translation>
     </message>
     <message>
         <source>&amp;Send</source>
-        <translation>&amp;Enviar</translation>
+        <translation>发送(&amp;S)</translation>
     </message>
     <message>
         <source>Send coins to a Dash address</source>
-        <translation>Enviar moedas para um endereço Dash</translation>
+        <translation>发送币至达世币地址</translation>
     </message>
     <message>
         <source>&amp;Receive</source>
-        <translation>&amp;Receber</translation>
+        <translation>接收(&amp;R)</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and dash: URIs)</source>
-        <translation>Solicitar pagamentos (gera códigos QR e dash: URIs)</translation>
+        <source>Request payments (generates QR codes and xsn: URIs)</source>
+        <translation>请求付款(生成二维码和达世币付款协议的URI)</translation>
     </message>
     <message>
         <source>&amp;Transactions</source>
-        <translation>&amp;Transacções</translation>
+        <translation>交易记录(&amp;T)</translation>
     </message>
     <message>
         <source>Browse transaction history</source>
-        <translation>Visualiza histórico de transacções</translation>
+        <translation>查看交易历史</translation>
     </message>
     <message>
         <source>E&amp;xit</source>
-        <translation>&amp;Sair</translation>
+        <translation>退出(&amp;X)</translation>
     </message>
     <message>
         <source>Quit application</source>
-        <translation>Sair da aplicação</translation>
+        <translation>退出程序</translation>
     </message>
     <message>
         <source>&amp;About Dash Core</source>
-        <translation>&amp;Acerca do Dash Core</translation>
+        <translation>&amp;关于达世币核心</translation>
     </message>
     <message>
         <source>Show information about Dash Core</source>
-        <translation>Mostra informação acerca do Dash Core</translation>
+        <translation>显示关于达世币核心信息</translation>
     </message>
     <message>
         <source>About &amp;Qt</source>
-        <translation>Acerca do &amp;Qt</translation>
+        <translation>关于 &amp;Qt</translation>
     </message>
     <message>
         <source>Show information about Qt</source>
-        <translation>Mostra informação acerca do Qt</translation>
+        <translation>显示 Qt 相关信息</translation>
     </message>
     <message>
         <source>&amp;Options...</source>
-        <translation>&amp;Opções...</translation>
+        <translation>选项(&amp;O)...</translation>
     </message>
     <message>
         <source>Modify configuration options for Dash</source>
-        <translation>Modificar opções de configuração do Dash</translation>
+        <translation>修改达世币配置选项</translation>
     </message>
     <message>
         <source>&amp;Show / Hide</source>
-        <translation>&amp;Mostar / Esconder</translation>
+        <translation>显示 / 隐藏(&amp;S)</translation>
     </message>
     <message>
         <source>Show or hide the main Window</source>
-        <translation>Mostrar ou esconder a Janela principal</translation>
+        <translation>显示或隐藏主窗口</translation>
     </message>
     <message>
         <source>&amp;Encrypt Wallet...</source>
-        <translation>&amp;Cifrar Carteira</translation>
+        <translation>加密钱包(&amp;E)...</translation>
     </message>
     <message>
         <source>Encrypt the private keys that belong to your wallet</source>
-        <translation>Cifra as chaves privadas que pertencem à sua carteira</translation>
+        <translation>对钱包中的私钥加密</translation>
     </message>
     <message>
         <source>&amp;Backup Wallet...</source>
-        <translation>Copia de &amp;Segurança</translation>
+        <translation>备份钱包(&amp;B)...</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
-        <translation>Criar copia de segurança da carteira noutra localização</translation>
+        <translation>备份钱包到其他文件夹</translation>
     </message>
     <message>
         <source>&amp;Change Passphrase...</source>
-        <translation>&amp;Mudar Palavra-passe</translation>
+        <translation>更改密码(&amp;C)...</translation>
     </message>
     <message>
         <source>Change the passphrase used for wallet encryption</source>
-        <translation>Mudar a palavra-passe usada na cifra da carteira</translation>
+        <translation>更改钱包加密口令</translation>
     </message>
     <message>
         <source>&amp;Unlock Wallet...</source>
-        <translation>&amp;Desbloquear Carteira</translation>
+        <translation>解锁钱包(&amp;U)</translation>
     </message>
     <message>
         <source>Unlock wallet</source>
-        <translation>Desbloquear carteira</translation>
+        <translation>解锁钱包</translation>
     </message>
     <message>
         <source>&amp;Lock Wallet</source>
-        <translation>&amp;Bloquear Carteira</translation>
+        <translation>锁定钱包(&amp;L)</translation>
     </message>
     <message>
         <source>Sign &amp;message...</source>
-        <translation>&amp;Assinar Mensagem</translation>
+        <translation>消息签名(&amp;M)...</translation>
     </message>
     <message>
         <source>Sign messages with your Dash addresses to prove you own them</source>
-        <translation>Assine mensagens com os seus endereços Dash para provar que são seus</translation>
+        <translation>用达世币地址签署讯息来证明地址是你的</translation>
     </message>
     <message>
         <source>&amp;Verify message...</source>
-        <translation>&amp;Verificar Mensagem</translation>
+        <translation>验证消息(&amp;V)...</translation>
     </message>
     <message>
         <source>Verify messages to ensure they were signed with specified Dash addresses</source>
-        <translation>Verifica mensagens para garantir que foram assinadas com um endereço Dash específico</translation>
+        <translation>验证讯息是用来确定讯息是用指定的达世币地址签署的</translation>
     </message>
     <message>
         <source>&amp;Information</source>
-        <translation>&amp;Informação</translation>
+        <translation>信息(&amp;I)</translation>
     </message>
     <message>
         <source>Show diagnostic information</source>
-        <translation>Mostra informação de diagnóstico</translation>
+        <translation>显示诊断信息</translation>
     </message>
     <message>
         <source>&amp;Debug console</source>
-        <translation>Consola de &amp;Depuração</translation>
+        <translation>Debug控制台(&amp;D)</translation>
     </message>
     <message>
         <source>Open debugging console</source>
-        <translation>Abrir consola de depuração</translation>
+        <translation>打开调试控制台</translation>
     </message>
     <message>
         <source>&amp;Network Monitor</source>
-        <translation>Monitor de &amp;Rede</translation>
+        <translation>网络流量监控(&amp;N)</translation>
     </message>
     <message>
         <source>Show network monitor</source>
-        <translation>Mostrar monitor de rede</translation>
+        <translation>显示网络流量监控</translation>
     </message>
     <message>
         <source>&amp;Peers list</source>
-        <translation>Lista de &amp;Nós</translation>
+        <translation>&amp;节点列表</translation>
     </message>
     <message>
         <source>Show peers info</source>
-        <translation>Mostrar informação dos nós</translation>
+        <translation>显示节点信息</translation>
     </message>
     <message>
         <source>Wallet &amp;Repair</source>
-        <translation>&amp;Reparar Carteira</translation>
+        <translation>钱包&amp;修复</translation>
     </message>
     <message>
         <source>Show wallet repair options</source>
-        <translation>Mostra as opções de reparação da carteira</translation>
+        <translation>显示钱包修复选项</translation>
     </message>
     <message>
         <source>Open &amp;Configuration File</source>
-        <translation>Abrir Ficheiro de &amp;Configuração</translation>
+        <translation>打开 &amp;配置文件</translation>
     </message>
     <message>
         <source>Open configuration file</source>
-        <translation>Abrir ficheiro de configuração</translation>
+        <translation>打开配置文件</translation>
     </message>
     <message>
         <source>Show Automatic &amp;Backups</source>
-        <translation>Mostrar &amp;Cópias Automáticas</translation>
+        <translation>显示自动备份&amp;</translation>
     </message>
     <message>
         <source>Show automatically created wallet backups</source>
-        <translation>Mostra as cópias automáticas da carteira</translation>
+        <translation>显示自动创建的钱包备份</translation>
     </message>
     <message>
         <source>&amp;Sending addresses...</source>
-        <translation>&amp;Endereços de envio...</translation>
+        <translation>&amp;付款地址 </translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
-        <translation>Mostra a lista de endereços de envio e respectivos rótulos</translation>
+        <translation>显示用过的发送地址和标签的列表</translation>
     </message>
     <message>
         <source>&amp;Receiving addresses...</source>
-        <translation>Endereços de &amp;Recepção...</translation>
+        <translation>&amp;收款地址</translation>
     </message>
     <message>
         <source>Show the list of used receiving addresses and labels</source>
-        <translation>Mostra a lista de endereços de recepção e respectivos rótulos</translation>
+        <translation>显示用过的接收地址和标签的列表</translation>
     </message>
     <message>
         <source>Open &amp;URI...</source>
-        <translation>Abrir &amp;URI...</translation>
+        <translation>打开 &amp;URI...</translation>
     </message>
     <message>
-        <source>Open a dash: URI or payment request</source>
-        <translation>Abre um dash: URI ou solicitação de pagamento</translation>
+        <source>Open a xsn: URI or payment request</source>
+        <translation>打开达世币：网页或付款请求</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
-        <translation>Opções de linha de &amp;comandos</translation>
+        <translation>&amp;命令行 选项</translation>
     </message>
     <message>
         <source>Dash Core client</source>
-        <translation>Cliente Dash Core</translation>
+        <translation>达世币核心客户端</translation>
     </message>
     <message numerus="yes">
         <source>Processed %n blocks of transaction history.</source>
-        <translation><numerusform>%n bloco do histórico de transacções processado.</numerusform><numerusform>%n blocos do histórico de transacções processados.</numerusform></translation>
+        <translation><numerusform>已处理了%n个区块的交易记录.</numerusform></translation>
+    </message>
+    <message>
+        <source>Synchronizing additional data: %p%</source>
+        <translation>正在同步附加数据:%p%</translation>
     </message>
     <message>
         <source>Show the Dash Core help message to get a list with possible Dash command-line options</source>
-        <translation>Mostra a mensagem de ajuda do Dash Core para obter a lista com as possíveis opções de linha de comandos</translation>
+        <translation>打开达世币核心帮助信息取得可使用的命令行列表</translation>
     </message>
     <message>
         <source>&amp;File</source>
-        <translation>&amp;Ficheiro</translation>
+        <translation>文件(&amp;F)</translation>
     </message>
     <message>
         <source>&amp;Settings</source>
-        <translation>&amp;Definições</translation>
+        <translation>设置(&amp;S)</translation>
     </message>
     <message>
         <source>&amp;Tools</source>
-        <translation>&amp;Ferramentas</translation>
+        <translation>工具(&amp;T)</translation>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation>&amp;Ajuda</translation>
+        <translation>帮助(&amp;H)</translation>
     </message>
     <message>
         <source>Tabs toolbar</source>
-        <translation>Barra de ferramentas</translation>
+        <translation>分页工具栏</translation>
     </message>
     <message numerus="yes">
         <source>%n active connection(s) to Dash network</source>
-        <translation><numerusform>%n ligação activa à rede Dash</numerusform><numerusform>%n ligações activas à rede Dash</numerusform></translation>
+        <translation><numerusform>%n 已连接至达世币网络</numerusform></translation>
     </message>
     <message>
         <source>Synchronizing with network...</source>
-        <translation>A sincronizar com a rede...</translation>
+        <translation>正在与网络同步...</translation>
     </message>
     <message>
         <source>Importing blocks from disk...</source>
-        <translation>A carregar blocos do disco...</translation>
+        <translation>正在从磁盘导入数据块...</translation>
     </message>
     <message>
         <source>Reindexing blocks on disk...</source>
-        <translation>A indexar blocos no disco...</translation>
+        <translation>正在为数据块建立索引...</translation>
     </message>
     <message>
         <source>No block source available...</source>
-        <translation>Nenhuma fonte de blocos disponível...</translation>
+        <translation>沒有可用的区块来源...</translation>
     </message>
     <message>
         <source>Up to date</source>
-        <translation>Actualizado</translation>
+        <translation>已是最新</translation>
     </message>
     <message numerus="yes">
         <source>%n hour(s)</source>
-        <translation><numerusform>%n hora</numerusform><numerusform>%n horas</numerusform></translation>
+        <translation><numerusform>%n小时</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>%n day(s)</source>
-        <translation><numerusform>%n dia</numerusform><numerusform>%n dias</numerusform></translation>
+        <translation><numerusform>%n天</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>%n week(s)</source>
-        <translation><numerusform>%n semana</numerusform><numerusform>%n semanas</numerusform></translation>
+        <translation><numerusform>%n周</numerusform></translation>
     </message>
     <message>
         <source>%1 and %2</source>
-        <translation>%1 e %2</translation>
+        <translation>%1 和 %2</translation>
     </message>
     <message numerus="yes">
         <source>%n year(s)</source>
-        <translation><numerusform>%n ano</numerusform><numerusform>%n anos</numerusform></translation>
+        <translation><numerusform>%n年</numerusform></translation>
     </message>
     <message>
         <source>%1 behind</source>
-        <translation>%1 de atraso</translation>
+        <translation>落后 %1 </translation>
     </message>
     <message>
         <source>Catching up...</source>
-        <translation>A alcançar</translation>
+        <translation>更新中...</translation>
     </message>
     <message>
         <source>Last received block was generated %1 ago.</source>
-        <translation>O último bloco recebido foi gerado à %1.</translation>
+        <translation>最新收到的区块产生于 %1。</translation>
     </message>
     <message>
         <source>Transactions after this will not yet be visible.</source>
-        <translation>Transacções posteriores ainda não serão visíveis.</translation>
+        <translation>在此之后的交易尚未可见</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation>Erro</translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>Warning</source>
-        <translation>Aviso</translation>
+        <translation>警告</translation>
     </message>
     <message>
         <source>Information</source>
-        <translation>Informação</translation>
+        <translation>信息</translation>
     </message>
     <message>
         <source>Sent transaction</source>
-        <translation>Transacção enviada</translation>
+        <translation>发送交易</translation>
     </message>
     <message>
         <source>Incoming transaction</source>
-        <translation>Transacção recebida</translation>
+        <translation>流入交易</translation>
     </message>
     <message>
         <source>Date: %1
@@ -568,566 +572,567 @@ Amount: %2
 Type: %3
 Address: %4
 </source>
-        <translation>Data: %1
-Quantia: %2
-Tipo: %3
-Endereço: %4
+        <translation>日期: %1
+金额: %2
+类别: %3
+地址: %4
 </translation>
     </message>
     <message>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt;</source>
-        <translation>A carteira encontra-se &lt;b&gt;cifrada&lt;/b&gt; e actualmente &lt;b&gt;desbloqueada&lt;/b&gt;</translation>
+        <translation>钱包已被&lt;b&gt;加密&lt;/b&gt;，当前为&lt;b&gt;解锁&lt;/b&gt;状态</translation>
     </message>
     <message>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt; for anonimization only</source>
-        <translation>A carteira encontra-se &lt;b&gt;cifrada&lt;/b&gt; e actualmente &lt;b&gt;desbloqueada&lt;/b&gt; somente para anonimização</translation>
+        <translation>钱包已被&lt;b&gt;加密&lt;/b&gt;并且目前处于&lt;b&gt;解锁&lt;/b&gt;状态以进行匿名处理</translation>
     </message>
     <message>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
-        <translation>A carteira encontra-se &lt;b&gt;cifrada&lt;/b&gt; e actualmente &lt;b&gt;bloqueada&lt;/b&gt;</translation>
+        <translation>钱包已被&lt;b&gt;加密&lt;/b&gt;，当前为&lt;b&gt;锁定&lt;/b&gt;状态</translation>
     </message>
 </context>
 <context>
     <name>ClientModel</name>
     <message>
         <source>Total: %1 (DS compatible: %2 / Enabled: %3)</source>
-        <translation>Total: %1 (Compatível DS: %2 / Ligados: %3)</translation>
+        <translation>总量:%1 (匿名发送兼容: %2 / 可用: %3)</translation>
     </message>
     <message>
         <source>Network Alert</source>
-        <translation>Alerta de Rede</translation>
+        <translation>网络警报</translation>
     </message>
 </context>
 <context>
     <name>CoinControlDialog</name>
     <message>
         <source>Quantity:</source>
-        <translation>Quantidade:</translation>
+        <translation>总量：</translation>
     </message>
     <message>
         <source>Bytes:</source>
-        <translation>Bytes:</translation>
+        <translation>字节：</translation>
     </message>
     <message>
         <source>Amount:</source>
-        <translation>Quantia:</translation>
+        <translation>金额：</translation>
     </message>
     <message>
         <source>Priority:</source>
-        <translation>Prioridade:</translation>
+        <translation>优先级：</translation>
     </message>
     <message>
         <source>Fee:</source>
-        <translation>Taxa:</translation>
+        <translation>费用：</translation>
     </message>
     <message>
         <source>Coin Selection</source>
-        <translation>Selecção de Moedas</translation>
+        <translation>选择币</translation>
     </message>
     <message>
         <source>Dust:</source>
-        <translation>Poeira:</translation>
+        <translation>零钱:</translation>
     </message>
     <message>
         <source>After Fee:</source>
-        <translation>Com taxa:</translation>
+        <translation>加上交易费用后:</translation>
     </message>
     <message>
         <source>Change:</source>
-        <translation>Troco:</translation>
+        <translation>变更 : </translation>
     </message>
     <message>
         <source>(un)select all</source>
-        <translation>(des)seleccionar todos</translation>
+        <translation>(不)全选</translation>
     </message>
     <message>
         <source>Tree mode</source>
-        <translation>Vista em árvore</translation>
+        <translation>树状模式</translation>
     </message>
     <message>
         <source>List mode</source>
-        <translation>Vista em lista</translation>
+        <translation>列表模式</translation>
     </message>
     <message>
         <source>(1 locked)</source>
-        <translation>(1 bloqueada)</translation>
+        <translation>(1 锁定)</translation>
     </message>
     <message>
         <source>Amount</source>
-        <translation>Quantia</translation>
+        <translation>金额</translation>
     </message>
     <message>
         <source>Received with label</source>
-        <translation>Recebido com rótulo</translation>
+        <translation>收款标签</translation>
     </message>
     <message>
         <source>Received with address</source>
-        <translation>Recebido com endereço</translation>
+        <translation>收款地址</translation>
     </message>
     <message>
         <source>DS Rounds</source>
-        <translation>Rondas DS</translation>
+        <translation>匿名发送循环</translation>
     </message>
     <message>
         <source>Date</source>
-        <translation>Data</translation>
+        <translation>日期</translation>
     </message>
     <message>
         <source>Confirmations</source>
-        <translation>Confirmações</translation>
+        <translation>确认</translation>
     </message>
     <message>
         <source>Confirmed</source>
-        <translation>Confirmada</translation>
+        <translation>已确认</translation>
     </message>
     <message>
         <source>Priority</source>
-        <translation>Prioridade</translation>
+        <translation>优先级</translation>
     </message>
     <message>
         <source>Copy address</source>
-        <translation>Copiar endereço</translation>
+        <translation>复制地址</translation>
     </message>
     <message>
         <source>Copy label</source>
-        <translation>Copiar rótulo</translation>
+        <translation>复制标签</translation>
     </message>
     <message>
         <source>Copy amount</source>
-        <translation>Copiar quantia</translation>
+        <translation>复制金额</translation>
     </message>
     <message>
         <source>Copy transaction ID</source>
-        <translation>Copiar ID de transacção</translation>
+        <translation>复制交易编号</translation>
     </message>
     <message>
         <source>Lock unspent</source>
-        <translation>Bloquear não gasto</translation>
+        <translation>锁定未花费</translation>
     </message>
     <message>
         <source>Unlock unspent</source>
-        <translation>Desbloquear não gasto</translation>
+        <translation>解锁未花费</translation>
     </message>
     <message>
         <source>Copy quantity</source>
-        <translation>Copiar quantidade</translation>
+        <translation>复制金额</translation>
     </message>
     <message>
         <source>Copy fee</source>
-        <translation>Copiar taxa</translation>
+        <translation>复制交易费</translation>
     </message>
     <message>
         <source>Copy after fee</source>
-        <translation>Copiar depois da taxa</translation>
+        <translation>复制含交易费的金额</translation>
     </message>
     <message>
         <source>Copy bytes</source>
-        <translation>Copiar bytes</translation>
+        <translation>复制字节</translation>
     </message>
     <message>
         <source>Copy priority</source>
-        <translation>Copiar prioridade</translation>
+        <translation>复制优先级</translation>
     </message>
     <message>
         <source>Copy dust</source>
-        <translation>Copiar poeira</translation>
+        <translation>复制零钱金额</translation>
     </message>
     <message>
         <source>Copy change</source>
-        <translation>Copiar troco</translation>
+        <translation>复制零钱</translation>
     </message>
     <message>
         <source>Non-anonymized input selected. &lt;b&gt;Darksend will be disabled.&lt;/b&gt;&lt;br&gt;&lt;br&gt;If you still want to use Darksend, please deselect all non-nonymized inputs first and then check Darksend checkbox again.</source>
-        <translation>Entrada não anonimizada seleccionada. &lt;b&gt;O Darksend será desactivado.&lt;/b&gt;&lt;br&gt;&lt;br&gt;Se deseja usar o Darksend, por favor desseleccione primeiro todas as entradas não anonimizadas e em seguida volte a marcar a opção Darksend.</translation>
+        <translation>已选择非匿名输入. &lt;b&gt;匿名发送将会被禁用.&lt;/ b&gt;&lt;br&gt; &lt;br&gt;如果你仍然想使用匿名发送功能,请先取消所选的非匿名输入,然后再勾选匿名发送.</translation>
     </message>
     <message>
         <source>highest</source>
-        <translation>a-mais-alta</translation>
+        <translation>最高</translation>
     </message>
     <message>
         <source>higher</source>
-        <translation>mais-alta</translation>
+        <translation>更高</translation>
     </message>
     <message>
         <source>high</source>
-        <translation>alta</translation>
+        <translation>高</translation>
     </message>
     <message>
         <source>medium-high</source>
-        <translation>média-alta</translation>
+        <translation>中高</translation>
     </message>
     <message>
         <source>Can vary +/- %1 duff(s) per input.</source>
-        <translation>Pode variar +/- %1 duff(s) por input</translation>
+        <translation>每笔输入可能会有 +/- %1个duff(s)的偏差.</translation>
     </message>
     <message>
         <source>n/a</source>
-        <translation>n/d</translation>
+        <translation>n/a</translation>
     </message>
     <message>
         <source>medium</source>
-        <translation>média</translation>
+        <translation>中等</translation>
     </message>
     <message>
         <source>low-medium</source>
-        <translation>média-baixa</translation>
+        <translation>中低</translation>
     </message>
     <message>
         <source>low</source>
-        <translation>baixa</translation>
+        <translation>低</translation>
     </message>
     <message>
         <source>lower</source>
-        <translation>mais-baixa</translation>
+        <translation>更低</translation>
     </message>
     <message>
         <source>lowest</source>
-        <translation>a-mais-baixa</translation>
+        <translation>最低</translation>
     </message>
     <message>
         <source>(%1 locked)</source>
-        <translation>(%1 bloqueado)</translation>
+        <translation>(%1 锁定)</translation>
     </message>
     <message>
         <source>none</source>
-        <translation>nenhuma</translation>
+        <translation>无</translation>
     </message>
     <message>
         <source>yes</source>
-        <translation>sim</translation>
+        <translation>是</translation>
     </message>
     <message>
         <source>no</source>
-        <translation>não</translation>
+        <translation>否</translation>
     </message>
     <message>
         <source>This label turns red, if the transaction size is greater than 1000 bytes.</source>
-        <translation>Este rótulo fica vermelho se o tamanho da transacção exceder 1000 bytes.</translation>
+        <translation>如果这笔交易大于1000字节，标签会变成红色。</translation>
     </message>
     <message>
         <source>This means a fee of at least %1 per kB is required.</source>
-        <translation>Isto significa que é necessária uma taxa de pelo menos %1 por kB.</translation>
+        <translation>这意味着将对交易收取 %1/千字节 的交易费。</translation>
     </message>
     <message>
         <source>Can vary +/- 1 byte per input.</source>
-        <translation>Pode variar +/- 1 byte por entrada.</translation>
+        <translation>每笔输入可能会有 正负1字节的偏差。</translation>
     </message>
     <message>
         <source>Transactions with higher priority are more likely to get included into a block.</source>
-        <translation>Transacções com prioridade mais alta tem uma maior probabilidade de ser incluídas num bloco.</translation>
+        <translation>交易的优先级越高，被矿工收入数据块的速度也越快。</translation>
     </message>
     <message>
         <source>This label turns red, if the priority is smaller than "medium".</source>
-        <translation>Este rótulo fica vermelho se a prioridade for inferior a "média".</translation>
+        <translation>如果优先级小于"中位数" ，标签将变成红色。</translation>
     </message>
     <message>
         <source>This label turns red, if any recipient receives an amount smaller than %1.</source>
-        <translation>Este rótulo fica vermelho se algum destinatário receber uma quantia inferior a %1.</translation>
+        <translation>如果收款地址收到小于%1的比特币，标签将变成红色。</translation>
     </message>
     <message>
         <source>(no label)</source>
-        <translation>(sem rótulo)</translation>
+        <translation>(没有标签)</translation>
     </message>
     <message>
         <source>change from %1 (%2)</source>
-        <translation>troco de %1 (%2)</translation>
+        <translation>来自%1的零钱 (%2)</translation>
     </message>
     <message>
         <source>(change)</source>
-        <translation>(troco)</translation>
+        <translation>(零钱)</translation>
     </message>
 </context>
 <context>
     <name>DarksendConfig</name>
     <message>
         <source>Configure Darksend</source>
-        <translation>Configurar Darksend</translation>
+        <translation>配置匿名发送</translation>
     </message>
     <message>
         <source>Basic Privacy</source>
-        <translation>Privacidade Básica</translation>
+        <translation>基本隐私</translation>
     </message>
     <message>
         <source>High Privacy</source>
-        <translation>Privacidade Alta</translation>
+        <translation>高度隐私</translation>
     </message>
     <message>
         <source>Maximum Privacy</source>
-        <translation>Privacidade Máxima</translation>
+        <translation>最大隐私</translation>
     </message>
     <message>
         <source>Please select a privacy level.</source>
-        <translation>Por favor seleccione um nível de privacidade.</translation>
+        <translation>请选择隐私等级。</translation>
     </message>
     <message>
         <source>Use 2 separate masternodes to mix funds up to 1000 DASH</source>
-        <translation>Usar 2 masternodes distintos para misturar os fundos até 1000DRK</translation>
+        <translation>使用2个独立的主节点混合资金最多1000达世币</translation>
     </message>
     <message>
         <source>Use 8 separate masternodes to mix funds up to 1000 DASH</source>
-        <translation>Usar 8 masternodes distintos para misturar os fundos até 1000DRK</translation>
+        <translation>使用8个独立的主节点混合资金最多1000达世币</translation>
     </message>
     <message>
         <source>Use 16 separate masternodes</source>
-        <translation>Usar 16 masternodes</translation>
+        <translation>使用16个独立主节点</translation>
     </message>
     <message>
         <source>This option is the quickest and will cost about ~0.025 DASH to anonymize 1000 DASH</source>
-        <translation>Esta opção é a mais rápida e irá custar cerca de ~0.025 DASH para anonimizar 1000 DASH</translation>
+        <translation>此选项为最快速度，需要支付0.025达世币/1000达世币的匿名处理费用。</translation>
     </message>
     <message>
         <source>This option is moderately fast and will cost about 0.05 DASH to anonymize 1000 DASH</source>
-        <translation>Esta opção é relativamente rápida e irá custar cerca de ~0.05 DASH para anonimizar 1000 DASH</translation>
+        <translation>此选项为一般速度，需要支付0.05达世币/1000达世币的匿名处理费用。</translation>
     </message>
     <message>
         <source>0.1 DASH per 1000 DASH you anonymize.</source>
-        <translation>0.1 DASH por cada 1000 DASH a anonimizar.</translation>
+        <translation>0.1达世币/1000达世币的匿名处理费用。</translation>
     </message>
     <message>
         <source>This is the slowest and most secure option. Using maximum anonymity will cost</source>
-        <translation>Esta é a opção mais lenta e mais segura. Usando anonimização máxima irá custar</translation>
+        <translation>此选项提供最慢速度但是却最安全的匿名服务。最多匿名化将花费</translation>
     </message>
     <message>
         <source>Darksend Configuration</source>
-        <translation>Configuração Darksend</translation>
+        <translation>匿名发送配置</translation>
     </message>
     <message>
         <source>Darksend was successfully set to basic (%1 and 2 rounds). You can change this at any time by opening Dash's configuration screen.</source>
-        <translation>Darksend foi colocado com sucesso no modo básico (%1 e 2 voltas). Pode mudar esta definição em qualquer altura abrindo o ecrã de configuração Dash.</translation>
+        <translation>匿名发送已成功设置为一般(%1到2次循环)。可以通过打开达世币配置窗口来随时修改。</translation>
     </message>
     <message>
         <source>Darksend was successfully set to high (%1 and 8 rounds). You can change this at any time by opening Dash's configuration screen.</source>
-        <translation>Darksend foi colocado com sucesso no modo alto (%1 e 8 voltas). Pode mudar esta definição em qualquer altura abrindo o ecrã de configuração Dash.</translation>
+        <translation>匿名发送已成功设置为高(%1到8次循环)。可以通过打开达世币配置窗口来随时修改。</translation>
     </message>
     <message>
         <source>Darksend was successfully set to maximum (%1 and 16 rounds). You can change this at any time by opening Dash's configuration screen.</source>
-        <translation>Darksend foi colocado com sucesso no modo máximo (%1 e 16 voltas). Pode mudar esta definição em qualquer altura abrindo o ecrã de configuração Dash.</translation>
+        <translation>匿名发送已成功设置为最高(%1到16次循环)。可以通过打开达世币配置窗口来随时修改。</translation>
     </message>
 </context>
 <context>
     <name>EditAddressDialog</name>
     <message>
         <source>Edit Address</source>
-        <translation>Editar Endereço</translation>
+        <translation>编辑地址</translation>
     </message>
     <message>
         <source>&amp;Label</source>
-        <translation>&amp;Rótulo</translation>
+        <translation>标签(&amp;L)</translation>
     </message>
     <message>
         <source>The label associated with this address list entry</source>
-        <translation>Rótulo associado com este item da lista de endereços</translation>
+        <translation>与此地址相关的标签项</translation>
     </message>
     <message>
         <source>&amp;Address</source>
-        <translation>&amp;Endereço</translation>
+        <translation>地址(&amp;A)</translation>
     </message>
     <message>
         <source>The address associated with this address list entry. This can only be modified for sending addresses.</source>
-        <translation>O endereço associado com este item da lista. Isto só pode ser modificado para endereços de envio.</translation>
+        <translation>该地址已与地址列表中的条目关联，只能被发送地址修改。</translation>
     </message>
     <message>
         <source>New receiving address</source>
-        <translation>Novo endereço de recepção</translation>
+        <translation>新建接收地址</translation>
     </message>
     <message>
         <source>New sending address</source>
-        <translation>Novo endereço de envio</translation>
+        <translation>新建发送地址</translation>
     </message>
     <message>
         <source>Edit receiving address</source>
-        <translation>Editar endereço de recepção</translation>
+        <translation>编辑接收地址</translation>
     </message>
     <message>
         <source>Edit sending address</source>
-        <translation>Editar endereço de envio</translation>
+        <translation>编辑发送地址</translation>
     </message>
     <message>
         <source>The entered address "%1" is not a valid Dash address.</source>
-        <translation>O endereço introduzido "%1" não é um endereço Dash válido.</translation>
+        <translation>输入的地址"%1"不是有效的达世币地址。</translation>
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
-        <translation>O endereço introduzido "%1" já se encontra no livro de endereços.</translation>
+        <translation>输入的地址“%1”已经存在于地址簿中。</translation>
     </message>
     <message>
         <source>Could not unlock wallet.</source>
-        <translation>Não foi possível desbloquear carteira.</translation>
+        <translation>无法解锁钱包</translation>
     </message>
     <message>
         <source>New key generation failed.</source>
-        <translation>Falhou a geração de nova chave.</translation>
+        <translation>新的密钥生成失败。</translation>
     </message>
 </context>
 <context>
     <name>FreespaceChecker</name>
     <message>
         <source>A new data directory will be created.</source>
-        <translation>Será criada uma nova pasta de dados.</translation>
+        <translation>一个新的数据目录将被创建。</translation>
     </message>
     <message>
         <source>name</source>
-        <translation>nome</translation>
+        <translation>名称</translation>
     </message>
     <message>
         <source>Directory already exists. Add %1 if you intend to create a new directory here.</source>
-        <translation>A pasta já existe. Adicione %1 se desejar criar uma nova pasta aqui.</translation>
+        <translation>目录已存在。如果您打算在这里创建一个新目录，添加 %1。</translation>
     </message>
     <message>
         <source>Path already exists, and is not a directory.</source>
-        <translation>O caminho já existe e não é uma pasta.</translation>
+        <translation>路径已存在，并且不是一个目录。</translation>
     </message>
     <message>
         <source>Cannot create data directory here.</source>
-        <translation>Não é possível criar a pasta de dados aqui.</translation>
+        <translation>无法在此创建数据目录。</translation>
     </message>
 </context>
 <context>
     <name>HelpMessageDialog</name>
     <message>
         <source>Dash Core</source>
-        <translation>Dash Core</translation>
+        <translation>达世币核心</translation>
     </message>
     <message>
         <source>version</source>
-        <translation>versão</translation>
+        <translation>版本</translation>
     </message>
     <message>
         <source>(%1-bit)</source>
-        <translation>(%1-bit)</translation>
+        <translation>(%1 位)</translation>
     </message>
     <message>
         <source>About Dash Core</source>
-        <translation>Acerca do Dash Core</translation>
+        <translation>关于 达世币核心</translation>
     </message>
     <message>
         <source>Command-line options</source>
-        <translation>Opções de linha de comandos</translation>
+        <translation>命令行选项</translation>
     </message>
     <message>
         <source>Usage:</source>
-        <translation>Utilização:</translation>
+        <translation>使用：</translation>
     </message>
     <message>
         <source>command-line options</source>
-        <translation>opções de linha de comandos</translation>
+        <translation>命令行选项</translation>
     </message>
     <message>
         <source>UI options</source>
-        <translation>Opções do interface</translation>
+        <translation>UI选项</translation>
     </message>
     <message>
         <source>Choose data directory on startup (default: 0)</source>
-        <translation>Escolher pasta de dados no arranque (omissão: 0)</translation>
+        <translation>在启动时选择数据目录（默认：0）</translation>
     </message>
     <message>
         <source>Set language, for example "de_DE" (default: system locale)</source>
-        <translation>Defina a linguagem, por exemplo "pt-PT" (omissão: linguagem do sistema)</translation>
+        <translation>设置语言, 例如“zh-TW”（默认为系统语言）</translation>
     </message>
     <message>
         <source>Start minimized</source>
-        <translation>Arrancar minimizado</translation>
+        <translation>启动时最小化
+</translation>
     </message>
     <message>
         <source>Set SSL root certificates for payment request (default: -system-)</source>
-        <translation>Definir certificados de raiz SSL para solicitações de pagamento (omissão: -sistema-)</translation>
+        <translation>设置SSL根证书的付款请求(默认：-系统-)</translation>
     </message>
     <message>
         <source>Show splash screen on startup (default: 1)</source>
-        <translation>Mostrar ecrã de boas vindas no arranque (omissão: 1)</translation>
+        <translation>启动时显示版权页 (缺省: 1)</translation>
     </message>
 </context>
 <context>
     <name>Intro</name>
     <message>
         <source>Welcome</source>
-        <translation>Bem-vindo</translation>
+        <translation>欢迎</translation>
     </message>
     <message>
         <source>Welcome to Dash Core.</source>
-        <translation>Bem-vindo ao Dash Core.</translation>
+        <translation>欢迎来到达世币核心。</translation>
     </message>
     <message>
         <source>As this is the first time the program is launched, you can choose where Dash Core will store its data.</source>
-        <translation>Como esta é a primeira vez que o programa é executado, pode escolher onde o cliente Dash Core irá guardar os seus dados.</translation>
+        <translation>此次为第一次程序启动，你可以选择储存达世币核心数据的路径。</translation>
     </message>
     <message>
         <source>Dash Core will download and store a copy of the Dash block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
-        <translation>O cliente Dash Core irá descarregar e guardar uma copia da cadeia de blocos Dash. Pelo menos %1GB de dados serão guardados nesta pasta e irá aumentar com o tempo. A carteira também ficará guardada nesta pasta.</translation>
+        <translation>达世币核心将会下载并存储达世币数据链。至少有%1GB的数据会保存到此路径下，并且随着时间增长。钱包文件也将存储到此路径下。</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
-        <translation>Usar a pasta de dados por omissão</translation>
+        <translation>使用默认的数据目录</translation>
     </message>
     <message>
         <source>Use a custom data directory:</source>
-        <translation>Usar uma pasta de dados personalizada</translation>
+        <translation>使用自定义的数据目录：</translation>
     </message>
     <message>
         <source>Dash Core</source>
-        <translation>Dash Core</translation>
+        <translation>达世币核心</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" cannot be created.</source>
-        <translation>Erro: A pasta especificada "%1" não pode ser criada.</translation>
+        <translation>错误:指定的数据目录“%1”无法被创建.</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation>Erro</translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>%1 GB of free space available</source>
-        <translation>%1 GB de espaço livre disponível</translation>
+        <translation>%1GB的可用空间</translation>
     </message>
     <message>
         <source>(of %1 GB needed)</source>
-        <translation>(de %1 GB necessários)</translation>
+        <translation>(需要 %1 GB的空间)</translation>
     </message>
 </context>
 <context>
     <name>OpenURIDialog</name>
     <message>
         <source>Open URI</source>
-        <translation>Abrir URI</translation>
+        <translation>打开 URI</translation>
     </message>
     <message>
         <source>Open payment request from URI or file</source>
-        <translation>Abrir solicitação de pagamento a partir de um URI ou ficheiro</translation>
+        <translation>打开来自URI或文件的付款请求 </translation>
     </message>
     <message>
         <source>URI:</source>
-        <translation>URI:</translation>
+        <translation>URI: </translation>
     </message>
     <message>
         <source>Select payment request file</source>
-        <translation>Seleccionar ficheiro de solicitação de pagamento</translation>
+        <translation>选择付款请求文件 </translation>
     </message>
     <message>
         <source>Select payment request file to open</source>
-        <translation>Seleccionar ficheiro de solicitação de pagamento para abrir</translation>
+        <translation>选择需要打开的付款请求文件 </translation>
     </message>
 </context>
 <context>
     <name>OptionsDialog</name>
     <message>
         <source>Options</source>
-        <translation>Opções</translation>
+        <translation>选项</translation>
     </message>
     <message>
         <source>&amp;Main</source>
-        <translation>&amp;Geral</translation>
+        <translation>主要(&amp;M)</translation>
     </message>
     <message>
         <source>Automatically start Dash after logging in to the system.</source>
-        <translation>Executar automaticamente o cliente Dash quando entrar no sistema.</translation>
+        <translation>登录系统后自动启动达世币程序</translation>
     </message>
     <message>
         <source>&amp;Start Dash on system login</source>
-        <translation>&amp;Iniciar o cliente Dash ao entrar no sistema</translation>
+        <translation>&amp;系统登录时启动达世币程序</translation>
     </message>
     <message>
         <source>Size of &amp;database cache</source>
-        <translation>Tamanho da &amp;cache de dados</translation>
+        <translation>数据库缓存大小(&amp;D)</translation>
     </message>
     <message>
         <source>MB</source>
@@ -1135,853 +1140,845 @@ Endereço: %4
     </message>
     <message>
         <source>Number of script &amp;verification threads</source>
-        <translation>Número de processos de &amp;verificação de scripts</translation>
+        <translation>脚本&amp;验证 进程数 </translation>
     </message>
     <message>
         <source>(0 = auto, &lt;0 = leave that many cores free)</source>
-        <translation>(0 = auto, &lt;0 = deixar este número de cores livres)</translation>
+        <translation>(0 = 自动, &lt;0 = 离开很多免费的核心)</translation>
     </message>
     <message>
         <source>Darksend rounds to use</source>
-        <translation>Número de voltas Darksend a usar</translation>
+        <translation>匿名传送的循环次数</translation>
     </message>
     <message>
         <source>This amount acts as a threshold to turn off Darksend once it's reached.</source>
-        <translation>Esta quantia actua como um limite, a partir do qual o Darksend é desligado.</translation>
+        <translation>此金额为关闭匿名发送的极限.</translation>
     </message>
     <message>
         <source>Amount of Dash to keep anonymized</source>
-        <translation>Quantia de Dash a manter anonimizada</translation>
+        <translation>保持匿名化的达世币数</translation>
     </message>
     <message>
         <source>W&amp;allet</source>
-        <translation>C&amp;arteira</translation>
+        <translation>&amp;钱包</translation>
     </message>
     <message>
         <source>If you disable the spending of unconfirmed change, the change from a transaction&lt;br/&gt;cannot be used until that transaction has at least one confirmation.&lt;br/&gt;This also affects how your balance is computed.</source>
-        <translation>Se desabilitar a funcionalidade de gastar o troco não confirmado, este troco &lt;br/&gt; não poderá ser usado até que a transacção tenha pelo menos uma confirmação. &lt;br/&gt; Isto também afecta a maneira como o seu saldo é calculado.</translation>
+        <translation>如果禁用未确认的零钱，则零钱&lt;br/&gt;至少需要1个确认&lt;br/&gt;才能使用。同时账户余额显示会受到影响。</translation>
     </message>
     <message>
         <source>Accept connections from outside</source>
-        <translation>Aceitar ligações do exterior</translation>
+        <translation>接受来自外部的链接</translation>
     </message>
     <message>
         <source>Allow incoming connections</source>
-        <translation>Aceitar ligações de entrada</translation>
+        <translation>接受外来链接</translation>
     </message>
     <message>
         <source>Connect to the Dash network through a SOCKS5 proxy.</source>
-        <translation>Efectuar a ligação à rede Dash através de um proxy SOCKS5.</translation>
+        <translation>通过SOCKS5代理链接达世币网络。</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
-        <translation>&amp;Ligar através de um proxy SOCKS5 (proxy por omissão)</translation>
+        <translation>&amp;通过 SOCKS5 代理连接 (默认代理):</translation>
     </message>
     <message>
         <source>Expert</source>
-        <translation>Avançado</translation>
+        <translation>专家</translation>
     </message>
     <message>
         <source>This setting determines the amount of individual masternodes that an input will be anonymized through.&lt;br/&gt;More rounds of anonymization gives a higher degree of privacy, but also costs more in fees.</source>
-        <translation>Esta opção determina o número de masternodes pelos quais uma entrada será anonimizada. &lt;br/&gt; Mais rondas de anonimização fornecem um maior grau de privacidade, mas também tem um custo mais elevado em taxas.</translation>
+        <translation>此选项用以调整进行匿名化操作的主节点数量。&lt;br/&gt;越多的循环次数提供了更高级别的匿名性，同时也会花费更多的手续费</translation>
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
-        <translation>Se deve mostrar as opções de coin control.</translation>
+        <translation>是否需要交易源地址控制功能。</translation>
     </message>
     <message>
         <source>Enable coin &amp;control features</source>
-        <translation>Activar opções coin &amp;control</translation>
+        <translation>启动货币 &amp;控制功能</translation>
     </message>
     <message>
         <source>&amp;Spend unconfirmed change</source>
-        <translation>&amp;Gastar troco não confirmado</translation>
+        <translation>&amp;选择未经确认的花费</translation>
     </message>
     <message>
         <source>&amp;Network</source>
-        <translation>&amp;Rede</translation>
+        <translation>网络(&amp;N)</translation>
     </message>
     <message>
         <source>Automatically open the Dash client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Abrir automaticamente a porta do cliente Dash no router. Isto só funciona quando o seu router suporta UPnP e este está activo.</translation>
+        <translation>自动对路由器打开达世币客户端端口。此项只在路由器支持UPnP时有效。</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
-        <translation>Mapear porta usando &amp;UPnP</translation>
+        <translation>使用 &amp;UPnP 映射端口</translation>
     </message>
     <message>
         <source>Proxy &amp;IP:</source>
-        <translation>IP do proxy</translation>
+        <translation>代理服务器 &amp;IP：</translation>
     </message>
     <message>
         <source>IP address of the proxy (e.g. IPv4: 127.0.0.1 / IPv6: ::1)</source>
-        <translation>Endereço IP do proxy (ex. IPv4: 127.0.0.1 / IPv6: ::1)</translation>
+        <translation>代理的 IP 地址 (例如 IPv4: 127.0.0.1 / IPv6: ::1)</translation>
     </message>
     <message>
         <source>&amp;Port:</source>
-        <translation>&amp;Porta:</translation>
+        <translation>端口(&amp;P)：</translation>
     </message>
     <message>
         <source>Port of the proxy (e.g. 9050)</source>
-        <translation>Porta do servidor proxy (ex. 9050)</translation>
+        <translation>代理端口（例如 9050）</translation>
     </message>
     <message>
         <source>&amp;Window</source>
-        <translation>&amp;Janela</translation>
+        <translation>窗口(&amp;W)</translation>
     </message>
     <message>
         <source>Show only a tray icon after minimizing the window.</source>
-        <translation>Somente mostrar o ícone no tabuleiro após minimizar aplicação</translation>
+        <translation>最小化窗口后仅显示托盘图标</translation>
     </message>
     <message>
         <source>&amp;Minimize to the tray instead of the taskbar</source>
-        <translation>&amp;Minimizar para o tabuleiro, em vez da barra de tarefas</translation>
+        <translation>最小化到托盘(&amp;M)</translation>
     </message>
     <message>
         <source>Minimize instead of exit the application when the window is closed. When this option is enabled, the application will be closed only after selecting Quit in the menu.</source>
-        <translation>Minimizar em vez de fechar ao sair da aplicação. Quando esta opção está activada, a aplicação só será fechada quando seleccionar Sair no menu. </translation>
+        <translation>当窗口关闭时程序最小化而不是退出。当使用该选项时，程序只能通过在菜单中选择退出来关闭</translation>
     </message>
     <message>
         <source>M&amp;inimize on close</source>
-        <translation>M&amp;inimizar ao fechar</translation>
+        <translation>单击关闭按钮最小化(&amp;I)</translation>
     </message>
     <message>
         <source>&amp;Display</source>
-        <translation>&amp;Interface</translation>
+        <translation>显示(&amp;D)</translation>
     </message>
     <message>
         <source>User Interface &amp;language:</source>
-        <translation>&amp;Linguagem do interface:</translation>
+        <translation>用户界面语言(&amp;L)：</translation>
     </message>
     <message>
         <source>The user interface language can be set here. This setting will take effect after restarting Dash.</source>
-        <translation>A linguagem do interface pode ser definida aqui. Esta definição terá efeito depois de reiniciar a aplicação.</translation>
+        <translation>用户界面语言在这里设置。在重启达世币程序后生效。</translation>
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/projects/p/dash/</source>
-        <translation>Linguagem não encontrada ou tradução incompleta? Ajude a traduzir aqui:
-https://www.transifex.com/projects/p/dash/</translation>
+https://www.transifex.com/projects/p/xsn/</source>
+        <translation>缺少相关语言或翻译不完整? 请到这里协助翻译:
+https://www.transifex.com/projects/p/xsn/</translation>
     </message>
     <message>
         <source>User Interface Theme:</source>
-        <translation>Tema do interface:</translation>
+        <translation>用户界面主题:</translation>
     </message>
     <message>
         <source>&amp;Unit to show amounts in:</source>
-        <translation>&amp;Unidade por omissão usada para mostrar as quantias:</translation>
+        <translation>&amp;达世币金额单位：</translation>
     </message>
     <message>
         <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
-        <translation>Escolha a unidade subdivisão por omissão para mostrar na interface e no envio de moedas.</translation>
+        <translation>选择达世币单位。</translation>
     </message>
     <message>
         <source>Decimal digits</source>
-        <translation>Dígitos decimais</translation>
+        <translation>小数位数</translation>
     </message>
     <message>
         <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
-        <translation>URLs de terceiros (ex. explorador de blocos) que aparecem no separador de transacções como itens do menu de contexto. %s no URL é substituído pelo hash da transacção. URLs múltiplos são separados pela barra vertical |.</translation>
+        <translation>出现在交易的选项卡的上下文菜单项的第三方网址 (例如：区块链接查询) 。 %s的URL被替换为交易哈希。多个的URL需要竖线 | 分隔。</translation>
     </message>
     <message>
         <source>Third party transaction URLs</source>
-        <translation>URLs de transacções de terceiros</translation>
+        <translation>第三方交易网址</translation>
     </message>
     <message>
         <source>Active command-line options that override above options:</source>
-        <translation>Opções activas de linha de comandos que sobrescrevem as opções acima:</translation>
+        <translation>有效的命令行参数覆盖上述选项:</translation>
     </message>
     <message>
         <source>Reset all client options to default.</source>
-        <translation>Reiniciar todas as opções do cliente para os valores por omissão.</translation>
+        <translation>恢复客户端的缺省设置</translation>
     </message>
     <message>
         <source>&amp;Reset Options</source>
-        <translation>&amp;Reiniciar Opções</translation>
+        <translation>恢复缺省设置(&amp;R)</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation>确定(&amp;O)</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation>取消(&amp;C)</translation>
     </message>
     <message>
         <source>default</source>
-        <translation>omissão</translation>
+        <translation>默认</translation>
     </message>
     <message>
         <source>none</source>
-        <translation>nenhum</translation>
+        <translation>无</translation>
     </message>
     <message>
         <source>Confirm options reset</source>
-        <translation>Confirme reinicialização das opções</translation>
+        <translation>确认恢复缺省设置</translation>
     </message>
     <message>
         <source>Client restart required to activate changes.</source>
-        <translation>Para activar as alterações é necessário reiniciar o cliente.</translation>
+        <translation>更改生效需要重启客户端。</translation>
     </message>
     <message>
         <source>Client will be shutdown, do you want to proceed?</source>
-        <translation>O cliente será fechado, deseja continuar?</translation>
+        <translation>客户端即将关闭，确定继续吗？</translation>
     </message>
     <message>
         <source>This change would require a client restart.</source>
-        <translation>Esta alteração necessita que o cliente seja reiniciado.</translation>
+        <translation>此更改需要重启客户端。</translation>
     </message>
     <message>
         <source>The supplied proxy address is invalid.</source>
-        <translation>O endereço proxy fornecido é inválido.</translation>
+        <translation>提供的代理服务器地址无效。</translation>
     </message>
 </context>
 <context>
     <name>OverviewPage</name>
     <message>
         <source>Form</source>
-        <translation>De</translation>
+        <translation>表单</translation>
     </message>
     <message>
         <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Dash network after a connection is established, but this process has not completed yet.</source>
-        <translation>A informação mostrada pode estar desactualizada. A sua carteira sincroniza automaticamente com a rede Dash assim que for estabelecida uma ligação, mas este processo ainda não terminou.</translation>
+        <translation>显示信息也许已过期。当与达世币网络连接后钱包程序会自动同步，但现在还未完成。</translation>
     </message>
     <message>
         <source>Available:</source>
-        <translation>Disponível:</translation>
+        <translation>可使用的余额：</translation>
     </message>
     <message>
         <source>Your current spendable balance</source>
-        <translation>O seu saldo disponível</translation>
+        <translation>您当前可使用的余额</translation>
     </message>
     <message>
         <source>Pending:</source>
-        <translation>Pendente:</translation>
+        <translation>等待中的余额：</translation>
     </message>
     <message>
         <source>Total of transactions that have yet to be confirmed, and do not yet count toward the spendable balance</source>
-        <translation>Total de transacções que ainda não foram confirmadas e não contam para o saldo disponível</translation>
+        <translation>尚未确认的交易总额，未计入当前余额</translation>
     </message>
     <message>
         <source>Immature:</source>
-        <translation>Imaturo:</translation>
+        <translation>未成熟的：</translation>
     </message>
     <message>
         <source>Mined balance that has not yet matured</source>
-        <translation>Saldo minado que ainda não atingiu a maturidade</translation>
+        <translation>尚未成熟的挖矿收入余额</translation>
     </message>
     <message>
         <source>Balances</source>
-        <translation>Saldos</translation>
+        <translation>余额</translation>
     </message>
     <message>
         <source>Unconfirmed transactions to watch-only addresses</source>
-        <translation>Transações não confirmadas para endereços somente de visualização</translation>
+        <translation>仅限查看的还未交易确认的地址</translation>
     </message>
     <message>
         <source>Mined balance in watch-only addresses that has not yet matured</source>
-        <translation>Saldo minado que ainda não atingiu a maturidade em endereços somente de visualização</translation>
+        <translation>仅限查看的地址中尚未成熟的挖矿收入余额</translation>
     </message>
     <message>
         <source>Total:</source>
-        <translation>Total:</translation>
+        <translation>总额：</translation>
     </message>
     <message>
         <source>Your current total balance</source>
-        <translation>O seu saldo total</translation>
+        <translation>您当前的总余额</translation>
     </message>
     <message>
         <source>Current total balance in watch-only addresses</source>
-        <translation>Saldo total em endereços somente de visualização</translation>
+        <translation>仅限查看地址中的当前总余额</translation>
     </message>
     <message>
         <source>Watch-only:</source>
-        <translation>Somente de visualização:</translation>
+        <translation>仅限查看:</translation>
     </message>
     <message>
         <source>Your current balance in watch-only addresses</source>
-        <translation>O seu saldo actual em endereços somente de visualização</translation>
+        <translation>仅限查看地址中的当前余额</translation>
     </message>
     <message>
         <source>Spendable:</source>
-        <translation>Disponível:</translation>
+        <translation>可花费:</translation>
     </message>
     <message>
         <source>Status:</source>
-        <translation>Estado:</translation>
+        <translation>状态:</translation>
     </message>
     <message>
         <source>Enabled/Disabled</source>
-        <translation>Activado/Desactivado</translation>
+        <translation>打开/关闭</translation>
     </message>
     <message>
         <source>Completion:</source>
-        <translation>Progresso:</translation>
+        <translation>完成度:</translation>
     </message>
     <message>
         <source>Darksend Balance:</source>
-        <translation>Saldo Darksend:</translation>
+        <translation>匿名传送余额:</translation>
     </message>
     <message>
         <source>Amount and Rounds:</source>
-        <translation>Quantia e Voltas:</translation>
+        <translation>数量与循环次数:</translation>
     </message>
     <message>
         <source>0 DASH / 0 Rounds</source>
-        <translation>0 DASH / 0 Voltas</translation>
+        <translation>0 达世币 / 0 循环数</translation>
     </message>
     <message>
         <source>Submitted Denom:</source>
-        <translation>Denominação submetida:</translation>
+        <translation>提交的面额:</translation>
     </message>
     <message>
         <source>n/a</source>
-        <translation>n/d</translation>
+        <translation>n/a</translation>
     </message>
     <message>
         <source>Darksend</source>
-        <translation>Darksend</translation>
+        <translation>匿名发送</translation>
     </message>
     <message>
         <source>Recent transactions</source>
-        <translation>Transacções recentes</translation>
+        <translation>最近交易</translation>
     </message>
     <message>
         <source>Start/Stop Mixing</source>
-        <translation>Iniciar/Parar Mistura</translation>
+        <translation>开始/关闭 混合</translation>
     </message>
     <message>
         <source>The denominations you submitted to the Masternode.&lt;br&gt;To mix, other users must submit the exact same denominations.</source>
-        <translation>As denominações que foram submetidas para o Masternode.&lt;br&gt;Para misturar, outros utilizadores terão que submeter denominações iguais.</translation>
+        <translation>您向主节点所提交的用以面额化混合的DASH,&lt;br&gt;当其他用户提交相同的面额化DASH数量时,将开始混合.</translation>
     </message>
     <message>
         <source>(Last Message)</source>
-        <translation>(Última Mensagem)</translation>
+        <translation>(最近一次信息)</translation>
     </message>
     <message>
         <source>Try to manually submit a Darksend request.</source>
-        <translation>Tentar submeter um pedido Darksend manualmente.</translation>
+        <translation>尝试手动提交一次匿名化请求</translation>
     </message>
     <message>
         <source>Try Mix</source>
-        <translation>Tentar Mistura</translation>
+        <translation>尝试混合</translation>
     </message>
     <message>
         <source>Reset the current status of Darksend (can interrupt Darksend if it's in the process of Mixing, which can cost you money!)</source>
-        <translation>Reinicia o estado actual Darksend (pode interromper o Darksend mesmo quando em processo de Mistura, o que pode ter custos!)</translation>
+        <translation>重置目前匿名状态(此操作可能会影响您目前正在执行的混合过程，并且产生费用!)</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation>Reiniciar</translation>
+        <translation>重置</translation>
     </message>
     <message>
         <source>out of sync</source>
-        <translation>fora de sincronia</translation>
+        <translation>数据同步中</translation>
     </message>
     <message>
         <source>Disabled</source>
-        <translation>Desactivado</translation>
+        <translation>关闭</translation>
     </message>
     <message>
         <source>Start Darksend Mixing</source>
-        <translation>Iniciar Mistura Darksend</translation>
+        <translation>开始匿名化混合</translation>
     </message>
     <message>
         <source>Stop Darksend Mixing</source>
-        <translation>Parar Mistura Darksend</translation>
+        <translation>关闭匿名化混合</translation>
     </message>
     <message>
         <source>No inputs detected</source>
-        <translation>Nenhuma entrada detectada</translation>
+        <translation>未检测到输入</translation>
     </message>
     <message numerus="yes">
         <source>%n Rounds</source>
-        <translation><numerusform>%n volta</numerusform><numerusform>%n voltas</numerusform></translation>
+        <translation><numerusform>%n 次循环</numerusform></translation>
     </message>
     <message>
         <source>Not enough compatible inputs to anonymize &lt;span style='color:red;'&gt;%1&lt;/span&gt;,&lt;br&gt;will anonymize &lt;span style='color:red;'&gt;%2&lt;/span&gt; instead</source>
-        <translation>Número insuficiente de entradas para anonimizar &lt;span style='color:red;'&gt;%1&lt;/span&gt;,&lt;br/&gt;a anonimizar &lt;span style='color:red;'&gt;%2&lt;/span&gt; em alternativa</translation>
+        <translation>没有足够相容的输入来进行匿名处理&lt;span style='color:red;'&gt;%1&lt;/span&gt;,&lt;br&gt;将匿名处理 &lt;span style='color:red;'&gt;%2&lt;/span&gt; 作为代替</translation>
     </message>
     <message>
         <source>Overall progress</source>
-        <translation>Progresso Geral</translation>
+        <translation>总体进度</translation>
     </message>
     <message>
         <source>Denominated</source>
-        <translation>Denominado</translation>
+        <translation>已面额化的</translation>
     </message>
     <message>
         <source>Anonymized</source>
-        <translation>Anonimizado</translation>
-    </message>
-    <message numerus="yes">
-        <source>Denominated inputs have %5 of %n rounds on average</source>
-        <translation><numerusform>Entradas denominadas tem %5 de %n volta em média</numerusform><numerusform>Entradas denominadas tem %5 de %n voltas em média</numerusform></translation>
+        <translation>已匿名处理的</translation>
     </message>
     <message>
         <source>Found enough compatible inputs to anonymize %1</source>
-        <translation>Encontradas entradas suficientes para anonimizar %1</translation>
+        <translation>找到足够的相容的输入进行匿名处理 %1</translation>
     </message>
     <message>
         <source>Mixed</source>
-        <translation>Misturado</translation>
+        <translation>混淆的</translation>
     </message>
     <message>
         <source>Enabled</source>
-        <translation>Activado</translation>
+        <translation>打开</translation>
     </message>
     <message>
         <source>Last Darksend message:
 </source>
-        <translation>Última mensagem Darksend:
+        <translation>最后一次匿名信息:
 </translation>
     </message>
     <message>
         <source>N/A</source>
-        <translation>N/D</translation>
+        <translation>不可用</translation>
     </message>
     <message>
         <source>Darksend was successfully reset.</source>
-        <translation>Darksend foi reposto com sucesso.</translation>
-    </message>
-    <message>
-        <source>If you don't want to see internal Darksend fees/transactions select "Most Common" as Type on the "Transactions" tab.</source>
-        <translation>Se não deseja visualizar as taxas/transacções internas Darksend seleccione "Mais Comuns" como Tipo no separador "Transacções"</translation>
+        <translation>匿名化被成功重置。</translation>
     </message>
     <message>
         <source>Darksend requires at least %1 to use.</source>
-        <translation>Darksend necessita de pelo menos %1 para ser usado.</translation>
+        <translation>匿名化要求至少 %1 以使用</translation>
     </message>
     <message>
         <source>Wallet is locked and user declined to unlock. Disabling Darksend.</source>
-        <translation>A carteira está bloqueada e o utilizador recusou o desbloqueamento. A desactivar Darksend.</translation>
+        <translation>钱包已锁定需要用户解锁。 正在关闭匿名化。</translation>
     </message>
 </context>
 <context>
     <name>PaymentServer</name>
     <message>
         <source>Payment request error</source>
-        <translation>Erro na solicitação de pagamento</translation>
+        <translation>支付请求出错</translation>
     </message>
     <message>
-        <source>Cannot start dash: click-to-pay handler</source>
-        <translation>Não é possível iniciar o dash: click-to-pay handler</translation>
+        <source>Cannot start xsn: click-to-pay handler</source>
+        <translation>无法启动达世币程序：click-to-pay handler</translation>
     </message>
     <message>
         <source>URI handling</source>
-        <translation>Manipulação de URI</translation>
+        <translation>URI 处理</translation>
     </message>
     <message>
         <source>Payment request fetch URL is invalid: %1</source>
-        <translation>URL de solicitação de pagamento é inválido: %1</translation>
+        <translation>付款请求URI链接非法: %1</translation>
     </message>
     <message>
         <source>Payment request file handling</source>
-        <translation>Manipulação de ficheiros de solicitação de pagamento</translation>
+        <translation>付款请求文件处理 </translation>
     </message>
     <message>
         <source>Invalid payment address %1</source>
-        <translation>Endereço de pagamento inválido %1</translation>
+        <translation>无效的付款地址 %1</translation>
     </message>
     <message>
         <source>URI cannot be parsed! This can be caused by an invalid Dash address or malformed URI parameters.</source>
-        <translation>O URI não pode ser carregado! Isto pode ser causado por um endereço Dash inválido ou parâmetros do URI incorrectos.</translation>
+        <translation>链接不能被解析! 原因可能是无效的达世币地址或输入的链接有错。</translation>
     </message>
     <message>
         <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
-        <translation>O ficheiro de solicitação de pagamento não pode ser aberto ou processado! Isto pode ser causado por um ficheiro de solicitação de pagamento inválido.</translation>
+        <translation>付款请求文件不能读取! 这可能是个无效的付款请求文件.</translation>
     </message>
     <message>
         <source>Payment request rejected</source>
-        <translation>Solicitação de pagamento rejeitada</translation>
+        <translation>付款请求被拒绝</translation>
     </message>
     <message>
         <source>Payment request network doesn't match client network.</source>
-        <translation>A rede da solicitação de pagamento não corresponde à rede do cliente.</translation>
+        <translation>付款请求网络与客户端网络不符.</translation>
     </message>
     <message>
         <source>Payment request has expired.</source>
-        <translation>A solicitação de pagamento expirou.</translation>
+        <translation>支付请求已过期.</translation>
     </message>
     <message>
         <source>Payment request is not initialized.</source>
-        <translation>A solicitação de pagamento não está inicializada.</translation>
+        <translation>付款请求没有完成初始化.</translation>
     </message>
     <message>
         <source>Unverified payment requests to custom payment scripts are unsupported.</source>
-        <translation>Solicitações de pagamento não verificadas para scripts de pagamento personalizados não são suportadas.</translation>
+        <translation>不支持到自定义付款脚本的未验证付款请求。</translation>
     </message>
     <message>
         <source>Requested payment amount of %1 is too small (considered dust).</source>
-        <translation>A quantia %1 para solicitação de pagamento é demasiado pequena (considerada poeira)</translation>
+        <translation>请求支付的金额 %1 太小（就像尘埃）。</translation>
     </message>
     <message>
         <source>Refund from %1</source>
-        <translation>Devolução de %1</translation>
+        <translation>退款来自 %1</translation>
     </message>
     <message>
         <source>Payment request %1 is too large (%2 bytes, allowed %3 bytes).</source>
-        <translation>A solicitação de pagamento %1 é demasiado grande (%2 bytes, permitido %3 bytes).</translation>
+        <translation>付款请求 %1 过大 (%2 位,上限 %3 位).</translation>
     </message>
     <message>
         <source>Payment request DoS protection</source>
-        <translation>Protecção DoS à solicitação de pagamento</translation>
+        <translation>支付请求的Dos保护</translation>
     </message>
     <message>
         <source>Error communicating with %1: %2</source>
-        <translation>Erro de comunicação com %1: %2</translation>
+        <translation>%1: %2 通讯出错</translation>
     </message>
     <message>
         <source>Payment request cannot be parsed!</source>
-        <translation>A solicitação de pagamento não pode ser carregada!</translation>
+        <translation>支付请求不能被解析!</translation>
     </message>
     <message>
         <source>Bad response from server %1</source>
-        <translation>Resposta inválida do servidor %1</translation>
+        <translation>来自 %1 服务器的错误响应</translation>
     </message>
     <message>
         <source>Network request error</source>
-        <translation>Erro no pedido à rede</translation>
+        <translation>网络请求出错</translation>
     </message>
     <message>
         <source>Payment acknowledged</source>
-        <translation>Pagamento confirmado</translation>
+        <translation>支付已到账</translation>
     </message>
 </context>
 <context>
     <name>PeerTableModel</name>
     <message>
         <source>Address/Hostname</source>
-        <translation>Endereço/Servidor</translation>
+        <translation>地址/主机名</translation>
     </message>
     <message>
         <source>User Agent</source>
-        <translation>Agente de Usuário</translation>
+        <translation>用户代理</translation>
     </message>
     <message>
         <source>Ping Time</source>
-        <translation>Tempo de Ping</translation>
+        <translation>Ping 时间</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>Amount</source>
-        <translation>Quantia</translation>
+        <translation>金额</translation>
     </message>
     <message>
         <source>Enter a Dash address (e.g. %1)</source>
-        <translation>Insira um endereço Dash (ex. %1)</translation>
+        <translation>输入达世币地址(e.g. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
-        <translation>%1 d</translation>
+        <translation>%1 天</translation>
     </message>
     <message>
         <source>%1 h</source>
-        <translation>%1 h</translation>
+        <translation>%1 小时</translation>
     </message>
     <message>
         <source>%1 m</source>
-        <translation>%1 m</translation>
+        <translation>%1 分钟</translation>
     </message>
     <message>
         <source>%1 s</source>
-        <translation>%1 s</translation>
+        <translation>%1 秒</translation>
     </message>
     <message>
         <source>NETWORK</source>
-        <translation>REDE</translation>
+        <translation>网络</translation>
     </message>
     <message>
         <source>UNKNOWN</source>
-        <translation>DESCONHECIDO</translation>
+        <translation>未知</translation>
     </message>
     <message>
         <source>None</source>
-        <translation>Nenhum</translation>
+        <translation>无</translation>
     </message>
     <message>
         <source>N/A</source>
-        <translation>N/D</translation>
+        <translation>不可用</translation>
     </message>
     <message>
         <source>%1 ms</source>
-        <translation>%1 ms</translation>
+        <translation>%1 毫秒</translation>
     </message>
 </context>
 <context>
     <name>QRImageWidget</name>
     <message>
         <source>&amp;Save Image...</source>
-        <translation>&amp;Salvar Imagem...</translation>
+        <translation>保存图片(&amp;S)...</translation>
     </message>
     <message>
         <source>&amp;Copy Image</source>
-        <translation>&amp;Copiar Imagem</translation>
+        <translation>复制图片(&amp;C)</translation>
     </message>
     <message>
         <source>Save QR Code</source>
-        <translation>Guardar código QR</translation>
+        <translation>保存二维码</translation>
     </message>
     <message>
         <source>PNG Image (*.png)</source>
-        <translation>Imagem PNG (*.png)</translation>
+        <translation>PNG图片(*.png)</translation>
     </message>
 </context>
 <context>
     <name>RPCConsole</name>
     <message>
         <source>Tools window</source>
-        <translation>Janela de ferramentas</translation>
+        <translation>工具窗口</translation>
     </message>
     <message>
         <source>&amp;Information</source>
-        <translation>&amp;Information</translation>
+        <translation>信息(&amp;I)</translation>
     </message>
     <message>
         <source>General</source>
-        <translation>Geral</translation>
+        <translation>常规</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation>Nome</translation>
+        <translation>姓名</translation>
     </message>
     <message>
         <source>Client name</source>
-        <translation>Nome do Cliente</translation>
+        <translation>客户端名称</translation>
     </message>
     <message>
         <source>N/A</source>
-        <translation>N/D</translation>
+        <translation>不可用</translation>
     </message>
     <message>
         <source>Number of connections</source>
-        <translation>Número de ligações</translation>
+        <translation>连接数</translation>
     </message>
     <message>
         <source>Open the Dash debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation>Abrir o ficheiro de registo de depuração Dash a partir da pasta de dados actual. Para grandes ficheiros de registo pode demorar alguns segundos.</translation>
+        <translation>从数据路径打开达世币Debug日志，这个过程可能需要几秒钟。</translation>
     </message>
     <message>
         <source>&amp;Open</source>
-        <translation>&amp;Abrir</translation>
+        <translation>打开(&amp;O)</translation>
     </message>
     <message>
         <source>Startup time</source>
-        <translation>Hora de inicialização</translation>
+        <translation>启动时间</translation>
     </message>
     <message>
         <source>Network</source>
-        <translation>Rede</translation>
+        <translation>网络</translation>
     </message>
     <message>
         <source>Last block time</source>
-        <translation>Data do último bloco</translation>
+        <translation>上一数据块时间</translation>
     </message>
     <message>
         <source>Debug log file</source>
-        <translation>Ficheiro de registo de depuração</translation>
+        <translation>调试日志文件</translation>
     </message>
     <message>
         <source>Using OpenSSL version</source>
-        <translation>A usar versão do OpenSSL</translation>
+        <translation>使用 OpenSSL 版本</translation>
     </message>
     <message>
         <source>Build date</source>
-        <translation>Data de compilação</translation>
+        <translation>创建时间</translation>
     </message>
     <message>
         <source>Current number of blocks</source>
-        <translation>Número actual de blocos</translation>
+        <translation>当前数据块数量</translation>
     </message>
     <message>
         <source>Client version</source>
-        <translation>Versão do Cliente</translation>
+        <translation>客户端版本</translation>
     </message>
     <message>
         <source>Using BerkeleyDB version</source>
-        <translation>A usar a versão do BerkeleyDB</translation>
+        <translation>使用 BerkeleyDB 版本</translation>
     </message>
     <message>
         <source>Block chain</source>
-        <translation>Cadeia de blocos</translation>
+        <translation>数据链</translation>
     </message>
     <message>
         <source>Number of Masternodes</source>
-        <translation>Número de Masternodes</translation>
+        <translation>主节点数量</translation>
     </message>
     <message>
         <source>&amp;Console</source>
-        <translation>&amp;Consola</translation>
+        <translation>控制台(&amp;C)</translation>
     </message>
     <message>
         <source>Clear console</source>
-        <translation>Limpar consola</translation>
+        <translation>清空控制台</translation>
     </message>
     <message>
         <source>&amp;Network Traffic</source>
-        <translation>&amp;Tráfego de Rede</translation>
+        <translation>网络流量(&amp;N)</translation>
     </message>
     <message>
         <source>&amp;Clear</source>
-        <translation>&amp;Limpar</translation>
+        <translation>清除(&amp;C)</translation>
     </message>
     <message>
         <source>Totals</source>
-        <translation>Totais</translation>
+        <translation>总数</translation>
     </message>
     <message>
         <source>Received</source>
-        <translation>Recebido</translation>
+        <translation>接收</translation>
     </message>
     <message>
         <source>Sent</source>
-        <translation>Enviado</translation>
+        <translation>发送</translation>
     </message>
     <message>
         <source>&amp;Peers</source>
-        <translation>&amp;Nós</translation>
+        <translation>&amp;节点</translation>
     </message>
     <message>
         <source>Select a peer to view detailed information.</source>
-        <translation>Seleccione um nó para visualizar informação detalhada.</translation>
+        <translation>选择一个节点查看详细信息.</translation>
     </message>
     <message>
         <source>Direction</source>
-        <translation>Direcção</translation>
+        <translation>方向</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation>Versão</translation>
+        <translation>版本</translation>
     </message>
     <message>
         <source>User Agent</source>
-        <translation>Agente de Usuário</translation>
+        <translation>用户代理</translation>
     </message>
     <message>
         <source>Services</source>
-        <translation>Serviços</translation>
+        <translation>服务</translation>
     </message>
     <message>
         <source>Starting Height</source>
-        <translation>Altura Inicial</translation>
+        <translation>起始高度</translation>
     </message>
     <message>
         <source>Sync Height</source>
-        <translation>Altura de Sincronização</translation>
+        <translation>同步高度</translation>
     </message>
     <message>
         <source>Ban Score</source>
-        <translation>Pontuação para Banir</translation>
+        <translation>禁止得分</translation>
     </message>
     <message>
         <source>Connection Time</source>
-        <translation>Tempo de Ligação</translation>
+        <translation>连接时间</translation>
     </message>
     <message>
         <source>Last Send</source>
-        <translation>Última Enviado</translation>
+        <translation>最近发送</translation>
     </message>
     <message>
         <source>Last Receive</source>
-        <translation>Último Recebido</translation>
+        <translation>最近接收</translation>
     </message>
     <message>
         <source>Bytes Sent</source>
-        <translation>Bytes Enviados</translation>
+        <translation>发送字节</translation>
     </message>
     <message>
         <source>Bytes Received</source>
-        <translation>Bytes Recebidos</translation>
+        <translation>接收字节</translation>
     </message>
     <message>
         <source>Ping Time</source>
-        <translation>Tempo de Ping</translation>
+        <translation>Ping 时间</translation>
     </message>
     <message>
         <source>&amp;Wallet Repair</source>
-        <translation>&amp;Reparar Carteira</translation>
+        <translation>&amp;钱包修复</translation>
     </message>
     <message>
         <source>Salvage wallet</source>
-        <translation>Recuperar Carteira</translation>
+        <translation>抢救钱包</translation>
     </message>
     <message>
         <source>Rescan blockchain files</source>
-        <translation>Reprocessar ficheiros da cadeia de blocos</translation>
+        <translation>重新扫描区块链文件</translation>
     </message>
     <message>
         <source>Recover transactions 1</source>
-        <translation>Recuperar transacções 1</translation>
+        <translation>恢复交易 1</translation>
     </message>
     <message>
         <source>Recover transactions 2</source>
-        <translation>Recuperar transacções 2</translation>
+        <translation>恢复交易 2</translation>
     </message>
     <message>
         <source>Upgrade wallet format</source>
-        <translation>Actualizar o formato da carteira</translation>
+        <translation>升级钱包版本</translation>
     </message>
     <message>
         <source>The buttons below will restart the wallet with command-line options to repair the wallet, fix issues with corrupt blockhain files or missing/obsolete transactions.</source>
-        <translation>Os botões abaixo irão reiniciar a carteira passando parâmetros da linha de comandos para reparar a carteira, corrigir problemas com a cadeia de blocos ou com transacções em falta ou obsoletas.</translation>
+        <translation>下面的按钮将重新启动钱包并使用命令行选项进行修复,解决损坏或丢失的区块链文件/超时的交易问题.</translation>
     </message>
     <message>
         <source>-salvagewallet: Attempt to recover private keys from a corrupt wallet.dat.</source>
-        <translation>-salvagewallet: Tenta recuperar as chaves privadas a partir de um ficheiro wallet.dat corrompido.</translation>
+        <translation>-salvagewallet: 尝试从已损坏的钱包文件中找回私钥.</translation>
     </message>
     <message>
         <source>-rescan: Rescan the block chain for missing wallet transactions.</source>
-        <translation>-rescan: Examina novamente a cadeia de blocos para encontrar transacções inexistentes na carteira</translation>
+        <translation>-rescan: 对丢失的钱包交易重新扫描数据块链.</translation>
     </message>
     <message>
         <source>-zapwallettxes=1: Recover transactions from blockchain (keep meta-data, e.g. account owner).</source>
-        <translation>-zapwallettxes=1: Recupera transacções da cadeia de blocos (mantendo os meta-dados, ex. dono da conta)</translation>
+        <translation>-zapwallettxes=1: 从区块链恢复交易 (保留交易描述信息,例如:账户拥有者).</translation>
     </message>
     <message>
         <source>-zapwallettxes=2: Recover transactions from blockchain (drop meta-data).</source>
-        <translation>-zapwallettxes=2: Recupera transacções da cadeia de blocos (apagando os meta-dados)</translation>
+        <translation>-zapwallettxes=2: 从区块链恢复交易 (删除交易描述信息).</translation>
     </message>
     <message>
         <source>-upgradewallet: Upgrade wallet to latest format on startup. (Note: this is NOT an update of the wallet itself!)</source>
-        <translation>-upgradewallet: Actualiza a carteira para o formato mais recente quando arranca. (Nota: Isto NÃO é uma actualização da carteira em si!)</translation>
+        <translation>-upgradewallet: 在启动时升级钱包到最新格式.(注:这并不是钱包软件本身的更新!)</translation>
     </message>
     <message>
         <source>Wallet repair options.</source>
-        <translation>Opções de reparação da carteira.</translation>
+        <translation>钱包修复选项.</translation>
     </message>
     <message>
         <source>Rebuild index</source>
-        <translation>Reconstruir indexação</translation>
+        <translation>重建区块链的索引</translation>
     </message>
     <message>
         <source>-reindex: Rebuild block chain index from current blk000??.dat files.</source>
-        <translation>-reindex: Reconstroi o índice da cadeia de blocos a partir dos ficheiros actuais blk000??.dat.</translation>
+        <translation>-reindex: 从现在的blk000??.dat文件重新建立数据块链索引.</translation>
     </message>
     <message>
         <source>In:</source>
-        <translation>Entrada:</translation>
+        <translation>输入：</translation>
     </message>
     <message>
         <source>Out:</source>
-        <translation>Saída:</translation>
+        <translation>输出：</translation>
     </message>
     <message>
         <source>Welcome to the Dash RPC console.</source>
-        <translation>Bem-vindo à consola RPC Dash</translation>
+        <translation>欢迎来到达世币RPC控制台。</translation>
     </message>
     <message>
         <source>Use up and down arrows to navigate history, and &lt;b&gt;Ctrl-L&lt;/b&gt; to clear screen.</source>
-        <translation>Use as setas para cima / baixo para navegar no histórico, e &lt;b&gt;Ctrl-L&lt;/b&gt; para limpar o ecran.</translation>
+        <translation>使用上下方向键浏览历史,  &lt;b&gt;Ctrl-L&lt;/b&gt;清除屏幕。</translation>
     </message>
     <message>
         <source>Type &lt;b&gt;help&lt;/b&gt; for an overview of available commands.</source>
-        <translation>Digite &lt;b&gt;help&lt;/b&gt; para ter uma visão global dos comandos disponíveis.</translation>
+        <translation>使用 &lt;b&gt;help&lt;/b&gt; 命令显示帮助信息。</translation>
     </message>
     <message>
         <source>%1 B</source>
-        <translation>%1 B</translation>
+        <translation>%1 字节</translation>
     </message>
     <message>
         <source>%1 KB</source>
@@ -1997,141 +1994,141 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <source>via %1</source>
-        <translation>via %1</translation>
+        <translation>经由 %1</translation>
     </message>
     <message>
         <source>never</source>
-        <translation>nunca</translation>
+        <translation>永不</translation>
     </message>
     <message>
         <source>Inbound</source>
-        <translation>Entrada</translation>
+        <translation>导入</translation>
     </message>
     <message>
         <source>Outbound</source>
-        <translation>Saída</translation>
+        <translation>导出</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation>Desconhecido</translation>
+        <translation>未知</translation>
     </message>
     <message>
         <source>Fetching...</source>
-        <translation>Carregando...</translation>
+        <translation>正在读取中...</translation>
     </message>
 </context>
 <context>
     <name>ReceiveCoinsDialog</name>
     <message>
         <source>Reuse one of the previously used receiving addresses.&lt;br&gt;Reusing addresses has security and privacy issues.&lt;br&gt;Do not use this unless re-generating a payment request made before.</source>
-        <translation>Reutilizar um dos endereços de recebimento usados anteriormente. &lt;br&gt; Reutilizar endereços tem problemas de segurança e privacidade. &lt;br&gt;Não use isto a menos que se trate de uma reutilização de um pedido de pagamento feito anteriormente.</translation>
+        <translation>重复使用以前用过的接收地址。&lt;br&gt;重用地址有安全和隐私方面的隐患。&lt;br&gt;除非是为重复生成同一项支付请求，否则请不要这样做。</translation>
     </message>
     <message>
         <source>R&amp;euse an existing receiving address (not recommended)</source>
-        <translation>R&amp;eutilizar um endereço de recebimento existente (não recomendado)</translation>
+        <translation>重用现有的接收地址（不推荐）</translation>
     </message>
     <message>
         <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Dash network.</source>
-        <translation>Mensagem opcional para anexar à solicitação de pagamento, que será mostrada quando a solicitação for aberta. Nota: A mensagem não será enviada com o pagamento através da rede Dash.</translation>
+        <translation>附加在付款要求中的讯息，可以不填，打开要求内容时会显示。注意: 这个讯息不会随着付款送到达世币网路上。</translation>
     </message>
     <message>
         <source>&amp;Message:</source>
-        <translation>&amp;Mensagem:</translation>
+        <translation>消息(&amp;M)：</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
-        <translation>Rótulo opcional para associar com o novo endereço de recebimento.</translation>
+        <translation>可为新建的收款地址添加一个标签。</translation>
     </message>
     <message>
         <source>An optional message to attach to the payment request, which will be displayed when the request is opened.&lt;br&gt;Note: The message will not be sent with the payment over the Dash network.</source>
-        <translation>Mensagem opcional para anexar à solicitação de pagamento, que será mostrada quando a solicitação for aberta. &lt;br&gt;Nota: A mensagem não será enviada com o pagamento através da rede Dash.</translation>
+        <translation>附加在付款要求中的讯息，可以不填，打开要求内容时会显示。&lt;br&gt;注意: 这个讯息不会随着付款送到达世币网路上。</translation>
     </message>
     <message>
         <source>Use this form to request payments. All fields are &lt;b&gt;optional&lt;/b&gt;.</source>
-        <translation>Utilize este formulário para solicitar pagamentos. Todos os campos são &lt;b&gt;opcionais&lt;/b&gt;.</translation>
+        <translation>使用此表单要求付款。所有字段都是&lt;b&gt;可选&lt;/b&gt;。</translation>
     </message>
     <message>
         <source>&amp;Label:</source>
-        <translation>&amp;Rótulo:</translation>
+        <translation>标签(&amp;L)：</translation>
     </message>
     <message>
         <source>An optional amount to request. Leave this empty or zero to not request a specific amount.</source>
-        <translation>Quantia opcional a solicitar. Deixar vazio ou zero para não solicitar uma quantia específica.</translation>
+        <translation>可选的请求金额。留空或填零为不要求具体金额。</translation>
     </message>
     <message>
         <source>&amp;Amount:</source>
-        <translation>&amp;Quantia</translation>
+        <translation>总额(&amp;A)：</translation>
     </message>
     <message>
         <source>&amp;Request payment</source>
-        <translation>&amp;Pedir pagamento</translation>
+        <translation>请求付款(&amp;R)</translation>
     </message>
     <message>
         <source>Clear all fields of the form.</source>
-        <translation>Limpar todos os campos do formulário.</translation>
+        <translation>清空此表单的所有字段。</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation>Limpar</translation>
+        <translation>清除</translation>
     </message>
     <message>
         <source>Requested payments history</source>
-        <translation>Histórico de solicitações de pagamento</translation>
+        <translation>请求付款的历史</translation>
     </message>
     <message>
         <source>Show the selected request (does the same as double clicking an entry)</source>
-        <translation>Mostrar a solicitação seleccionada (igual a clicar duas vezes)</translation>
+        <translation>显示选中的请求 (双击也可以显示)</translation>
     </message>
     <message>
         <source>Show</source>
-        <translation>Mostrar</translation>
+        <translation>显示</translation>
     </message>
     <message>
         <source>Remove the selected entries from the list</source>
-        <translation>Remover as entradas seleccionadas da lista</translation>
+        <translation>从列表中移除选中的条目</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation>Remover</translation>
+        <translation>移除</translation>
     </message>
     <message>
         <source>Copy label</source>
-        <translation>Copiar rótulo</translation>
+        <translation>复制标签</translation>
     </message>
     <message>
         <source>Copy message</source>
-        <translation>Copiar mensagem</translation>
+        <translation>复制消息 </translation>
     </message>
     <message>
         <source>Copy amount</source>
-        <translation>Copiar quantia</translation>
+        <translation>复制金额</translation>
     </message>
 </context>
 <context>
     <name>ReceiveRequestDialog</name>
     <message>
         <source>QR Code</source>
-        <translation>QR Code</translation>
+        <translation>二维码</translation>
     </message>
     <message>
         <source>Copy &amp;URI</source>
-        <translation>Copiar &amp;URI</translation>
+        <translation>复制 URI(&amp;U)</translation>
     </message>
     <message>
         <source>Copy &amp;Address</source>
-        <translation>Copiar &amp;Endereço</translation>
+        <translation>复制地址(&amp;A)</translation>
     </message>
     <message>
         <source>&amp;Save Image...</source>
-        <translation>&amp;Salvar Imagem...</translation>
+        <translation>保存图片(&amp;S)...</translation>
     </message>
     <message>
         <source>Request payment to %1</source>
-        <translation>Solicitar pagamento a %1</translation>
+        <translation>请求付款到 %1</translation>
     </message>
     <message>
         <source>Payment information</source>
-        <translation>Informação de pagamento</translation>
+        <translation>付款信息</translation>
     </message>
     <message>
         <source>URI</source>
@@ -2139,376 +2136,388 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <source>Address</source>
-        <translation>Endereço</translation>
+        <translation>地址</translation>
     </message>
     <message>
         <source>Amount</source>
-        <translation>Quantia</translation>
+        <translation>金额</translation>
     </message>
     <message>
         <source>Label</source>
-        <translation>Rótulo</translation>
+        <translation>标签</translation>
     </message>
     <message>
         <source>Message</source>
-        <translation>Mensagem</translation>
+        <translation>消息</translation>
     </message>
     <message>
         <source>Resulting URI too long, try to reduce the text for label / message.</source>
-        <translation>O URI resultante é demasiado longo, tente reduzir o texto do rótulo ou da mensagem.</translation>
+        <translation>URI 太长，请试着精简标签或消息文本。</translation>
     </message>
     <message>
         <source>Error encoding URI into QR Code.</source>
-        <translation>Erro ao codificar o URI para código QR.</translation>
+        <translation>将 URI 转为二维码失败。</translation>
     </message>
 </context>
 <context>
     <name>RecentRequestsTableModel</name>
     <message>
         <source>Date</source>
-        <translation>Data</translation>
+        <translation>日期</translation>
     </message>
     <message>
         <source>Label</source>
-        <translation>Rótulo</translation>
+        <translation>标签</translation>
     </message>
     <message>
         <source>Message</source>
-        <translation>Mensagem</translation>
+        <translation>消息</translation>
     </message>
     <message>
         <source>Amount</source>
-        <translation>Quantia</translation>
+        <translation>金额</translation>
     </message>
     <message>
         <source>(no label)</source>
-        <translation>(sem rótulo)</translation>
+        <translation>(没有标签)</translation>
     </message>
     <message>
         <source>(no message)</source>
-        <translation>(sem mensagem)</translation>
+        <translation>(无消息)</translation>
     </message>
     <message>
         <source>(no amount)</source>
-        <translation>(sem quantia)</translation>
+        <translation>(无金额) </translation>
     </message>
 </context>
 <context>
     <name>SendCoinsDialog</name>
     <message>
         <source>Send Coins</source>
-        <translation>Enviar Moedas</translation>
+        <translation>发送货币</translation>
     </message>
     <message>
         <source>Coin Control Features</source>
-        <translation>Funcionalidades de Coin Control</translation>
+        <translation>交易源地址控制功能</translation>
     </message>
     <message>
         <source>Inputs...</source>
-        <translation>Entradas...</translation>
+        <translation>输入...</translation>
     </message>
     <message>
         <source>automatically selected</source>
-        <translation>seleccionadas automáticamente</translation>
+        <translation>自动选择</translation>
     </message>
     <message>
         <source>Insufficient funds!</source>
-        <translation>Fundos insuficientes!</translation>
+        <translation>存款不足！</translation>
     </message>
     <message>
         <source>Quantity:</source>
-        <translation>Quantidade:</translation>
+        <translation>总量：</translation>
     </message>
     <message>
         <source>Bytes:</source>
-        <translation>Bytes:</translation>
+        <translation>字节：</translation>
     </message>
     <message>
         <source>Amount:</source>
-        <translation>Quantia:</translation>
+        <translation>金额：</translation>
     </message>
     <message>
         <source>Priority:</source>
-        <translation>Prioridade:</translation>
+        <translation>优先级：</translation>
     </message>
     <message>
         <source>medium</source>
-        <translation>média</translation>
+        <translation>中等</translation>
     </message>
     <message>
         <source>Fee:</source>
-        <translation>Taxa:</translation>
+        <translation>费用：</translation>
     </message>
     <message>
         <source>Dust:</source>
-        <translation>Poeira:</translation>
+        <translation>零钱:</translation>
     </message>
     <message>
         <source>no</source>
-        <translation>não</translation>
+        <translation>否</translation>
     </message>
     <message>
         <source>After Fee:</source>
-        <translation>Com taxa:</translation>
+        <translation>加上交易费用后:</translation>
     </message>
     <message>
         <source>Change:</source>
-        <translation>Troco:</translation>
+        <translation>变更 : </translation>
     </message>
     <message>
         <source>If this is activated, but the change address is empty or invalid, change will be sent to a newly generated address.</source>
-        <translation>Se isto for activado e o endereço de troco se encontrar vazio, o troco será enviado para um novo endereço gerado.</translation>
+        <translation>如果激活该选项，但是零钱地址用光或者非法，将会新生成零钱地址，转入零钱。</translation>
     </message>
     <message>
         <source>Custom change address</source>
-        <translation>Endereço de troco personalizado</translation>
+        <translation>自定义零钱地址</translation>
     </message>
     <message>
         <source>Transaction Fee:</source>
-        <translation>Taxa de Transacção:</translation>
+        <translation>交易手续费:</translation>
     </message>
     <message>
         <source>Choose...</source>
-        <translation>Escolha...</translation>
+        <translation>选择...</translation>
     </message>
     <message>
         <source>collapse fee-settings</source>
-        <translation>fechar opções de taxa</translation>
+        <translation>收起手续费设置</translation>
     </message>
     <message>
         <source>Minimize</source>
-        <translation>Minimizar</translation>
+        <translation>最小化</translation>
+    </message>
+    <message>
+        <source>If the custom fee is set to 1000 duffs and the transaction is only 250 bytes, then "per kilobyte" only pays 250 duffs in fee,&lt;br /&gt;while "at least" pays 1000 duffs. For transactions bigger than a kilobyte both pay by kilobyte.</source>
+        <translation>
+如果自定手续费设定为1000 duffs,而交易信息只有250字节的话,那么选择"每千位字节"就只会支付250 duffs的手续费,&lt;br /&gt;而"至少"会支付1000 duffs.
+但如果交易信息大于一千字节,那么两者都要支付千字节费用.</translation>
+    </message>
+    <message>
+        <source>If the custom fee is set to 1000 duffs and the transaction is only 250 bytes, then "per kilobyte" only pays 250 duffs in fee,&lt;br /&gt;while "total at least" pays 1000 duffs. For transactions bigger than a kilobyte both pay by kilobyte.</source>
+        <translation>
+如果自定手续费设定为1000 duffs,而交易信息只有250字节的话,那么选择"每千位字节"就只会支付250 duffs的手续费,&lt;br /&gt;而"总共至少"会支付1000 duffs.
+但如果交易信息大于一千字节,那么两者都要支付千字节费用.</translation>
+    </message>
+    <message>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for xsn transactions than the network can process.</source>
+        <translation>当交易量少于区块可容纳的空间时,只需支付最低手续费.&lt;br /&gt;但当交易量的需求增长到超过总体网络可处理的量时,可能会造成一笔一直不被确认的交易.</translation>
     </message>
     <message>
         <source>per kilobyte</source>
-        <translation>por kilobyte</translation>
+        <translation>每千位字节</translation>
     </message>
     <message>
         <source>total at least</source>
-        <translation>pelo menos total</translation>
+        <translation>总共至少</translation>
     </message>
     <message>
         <source>(read the tooltip)</source>
-        <translation>(leia a tooltip)</translation>
+        <translation>(请看提示)</translation>
     </message>
     <message>
         <source>Recommended:</source>
-        <translation>Recomendado:</translation>
+        <translation>建议:</translation>
     </message>
     <message>
         <source>Custom:</source>
-        <translation>Personalizado:</translation>
+        <translation>自定义:</translation>
     </message>
     <message>
         <source>(Smart fee not initialized yet. This usually takes a few blocks...)</source>
-        <translation>(A taxa inteligente ainda não foi inicializada. Normalmente demora alguns blocos...)</translation>
+        <translation>(手续费演算法还没有准备好.通常都要等几个块才可以...)</translation>
     </message>
     <message>
         <source>Confirmation time:</source>
-        <translation>Tempo de confirmação:</translation>
+        <translation>确认时间:</translation>
     </message>
     <message>
         <source>normal</source>
-        <translation>normal</translation>
+        <translation>正常</translation>
     </message>
     <message>
         <source>fast</source>
-        <translation>rápido</translation>
+        <translation>快速</translation>
     </message>
     <message>
         <source>Send as zero-fee transaction if possible</source>
-        <translation>Enviar com taxa-zero se possível</translation>
+        <translation>如果可能,发送零手续费的交易</translation>
     </message>
     <message>
         <source>(confirmation may take longer)</source>
-        <translation>(a confirmação pode demorar mais)</translation>
+        <translation>(确认可能需要一点时间)</translation>
     </message>
     <message>
         <source>Confirm the send action</source>
-        <translation>Confirmar envio</translation>
+        <translation>确认并发送货币</translation>
     </message>
     <message>
         <source>S&amp;end</source>
-        <translation>&amp;Enviar</translation>
+        <translation>发送(&amp;E)</translation>
     </message>
     <message>
         <source>Clear all fields of the form.</source>
-        <translation>Limpar todos os campos do formulário.</translation>
+        <translation>清除此表单的所有字段。</translation>
     </message>
     <message>
         <source>Clear &amp;All</source>
-        <translation>Limpar &amp;Tudo</translation>
+        <translation>清除所有(&amp;A)</translation>
     </message>
     <message>
         <source>Send to multiple recipients at once</source>
-        <translation>Enviar para múltiplos destinatários de uma vez</translation>
+        <translation>一次发送给多个接收者</translation>
     </message>
     <message>
         <source>Add &amp;Recipient</source>
-        <translation>Adicionar &amp;Destinatário</translation>
+        <translation>添加收款人(&amp;R)</translation>
     </message>
     <message>
         <source>Darksend</source>
-        <translation>Darksend</translation>
+        <translation>匿名发送</translation>
     </message>
     <message>
         <source>InstantX</source>
-        <translation>InstantX</translation>
+        <translation>即时支付</translation>
     </message>
     <message>
         <source>Balance:</source>
-        <translation>Saldo:</translation>
+        <translation>余额：</translation>
     </message>
     <message>
         <source>Copy quantity</source>
-        <translation>Copiar quantidade</translation>
+        <translation>复制金额</translation>
     </message>
     <message>
         <source>Copy amount</source>
-        <translation>Copiar quantia</translation>
+        <translation>复制金额</translation>
     </message>
     <message>
         <source>Copy fee</source>
-        <translation>Copiar taxa</translation>
+        <translation>复制交易费</translation>
     </message>
     <message>
         <source>Copy after fee</source>
-        <translation>Copiar depois da taxa</translation>
+        <translation>复制含交易费的金额</translation>
     </message>
     <message>
         <source>Copy bytes</source>
-        <translation>Copiar bytes</translation>
+        <translation>复制字节</translation>
     </message>
     <message>
         <source>Copy priority</source>
-        <translation>Copiar prioridade</translation>
+        <translation>复制优先级</translation>
     </message>
     <message>
         <source>Copy dust</source>
-        <translation>Copiar pó</translation>
+        <translation>复制零钱金额</translation>
     </message>
     <message>
         <source>Copy change</source>
-        <translation>Copiar troco</translation>
+        <translation>复制零钱</translation>
     </message>
     <message>
         <source>using</source>
-        <translation>a usar</translation>
+        <translation>用法</translation>
     </message>
     <message>
         <source>anonymous funds</source>
-        <translation>fundos anónimos</translation>
+        <translation>匿名化金额</translation>
     </message>
     <message>
         <source>(darksend requires this amount to be rounded up to the nearest %1).</source>
-        <translation>(o darksend requer que esta quantia seja arredondada até ao %1 mais próximo).</translation>
+        <translation>(匿名发送需要四舍五入此金额致最接近的值%1).</translation>
     </message>
     <message>
         <source>any available funds (not recommended)</source>
-        <translation>quaisquer fundos disponíveis (não recomendado)</translation>
+        <translation>全部有效金额(不推荐)</translation>
     </message>
     <message>
         <source>and InstantX</source>
-        <translation>e InstantX</translation>
+        <translation>和 即时支付</translation>
     </message>
     <message>
         <source>%1 to %2</source>
-        <translation>%1 a %2</translation>
+        <translation>%1 到 %2</translation>
     </message>
     <message>
         <source>Are you sure you want to send?</source>
-        <translation>Tem a certeza que quer enviar?</translation>
+        <translation>您确定要发出吗？</translation>
     </message>
     <message>
         <source>are added as transaction fee</source>
-        <translation>são adicionadas como taxa de transacção</translation>
+        <translation>作为交易费被添加</translation>
     </message>
     <message>
         <source>Total Amount = &lt;b&gt;%1&lt;/b&gt;&lt;br /&gt;= %2</source>
-        <translation>Quantidade Total = &lt;b&gt;%1&lt;/b&gt;&lt;br /&gt;= %2</translation>
+        <translation>总额 = &lt;b&gt;%1&lt;/b&gt;&lt;br /&gt;= %2</translation>
     </message>
     <message>
         <source>Confirm send coins</source>
-        <translation>Confirmar envio de moedas</translation>
+        <translation>确认发送货币</translation>
     </message>
     <message>
         <source>A fee %1 times higher than %2 per kB is considered an insanely high fee.</source>
-        <translation>Uma taxa %1 vezes mais alta do que %2 por kB é considerada demasiado alta.</translation>
+        <translation>每kB手续费高于%2的 %1倍被认为是非常高的费用.</translation>
     </message>
     <message numerus="yes">
         <source>Estimated to begin confirmation within %n block(s).</source>
-        <translation><numerusform>Inicio de confirmação estimado dentro de %n bloco.</numerusform><numerusform>Inicio de confirmação estimado dentro de %n blocos.</numerusform></translation>
+        <translation><numerusform>预计在%n 个区块内开始确认.</numerusform></translation>
     </message>
     <message>
         <source>The recipient address is not valid, please recheck.</source>
-        <translation>O endereço do destinatário é inválido, por favor verifique.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;(%1 of %2 entries displayed)&lt;/b&gt;</source>
-        <translation>&lt;b&gt;(%1 de %2 entradas mostradas)&lt;/b&gt;</translation>
+        <translation>收款人地址不合法，请检查。</translation>
     </message>
     <message>
         <source>The amount to pay must be larger than 0.</source>
-        <translation>A quantia a pagar tem que ser maior que 0.</translation>
+        <translation>支付金额必须大于0。</translation>
     </message>
     <message>
         <source>The amount exceeds your balance.</source>
-        <translation>A quantia excede o seu saldo.</translation>
+        <translation>金额超出您的账上余额。</translation>
     </message>
     <message>
         <source>The total exceeds your balance when the %1 transaction fee is included.</source>
-        <translation>O total excede o seu saldo quando é incluído o valor %1 relativo a taxas de transacção.</translation>
+        <translation>计入 %1 交易费后的金额超出您的账上余额。</translation>
     </message>
     <message>
         <source>Duplicate address found, can only send to each address once per send operation.</source>
-        <translation>Endereço duplicado encontrado, só pode enviar para um endereço uma vez por cada operação de envio.</translation>
+        <translation>发现重复的地址, 每次只能对同一地址发送一次。</translation>
     </message>
     <message>
         <source>Transaction creation failed!</source>
-        <translation>Falha ao criar transacção!</translation>
+        <translation>交易创建失败！</translation>
     </message>
     <message>
         <source>The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>A transacção foi rejeitada! Isto pode acontecer se algumas das moedas da sua carteira tiverem sido gastas, tal como se usou uma copia do ficheiro wallet.dat e moedas tiverem sido gastas nessa cópia mas não aqui.</translation>
+        <translation>错误：该交易被拒绝！发生这种错误的原因可能是：钱包中的达世币已经被用掉，有可能您复制了wallet.dat钱包文件，然后用复制的钱包文件支付了达世币，但是这个钱包文件中没有记录。</translation>
     </message>
     <message>
         <source>Error: The wallet was unlocked only to anonymize coins.</source>
-        <translation>Erro: A carteira foi somente desbloqueada para anonimização de moedas.</translation>
+        <translation>错误： 钱包被锁定以用于匿名化您的达世币。</translation>
     </message>
     <message>
         <source>Pay only the minimum fee of %1</source>
-        <translation>Pagar somente a taxa mínima de %1</translation>
+        <translation>只付最低手续费%1</translation>
     </message>
     <message>
         <source>Warning: Invalid Dash address</source>
-        <translation>Aviso: Endereço Dash inválido</translation>
+        <translation>警告：无效的达世币地址</translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
-        <translation>Aviso: Endereço de troco desconhecido</translation>
+        <translation>警告：未知的更改地址</translation>
     </message>
     <message>
         <source>(no label)</source>
-        <translation>(sem rótulo)</translation>
+        <translation>(没有标签)</translation>
     </message>
 </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
         <source>This is a normal payment.</source>
-        <translation>Este é um pagamento normal.</translation>
+        <translation>这是笔正常的支付。</translation>
     </message>
     <message>
         <source>Pay &amp;To:</source>
-        <translation>&amp;Pagar a:</translation>
+        <translation>付给(&amp;T)：</translation>
     </message>
     <message>
         <source>The Dash address to send the payment to</source>
-        <translation>O endereço Dash para onde enviar o pagamento</translation>
+        <translation>选择发款地址</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
-        <translation>Escolher endereço usado previamente</translation>
+        <translation>选择以前用过的地址</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -2516,7 +2525,7 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <source>Paste address from clipboard</source>
-        <translation>Colar endereço da área de transferência</translation>
+        <translation>从剪贴板粘贴地址</translation>
     </message>
     <message>
         <source>Alt+P</source>
@@ -2524,81 +2533,81 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <source>Remove this entry</source>
-        <translation>Remover esta entrada</translation>
+        <translation>移除此项</translation>
     </message>
     <message>
         <source>&amp;Label:</source>
-        <translation>&amp;Rótulo:</translation>
+        <translation>标签(&amp;L)：</translation>
     </message>
     <message>
         <source>Enter a label for this address to add it to the list of used addresses</source>
-        <translation>Digite um rótulo para este endereço para adicioná-lo à lista de endereços usados</translation>
+        <translation>请为此地址输入一个标签以将它加入用过的地址列表</translation>
     </message>
     <message>
         <source>A&amp;mount:</source>
-        <translation>&amp;Quantidade</translation>
+        <translation>金额(&amp;M)</translation>
     </message>
     <message>
         <source>Message:</source>
-        <translation>Mensagem:</translation>
+        <translation>消息：</translation>
     </message>
     <message>
-        <source>A message that was attached to the dash: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Dash network.</source>
-        <translation>Mensagem que foi anexada ao dash: URI e que será guardada com a transacção para sua referência. Nota: Esta mensagem não será enviada para a rede Dash.</translation>
+        <source>A message that was attached to the xsn: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Dash network.</source>
+        <translation>附加在达世币付款协议URI中的信息,会和交易内容一并存储,可供您参考.提示:此信息不会发送到达世币网络上.</translation>
     </message>
     <message>
         <source>This is an unverified payment request.</source>
-        <translation>Este é um pedido de pagamento não verificado.</translation>
+        <translation>这是个非有效的支付请求。</translation>
     </message>
     <message>
         <source>Pay To:</source>
-        <translation>Pagar a:</translation>
+        <translation>支付给:</translation>
     </message>
     <message>
         <source>Memo:</source>
-        <translation>Rótulo:</translation>
+        <translation>便条：</translation>
     </message>
     <message>
         <source>This is a verified payment request.</source>
-        <translation>Este é um pedido de pagamento verificado.</translation>
+        <translation>这是个有效的支付请求。</translation>
     </message>
     <message>
         <source>Enter a label for this address to add it to your address book</source>
-        <translation>Introduza um rótulo para este endereço para adicionar ao livro de endereços</translation>
+        <translation>为这个地址输入一个标签，以便将它添加到您的地址簿</translation>
     </message>
 </context>
 <context>
     <name>ShutdownWindow</name>
     <message>
         <source>Dash Core is shutting down...</source>
-        <translation>O Dash Core está a desligar...</translation>
+        <translation>达世币核心正在关闭...</translation>
     </message>
     <message>
         <source>Do not shut down the computer until this window disappears.</source>
-        <translation>Não desligue o computador enquanto está janela estiver visível.</translation>
+        <translation>在此窗口消失前不要关闭计算机。</translation>
     </message>
 </context>
 <context>
     <name>SignVerifyMessageDialog</name>
     <message>
         <source>Signatures - Sign / Verify a Message</source>
-        <translation>Assinaturas - Assinar / Verificar uma Mensagem</translation>
+        <translation>签名 - 为消息签名/验证签名消息</translation>
     </message>
     <message>
         <source>&amp;Sign Message</source>
-        <translation>&amp;Assinar Mensagem</translation>
+        <translation>签名消息(&amp;S)</translation>
     </message>
     <message>
         <source>You can sign messages with your addresses to prove you own them. Be careful not to sign anything vague, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
-        <translation>Pode assinar mensagens com os seus endereços para provar que são seus. Tenha atenção para não assinar mensagens vagas, já que, ataques de phishing podem levá-lo a assinar a sua própria identidade para os atacantes. Apenas assine declarações detalhadas com as quais concorde.</translation>
+        <translation>您可以用你的地址对消息进行签名，以证明您是该地址的所有人。注意不要对模棱两可的消息签名，以免遭受钓鱼式攻击。请确保消息内容准确的表达了您的真实意愿。</translation>
     </message>
     <message>
         <source>The Dash address to sign the message with</source>
-        <translation>Endereço Dash com o qual deseja assinar a mensagem</translation>
+        <translation>对此地址进行签名</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
-        <translation>Escolher endereço usado previamente</translation>
+        <translation>选择以前用过的地址</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -2606,7 +2615,7 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <source>Paste address from clipboard</source>
-        <translation>Colar endereço da área de transferência</translation>
+        <translation>从剪贴板粘贴地址</translation>
     </message>
     <message>
         <source>Alt+P</source>
@@ -2614,130 +2623,130 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <source>Enter the message you want to sign here</source>
-        <translation>Escreva aqui a mensagem que deseja assinar</translation>
+        <translation>请输入您要发送的签名消息</translation>
     </message>
     <message>
         <source>Signature</source>
-        <translation>Assinatura</translation>
+        <translation>签名</translation>
     </message>
     <message>
         <source>Copy the current signature to the system clipboard</source>
-        <translation>Copiar a assinatura actual para a área de transferência</translation>
+        <translation>复制当前签名至剪切板</translation>
     </message>
     <message>
         <source>Sign the message to prove you own this Dash address</source>
-        <translation>Assinar a mensagem para provar que é o proprietário deste endereço Dash</translation>
+        <translation>签署信息证明你拥有此达世币地址</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
-        <translation>Assinar &amp;Mensagem</translation>
+        <translation>消息签名(&amp;M)</translation>
     </message>
     <message>
         <source>Reset all sign message fields</source>
-        <translation>Repor todos os campos de assinatura de mensagem</translation>
+        <translation>清空所有签名消息栏</translation>
     </message>
     <message>
         <source>Clear &amp;All</source>
-        <translation>Limpar &amp;Tudo</translation>
+        <translation>清除所有(&amp;A)</translation>
     </message>
     <message>
         <source>&amp;Verify Message</source>
-        <translation>&amp;Verificar Mensagem</translation>
+        <translation>验证消息(&amp;V)</translation>
     </message>
     <message>
         <source>Enter the signing address, message (ensure you copy line breaks, spaces, tabs, etc. exactly) and signature below to verify the message. Be careful not to read more into the signature than what is in the signed message itself, to avoid being tricked by a man-in-the-middle attack.</source>
-        <translation>Introduza o endereço de assinatura, mensagem (assegure-se que copia exactamente as quebras de linha, espaços, tabulações, etc) e assinatura abaixo para verificar a mensagem. Tenha atenção para não ler mais na assinatura do que o que estiver na mensagem assinada, para evitar ser enganado por um atacante que se encontre entre si e quem assinou a mensagem.</translation>
+        <translation>在下面输入签名地址，消息（请确保换行符、空格符、制表符等等一个不漏）和签名以验证消息。请确保签名信息准确，提防中间人攻击。</translation>
     </message>
     <message>
         <source>The Dash address the message was signed with</source>
-        <translation>Endereço Dash com o qual a mensagem foi assinada</translation>
+        <translation>已签名的地址</translation>
     </message>
     <message>
         <source>Verify the message to ensure it was signed with the specified Dash address</source>
-        <translation>Verificar a mensagem de forma a garantir que foi assinada com o endereço Dash especificado</translation>
+        <translation>验证信息用来确保此被签署信息对应相对的达世币地址</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
-        <translation>Verificar &amp;Mensagem</translation>
+        <translation>验证消息签名(&amp;M)</translation>
     </message>
     <message>
         <source>Reset all verify message fields</source>
-        <translation>Repor todos os campos de verificação de mensagem</translation>
+        <translation>清空所有验证消息栏</translation>
     </message>
     <message>
         <source>Click "Sign Message" to generate signature</source>
-        <translation>Prima "Assinar Mensagem" para gerar a assinatura</translation>
+        <translation>单击“签名消息“产生签名。</translation>
     </message>
     <message>
         <source>The entered address is invalid.</source>
-        <translation>O endereço inserido é inválido.</translation>
+        <translation>输入的地址非法。</translation>
     </message>
     <message>
         <source>Please check the address and try again.</source>
-        <translation>Por favor verifique o endereço e tente de novo.</translation>
+        <translation>请检查地址后重试。</translation>
     </message>
     <message>
         <source>The entered address does not refer to a key.</source>
-        <translation>O endereço introduzido não corresponde a uma chave.</translation>
+        <translation>输入的地址没有关联的公私钥对。</translation>
     </message>
     <message>
         <source>Wallet unlock was cancelled.</source>
-        <translation>O desbloqueamento da carteira foi cancelado.</translation>
+        <translation>钱包解锁动作取消。</translation>
     </message>
     <message>
         <source>Private key for the entered address is not available.</source>
-        <translation>A chave privada correspondente ao endereço introduzido não está disponível.</translation>
+        <translation>找不到输入地址关联的私钥。</translation>
     </message>
     <message>
         <source>Message signing failed.</source>
-        <translation>A assinatura da mensagem falhou.</translation>
+        <translation>消息签名失败。</translation>
     </message>
     <message>
         <source>Message signed.</source>
-        <translation>Mensagem assinada.</translation>
+        <translation>消息已签名。</translation>
     </message>
     <message>
         <source>The signature could not be decoded.</source>
-        <translation>A assinatura não pode ser descodificada.</translation>
+        <translation>签名无法解码。</translation>
     </message>
     <message>
         <source>Please check the signature and try again.</source>
-        <translation>Por favor verifique a assinatura e tente de novo.</translation>
+        <translation>请检查签名后重试。</translation>
     </message>
     <message>
         <source>The signature did not match the message digest.</source>
-        <translation>A assinatura não corresponde à compilação da mensagem.</translation>
+        <translation>签名与消息摘要不匹配。</translation>
     </message>
     <message>
         <source>Message verification failed.</source>
-        <translation>A verificação da mensagem falhou.</translation>
+        <translation>消息验证失败。</translation>
     </message>
     <message>
         <source>Message verified.</source>
-        <translation>Mensagem verificada.</translation>
+        <translation>消息验证成功。</translation>
     </message>
 </context>
 <context>
     <name>SplashScreen</name>
     <message>
         <source>Dash Core</source>
-        <translation>Dash Core</translation>
+        <translation>达世币核心</translation>
     </message>
     <message>
         <source>Version %1</source>
-        <translation>Versão %1</translation>
+        <translation>版本 %1</translation>
     </message>
     <message>
         <source>The Bitcoin Core developers</source>
-        <translation>Os programadores Bitcoin Core</translation>
+        <translation>Bitcoin Core 的开发者</translation>
     </message>
     <message>
         <source>The Dash Core developers</source>
-        <translation>Os programadores Dash Core</translation>
+        <translation>达世币核心开发人员</translation>
     </message>
     <message>
         <source>[testnet]</source>
-        <translation>[rede de testes]</translation>
+        <translation>[testnet]</translation>
     </message>
 </context>
 <context>
@@ -2751,464 +2760,456 @@ https://www.transifex.com/projects/p/dash/</translation>
     <name>TransactionDesc</name>
     <message numerus="yes">
         <source>Open for %n more block(s)</source>
-        <translation><numerusform>Aberta durante mais %n bloco</numerusform><numerusform>Aberta durante mais %n blocos</numerusform></translation>
+        <translation><numerusform>对于%n个块开放</numerusform></translation>
     </message>
     <message>
         <source>Open until %1</source>
-        <translation>Aberta até %1</translation>
+        <translation>至 %1 个数据块时开启</translation>
     </message>
     <message>
         <source>conflicted</source>
-        <translation>conflituosa</translation>
+        <translation>发现冲突</translation>
     </message>
     <message>
         <source>%1/offline (verified via instantx)</source>
-        <translation>%1/desligado (verificado através de instantx)</translation>
+        <translation>%1/下线(经过即时支付系统认证)</translation>
     </message>
     <message>
         <source>%1/confirmed (verified via instantx)</source>
-        <translation>%1/confirmado (verificado através de instantx)</translation>
+        <translation>%1/已确认(经过即时支付系统认证)</translation>
     </message>
     <message>
         <source>%1 confirmations (verified via instantx)</source>
-        <translation>%1 confirmações (verificado através de instantx)</translation>
+        <translation>%1/确认完成(经过即时支付付系统认证)</translation>
     </message>
     <message>
         <source>%1/offline</source>
-        <translation>%1/desligada</translation>
+        <translation>%1 / 离线</translation>
     </message>
     <message>
         <source>%1/unconfirmed</source>
-        <translation>%1/não confirmada</translation>
+        <translation>%1/未确认</translation>
     </message>
     <message>
         <source>%1 confirmations</source>
-        <translation>%1 confirmações</translation>
+        <translation>%1 已确认</translation>
     </message>
     <message>
         <source>%1/offline (InstantX verification in progress - %2 of %3 signatures)</source>
-        <translation>%1/desligado (verificação InstantX em progresso - %2 de %3 assinaturas)</translation>
+        <translation>%1/下线 (即时支付系统正在认证中 - %2 of %3签名数)</translation>
     </message>
     <message>
         <source>%1/confirmed (InstantX verification in progress - %2 of %3 signatures )</source>
-        <translation>%1/confirmada (verificação InstantX em progresso - %2 de %3 assinaturas)</translation>
+        <translation>%1/已确认 (即时支付系统正在认证中 - %2 of %3签名数)</translation>
     </message>
     <message>
         <source>%1 confirmations (InstantX verification in progress - %2 of %3 signatures)</source>
-        <translation>%1 confirmações (verificação InstantX em progresso - %2 de %3 assinaturas)</translation>
+        <translation>%1/确认完成 (即时支付系统正在认证中 - %2 of %3签名数)</translation>
     </message>
     <message>
         <source>%1/offline (InstantX verification failed)</source>
-        <translation>%1/desligado (a verificação InstantX falhou)</translation>
+        <translation>%1/下线 (即时支付系统认证失败)</translation>
     </message>
     <message>
         <source>%1/confirmed (InstantX verification failed)</source>
-        <translation>%1/confirmada (a verificação InstantX falhou)</translation>
+        <translation>%1/已确认 (即时支付系统认证失败)</translation>
     </message>
     <message>
         <source>Status</source>
-        <translation>Estado</translation>
+        <translation>状态</translation>
     </message>
     <message>
         <source>, has not been successfully broadcast yet</source>
-        <translation>, ainda não foi transmitida com sucesso</translation>
+        <translation>，未被成功广播</translation>
     </message>
     <message numerus="yes">
         <source>, broadcast through %n node(s)</source>
-        <translation><numerusform>, transmitida através de %n nó</numerusform><numerusform>, transmitida através de %n nós</numerusform></translation>
+        <translation><numerusform>，通过%n多个节点广播</numerusform></translation>
     </message>
     <message>
         <source>Date</source>
-        <translation>Data</translation>
+        <translation>日期</translation>
     </message>
     <message>
         <source>Source</source>
-        <translation>Origem</translation>
+        <translation>源</translation>
     </message>
     <message>
         <source>Generated</source>
-        <translation>Gerada</translation>
+        <translation>生成</translation>
     </message>
     <message>
         <source>From</source>
-        <translation>De</translation>
+        <translation>来自</translation>
     </message>
     <message>
         <source>unknown</source>
-        <translation>desconhecido</translation>
+        <translation>未知</translation>
     </message>
     <message>
         <source>To</source>
-        <translation>Para</translation>
+        <translation>到</translation>
     </message>
     <message>
         <source>own address</source>
-        <translation>endereço próprio</translation>
+        <translation>自己的地址</translation>
     </message>
     <message>
         <source>watch-only</source>
-        <translation>somente de visualização</translation>
+        <translation>仅限查看</translation>
     </message>
     <message>
         <source>label</source>
-        <translation>rótulo</translation>
+        <translation>标签</translation>
     </message>
     <message>
         <source>Credit</source>
-        <translation>Credito</translation>
-    </message>
-    <message numerus="yes">
-        <source>matures in %n more block(s)</source>
-        <translation><numerusform>maturidade em %n bloco</numerusform><numerusform>maturidade em %n blocos</numerusform></translation>
+        <translation>收入</translation>
     </message>
     <message>
         <source>not accepted</source>
-        <translation>rejeitada</translation>
+        <translation>未被接受</translation>
     </message>
     <message>
         <source>Debit</source>
-        <translation>Débito</translation>
+        <translation>支出</translation>
     </message>
     <message>
         <source>Total debit</source>
-        <translation>Débito total</translation>
+        <translation>支出总额</translation>
     </message>
     <message>
         <source>Total credit</source>
-        <translation>Credito total</translation>
+        <translation>入账总额</translation>
     </message>
     <message>
         <source>Transaction fee</source>
-        <translation>Taxa de transacção</translation>
+        <translation>交易费</translation>
     </message>
     <message>
         <source>Net amount</source>
-        <translation>Valor líquido</translation>
+        <translation>净额</translation>
     </message>
     <message>
         <source>Message</source>
-        <translation>Mensagem</translation>
+        <translation>消息</translation>
     </message>
     <message>
         <source>Comment</source>
-        <translation>Comentário</translation>
+        <translation>备注</translation>
     </message>
     <message>
         <source>Transaction ID</source>
-        <translation>ID de transacção</translation>
+        <translation>交易ID</translation>
     </message>
     <message>
         <source>Merchant</source>
-        <translation>Comerciante</translation>
+        <translation>商店</translation>
     </message>
     <message>
         <source>Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to "not accepted" and it won't be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
-        <translation>As moedas geradas tem que amadurecer %1 blocos antes de poderem ser gastas. Quando gerou este bloco, este foi propagado para a rede de modo a ser incluído na cadeia de blocos. Se não foi incluído na cadeia, o seu estado será alterado para "rejeitado" e não será possível gastar as moedas. Isto pode acontecer ocasionalmente quando outro nó gera um bloco a poucos segundos do seu.</translation>
+        <translation>生成的达世币在可以使用前必须有 %1 个成熟的区块。当您生成了此区块后，它将被广播到网络中以加入区块链。如果它未成功进入区块链，其状态将变更为“不接受”并且不可使用。这可能偶尔会发生，如果另一个节点比你早几秒钟成功生成一个区块。</translation>
     </message>
     <message>
         <source>Debug information</source>
-        <translation>Informação de depuração</translation>
+        <translation>调试信息</translation>
     </message>
     <message>
         <source>Transaction</source>
-        <translation>Transacção</translation>
+        <translation>交易</translation>
     </message>
     <message>
         <source>Inputs</source>
-        <translation>Entradas</translation>
+        <translation>输入</translation>
     </message>
     <message>
         <source>Amount</source>
-        <translation>Quantia</translation>
+        <translation>金额</translation>
     </message>
     <message>
         <source>true</source>
-        <translation>verdadeiro</translation>
+        <translation>正确</translation>
     </message>
     <message>
         <source>false</source>
-        <translation>falso</translation>
+        <translation>错误</translation>
     </message>
 </context>
 <context>
     <name>TransactionDescDialog</name>
     <message>
         <source>Transaction details</source>
-        <translation>Detalhes da transação</translation>
+        <translation>交易细节</translation>
     </message>
     <message>
         <source>This pane shows a detailed description of the transaction</source>
-        <translation>Esta janela mostra uma descrição detalhada da transação</translation>
+        <translation>当前面板显示了交易的详细信息</translation>
     </message>
 </context>
 <context>
     <name>TransactionTableModel</name>
     <message>
         <source>Date</source>
-        <translation>Data</translation>
+        <translation>日期</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation>Tipo</translation>
+        <translation>类型</translation>
     </message>
     <message>
         <source>Address</source>
-        <translation>Endereço</translation>
+        <translation>地址</translation>
     </message>
     <message numerus="yes">
         <source>Open for %n more block(s)</source>
-        <translation><numerusform>Aberta durante mais %n bloco</numerusform><numerusform>Aberta durante mais %n blocos</numerusform></translation>
+        <translation><numerusform>对于%n个块开放</numerusform></translation>
     </message>
     <message>
         <source>Open until %1</source>
-        <translation>Aberta até %1</translation>
+        <translation>至 %1 个数据块时开启</translation>
     </message>
     <message>
         <source>Offline</source>
-        <translation>Desligado</translation>
+        <translation>掉线</translation>
     </message>
     <message>
         <source>Unconfirmed</source>
-        <translation>Não confirmado</translation>
+        <translation>未确认的 </translation>
     </message>
     <message>
         <source>Confirming (%1 of %2 recommended confirmations)</source>
-        <translation>A confirmar (%1 de %2 confirmações recomendadas)</translation>
+        <translation>确认中 (推荐 %2个确认，已经有 %1个确认)</translation>
     </message>
     <message>
         <source>Confirmed (%1 confirmations)</source>
-        <translation>Confirmada (%1 confirmações)</translation>
+        <translation>已确认 (%1 条确认信息)</translation>
     </message>
     <message>
         <source>Conflicted</source>
-        <translation>Conflituosa</translation>
+        <translation>冲突的</translation>
     </message>
     <message>
         <source>Immature (%1 confirmations, will be available after %2)</source>
-        <translation>Imatura (%1 confirmações, estará disponível após %2)</translation>
+        <translation>未成熟 (%1 个确认，将在 %2 个后可用)</translation>
     </message>
     <message>
         <source>This block was not received by any other nodes and will probably not be accepted!</source>
-        <translation>Este bloco não foi recebido por nenhum outro nó e provavelmente será rejeitado!</translation>
+        <translation>此数据块未被任何其他节点接收，可能不被接受！</translation>
     </message>
     <message>
         <source>Generated but not accepted</source>
-        <translation>Gerado mas rejeitado</translation>
+        <translation>已生成但未被接受</translation>
     </message>
     <message>
         <source>Received with</source>
-        <translation>Recebido com</translation>
+        <translation>接收于</translation>
     </message>
     <message>
         <source>Received from</source>
-        <translation>Recebido de</translation>
+        <translation>收款来自</translation>
     </message>
     <message>
         <source>Received via Darksend</source>
-        <translation>Recebido via Darksend</translation>
+        <translation>已通过匿名处理接收</translation>
     </message>
     <message>
         <source>Sent to</source>
-        <translation>Enviado para</translation>
+        <translation>发送给</translation>
     </message>
     <message>
         <source>Payment to yourself</source>
-        <translation>Pagamento ao próprio</translation>
+        <translation>付款给自己</translation>
     </message>
     <message>
         <source>Mined</source>
-        <translation>Minado</translation>
+        <translation>挖矿所得</translation>
     </message>
     <message>
         <source>Darksend Denominate</source>
-        <translation>Denominação Darksend</translation>
+        <translation>匿名发送面额化</translation>
     </message>
     <message>
         <source>Darksend Collateral Payment</source>
-        <translation>Pagamento Colateral Darksend</translation>
+        <translation>匿名发送附加费用</translation>
     </message>
     <message>
         <source>Darksend Make Collateral Inputs</source>
-        <translation>Darksend Fazer Entradas Colaterais</translation>
+        <translation>匿名发送会产生附加费用</translation>
     </message>
     <message>
         <source>Darksend Create Denominations</source>
-        <translation>Darksend Criar Denominações</translation>
+        <translation>匿名发送会生成面值额度</translation>
     </message>
     <message>
         <source>Darksent</source>
-        <translation>Darksent</translation>
+        <translation>匿名发送</translation>
     </message>
     <message>
         <source>watch-only</source>
-        <translation>somente de visualização</translation>
+        <translation>仅限查看</translation>
     </message>
     <message>
         <source>(n/a)</source>
-        <translation>(n/d)</translation>
+        <translation>（不可用）</translation>
     </message>
     <message>
         <source>Transaction status. Hover over this field to show number of confirmations.</source>
-        <translation>Estado da transacção. Passe o ponteiro do rato sobre este campo para mostrar o número de confirmações.</translation>
+        <translation>交易状态。 鼠标移到此区域可显示确认项数量。</translation>
     </message>
     <message>
         <source>Date and time that the transaction was received.</source>
-        <translation>Data e hora à qual a transacção foi recebida.</translation>
+        <translation>接收到交易的时间</translation>
     </message>
     <message>
         <source>Type of transaction.</source>
-        <translation>Tipo de transacção.</translation>
+        <translation>交易类别。</translation>
     </message>
     <message>
         <source>Whether or not a watch-only address is involved in this transaction.</source>
-        <translation>Se existe algum endereço somente de visualização envolvido nesta transacção.</translation>
+        <translation>决定是否有一个仅限查看的地址参与这次交易.</translation>
     </message>
     <message>
         <source>Destination address of transaction.</source>
-        <translation>Endereço de destino da transacção.</translation>
+        <translation>交易目的地址。</translation>
     </message>
     <message>
         <source>Amount removed from or added to balance.</source>
-        <translation>Quantia removida ou adicionada ao saldo.</translation>
+        <translation>从余额添加或移除的金额。</translation>
     </message>
 </context>
 <context>
     <name>TransactionView</name>
     <message>
         <source>All</source>
-        <translation>Todas</translation>
+        <translation>全部</translation>
     </message>
     <message>
         <source>Today</source>
-        <translation>Hoje</translation>
+        <translation>今天</translation>
     </message>
     <message>
         <source>This week</source>
-        <translation>Esta semana</translation>
+        <translation>本周</translation>
     </message>
     <message>
         <source>This month</source>
-        <translation>Este mês</translation>
+        <translation>本月</translation>
     </message>
     <message>
         <source>Last month</source>
-        <translation>Mês anterior</translation>
+        <translation>上月</translation>
     </message>
     <message>
         <source>This year</source>
-        <translation>Este ano</translation>
+        <translation>今年</translation>
     </message>
     <message>
         <source>Range...</source>
-        <translation>Intervalo...</translation>
-    </message>
-    <message>
-        <source>Most Common</source>
-        <translation>Mais Comum</translation>
+        <translation>范围...</translation>
     </message>
     <message>
         <source>Received with</source>
-        <translation>Recebido com</translation>
+        <translation>接收于</translation>
     </message>
     <message>
         <source>Sent to</source>
-        <translation>Enviado para</translation>
+        <translation>发送给</translation>
     </message>
     <message>
         <source>Darksent</source>
-        <translation>Darksent</translation>
+        <translation>匿名发送</translation>
     </message>
     <message>
         <source>Darksend Make Collateral Inputs</source>
-        <translation>Darksend Fazer Entradas Colaterais</translation>
+        <translation>匿名发送会产生附加费用</translation>
     </message>
     <message>
         <source>Darksend Create Denominations</source>
-        <translation>Darksend Criar Denominações</translation>
+        <translation>匿名发送会生成面值额度</translation>
     </message>
     <message>
         <source>Darksend Denominate</source>
-        <translation>Denominação Darksend</translation>
+        <translation>匿名发送面额化</translation>
     </message>
     <message>
         <source>Darksend Collateral Payment</source>
-        <translation>Pagamento Colateral Darksend</translation>
+        <translation>匿名发送附加费用</translation>
     </message>
     <message>
         <source>To yourself</source>
-        <translation>Ao próprio</translation>
+        <translation>到自己</translation>
     </message>
     <message>
         <source>Mined</source>
-        <translation>Minado</translation>
+        <translation>挖矿所得</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation>Outra</translation>
+        <translation>其他</translation>
     </message>
     <message>
         <source>Enter address or label to search</source>
-        <translation>Introduza endereço ou rótulo a pesquisar</translation>
+        <translation>输入地址或标签进行搜索</translation>
     </message>
     <message>
         <source>Min amount</source>
-        <translation>Quantia mínima</translation>
+        <translation>最小金额</translation>
     </message>
     <message>
         <source>Copy address</source>
-        <translation>Copiar endereço</translation>
+        <translation>复制地址</translation>
     </message>
     <message>
         <source>Copy label</source>
-        <translation>Copiar rótulo</translation>
+        <translation>复制标签</translation>
     </message>
     <message>
         <source>Copy amount</source>
-        <translation>Copiar quantia</translation>
+        <translation>复制金额</translation>
     </message>
     <message>
         <source>Copy transaction ID</source>
-        <translation>Copiar ID de transacção</translation>
+        <translation>复制交易编号</translation>
     </message>
     <message>
         <source>Edit label</source>
-        <translation>Editar rótulo</translation>
+        <translation>编辑标签</translation>
     </message>
     <message>
         <source>Show transaction details</source>
-        <translation>Mostrar detalhes da transacção</translation>
+        <translation>显示交易详情</translation>
     </message>
     <message>
         <source>Export Transaction History</source>
-        <translation>Exportar histórico de transacções</translation>
+        <translation>导出交易历史</translation>
     </message>
     <message>
         <source>Comma separated file (*.csv)</source>
-        <translation>Ficheiro separado por vírgulas (*.csv)</translation>
+        <translation>逗号分隔文件 (*.csv)</translation>
     </message>
     <message>
         <source>Confirmed</source>
-        <translation>Confirmada</translation>
+        <translation>已确认</translation>
     </message>
     <message>
         <source>Watch-only</source>
-        <translation>Somente de visualização</translation>
+        <translation>仅限查看</translation>
     </message>
     <message>
         <source>Date</source>
-        <translation>Data</translation>
+        <translation>日期</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation>Tipo</translation>
+        <translation>类别</translation>
     </message>
     <message>
         <source>Label</source>
-        <translation>Rótulo</translation>
+        <translation>标签</translation>
     </message>
     <message>
         <source>Address</source>
-        <translation>Endereço</translation>
+        <translation>地址</translation>
     </message>
     <message>
         <source>ID</source>
@@ -3216,1208 +3217,1062 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <source>Exporting Failed</source>
-        <translation>A exportação falhou</translation>
+        <translation>导出失败</translation>
     </message>
     <message>
         <source>There was an error trying to save the transaction history to %1.</source>
-        <translation>Ocorreu um erro ao tentar gravar o histórico de transacções para %1.</translation>
+        <translation>导出交易历史到 %1 时发生错误。</translation>
     </message>
     <message>
         <source>Exporting Successful</source>
-        <translation>Exportação Concluída com Sucesso</translation>
+        <translation>导出成功</translation>
     </message>
     <message>
         <source>The transaction history was successfully saved to %1.</source>
-        <translation>O histórico de transacções foi gravado com sucesso para %1.</translation>
+        <translation>交易历史已成功保存到 %1。</translation>
     </message>
     <message>
         <source>Range:</source>
-        <translation>Intervalo:</translation>
+        <translation>范围：</translation>
     </message>
     <message>
         <source>to</source>
-        <translation>para</translation>
+        <translation>到</translation>
     </message>
 </context>
 <context>
     <name>UnitDisplayStatusBarControl</name>
-    <message>
-        <source>Unit to show amounts in. Click to select another unit.</source>
-        <translation>Unidade das quantias. Clique para seleccionar outra unidade.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>WalletFrame</name>
     <message>
         <source>No wallet has been loaded.</source>
-        <translation>Nenhuma carteira carregada</translation>
+        <translation>没有载入钱包。</translation>
     </message>
 </context>
 <context>
     <name>WalletModel</name>
     <message>
         <source>Send Coins</source>
-        <translation>Enviar Moedas</translation>
+        <translation>发送达世币</translation>
     </message>
     <message>
         <source>InstantX doesn't support sending values that high yet. Transactions are currently limited to %1 DASH.</source>
-        <translation>O InstantX não suporta valores tão elevados neste momento. As transacções estão limitadas a %1 DASH.</translation>
+        <translation>即时支付功能目前还不支持发送如此高的金额.目前限制在%1 达世币.</translation>
     </message>
 </context>
 <context>
     <name>WalletView</name>
     <message>
         <source>&amp;Export</source>
-        <translation>&amp;Exportar</translation>
+        <translation>导出(&amp;E)</translation>
     </message>
     <message>
         <source>Export the data in the current tab to a file</source>
-        <translation>Exportar os dados do separador actual para um ficheiro</translation>
+        <translation>导出当前数据到文件</translation>
     </message>
     <message>
         <source>Selected amount:</source>
-        <translation>Quantia seleccionada: </translation>
+        <translation>选择总额:</translation>
     </message>
     <message>
         <source>Backup Wallet</source>
-        <translation>Criar Cópia de Segurança da Carteira</translation>
+        <translation>备份钱包</translation>
     </message>
     <message>
         <source>Wallet Data (*.dat)</source>
-        <translation>Dados da Carteira (*.dat)</translation>
+        <translation>钱包文件(*.dat)</translation>
     </message>
     <message>
         <source>Backup Failed</source>
-        <translation>A Cópia de Segurança Falhou</translation>
+        <translation>备份失败</translation>
     </message>
     <message>
         <source>There was an error trying to save the wallet data to %1.</source>
-        <translation>Ocorreu um erro ao tentar criar cópia de segurança da carteira para %1.</translation>
+        <translation>尝试保存钱包数据至 %1 时发生错误。</translation>
     </message>
     <message>
         <source>Backup Successful</source>
-        <translation>Cópia de Segurança Criada com Sucesso</translation>
+        <translation>备份成功</translation>
     </message>
     <message>
         <source>The wallet data was successfully saved to %1.</source>
-        <translation>Os dados da carteira foram gravados com sucesso em %1.</translation>
+        <translation>钱包数据成功保存至 %1 。</translation>
     </message>
 </context>
 <context>
-    <name>dash-core</name>
+    <name>xsn-core</name>
     <message>
         <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
-        <translation>Vincular a um determinado endereço e ouvir sempre aí. Use a notação [endereço]:porta para IPv6</translation>
+        <translation>与提供地址绑定，持续监听。使用[host]:标记IPv6端口</translation>
     </message>
     <message>
         <source>Cannot obtain a lock on data directory %s. Dash Core is probably already running.</source>
-        <translation>Não foi possível obter acesso exclusivo à pasta de dados %s. Possivelmente o Dash Core já se encontra em execução.</translation>
+        <translation>不能获得锁定的数据目录 %s. 达世币核心可能已经在运行。</translation>
     </message>
     <message>
         <source>Darksend uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.</source>
-        <translation>O Darksend usa denominações exactas para enviar fundos, pode necessitar simplesmente de anonimizar mais algumas moedas.</translation>
+        <translation>为了匿名发送的正常发送,您可能需要再混淆一些币.</translation>
     </message>
     <message>
         <source>Enter regression test mode, which uses a special chain in which blocks can be solved instantly.</source>
-        <translation>Entrar no modo de testes de regressão, que usa uma cadeia de blocos especial onde cada bloco é resolvido instantaneamente.</translation>
+        <translation>进入回滚测试模式,它可使用特殊区块链来立刻解出区块.</translation>
     </message>
     <message>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
-        <translation>Erro: A escuta por ligações de entrada falhou (a escuta devolveu o erro %s)</translation>
+        <translation>错误:监听输入链接失败(监听回馈错误 %s)</translation>
     </message>
     <message>
         <source>Execute command when a relevant alert is received or we see a really long fork (%s in cmd is replaced by message)</source>
-        <translation>Executar comando quando é recebido um alerta ou vemos uma longa bifurcação na cadeia de blocos (%s no comando é substituído pela mensagem)</translation>
+        <translation>当收到相关警示或产生相当长的分叉时,执行命令(命令中的 %s 会被警示信息代替)</translation>
     </message>
     <message>
         <source>Execute command when a wallet transaction changes (%s in cmd is replaced by TxID)</source>
-        <translation>Executar comando quando muda uma transacção na carteira (%s no comando é substituído pelo TxID)</translation>
+        <translation>当钱包有交易改变时需要执行命令(命令中的 %s 会被交易识别码代替)</translation>
     </message>
     <message>
         <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
-        <translation>Executar comando quando o melhor bloco muda (%s no comando é substituído pela hash do bloco)</translation>
-    </message>
-    <message>
-        <source>In this mode -genproclimit controls how many blocks are generated immediately.</source>
-        <translation>Neste modo o -genproclimit controla quantos blocos são gerados imediatamente.</translation>
+        <translation>当最新区块改变时需要执行的命令(命令中的 %s 会被区块哈希值代替)</translation>
     </message>
     <message>
         <source>InstantX requires inputs with at least 6 confirmations, you might need to wait a few minutes and try again.</source>
-        <translation>O InstantX necessita de entradas com pelo menos 6 confirmações, pode ser necessário aguardar mais uns minutos e tentar de novo.</translation>
-    </message>
-    <message>
-        <source>Name to construct url for KeePass entry that stores the wallet passphrase</source>
-        <translation>Nome para construir o url para a entrada KeePass que guarda a palavra-passe da carteira</translation>
-    </message>
-    <message>
-        <source>Query for peer addresses via DNS lookup, if low on addresses (default: 1 unless -connect)</source>
-        <translation>Questionar por endereços dos nós através de pesquisas DNS caso tenha poucos endereços (omissão: 1 excepto -connect)</translation>
-    </message>
-    <message>
-        <source>Set maximum size of high-priority/low-fee transactions in bytes (default: %d)</source>
-        <translation>Definir tamanho máximo de transacções com alta-prioridade/taxa-reduzida em bytes (omissão: %d)</translation>
-    </message>
-    <message>
-        <source>Set the number of script verification threads (%u to %d, 0 = auto, &lt;0 = leave that many cores free, default: %d)</source>
-        <translation>Definir número de processos de verificação de scripts (%u a %d, 0 = auto, &lt;0 = deixar este número de cores livres, omissão: %d)</translation>
-    </message>
-    <message>
-        <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
-        <translation>Esta é uma compilação prévia de teste - use por sua conta e risco - não use para minar nem em aplicações comerciais</translation>
+        <translation>即时支付功能需要6步确认，您可以稍后重试。</translation>
     </message>
     <message>
         <source>Unable to bind to %s on this computer. Dash Core is probably already running.</source>
-        <translation>Não foi possível vincular a %s neste computador. Provavelmente o Dash Core já está a ser executado.</translation>
+        <translation>无法绑定%s此计算机. 达世币核心应该已经在运行中了.</translation>
     </message>
     <message>
         <source>Unable to locate enough Darksend denominated funds for this transaction.</source>
-        <translation>Não foi possível localizar fundos Darksend denominados suficientes para esta transacção.</translation>
+        <translation>无法找到足够的已匿名化资金来完成交易,不足1000 DASH.</translation>
     </message>
     <message>
         <source>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 DASH.</source>
-        <translation>Não foi possível localizar fundos Darksend não denominados suficientes para esta transacção que não sejam igual a 1000DRK.</translation>
+        <translation>无法找到足够的未匿名化资金来完成交易,不足1000 DASH.</translation>
     </message>
     <message>
         <source>Warning: -paytxfee is set very high! This is the transaction fee you will pay if you send a transaction.</source>
-        <translation>Aviso: -paytxfee tem um valor muito elevado! Esta é a taxa de transacção que será paga se enviar uma transacção.</translation>
+        <translation>警告: -paytxfee 设定了很高的金额！这可是你交易付款所要付的手续费。</translation>
     </message>
     <message>
         <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
-        <translation>Aviso: A rede não parece estar concordar! Parece haver alguns mineiros com problemas.</translation>
+        <translation>警告: 达世币网路对于区块链结的决定目前有分歧！看来有些矿工会有问题。</translation>
     </message>
     <message>
         <source>Warning: We do not appear to fully agree with our peers! You may need to upgrade, or other nodes may need to upgrade.</source>
-        <translation>Aviso: Parece que não estamos de acordo com outros nós! Talvez necessite actualizar a aplicação ou os outros nós necessitem actualizar.</translation>
+        <translation>警告: 我们和某些连线的节点对于区块链结的决定不同！你可能需要升级，或是需要等其它的节点升级。</translation>
     </message>
     <message>
         <source>Warning: error reading wallet.dat! All keys read correctly, but transaction data or address book entries might be missing or incorrect.</source>
-        <translation>Aviso: erro ao carregar wallet.dat! Todas as chaves estão correctas mas os dados das transacções ou as entradas do livro de endereços podem estar ausentes ou incorrectas.</translation>
+        <translation>警告: 读取钱包档wallet.dat 时发生错误！所有的密钥都正确读取了，但是交易资料或位址簿资料可能会缺少或不正确。</translation>
     </message>
     <message>
         <source>Warning: wallet.dat corrupt, data salvaged! Original wallet.dat saved as wallet.{timestamp}.bak in %s; if your balance or transactions are incorrect you should restore from a backup.</source>
-        <translation>Aviso: wallet.dar corrompido mas os dados foram recuperados! A carteira original foi gravada como wallet{data/hora}.bak in %s; se o seu saldo ou transacções forem incorrectos deverá recuperar a partir de uma cópia de segurança.</translation>
+        <translation>警告: 钱包档wallet.dat 损坏，但资料被拯救回来了！原来的wallet.dat 会改储存在%s, 档名是wallet.{timestamp}.bak. 如果余额或交易资料有误，你应该要用备份资料复原回来。</translation>
     </message>
     <message>
         <source>You must specify a masternodeprivkey in the configuration. Please see documentation for help.</source>
-        <translation>Tem que especificar uma masternodeprivkey na configuração. Por favor verifique a documentação para ajuda.</translation>
+        <translation>您必须在配置中指定一个主节点密钥。请参阅文档以获得帮助。</translation>
     </message>
     <message>
         <source>(default: 1)</source>
-        <translation>(omissão: 1)</translation>
+        <translation>(默认: 1)</translation>
     </message>
     <message>
         <source>Accept command line and JSON-RPC commands</source>
-        <translation>Aceitar comandos da linha de comandos e JSON-RPC</translation>
+        <translation>接受命令行以及JSON-RPC命令</translation>
     </message>
     <message>
         <source>Accept connections from outside (default: 1 if no -proxy or -connect)</source>
-        <translation>Aceitar ligações do exterior (omissão: 1 se não tiver usado -proxy ou -connect)</translation>
+        <translation>接受来自外部链接 (默认: 1 if no -proxy or -connect)</translation>
     </message>
     <message>
         <source>Add a node to connect to and attempt to keep the connection open</source>
-        <translation>Adicionar um nó ao qual efectuar ligação e tentar manter a ligação aberta</translation>
+        <translation>添加一个可连接节点，并尝试保持连接开放。</translation>
     </message>
     <message>
         <source>Allow DNS lookups for -addnode, -seednode and -connect</source>
-        <translation>Permitir pesquisas de DNS para -addnode, -deednode e -connect</translation>
+        <translation>允许DNS查找 -新节点, -子节点 和 -链接</translation>
     </message>
     <message>
         <source>Already have that input.</source>
-        <translation>Entrada existente.</translation>
+        <translation>输入已存在。</translation>
     </message>
     <message>
         <source>Attempt to recover private keys from a corrupt wallet.dat</source>
-        <translation>Tentar recuperar as chaves privadas a partir de um ficheiro wallet.dat corrompido</translation>
+        <translation>尝试从已损坏的钱包文件中找回私钥</translation>
     </message>
     <message>
         <source>Block creation options:</source>
-        <translation>Opções de criação de blocos:</translation>
+        <translation>数据块创建选项：</translation>
     </message>
     <message>
         <source>Can't denominate: no compatible inputs left.</source>
-        <translation>Não é possível denominar: não existem mais entradas compatíveis.</translation>
+        <translation>不能面额化：没有可匹配的输入。</translation>
     </message>
     <message>
         <source>Cannot downgrade wallet</source>
-        <translation>Não é possível reverter para uma versão anterior da carteira</translation>
+        <translation>不能降级钱包</translation>
     </message>
     <message>
         <source>Cannot resolve -bind address: '%s'</source>
-        <translation>Não foi possível resolver endereço de vínculo: '%s'</translation>
+        <translation>不能解决 -绑定地址：'%s'</translation>
     </message>
     <message>
         <source>Cannot resolve -externalip address: '%s'</source>
-        <translation>Não foi possível resolver endereço -externalip: '%s'</translation>
+        <translation>不能解决 -外部ip地址：'%s'</translation>
     </message>
     <message>
         <source>Cannot write default address</source>
-        <translation>Não foi possível escrever endereço por omissão</translation>
+        <translation>不能写入默认钱包</translation>
     </message>
     <message>
         <source>Collateral not valid.</source>
-        <translation>Colateral inválido.</translation>
+        <translation>并行无效。</translation>
     </message>
     <message>
         <source>Connect only to the specified node(s)</source>
-        <translation>Ligar apenas ao(s) nó(s) especificados</translation>
+        <translation>连接至指定(多个)节点</translation>
     </message>
     <message>
         <source>Connect to a node to retrieve peer addresses, and disconnect</source>
-        <translation>Efectuar ligação a um nó para obter os endereços de outros clientes e desligar</translation>
+        <translation>连接至节点来找回对等地址和断开链接</translation>
     </message>
     <message>
         <source>Connection options:</source>
-        <translation>Opções de ligação:</translation>
+        <translation>连接选项：</translation>
     </message>
     <message>
         <source>Corrupted block database detected</source>
-        <translation>Detectada corrupção na base de dados dos blocos</translation>
+        <translation>已找到损坏的数据块</translation>
     </message>
     <message>
         <source>Darksend options:</source>
-        <translation>Opções Darksend:</translation>
+        <translation>匿名发送选项：</translation>
     </message>
     <message>
         <source>Debugging/Testing options:</source>
-        <translation>Opções de Depuração/Teste</translation>
+        <translation>排除故障/测试 选项：</translation>
     </message>
     <message>
         <source>Discover own IP address (default: 1 when listening and no -externalip)</source>
-        <translation>Descobrir endereço de IP próprio (omissão: 1 quando em escuta e -externalip não definido)</translation>
-    </message>
-    <message>
-        <source>Do not load the wallet and disable wallet RPC calls</source>
-        <translation>Não carregar a carteira e desabilitar as chamadas RPC</translation>
+        <translation>发现私有IP地址(默认：1 当监听时没有外部IP)</translation>
     </message>
     <message>
         <source>Do you want to rebuild the block database now?</source>
-        <translation>Quer reconstruir agora a base de dados dos blocos?</translation>
+        <translation>你想要现在重建区块资料库吗？</translation>
     </message>
     <message>
         <source>Done loading</source>
-        <translation>Carregamento completo</translation>
+        <translation>读取完成</translation>
     </message>
     <message>
         <source>Entries are full.</source>
-        <translation>Entradas completas.</translation>
+        <translation>词条已满.</translation>
     </message>
     <message>
         <source>Error initializing block database</source>
-        <translation>Erro ao inicializar a base de dados dos blocos</translation>
+        <translation>正在初始化数据库块错误</translation>
     </message>
     <message>
         <source>Error initializing wallet database environment %s!</source>
-        <translation>Erro ao inicializar o ambiente de base de dados da carteira %s!</translation>
+        <translation>正在初始钱包数据库环境错误 %s!</translation>
     </message>
     <message>
         <source>Error loading block database</source>
-        <translation>Erro ao carregar base de dados de blocos</translation>
+        <translation>读取数据库块错误</translation>
     </message>
     <message>
         <source>Error loading wallet.dat</source>
-        <translation>Erro ao carregar wallet.dat</translation>
+        <translation>读取钱包文件错误</translation>
     </message>
     <message>
         <source>Error loading wallet.dat: Wallet corrupted</source>
-        <translation>Erro ao carregar wallet.dat: A carteira está corrompida</translation>
+        <translation>读取钱包文件错误：钱包已损坏</translation>
     </message>
     <message>
         <source>Error opening block database</source>
-        <translation>Erro ao abrir base de dados de blocos</translation>
+        <translation>正在打开数据库块错误</translation>
     </message>
     <message>
         <source>Error reading from database, shutting down.</source>
-        <translation>Erro ao ler da base de dados, a encerrar.</translation>
+        <translation>读取数据库错误，正在关闭。</translation>
     </message>
     <message>
         <source>Error recovering public key.</source>
-        <translation>Erro ao recuperar chave pública.</translation>
+        <translation>恢复公钥时发生错误。</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation>Erro</translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>Error: Disk space is low!</source>
-        <translation>Erro: Pouco espaço em disco!</translation>
+        <translation>错误:磁盘空间不够!</translation>
     </message>
     <message>
         <source>Error: Wallet locked, unable to create transaction!</source>
-        <translation>Erro: Carteira bloqueada, não foi possível criar a transacção!</translation>
-    </message>
-    <message>
-        <source>Error: You already have pending entries in the Darksend pool</source>
-        <translation>Erro: Já tem entradas pendentes no conjunto Darksend</translation>
+        <translation>错误:钱包被锁定,无法创建交易!</translation>
     </message>
     <message>
         <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
-        <translation>Falhou a escuta em qualquer porta. Use -listen=0 se é isto que deseja.</translation>
+        <translation>监听端口失败。如果想使用此项 修改-listen=0</translation>
     </message>
     <message>
         <source>Failed to read block</source>
-        <translation>Falha ao ler bloco</translation>
-    </message>
-    <message>
-        <source>If &lt;category&gt; is not supplied, output all debugging information.</source>
-        <translation>Se a &lt;category&gt; não for fornecida, mostrar toda a informação de depuração.</translation>
-    </message>
-    <message>
-        <source>(1 = keep tx meta data e.g. account owner and payment request information, 2 = drop tx meta data)</source>
-        <translation>(1 = mantem meta dados das transacções ex. dono da conta e informação das solicitações de pagamento, 2 = elimina os meta dados das transacções)</translation>
+        <translation>读取数据块失败</translation>
     </message>
     <message>
         <source>An error occurred while setting up the RPC address %s port %u for listening: %s</source>
-        <translation>Ocorreu um erro ao configurar o endereço RPC %s na porta %u para escutar: %s</translation>
-    </message>
-    <message>
-        <source>Bind to given address and whitelist peers connecting to it. Use [host]:port notation for IPv6</source>
-        <translation>Vincular a um determinado endereço e ouvir sempre aí. Use a notação [host]:porta para IPv6</translation>
-    </message>
-    <message>
-        <source>Continuously rate-limit free transactions to &lt;n&gt;*1000 bytes per minute (default:%u)</source>
-        <translation>Continuamente limitar o número de transacções gratuitas por minuto a &lt;n&gt;*1000 bytes (default:%u)</translation>
+        <translation>建立RPC地址 %s 时发生了一个错误 %u, 正在监听 : %s</translation>
     </message>
     <message>
         <source>Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup</source>
-        <translation>Apaga todas as transacções da carteira e só recupera essas partes da cadeia de blocos com -rescan no arranque</translation>
+        <translation>删除钱包里的所有交易信息, 并且在下次启动时, 使用 -rescan 来从区块链中恢复</translation>
+    </message>
+    <message>
+        <source>Disable all Dash specific functionality (Masternodes, Darksend, InstantX, Budgeting) (0-1, default: %u)</source>
+        <translation>禁止所有达世币附加功能(主节点, 匿名发送, 即时发送, 预算) (0-1, default: %u)</translation>
     </message>
     <message>
         <source>Enable instantx, show confirmations for locked transactions (bool, default: %s)</source>
-        <translation>Activar instantx, mostrar confirmações para transacções bloqueadas (bool, default: %s)</translation>
+        <translation>激活即时支付,显示锁定交易的确认数(bool, 默认: %s)</translation>
     </message>
     <message>
         <source>Enable use of automated darksend for funds stored in this wallet (0-1, default: %u)</source>
-        <translation>Activar o uso de darksend automatizado para os fundos guardados nesta carteira (0-1, default: %u)</translation>
+        <translation>允许存储在这个钱包内的资金自动使用匿名发送(0-1, 默认: %u)</translation>
     </message>
     <message>
         <source>Fees (in DASH/Kb) smaller than this are considered zero fee for relaying (default: %s)</source>
-        <translation>Taxas (em DASH/Kb) inferiores a esta serão consideradas zero para retransmissão (default: %s)</translation>
+        <translation>如果手续费比这个值低,就视为没有付手续费(当产生交易时)(默认: %s)</translation>
     </message>
     <message>
-        <source>Flush database activity from memory pool to disk log every &lt;n&gt; megabytes (default: %u)</source>
-        <translation>Consolidar a actividade de dados de memoria para disco a cada &lt;n&gt; megabytes (omissão: %u)</translation>
+        <source>Fees (in DASH/Kb) smaller than this are considered zero fee for transaction creation (default: %s)</source>
+        <translation>如果手续费比这个值低,就视为没有付手续费(当产生交易时)(默认: %s)</translation>
     </message>
     <message>
         <source>Found unconfirmed denominated outputs, will wait till they confirm to continue.</source>
-        <translation>Foram encontradas saídas denominadas não confirmadas, a aguardar pela confirmação para prosseguir.</translation>
+        <translation>未确认的面额化输出，将等待他们确认后继续。</translation>
     </message>
     <message>
         <source>How thorough the block verification of -checkblocks is (0-4, default: %u)</source>
-        <translation>Quão minuciosa é a verificação dos blocos do -checkblocks (0-4, omissão: %u)</translation>
+        <translation>使用 -checkblocks 检查区块的仔细程度 (0-4, 默认:%u)</translation>
     </message>
     <message>
-        <source>Log transaction priority and fee per kB when mining blocks (default: %u)</source>
-        <translation>Salvar prioridade e taxa da transacção por kB quando minar blocos (omissão: %u)</translation>
+        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)</source>
+        <translation>当没有设定 paytxfee 时, 自动包含可以让交易能在平均 n 个区块内开始确认的手续费 (默认: %u)</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -maxtxfee=&lt;amount&gt;: '%s' (must be at least the minrelay fee of %s to prevent stuck transactions)</source>
+        <translation>设定 -maxtxfee=&lt;金额&gt;  的金额无效: '%s' (必须大于最低转发手续费%s 以避免交易无法被确认)</translation>
+    </message>
+    <message>
+        <source>Maximum total fees to use in a single wallet transaction, setting too low may abort large transactions (default: %s)</source>
+        <translation>单一的钱包交易允许支付最大的总手续费, 设定过低可能会导致无法进行大量交易 (默认: %s)</translation>
     </message>
     <message>
         <source>Number of seconds to keep misbehaving peers from reconnecting (default: %u)</source>
-        <translation>Número de segundos a não permitir ligações de nós com comportamento inadequado (omissão: %u)</translation>
+        <translation>禁止与作弊节点重新链接的秒数 (默认: %u)</translation>
     </message>
     <message>
         <source>Output debugging information (default: %u, supplying &lt;category&gt; is optional)</source>
-        <translation>Informação de depuração de saída (omissão: %u, fornecer &lt;category&gt; é opcional)</translation>
-    </message>
-    <message>
-        <source>Provide liquidity to Darksend by infrequently mixing coins on a continual basis (0-100, default: %u, 1=very frequent, high fees, 100=very infrequent, low fees)</source>
-        <translation>Providenciar liquidez para o Darksend misturando moedas continuamente com baixa frequência (0-100, omissão: %u, 1=muito frequente taxas elevadas, 100=pouco frequente, taxas reduzidas)</translation>
+        <translation>输出除错信息(默认: %u,  &lt;category&gt;是可选项)</translation>
     </message>
     <message>
         <source>Send trace/debug info to console instead of debug.log file (default: %u)</source>
-        <translation>Enviar informação de execução/depuração para a consola em vez de enviar para o ficheiro debug.log (omissão: %u)</translation>
+        <translation>发送追踪/debug信息而并非debug.log文件至控制台 (默认: %u)</translation>
     </message>
     <message>
         <source>Set the number of threads for coin generation if enabled (-1 = all cores, default: %d)</source>
-        <translation>Definir o limite de processadores quando a geração está activa (-1 = todos, omissão: %d)</translation>
-    </message>
-    <message>
-        <source>Show N confirmations for a successfully locked transaction (0-9999, default: %u)</source>
-        <translation>Mostrar N confirmações para uma transacção bloqueada com sucesso (0-9999, omissão: %u)</translation>
+        <translation>设定生成币的执行绪数目(-1 表示处理器核心数, 默认: %d)</translation>
     </message>
     <message>
         <source>This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit &lt;https://www.openssl.org/&gt; and cryptographic software written by Eric Young and UPnP software written by Thomas Bernard.</source>
-        <translation>Este produto inclui software desenvolvido pelo Projecto OpenSSL para uso no OpenSSL Toolkit &lt;https://www.openssl.org/&gt;, software criptográfico escrito por Eric Young e software UPnP escrito por Thomas Bernard.</translation>
+        <translation>此产品包括了由OpenSSL Project所开发的OpenSSL Toolkit 软件&lt;https://www.openssl.org/&gt;, 和由Eric Young 编写的加密软件, 以及由Thomas Bernard 编写的UPnP软件.</translation>
     </message>
     <message>
         <source>Unable to locate enough funds for this transaction that are not equal 1000 DASH.</source>
-        <translation>Não foi possível localizar fundos suficientes para esta transacção que não sejam igual a 1000DRK.</translation>
+        <translation>无法找到足够的资金完成交易,不足1000 DASH.</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
-        <translation>Usar um proxy SOCKS5 diferente para ligar aos nós através dos serviços escondidos Tor (omissão: %s)</translation>
+        <translation>使用独立的SOCK5 代理服务器, 来通过Tor 隐藏服务器与节点的链接 (默认: %s)</translation>
     </message>
     <message>
         <source>Warning: -maxtxfee is set very high! Fees this large could be paid on a single transaction.</source>
-        <translation>Aviso: -maxtxfee é demasiado alta! Taxas deste tamanho podem ser pagas em apenas uma transacção.</translation>
+        <translation>警告: -maxtxfee 设定的金额过高! 这是一次交易就要支付的手续费.</translation>
     </message>
     <message>
         <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong Dash Core will not work properly.</source>
-        <translation>Aviso: Por favor verifique que a data e a hora do computador está correcta! Se o relógio estiver errado o Dash Core não vai funcionar correctamente.</translation>
+        <translation>警告: 请检查电脑日期和时间是否正确！达世币核心没办法在时钟不准的情况下正常运作。</translation>
+    </message>
+    <message>
+        <source>Whitelist peers connecting from the given netmask or IP address. Can be specified multiple times.</source>
+        <translation>把来自指定网络或IP地址放进白名单. 这个选项可以设定多次.</translation>
+    </message>
+    <message>
+        <source>Whitelisted peers cannot be DoS banned and their transactions are always relayed, even if they are already in the mempool, useful e.g. for a gateway</source>
+        <translation>在白名单中的节点不会因为检测到DoS攻击而被停用. 来自这些节点的交易也一定会被转发, 即使说交易本神就来自记忆池. 适用于网关</translation>
     </message>
     <message>
         <source>(9999 could be used only on mainnet)</source>
-        <translation>(9999 apenas pode ser usado para mainnet)</translation>
+        <translation>(9999 只能被用于主网)</translation>
     </message>
     <message>
         <source>(default: %s)</source>
-        <translation>(default: %s)</translation>
+        <translation>(默认: %s)</translation>
     </message>
     <message>
         <source>&lt;category&gt; can be:
 </source>
-        <translation>&lt;category&gt; pode ser:
+        <translation>&lt;category&gt; 可以是:
 </translation>
     </message>
     <message>
-        <source>Accept public REST requests (default: %u)</source>
-        <translation>Aceitar REST requests (default: %u) públicos</translation>
-    </message>
-    <message>
         <source>Acceptable ciphers (default: %s)</source>
-        <translation>Cifras aceitáveis (default: %s)</translation>
+        <translation>可接受的密码 (默认: %s)</translation>
     </message>
     <message>
         <source>Always query for peer addresses via DNS lookup (default: %u)</source>
-        <translation>Perguntar sempre por endereços de pares via DNS lookup (default: %u)</translation>
+        <translation>总是通过DNS查询对等地址(默认: %u)</translation>
     </message>
     <message>
         <source>Cannot resolve -whitebind address: '%s'</source>
-        <translation>Incapaz de resolver -whitebind address: '%s'</translation>
+        <translation>不能解决 -whitebind 地址: '%s'</translation>
     </message>
     <message>
         <source>Connect through SOCKS5 proxy</source>
-        <translation>Conectar através de SOCKS5 proxy</translation>
+        <translation>通过SOCKS5代理连接</translation>
     </message>
     <message>
         <source>Connect to KeePassHttp on port &lt;port&gt; (default: %u)</source>
-        <translation>Conectar a KeePassHttp na porta &lt;port&gt; (default: %u)</translation>
+        <translation>连接至 KeePassHttp 端口 &lt;port&gt; (默认: %u)</translation>
     </message>
     <message>
         <source>Copyright (C) 2009-%i The Bitcoin Core Developers</source>
-        <translation>Copyright (C) 2009-%i The Bitcoin Core Developers</translation>
+        <translation>版权(C) 2009-%i The Bitcoin Core Developers</translation>
     </message>
     <message>
         <source>Copyright (C) 2014-%i The Dash Core Developers</source>
-        <translation>Copyright (C) 2014-%i Dash Core Developers</translation>
+        <translation>版权 (C) 2014-%i The Dash Core Developers</translation>
     </message>
     <message>
         <source>Could not parse -rpcbind value %s as network address</source>
-        <translation>Incapaz de analizar -rpcbind value %s como endereço de rede</translation>
+        <translation>无法解析 -rpcbind 参数 %s 作为网络地址</translation>
     </message>
     <message>
         <source>Darksend is idle.</source>
-        <translation>Darksend está inactivo.</translation>
+        <translation>匿名化处于空闲状态</translation>
     </message>
     <message>
         <source>Darksend request complete:</source>
-        <translation>Pedido Darksend completo:</translation>
+        <translation>匿名化请求已完成:</translation>
     </message>
     <message>
         <source>Darksend request incomplete:</source>
-        <translation>Pedido Darksend incompleto:</translation>
+        <translation>匿名化请求未完成:</translation>
     </message>
     <message>
         <source>Disable safemode, override a real safe mode event (default: %u)</source>
-        <translation>Desactivar safemode, ultrapassar o evento de modo de segurança real (default: %u)</translation>
+        <translation>未激活安全模式，重新写入真正安全模式项目(默认: %u)</translation>
     </message>
     <message>
         <source>Enable the client to act as a masternode (0-1, default: %u)</source>
-        <translation>Permitir ao cliente actuar como um masternode (0-1, omissão: %u)</translation>
+        <translation>激活客户端,使其作为主节点(0-1, 默认: %u)</translation>
     </message>
     <message>
         <source>Error connecting to Masternode.</source>
-        <translation>Erro conectando ao Masternode</translation>
+        <translation>连接到主节点时发生错误.</translation>
     </message>
     <message>
         <source>Error loading wallet.dat: Wallet requires newer version of Dash Core</source>
-        <translation>Erro carregando wallet.dat Carteira precisa de nova versão do Dash Core</translation>
+        <translation>读取钱包文件错误: 需要较为新版本的达世币核心来读取钱包</translation>
     </message>
     <message>
         <source>Error: A fatal internal error occured, see debug.log for details</source>
-        <translation>Erro: Um erro fatal interno ocorreu, veja debug.log para mais detalhes</translation>
+        <translation>错误: 一个之名的内部错误, 到debug.log查看更多细节</translation>
     </message>
     <message>
         <source>Error: Can't select current denominated inputs</source>
-        <translation>Erro: Incapaz de seleccionar inputs denominados correntes</translation>
+        <translation>错误: 无法选择现在也面额化的输入</translation>
     </message>
     <message>
         <source>Error: Unsupported argument -tor found, use -onion.</source>
-        <translation>Erro: Argument não suportado -tor encontrado, utilize -onion</translation>
-    </message>
-    <message>
-        <source>Fee (in DASH/kB) to add to transactions you send (default: %s)</source>
-        <translation>Taxas (em DASH/Kb) a adicionar às transacções que envia (omissão: %s)</translation>
+        <translation>錯誤: 找到不再支援的 -tor 參數，請改用 -onion 參數。
+错误: 找到不支持 -tor 参数, 请改用 -onion 参数.</translation>
     </message>
     <message>
         <source>Finalizing transaction.</source>
-        <translation>Finalizando transacção.</translation>
-    </message>
-    <message>
-        <source>Force safe mode (default: %u)</source>
-        <translation>Forçar safe mode (default: %u)</translation>
+        <translation>正在完成交易。</translation>
     </message>
     <message>
         <source>Found enough users, signing ( waiting %s )</source>
-        <translation>Encontrados utilizadores suficientes, assinando ( waiting %s )</translation>
+        <translation>用户数已满足，开始签名 (等待中 %s)</translation>
     </message>
     <message>
         <source>Found enough users, signing ...</source>
-        <translation>Encontrados utilizadores suficientes, assinando ...</translation>
+        <translation>用户数已满足，开始签名 ... </translation>
     </message>
     <message>
         <source>Generate coins (default: %u)</source>
-        <translation>Gerar moedas (default: %u)</translation>
-    </message>
-    <message>
-        <source>How many blocks to check at startup (default: %u, 0 = all)</source>
-        <translation>Quanto blocos deve verificar no arranque (omissão: %u, 0 = all)</translation>
+        <translation>生成币 (默认: %u)</translation>
     </message>
     <message>
         <source>Importing...</source>
-        <translation>A importar...</translation>
+        <translation>正在导入...</translation>
     </message>
     <message>
         <source>Imports blocks from external blk000??.dat file</source>
-        <translation>Importa blocos a partir de ficheiros blk000??.dat externos</translation>
+        <translation>从其它来源的 blk000??.dat 档汇入区块</translation>
     </message>
     <message>
         <source>Include IP addresses in debug output (default: %u)</source>
-        <translation>Incluir endereços IP no output do debug (default: %u)</translation>
+        <translation>在除错输出内容中包含网络IP地址(默认: %u)</translation>
     </message>
     <message>
         <source>Incompatible mode.</source>
-        <translation>Modo incompatível.</translation>
+        <translation>不兼容模式。</translation>
     </message>
     <message>
         <source>Incompatible version.</source>
-        <translation>Versão incompatível.</translation>
-    </message>
-    <message>
-        <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
-        <translation>Bloco original não encontrado ou incorrecto. Pasta de dados errada para esta rede?</translation>
+        <translation>不兼容版本。</translation>
     </message>
     <message>
         <source>Information</source>
-        <translation>Informação</translation>
+        <translation>信息</translation>
     </message>
     <message>
         <source>Initialization sanity check failed. Dash Core is shutting down.</source>
-        <translation>A verificação de consistência no arranque falhou. O Dash Core está a encerrar.</translation>
+        <translation>初始化检查失败。达世币核心正在关闭。</translation>
     </message>
     <message>
         <source>Input is not valid.</source>
-        <translation>A entrada não é válida.</translation>
+        <translation>输入是无效的。</translation>
     </message>
     <message>
         <source>InstantX options:</source>
-        <translation>Opções InstantX</translation>
+        <translation>即时支付 选项：</translation>
     </message>
     <message>
         <source>Insufficient funds.</source>
-        <translation>Fundos insuficientes.</translation>
+        <translation>存款不足。</translation>
     </message>
     <message>
         <source>Invalid -onion address: '%s'</source>
-        <translation>Endereço -onion inválido: '%s'</translation>
+        <translation>无效-洋葱头地址：'%s'</translation>
     </message>
     <message>
         <source>Invalid -proxy address: '%s'</source>
-        <translation>Endereço -proxy inválido: '%s'</translation>
+        <translation>无效-代理地址：'%s'</translation>
     </message>
     <message>
         <source>Invalid amount for -maxtxfee=&lt;amount&gt;: '%s'</source>
-        <translation>Quantidade inválida para -maxtxfee=&lt;amount&gt;: '%s'</translation>
+        <translation>设定 -maxtxfee=&lt;金额&gt; 的金额无效: '%s'</translation>
     </message>
     <message>
         <source>Invalid amount for -minrelaytxfee=&lt;amount&gt;: '%s'</source>
-        <translation>Quantia inválida para -minrelaytxfee=&lt;amount&gt;: '%s'</translation>
+        <translation>设定 --minrelaytxfee=&lt;金额&gt; 的金额无效: '%s'</translation>
     </message>
     <message>
         <source>Invalid amount for -mintxfee=&lt;amount&gt;: '%s'</source>
-        <translation>Quantia inválida para -mintxfee=&lt;amount&gt;: '%s'</translation>
+        <translation>设定 -mintxfee=&lt;金额&gt; 的金额无效: '%s'</translation>
     </message>
     <message>
         <source>Invalid amount for -paytxfee=&lt;amount&gt;: '%s' (must be at least %s)</source>
-        <translation>Quantia inválida para -paytxfee=&lt;amount&gt;: '%s' (must be at least %s)</translation>
+        <translation>设定 -paytxfee=&lt;金额&gt;  的金额无效: '%s' (至少要有%s)</translation>
     </message>
     <message>
         <source>Invalid amount for -paytxfee=&lt;amount&gt;: '%s'</source>
-        <translation>Quantia inválida para -paytxfee=&lt;amount&gt;: '%s'</translation>
+        <translation>设定 -paytxfee=&lt;金额&gt; 的金额无效: '%s'</translation>
     </message>
     <message>
         <source>Last successful Darksend action was too recent.</source>
-        <translation>Ultima acção Darksend com sucesso é demasiado recente.</translation>
-    </message>
-    <message>
-        <source>Limit size of signature cache to &lt;n&gt; entries (default: %u)</source>
-        <translation>Limitar o tamanho da cache de assinaturas a &lt;n&gt; elementos (default: %u)</translation>
+        <translation>最后一次成功匿名发送刚刚完成.</translation>
     </message>
     <message>
         <source>Listen for JSON-RPC connections on &lt;port&gt; (default: %u or testnet: %u)</source>
-        <translation>Escutar por ligações JSON-RPC na porta &lt;port&gt; (default: %u or testnet: %u)</translation>
+        <translation>监听 JSON-RPC&lt;port&gt;(默认: %u 或 测试网络: %u)</translation>
     </message>
     <message>
         <source>Listen for connections on &lt;port&gt; (default: %u or testnet: %u)</source>
-        <translation>Escutar ligações na &lt;port&gt; (default: %u or testnet: %u)</translation>
+        <translation>Listen for connections on &lt;port&gt; (default: %u 或 testnet: %u)</translation>
     </message>
     <message>
         <source>Loading budget cache...</source>
-        <translation>Carregando cache de orçamentos...</translation>
+        <translation>正在读取预算缓存...</translation>
     </message>
     <message>
         <source>Loading masternode cache...</source>
-        <translation>A carregar a cache de masternodes...</translation>
+        <translation>正在读取主节点缓存...</translation>
     </message>
     <message>
         <source>Loading masternode payment cache...</source>
-        <translation>Carregando cache de pagamento de maternodes...</translation>
-    </message>
-    <message>
-        <source>Lock is already in place.</source>
-        <translation>Bloqueio já efectuado.</translation>
-    </message>
-    <message>
-        <source>Lock masternodes from masternode configuration file (default: %u)</source>
-        <translation>Bloquear masternode presentes no ficheiro de configuração (omissão: %u)</translation>
-    </message>
-    <message>
-        <source>Maintain at most &lt;n&gt; connections to peers (default: %u)</source>
-        <translation>Manter no máximo &lt;n&gt; ligações a outros nós (omissão: %u)</translation>
-    </message>
-    <message>
-        <source>Maximum per-connection receive buffer, &lt;n&gt;*1000 bytes (default: %u)</source>
-        <translation>Tamanho máximo da memória intermédia de recepção por ligação, &lt;n&gt;*1000 bytes (omissão: %u)</translation>
-    </message>
-    <message>
-        <source>Maximum per-connection send buffer, &lt;n&gt;*1000 bytes (default: %u)</source>
-        <translation>Tamanho máximo da memória intermédia de envio por ligação, &lt;n&gt;*1000 bytes (omissão: %u)</translation>
+        <translation>正在读取主节点奖励缓存...</translation>
     </message>
     <message>
         <source>Mixing in progress...</source>
-        <translation>Mistura em progresso...</translation>
-    </message>
-    <message>
-        <source>Need to specify a port with -whitebind: '%s'</source>
-        <translation>Necessita especificar a porta com -whitebind: '%s'</translation>
+        <translation>混淆中...</translation>
     </message>
     <message>
         <source>No Masternodes detected.</source>
-        <translation>Nenhum Masternode detectado.</translation>
+        <translation>没有检测到任何主节点。</translation>
     </message>
     <message>
         <source>No compatible Masternode found.</source>
-        <translation>Nenhum Masternode compatível encontrado.</translation>
+        <translation>没有找到任何兼容的主节点。</translation>
     </message>
     <message>
         <source>Not in the Masternode list.</source>
-        <translation>Não está na lista de Masternodes.</translation>
+        <translation>在主节点列表中不存在.</translation>
     </message>
     <message>
         <source>Number of automatic wallet backups (default: 10)</source>
-        <translation>Número de backups automáticos da carteira (omissão: 10)</translation>
+        <translation>自动备份的钱包数目 (默认: 10)</translation>
     </message>
     <message>
         <source>Only accept block chain matching built-in checkpoints (default: %u)</source>
-        <translation>Somente aceitar pontos de inspecção apropriados presentes na cadeia de blocos (omissão: %u)</translation>
+        <translation>只接受与镶入检验点匹配的数据块链 (默认: %u)</translation>
     </message>
     <message>
         <source>Only connect to nodes in network &lt;net&gt; (ipv4, ipv6 or onion)</source>
-        <translation>Somente ligar a nós na rede &lt;net&gt; (IPv4, IPv6 ou onion)</translation>
+        <translation>在网络中只连接至节点 &lt;net&gt; (ipv4, ipv6 或 onion)</translation>
     </message>
     <message>
         <source>Prepend debug output with timestamp (default: %u)</source>
-        <translation>Adicionar data/hora à informação de depuração (omissão: %u)</translation>
+        <translation>通过时间标记预先调试输出 (默认: %u)</translation>
     </message>
     <message>
         <source>Run a thread to flush wallet periodically (default: %u)</source>
-        <translation>Executar periodicamente um processo para consolidar a carteira (omissão: %u)</translation>
+        <translation>启用定期将变动写入​​钱包档的执行绪(默认: %u)</translation>
     </message>
     <message>
         <source>Send trace/debug info to debug.log file (default: %u)</source>
-        <translation>Enviar informação de execução/depuração para o ficheiro debug.log (omissão: %u)</translation>
+        <translation>发送 追踪或除错 信息到debug.log中 (默认: %u)</translation>
     </message>
     <message>
         <source>Send transactions as zero-fee transactions if possible (default: %u)</source>
-        <translation>Enviar com taxa-zero se possível (ex: %u)</translation>
+        <translation>如果可能,发送零手续费的交易(默认: %u)</translation>
     </message>
     <message>
         <source>Server certificate file (default: %s)</source>
-        <translation>Ficheiro de certificado do servidor (omissão: %s)</translation>
+        <translation>服务器证书文件(默认: %s)</translation>
     </message>
     <message>
         <source>Server private key (default: %s)</source>
-        <translation>Chave privada do servidor (default: %s)</translation>
-    </message>
-    <message>
-        <source>Set external address:port to get to this masternode (example: %s)</source>
-        <translation>Definir endereço:porta externo para ligação a este masternode (ex: %s)</translation>
+        <translation>服务器私钥 (默认: %s)</translation>
     </message>
     <message>
         <source>Set key pool size to &lt;n&gt; (default: %u)</source>
-        <translation>Define o tamanho do conjunto de chaves para &lt;n&gt; (omissão: %u)</translation>
+        <translation>设置钥匙池大小至&lt;n&gt; (默认: %u)</translation>
     </message>
     <message>
         <source>Set minimum block size in bytes (default: %u)</source>
-        <translation>Define o tamanho máximo do bloco em bytes (omissão %u)</translation>
+        <translation>以字节为单位设置最小的块(默认: %u)</translation>
     </message>
     <message>
         <source>Set the number of threads to service RPC calls (default: %d)</source>
-        <translation>Define o número de threads que processam os pedidos RPC (omissão: %d)</translation>
+        <translation>设定处理RPC 服务请求的执行绪数目(默认: %d)</translation>
     </message>
     <message>
         <source>Sets the DB_PRIVATE flag in the wallet db environment (default: %u)</source>
-        <translation>Definir a flag DB_PRIVATE no ambiente db da carteira (default: %u)</translation>
+        <translation>在钱包资料库环境变数设定DB_PRIVATE 旗标(默认: %u)</translation>
     </message>
     <message>
         <source>Signing timed out.</source>
-        <translation>Assinatura fora do tempo.</translation>
+        <translation>签名超时.</translation>
     </message>
     <message>
         <source>Specify configuration file (default: %s)</source>
-        <translation>Especificar ficheiro de configuração (default: %s)</translation>
+        <translation>指定配置文件(默认: %s)</translation>
     </message>
     <message>
         <source>Specify connection timeout in milliseconds (minimum: 1, default: %d)</source>
-        <translation>Especificar timeout da conexão em milisegundos  (minimum: 1, default: %d)</translation>
+        <translation>指定连接超时毫秒数 (最小值: 1, 默认: %d)</translation>
     </message>
     <message>
         <source>Specify masternode configuration file (default: %s)</source>
-        <translation>Especificar ficheiro de configuração masternode (default: %s)</translation>
+        <translation>指定主节点配置文件 (默认: %s)</translation>
     </message>
     <message>
         <source>Specify pid file (default: %s)</source>
-        <translation>Especificar ficheiro pid (default: %s)</translation>
+        <translation>指定pid 文件 (默认: %s)</translation>
     </message>
     <message>
         <source>Spend unconfirmed change when sending transactions (default: %u)</source>
-        <translation>Gastar troco não confirmado quando enviando transacções (default: %u)</translation>
+        <translation>发送交易时花费未确认的费用(默认: %u)</translation>
     </message>
     <message>
         <source>Stop running after importing blocks from disk (default: %u)</source>
-        <translation>Para de correr após importação de blocos do disco (default: %u)</translation>
+        <translation>从硬盘导入区块信息后停止运行(默认: %u)</translation>
     </message>
     <message>
-        <source>Submitted following entries to masternode: %u / %d</source>
-        <translation>Apresentadas as seguintes entradas ao masternode:  %u / %d </translation>
+        <source>Synchronization failed</source>
+        <translation>同步失败</translation>
     </message>
     <message>
-        <source>Submitted to masternode, waiting for more entries ( %u / %d ) %s</source>
-        <translation>Apresentado ao masternode, esperando por mais entradas ( %u / %d ) %s</translation>
-    </message>
-    <message>
-        <source>Submitted to masternode, waiting in queue %s</source>
-        <translation>Apresentado ao masternode, esperando na fila %s </translation>
+        <source>Synchronization finished</source>
+        <translation>同步完成</translation>
     </message>
     <message>
         <source>Synchronizing budgets...</source>
-        <translation>A sincronizar orçamentos...</translation>
+        <translation>正在同步预算...</translation>
     </message>
     <message>
         <source>Synchronizing masternode winners...</source>
-        <translation>A sincronizar masternodes vencedores...</translation>
+        <translation>正在同步获得奖励的主节点...</translation>
     </message>
     <message>
         <source>Synchronizing masternodes...</source>
-        <translation>A sincronizar masternodes...</translation>
+        <translation>正在同步主节点...</translation>
     </message>
     <message>
         <source>Synchronizing sporks...</source>
-        <translation>A sincronizar sporks...</translation>
+        <translation>同步分叉...</translation>
     </message>
     <message>
         <source>This is not a Masternode.</source>
-        <translation>Este não é um Masternode</translation>
+        <translation>这并不是一个主节点。</translation>
     </message>
     <message>
         <source>Threshold for disconnecting misbehaving peers (default: %u)</source>
-        <translation>Limiar para desconectar pares mal comportados (default: %u)</translation>
-    </message>
-    <message>
-        <source>Use KeePass 2 integration using KeePassHttp plugin (default: %u)</source>
-        <translation>Utilize integração KeePass 2 usando plugin KeePassHttp (default: %u)</translation>
-    </message>
-    <message>
-        <source>Use N separate masternodes to anonymize funds  (2-8, default: %u)</source>
-        <translation>Utilize N masternode distintos para anonimizar fundos (2-8, default: %u)</translation>
-    </message>
-    <message>
-        <source>Use UPnP to map the listening port (default: %u)</source>
-        <translation>Utilize UPNP para mapear porta de escuta (default: %u)</translation>
+        <translation>断开的作弊节点临界值(默认: %u)</translation>
     </message>
     <message>
         <source>Wallet needed to be rewritten: restart Dash Core to complete</source>
-        <translation>Carteira necessita de ser re-escrita: reinicie Dash Core para completar</translation>
+        <translation>錢包需要重寫: 請重新啓動達世幣核心來完成
+钱包需要重写: 请重新启动达世币核心来完成</translation>
     </message>
     <message>
         <source>Warning: Unsupported argument -benchmark ignored, use -debug=bench.</source>
-        <translation>Aviso: Argumento não suportado -benchmark ignorado, use -debug=bench.</translation>
+        <translation>警告: 忽略了不再支持的 -benchmark 参数, 请改用 -debug=bench.</translation>
     </message>
     <message>
         <source>Warning: Unsupported argument -debugnet ignored, use -debug=net.</source>
-        <translation>Aviso: Argumento não suportado debugnet ignorado, use -debug=net.</translation>
+        <translation>警告: 忽略了不再支持的 -debugnet 参数, 请改用 -debug=net.</translation>
     </message>
     <message>
         <source>Will retry...</source>
-        <translation>Tentar de novo...</translation>
+        <translation>即将重试...</translation>
     </message>
     <message>
         <source>Invalid masternodeprivkey. Please see documenation.</source>
-        <translation>masternodeprivkey inválida. Por favor reveja a documentação.</translation>
+        <translation>无效主节点私钥。请查阅文件材料。</translation>
     </message>
     <message>
         <source>(must be 9999 for mainnet)</source>
-        <translation>(deve ser 9999 para mainnet)</translation>
+        <translation>(设置 9999 为主网)</translation>
     </message>
     <message>
         <source>Can't find random Masternode.</source>
-        <translation>Incapaz de encontrar Masternode aleatório.</translation>
+        <translation>无法找到随机主节点.</translation>
     </message>
     <message>
         <source>Can't mix while sync in progress.</source>
-        <translation>Incapaz de misturar enquanto sincronização está a decorrer.</translation>
+        <translation>无法在同步过程中进行混淆.</translation>
     </message>
     <message>
         <source>Could not parse masternode.conf</source>
-        <translation>Incapaz de analizar masternode.conf</translation>
-    </message>
-    <message>
-        <source>Invalid netmask specified in -whitelist: '%s'</source>
-        <translation>Netmask especificado invalido na -whitelist: '%s'</translation>
+        <translation>无法解析主节点配置文件</translation>
     </message>
     <message>
         <source>Invalid port detected in masternode.conf</source>
-        <translation>Port inválido detectado em masternode.conf</translation>
+        <translation>在主节点配置文件中检测到无效端口</translation>
     </message>
     <message>
         <source>Invalid private key.</source>
-        <translation>Chave privada inválida.</translation>
+        <translation>无效私钥。</translation>
     </message>
     <message>
         <source>Invalid script detected.</source>
-        <translation>Script inválido detectado.</translation>
-    </message>
-    <message>
-        <source>KeePassHttp id for the established association</source>
-        <translation>Identificador KeePassHttp para a associação estabelecida</translation>
-    </message>
-    <message>
-        <source>KeePassHttp key for AES encrypted communication with KeePass</source>
-        <translation>Chave KeePassHttp para usar na comunicação cifrada AES com o KeePass</translation>
+        <translation>检测到无效脚本。</translation>
     </message>
     <message>
         <source>Keep N DASH anonymized (default: %u)</source>
-        <translation>Manter N DASH anonimizados (default: %u)</translation>
-    </message>
-    <message>
-        <source>Keep at most &lt;n&gt; unconnectable transactions in memory (default: %u)</source>
-        <translation>Manter no máximo &lt;n&gt; transacções não conectáveis em memória (omissão: %u)</translation>
+        <translation>保持定量达世币匿名化(默认: %u)</translation>
     </message>
     <message>
         <source>Last Darksend was too recent.</source>
-        <translation>O último Darksend é muito recente.</translation>
+        <translation>最后一次匿名发送刚刚完成。</translation>
     </message>
     <message>
         <source>Line: %d</source>
-        <translation>Linha: %d</translation>
+        <translation>线路: %d</translation>
     </message>
     <message>
         <source>Loading addresses...</source>
-        <translation>A carregar endereços...</translation>
+        <translation>正在读取地址...</translation>
     </message>
     <message>
         <source>Loading block index...</source>
-        <translation>A carregar índice de blocos...</translation>
+        <translation>正在读取数据块索引...</translation>
     </message>
     <message>
         <source>Loading wallet... (%3.2f %%)</source>
-        <translation>A carregar carteira... (%3.2f %%)</translation>
+        <translation>正在读取钱包...(%3.2f%%)</translation>
     </message>
     <message>
         <source>Loading wallet...</source>
-        <translation>A carregar carteira...</translation>
+        <translation>正在读取钱包...</translation>
     </message>
     <message>
         <source>Masternode options:</source>
-        <translation>Opções de masternode:</translation>
+        <translation>主节点选项：</translation>
     </message>
     <message>
         <source>Masternode queue is full.</source>
-        <translation>A fila do masternode está cheia.</translation>
+        <translation>主节点列队已满。</translation>
     </message>
     <message>
         <source>Masternode:</source>
-        <translation>Masternode:</translation>
+        <translation>主节点：</translation>
     </message>
     <message>
         <source>Missing input transaction information.</source>
-        <translation>A informação da transacção de entrada não foi encontrada.</translation>
+        <translation>丢失输入交易信息。</translation>
     </message>
     <message>
         <source>No funds detected in need of denominating.</source>
-        <translation>Não foram detectados fundos a necessitar de denominação.</translation>
+        <translation>在面额化过程中没有检测到所需的资金。</translation>
     </message>
     <message>
         <source>No matching denominations found for mixing.</source>
-        <translation>Não foram encontradas denominações correspondentes para misturar.</translation>
-    </message>
-    <message>
-        <source>Node relay options:</source>
-        <translation>Opções de relé do nódulo:</translation>
+        <translation>对于混淆处理，没有找到匹配的面额资金。</translation>
     </message>
     <message>
         <source>Non-standard public key detected.</source>
-        <translation>Detectada chave pública fora do padrão.</translation>
+        <translation>检测到非标准的公钥。</translation>
     </message>
     <message>
         <source>Not compatible with existing transactions.</source>
-        <translation>Não é compatível com as transacções existentes.</translation>
+        <translation>与已存在交易不匹配。</translation>
     </message>
     <message>
         <source>Not enough file descriptors available.</source>
-        <translation>Número insuficiente de descritores de ficheiros disponíveis.</translation>
+        <translation>文件说明符不可用</translation>
     </message>
     <message>
         <source>Options:</source>
-        <translation>Opções:</translation>
+        <translation>选项：</translation>
     </message>
     <message>
         <source>Password for JSON-RPC connections</source>
-        <translation>Palavra-passe para as ligações JSON-RPC</translation>
+        <translation>JSON-RPC连接密码</translation>
     </message>
     <message>
         <source>RPC SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
-        <translation>Opções RPC SSL: (para instruções de configuração SSL dirija-se à Dash Wiki)</translation>
+        <translation>RPC SSL选项： (请在比特币维基百科查看SSL建立说明)</translation>
     </message>
     <message>
         <source>RPC server options:</source>
-        <translation>Opções do servidor RPC:</translation>
+        <translation>RPC服务器选项：</translation>
     </message>
     <message>
         <source>RPC support for HTTP persistent connections (default: %d)</source>
-        <translation>Suporte RPC para conexões persistentes HTTP (default: %d)</translation>
-    </message>
-    <message>
-        <source>Randomly drop 1 of every &lt;n&gt; network messages</source>
-        <translation>Ignorar aleatoriamente 1 de cada &lt;n&gt; mensagens da rede</translation>
-    </message>
-    <message>
-        <source>Randomly fuzz 1 of every &lt;n&gt; network messages</source>
-        <translation>Esfiapar aleatoriamente 1 de cada &lt;n&gt; mensagens da rede</translation>
+        <translation>RPC 支持HTTP 持久链接 (默认: %d)</translation>
     </message>
     <message>
         <source>Rebuild block chain index from current blk000??.dat files</source>
-        <translation>Reconstruir o índice da cadeia de blocos a partir dos ficheiros actuais blk000??.dat</translation>
-    </message>
-    <message>
-        <source>Receive and display P2P network alerts (default: %u)</source>
-        <translation>Receber e apresentar alertas da rede P2P (default: %u)</translation>
-    </message>
-    <message>
-        <source>Relay and mine data carrier transactions (default: %u)</source>
-        <translation>Relé e mine data de transacções de suporte (default: %u)</translation>
-    </message>
-    <message>
-        <source>Relay non-P2SH multisig (default: %u)</source>
-        <translation>Relé não-P2SH multisig (default: %u)</translation>
+        <translation>从现在的blk000??.dat文件重新建立数据块链索引</translation>
     </message>
     <message>
         <source>Rescan the block chain for missing wallet transactions</source>
-        <translation>Examinar novamente a cadeia de blocos para encontrar transacções inexistentes na carteira</translation>
+        <translation>对丢失的钱包交易重新扫描数据块链</translation>
     </message>
     <message>
         <source>Rescanning...</source>
-        <translation>A examinar novamente...</translation>
+        <translation>正在重新扫描...</translation>
     </message>
     <message>
         <source>Run in the background as a daemon and accept commands</source>
-        <translation>Executar em segundo plano como um serviço e aceitar comandos</translation>
+        <translation>运行至后台并且接受命令</translation>
     </message>
     <message>
         <source>Session not complete!</source>
-        <translation>Sessão incompleta!</translation>
+        <translation>对话未完成！</translation>
     </message>
     <message>
         <source>Session timed out.</source>
-        <translation>Esgotado o tempo de sessão.</translation>
+        <translation>对话超市</translation>
     </message>
     <message>
         <source>Set database cache size in megabytes (%d to %d, default: %d)</source>
-        <translation>Define o tamanho máximo da cache de dados em megabytes (%d até %d, omissão %d)</translation>
+        <translation>以兆字节为单位设置缓存数据大小 (%d to %d, 默认： %d)</translation>
     </message>
     <message>
         <source>Set maximum block size in bytes (default: %d)</source>
-        <translation>Define o tamanho máximo do bloco em bytes (omissão %d)</translation>
+        <translation>以字节为单位设置最大的块(默认： %d)</translation>
     </message>
     <message>
         <source>Set the masternode private key</source>
-        <translation>Define a chave privada do masternode</translation>
+        <translation>设置主节点私钥</translation>
     </message>
     <message>
         <source>Show all debugging options (usage: --help -help-debug)</source>
-        <translation>Mostrar todas as opções de depuração (uso: --help -help-debug)</translation>
+        <translation>显示所有debug选项(使用： --help -help-debug)</translation>
     </message>
     <message>
         <source>Shrink debug.log file on client startup (default: 1 when no -debug)</source>
-        <translation>Diminuir o ficheiro debug.log ao iniciar o cliente (omissão: 1 quando não usa opção -debug)</translation>
+        <translation>客户启动时缩小debug.log文件(默认： 1 when no -debug)</translation>
     </message>
     <message>
         <source>Signing failed.</source>
-        <translation>A assinatura falhou.</translation>
+        <translation>签名失败。</translation>
     </message>
     <message>
         <source>Signing transaction failed</source>
-        <translation>A assinatura da transacção falhou</translation>
+        <translation>交易签名失败</translation>
     </message>
     <message>
         <source>Specify data directory</source>
-        <translation>Especificar a pasta de dados</translation>
+        <translation>指定数据目录</translation>
     </message>
     <message>
         <source>Specify wallet file (within data directory)</source>
-        <translation>Especificar o ficheiro da carteira (dentro da pasta de dados)</translation>
+        <translation>指定钱包文件(通过数据目录)</translation>
     </message>
     <message>
         <source>Specify your own public address</source>
-        <translation>Especificar o seu endereço público</translation>
+        <translation>指定你个人公开地址</translation>
+    </message>
+    <message>
+        <source>Synchronization pending...</source>
+        <translation>同步即将开始...</translation>
     </message>
     <message>
         <source>This help message</source>
-        <translation>Esta mensagem de ajuda</translation>
+        <translation>此帮助信息</translation>
     </message>
     <message>
         <source>This is experimental software.</source>
-        <translation>Este é um software experimental.</translation>
+        <translation>这是一款实验软件.</translation>
     </message>
     <message>
         <source>This is intended for regression testing tools and app development.</source>
-        <translation>Esta opção destina-se a ferramentas de testes de regressão e desenvolvimento de aplicativos.</translation>
+        <translation>这被用来作为回归测试工具和app的开发。</translation>
     </message>
     <message>
         <source>Transaction amount too small</source>
-        <translation>Quantia da transacção demasiado pequena</translation>
+        <translation>交易额过小</translation>
     </message>
     <message>
         <source>Transaction amounts must be positive</source>
-        <translation>As quantias da transacção tem que ser positivas</translation>
+        <translation>交易额一定要真实有效</translation>
     </message>
     <message>
         <source>Transaction created successfully.</source>
-        <translation>Transacção criada com sucesso.</translation>
+        <translation>交易创建成功。</translation>
     </message>
     <message>
         <source>Transaction fees are too high.</source>
-        <translation>As taxas da transacção são demasiado elevadas.</translation>
+        <translation>交易费用过高。</translation>
     </message>
     <message>
         <source>Transaction not valid.</source>
-        <translation>A transacção não é válida.</translation>
-    </message>
-    <message>
-        <source>Transaction too large for fee policy</source>
-        <translation>Transacção demasiado grande para a política de taxas</translation>
+        <translation>交易无效。</translation>
     </message>
     <message>
         <source>Transaction too large</source>
-        <translation>Transacção demasiado grande</translation>
+        <translation>交易过大</translation>
     </message>
     <message>
         <source>Transmitting final transaction.</source>
-        <translation>Transmitindo transacção final</translation>
+        <translation>正在传输最终交易.</translation>
     </message>
     <message>
         <source>Unable to bind to %s on this computer (bind returned error %s)</source>
-        <translation>Não foi possível vincular a %s neste computador (o vínculo retornou o erro %s)</translation>
+        <translation>无法绑定%s此计算机 (绑定返回错误 %s)</translation>
     </message>
     <message>
         <source>Unable to sign spork message, wrong key?</source>
-        <translation>Não foi possível assinar a mensagem spork, chave incorrecta?</translation>
+        <translation>无法签署交叉信息，错误的密钥？</translation>
     </message>
     <message>
         <source>Unknown network specified in -onlynet: '%s'</source>
-        <translation>Rede especificada desconhecida em -onlynet: '%s'</translation>
+        <translation>在 -onlynet 指定了不明的网路别: '%s'</translation>
     </message>
     <message>
         <source>Unknown state: id = %u</source>
-        <translation>Estado desconhecido: id = %u</translation>
+        <translation>未知状态: id = %u</translation>
     </message>
     <message>
         <source>Upgrade wallet to latest format</source>
-        <translation>Actualizar carteira para o formato mais recente</translation>
+        <translation>升级钱包至最新版本</translation>
     </message>
     <message>
         <source>Use OpenSSL (https) for JSON-RPC connections</source>
-        <translation>Usar OpenSSl (https) para as ligações JSON-RPC</translation>
+        <translation>对JSON-RPC链接使用OpenSSL(https)</translation>
     </message>
     <message>
         <source>Use UPnP to map the listening port (default: 1 when listening)</source>
-        <translation>Usar UPnP para mapear a porta de entrada (omissão: 1 quando em escuta)</translation>
+        <translation>使用UPnP来映射监听端口(默认：1为监听中)</translation>
     </message>
     <message>
         <source>Use the test network</source>
-        <translation>Usar a rede de testes</translation>
+        <translation>使用测试网络</translation>
     </message>
     <message>
         <source>Username for JSON-RPC connections</source>
-        <translation>Utilizador para as ligações JSON-RPC</translation>
+        <translation>链接JSON-RPC的用户名</translation>
     </message>
     <message>
         <source>Value more than Darksend pool maximum allows.</source>
-        <translation>Valor mais elevado do que o máximo permitido pelo Darksend.</translation>
+        <translation>数值超过匿名发送池所允许的最大数。</translation>
     </message>
     <message>
         <source>Verifying blocks...</source>
-        <translation>A verificar blocos...</translation>
+        <translation>验证数据块中...</translation>
     </message>
     <message>
         <source>Verifying wallet...</source>
-        <translation>A verificar carteira...</translation>
+        <translation>验证钱包中...</translation>
     </message>
     <message>
         <source>Wallet %s resides outside data directory %s</source>
-        <translation>A carteira %s encontra-se fora da pasta de dados %s</translation>
+        <translation>钱包 %s 属于外部数据目录 %s</translation>
     </message>
     <message>
         <source>Wallet is locked.</source>
-        <translation>A carteira encontra-se bloqueada.</translation>
+        <translation>钱包被锁。</translation>
     </message>
     <message>
         <source>Wallet options:</source>
-        <translation>Opções da carteira:</translation>
+        <translation>钱包选项：</translation>
     </message>
     <message>
         <source>Wallet window title</source>
-        <translation>Título da janela</translation>
+        <translation>钱包窗口标题</translation>
     </message>
     <message>
         <source>Warning</source>
-        <translation>Aviso</translation>
+        <translation>警告</translation>
     </message>
     <message>
         <source>Warning: This version is obsolete, upgrade required!</source>
-        <translation>Aviso: Esta versão é obsoleta, actualização necessária!</translation>
+        <translation>警告：版本过低，请升级！</translation>
     </message>
     <message>
         <source>You need to rebuild the database using -reindex to change -txindex</source>
-        <translation>Necessita reconstruir a base de dados usando -reindex para alterar -txindex</translation>
+        <translation>你需要通过使用-reindex改变-txindex来重新建立数据库</translation>
     </message>
     <message>
         <source>Your entries added successfully.</source>
-        <translation>Suas entradas adicionadas com sucesso.</translation>
+        <translation>您的词条也添加成功.</translation>
     </message>
     <message>
         <source>Your transaction was accepted into the pool!</source>
-        <translation>A sua transacção foi aceite na pool!</translation>
+        <translation>您的交易成功被矿池接受!</translation>
     </message>
     <message>
         <source>Zapping all transactions from wallet...</source>
-        <translation>A apagar todas as transacções da carteira...</translation>
+        <translation>从钱包正在展开所有交易记录...</translation>
     </message>
     <message>
         <source>on startup</source>
-        <translation>no arranque</translation>
+        <translation>正在启动</translation>
     </message>
     <message>
         <source>wallet.dat corrupt, salvage failed</source>
-        <translation>wallet.dat corrompido, recuperação falhou</translation>
+        <translation>钱包数据损坏，恢复失败</translation>
     </message>
 </context>
 </TS>

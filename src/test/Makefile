@@ -1,6 +1,6 @@
 all:
-	$(MAKE) -C .. dash_test
+	$(MAKE) -C .. xsn_test
 clean:
-	$(MAKE) -C .. dash_test_clean
+	$(MAKE) -C .. xsn_test_clean
 check:
-	$(MAKE) -C .. dash_test_check
+	$(MAKE) -C .. xsn_test_check

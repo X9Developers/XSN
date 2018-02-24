@@ -344,22 +344,22 @@ static const CRPCCommand vRPCCommands[] =
   #endif
 
   /* Dash features */
-  { "dash",               "tposcontract",           &tposcontract,           true  },
-  { "dash",               "merchantnode",           &merchantnode,           true  },
-  { "dash",               "merchantnodelist",       &merchantnodelist,       true  },
-  { "dash",               "masternode",             &masternode,             true  },
-  { "dash",               "masternodelist",         &masternodelist,         true  },
-  { "dash",               "masternodebroadcast",    &masternodebroadcast,    true  },
-  { "dash",               "gobject",                &gobject,                true  },
-  { "dash",               "getgovernanceinfo",      &getgovernanceinfo,      true  },
-  { "dash",               "getsuperblockbudget",    &getsuperblockbudget,    true  },
-  { "dash",               "voteraw",                &voteraw,                true  },
-  { "dash",               "mnsync",                 &mnsync,                 true  },
-  { "dash",               "spork",                  &spork,                  true  },
-  { "dash",               "getpoolinfo",            &getpoolinfo,            true  },
-  { "dash",               "sentinelping",           &sentinelping,           true  },
+  { "xsn",               "tposcontract",           &tposcontract,           true  },
+  { "xsn",               "merchantnode",           &merchantnode,           true  },
+  { "xsn",               "merchantnodelist",       &merchantnodelist,       true  },
+  { "xsn",               "masternode",             &masternode,             true  },
+  { "xsn",               "masternodelist",         &masternodelist,         true  },
+  { "xsn",               "masternodebroadcast",    &masternodebroadcast,    true  },
+  { "xsn",               "gobject",                &gobject,                true  },
+  { "xsn",               "getgovernanceinfo",      &getgovernanceinfo,      true  },
+  { "xsn",               "getsuperblockbudget",    &getsuperblockbudget,    true  },
+  { "xsn",               "voteraw",                &voteraw,                true  },
+  { "xsn",               "mnsync",                 &mnsync,                 true  },
+  { "xsn",               "spork",                  &spork,                  true  },
+  { "xsn",               "getpoolinfo",            &getpoolinfo,            true  },
+  { "xsn",               "sentinelping",           &sentinelping,           true  },
   #ifdef ENABLE_WALLET
-  { "dash",               "privatesend",            &privatesend,            false },
+  { "xsn",               "privatesend",            &privatesend,            false },
 
   /* Wallet */
   { "wallet",             "checkposblock",          &checkposblock,          true  },
@@ -584,7 +584,7 @@ std::vector<std::string> CRPCTable::listCommands() const
 
 std::string HelpExampleCli(const std::string& methodname, const std::string& args)
 {
-    return "> dash-cli " + methodname + " " + args + "\n";
+    return "> xsn-cli " + methodname + " " + args + "\n";
 }
 
 std::string HelpExampleRpc(const std::string& methodname, const std::string& args)
