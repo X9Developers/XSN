@@ -3194,7 +3194,7 @@ Dies kann passieren, wenn einige Xsn aus ihrer Wallet bereits ausgegeben wurden.
         <translation>Die "Bitcoin Core"-Entwickler</translation>
     </message>
     <message>
-        <source>The Xsn Core developers</source>
+        <source>The Dash Core developers</source>
         <translation>Die "Xsn Core"-Entwickler</translation>
     </message>
 </context>

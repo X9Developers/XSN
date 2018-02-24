@@ -3167,7 +3167,7 @@ https://www.transifex.com/projects/p/xsn/</translation>
         <translation>位元幣核心開發人員</translation>
     </message>
     <message>
-        <source>The Xsn Core developers</source>
+        <source>The Dash Core developers</source>
         <translation>達世幣核心開發人員</translation>
     </message>
 </context>

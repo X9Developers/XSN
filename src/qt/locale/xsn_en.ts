@@ -4138,8 +4138,8 @@ https://www.transifex.com/projects/p/xsn/</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>The Xsn Core developers</source>
-        <translation>The Xsn Core developers</translation>
+        <source>The Dash Core developers</source>
+        <translation>The Dash Core developers</translation>
     </message>
 </context>
 <context>

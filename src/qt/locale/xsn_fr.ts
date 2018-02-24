@@ -3191,7 +3191,7 @@ https://www.transifex.com/projects/p/xsn/</translation>
         <translation>Les développeurs Bitcoin Core</translation>
     </message>
     <message>
-        <source>The Xsn Core developers</source>
+        <source>The Dash Core developers</source>
         <translation>Les développeurs Xsn Core</translation>
     </message>
 </context>

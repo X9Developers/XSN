@@ -2732,7 +2732,7 @@ https://www.transifex.com/projects/p/xsn/</translation>
         <translation>Os programadores Bitcoin Core</translation>
     </message>
     <message>
-        <source>The Xsn Core developers</source>
+        <source>The Dash Core developers</source>
         <translation>Os programadores Xsn Core</translation>
     </message>
     <message>

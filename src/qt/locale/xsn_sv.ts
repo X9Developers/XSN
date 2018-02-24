@@ -2140,7 +2140,7 @@ https://www.transifex.com/projects/p/xsn/</translation>
         <translation>Bitcoin Core-utvecklarna</translation>
     </message>
     <message>
-        <source>The Xsn Core developers</source>
+        <source>The Dash Core developers</source>
         <translation>Xsn Core-utvecklarna</translation>
     </message>
     <message>

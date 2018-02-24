@@ -2741,7 +2741,7 @@ https://www.transifex.com/projects/p/xsn/</translation>
         <translation>Bitcoin Core 的开发者</translation>
     </message>
     <message>
-        <source>The Xsn Core developers</source>
+        <source>The Dash Core developers</source>
         <translation>达世币核心开发人员</translation>
     </message>
     <message>
