@@ -13,7 +13,7 @@
 - (NSString *)__bundleIdentifier
 {
     if (self == [NSBundle mainBundle]) {
-        return @"org.xsn.Dash-Qt";
+        return @"org.xsn.Xsn-Qt";
     } else {
         return [self __bundleIdentifier];
     }

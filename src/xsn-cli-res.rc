@@ -16,8 +16,8 @@ BEGIN
     BEGIN
         BLOCK "040904E4" // U.S. English - multilingual (hex)
         BEGIN
-            VALUE "CompanyName",        "Dash"
-            VALUE "FileDescription",    "xsn-cli (JSON-RPC client for Dash Core)"
+            VALUE "CompanyName",        "Xsn"
+            VALUE "FileDescription",    "xsn-cli (JSON-RPC client for Xsn Core)"
             VALUE "FileVersion",        VER_FILEVERSION_STR
             VALUE "InternalName",       "xsn-cli"
             VALUE "LegalCopyright",     COPYRIGHT_STR

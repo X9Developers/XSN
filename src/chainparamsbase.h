@@ -10,7 +10,7 @@
 
 /**
  * CBaseChainParams defines the base parameters (shared between xsn-cli and xsnd)
- * of a given instance of the Dash system.
+ * of a given instance of the Xsn system.
  */
 class CBaseChainParams
 {

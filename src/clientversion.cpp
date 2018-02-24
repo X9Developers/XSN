@@ -13,7 +13,7 @@
  * for both xsnd and xsn-qt, to make it harder for attackers to
  * target servers or GUI users specifically.
  */
-const std::string CLIENT_NAME("Dash Core");
+const std::string CLIENT_NAME("Xsn Core");
 
 /**
  * Client version number
