@@ -57,6 +57,8 @@ public:
                                                             const COutPoint &merchantTxOutPoint,
                                                             int merchantCommission,
                                                             std::string &strError);
+
+    COutPoint GetContractCollateralOutpoint(const TPoSContract &contract);
 #endif
 
 };

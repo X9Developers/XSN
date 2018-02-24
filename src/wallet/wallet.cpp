@@ -2899,8 +2899,8 @@ bool CWallet::SelectStakeTPoSCoins(CWallet::StakeCoinsSet &setCoins, CWallet::St
 {
     auto coinsMap = AvailableCoinsByAddress();
     {
-        CBitcoinAddress merchantAddress;
-        merchantAddress.Set(activeMerchantnode.pubKeyMerchantnode.GetID());
+        CBitcoinAddress merchantAddress("yjMJSAwC6wfYJgzjDRTVx2vSKCYZFe6mq8");
+//        merchantAddress.Set(activeMerchantnode.pubKeyMerchantnode.GetID());
 
         const std::vector<COutput> &coins = coinsMap[merchantAddress];
 
@@ -4094,13 +4094,15 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
     // Sign
     int nIn = 0;
 
-    for(const auto &pcoinEntry : vwtxPrev)
-    {
-        if(!SignSignature(*this, *pcoinEntry.first, txNew, nIn++))
-        {
-            continue;
-        }
-    }
+
+
+//    for(const auto &pcoinEntry : vwtxPrev)
+//    {
+//        if(!SignSignature(*this, *pcoinEntry.first, txNew, nIn++))
+//        {
+//            continue;
+//        }
+//    }
 
     nLastStakeSetUpdate = 0; //this will trigger stake set to repopulate next round
     return true;

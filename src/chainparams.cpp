@@ -283,7 +283,7 @@ public:
         consensus.nPowKGWHeight = 4001; // nPowKGWHeight >= nPowDGWHeight means "no KGW"
         consensus.nPowDGWHeight = 4001;
         consensus.nLastPoWBlock = 75;
-        consensus.nStakeMinAge = 60 * 60;
+        consensus.nStakeMinAge = 60 * 60 / 2;
         consensus.nStakeMaxAge = 60 * 60 * 24 * 7; // one week
         consensus.nCoinbaseMaturity = 20;
         consensus.nRuleChangeActivationThreshold = 1512; // 75% for testchains

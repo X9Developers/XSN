@@ -164,7 +164,7 @@ std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
 
     std::vector<CRecipient> vecSend {
         { metadataScriptPubKey, 0, false },
-        { GetScriptForDestination(tposAddress.Get()), 1 * COIN, false }
+        { GetScriptForDestination(tposAddress.Get()), TPOS_CONTRACT_COLATERAL, false }
     };
 
     if(wallet->IsLocked())
@@ -190,6 +190,23 @@ std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
         strError = strprintf("Error: Not standard tx: %s\n", reason.c_str());
         LogPrintf(strError.c_str());
         return nullptr;
+    }
+
+    return result;
+}
+
+COutPoint TPoSUtils::GetContractCollateralOutpoint(const TPoSContract &contract)
+{
+    COutPoint result;
+    const auto &vout = contract.rawTx.vout;
+    for(size_t i = 0; i < vout.size(); ++i)
+    {
+        if(vout[i].scriptPubKey == GetScriptForDestination(contract.tposAddress.Get()) &&
+                vout[i].nValue == TPOS_CONTRACT_COLATERAL)
+        {
+            result = COutPoint(contract.rawTx.GetHash(), i);
+            break;
+        }
     }
 
     return result;

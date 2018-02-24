@@ -1244,69 +1244,69 @@ CAmount GetBlockSubsidy(int nPrevHeight, const Consensus::Params& consensusParam
     if(nPrevHeight < 20)
         return 0;
 
-//    if(Params().NetworkIDString() == CBaseChainParams::TESTNET)
-        return 200 * COIN;
+    //    if(Params().NetworkIDString() == CBaseChainParams::TESTNET)
+    return 200 * COIN;
 
-//    CAmount nSubsidyBase;
+    //    CAmount nSubsidyBase;
 
-//    if (nPrevHeight <= 4500 && Params().NetworkIDString() == CBaseChainParams::MAIN) {
-//        /* a bug which caused diff to not be correctly calculated */
-//        dDiff = (double)0x0000ffff / (double)(nPrevBits & 0x00ffffff);
-//    } else {
-//        dDiff = ConvertBitsToDouble(nPrevBits);
-//    }
+    //    if (nPrevHeight <= 4500 && Params().NetworkIDString() == CBaseChainParams::MAIN) {
+    //        /* a bug which caused diff to not be correctly calculated */
+    //        dDiff = (double)0x0000ffff / (double)(nPrevBits & 0x00ffffff);
+    //    } else {
+    //        dDiff = ConvertBitsToDouble(nPrevBits);
+    //    }
 
-//    if (nPrevHeight < 5465) {
-//        // Early ages...
-//        // 1111/((x+1)^2)
-//        nSubsidyBase = (1111.0 / (pow((dDiff+1.0),2.0)));
-//        if(nSubsidyBase > 500) nSubsidyBase = 500;
-//        else if(nSubsidyBase < 1) nSubsidyBase = 1;
-//    } else if (nPrevHeight < 17000 || (dDiff <= 75 && nPrevHeight < 24000)) {
-//        // CPU mining era
-//        // 11111/(((x+51)/6)^2)
-//        nSubsidyBase = (11111.0 / (pow((dDiff+51.0)/6.0,2.0)));
-//        if(nSubsidyBase > 500) nSubsidyBase = 500;
-//        else if(nSubsidyBase < 25) nSubsidyBase = 25;
-//    } else {
-//        // GPU/ASIC mining era
-//        // 2222222/(((x+2600)/9)^2)
-//        nSubsidyBase = (2222222.0 / (pow((dDiff+2600.0)/9.0,2.0)));
-//        if(nSubsidyBase > 25) nSubsidyBase = 25;
-//        else if(nSubsidyBase < 5) nSubsidyBase = 5;
-//    }
+    //    if (nPrevHeight < 5465) {
+    //        // Early ages...
+    //        // 1111/((x+1)^2)
+    //        nSubsidyBase = (1111.0 / (pow((dDiff+1.0),2.0)));
+    //        if(nSubsidyBase > 500) nSubsidyBase = 500;
+    //        else if(nSubsidyBase < 1) nSubsidyBase = 1;
+    //    } else if (nPrevHeight < 17000 || (dDiff <= 75 && nPrevHeight < 24000)) {
+    //        // CPU mining era
+    //        // 11111/(((x+51)/6)^2)
+    //        nSubsidyBase = (11111.0 / (pow((dDiff+51.0)/6.0,2.0)));
+    //        if(nSubsidyBase > 500) nSubsidyBase = 500;
+    //        else if(nSubsidyBase < 25) nSubsidyBase = 25;
+    //    } else {
+    //        // GPU/ASIC mining era
+    //        // 2222222/(((x+2600)/9)^2)
+    //        nSubsidyBase = (2222222.0 / (pow((dDiff+2600.0)/9.0,2.0)));
+    //        if(nSubsidyBase > 25) nSubsidyBase = 25;
+    //        else if(nSubsidyBase < 5) nSubsidyBase = 5;
+    //    }
 
-//    // LogPrintf("height %u diff %4.2f reward %d\n", nPrevHeight, dDiff, nSubsidyBase);
-//    CAmount nSubsidy = nSubsidyBase * COIN;
+    //    // LogPrintf("height %u diff %4.2f reward %d\n", nPrevHeight, dDiff, nSubsidyBase);
+    //    CAmount nSubsidy = nSubsidyBase * COIN;
 
-//    // yearly decline of production by ~7.1% per year, projected ~18M coins max by year 2050+.
-//    for (int i = consensusParams.nSubsidyHalvingInterval; i <= nPrevHeight; i += consensusParams.nSubsidyHalvingInterval) {
-//        nSubsidy -= nSubsidy/14;
-//    }
+    //    // yearly decline of production by ~7.1% per year, projected ~18M coins max by year 2050+.
+    //    for (int i = consensusParams.nSubsidyHalvingInterval; i <= nPrevHeight; i += consensusParams.nSubsidyHalvingInterval) {
+    //        nSubsidy -= nSubsidy/14;
+    //    }
 
-//    // Hard fork to reduce the block reward by 10 extra percent (allowing budget/superblocks)
-//    CAmount nSuperblockPart = (nPrevHeight > consensusParams.nBudgetPaymentsStartBlock) ? nSubsidy/10 : 0;
+    //    // Hard fork to reduce the block reward by 10 extra percent (allowing budget/superblocks)
+    //    CAmount nSuperblockPart = (nPrevHeight > consensusParams.nBudgetPaymentsStartBlock) ? nSubsidy/10 : 0;
 
-//    return fSuperblockPartOnly ? nSuperblockPart : nSubsidy - nSuperblockPart;
+    //    return fSuperblockPartOnly ? nSuperblockPart : nSubsidy - nSuperblockPart;
 }
 
 CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
 {
     CAmount ret = blockValue/5; // start at 20%
 
-//    int nMNPIBlock = Params().GetConsensus().nMasternodePaymentsIncreaseBlock;
-//    int nMNPIPeriod = Params().GetConsensus().nMasternodePaymentsIncreasePeriod;
+    //    int nMNPIBlock = Params().GetConsensus().nMasternodePaymentsIncreaseBlock;
+    //    int nMNPIPeriod = Params().GetConsensus().nMasternodePaymentsIncreasePeriod;
 
-//    // mainnet:
-//    if(nHeight > nMNPIBlock)                  ret += blockValue / 20; // 158000 - 25.0% - 2014-10-24
-//    if(nHeight > nMNPIBlock+(nMNPIPeriod* 1)) ret += blockValue / 20; // 175280 - 30.0% - 2014-11-25
-//    if(nHeight > nMNPIBlock+(nMNPIPeriod* 2)) ret += blockValue / 20; // 192560 - 35.0% - 2014-12-26
-//    if(nHeight > nMNPIBlock+(nMNPIPeriod* 3)) ret += blockValue / 40; // 209840 - 37.5% - 2015-01-26
-//    if(nHeight > nMNPIBlock+(nMNPIPeriod* 4)) ret += blockValue / 40; // 227120 - 40.0% - 2015-02-27
-//    if(nHeight > nMNPIBlock+(nMNPIPeriod* 5)) ret += blockValue / 40; // 244400 - 42.5% - 2015-03-30
-//    if(nHeight > nMNPIBlock+(nMNPIPeriod* 6)) ret += blockValue / 40; // 261680 - 45.0% - 2015-05-01
-//    if(nHeight > nMNPIBlock+(nMNPIPeriod* 7)) ret += blockValue / 40; // 278960 - 47.5% - 2015-06-01
-//    if(nHeight > nMNPIBlock+(nMNPIPeriod* 9)) ret += blockValue / 40; // 313520 - 50.0% - 2015-08-03
+    //    // mainnet:
+    //    if(nHeight > nMNPIBlock)                  ret += blockValue / 20; // 158000 - 25.0% - 2014-10-24
+    //    if(nHeight > nMNPIBlock+(nMNPIPeriod* 1)) ret += blockValue / 20; // 175280 - 30.0% - 2014-11-25
+    //    if(nHeight > nMNPIBlock+(nMNPIPeriod* 2)) ret += blockValue / 20; // 192560 - 35.0% - 2014-12-26
+    //    if(nHeight > nMNPIBlock+(nMNPIPeriod* 3)) ret += blockValue / 40; // 209840 - 37.5% - 2015-01-26
+    //    if(nHeight > nMNPIBlock+(nMNPIPeriod* 4)) ret += blockValue / 40; // 227120 - 40.0% - 2015-02-27
+    //    if(nHeight > nMNPIBlock+(nMNPIPeriod* 5)) ret += blockValue / 40; // 244400 - 42.5% - 2015-03-30
+    //    if(nHeight > nMNPIBlock+(nMNPIPeriod* 6)) ret += blockValue / 40; // 261680 - 45.0% - 2015-05-01
+    //    if(nHeight > nMNPIBlock+(nMNPIPeriod* 7)) ret += blockValue / 40; // 278960 - 47.5% - 2015-06-01
+    //    if(nHeight > nMNPIBlock+(nMNPIPeriod* 9)) ret += blockValue / 40; // 313520 - 50.0% - 2015-08-03
 
     return ret;
 }
@@ -1547,6 +1547,8 @@ bool CheckInputs(const CTransaction& tx, CValidationState &state, const CCoinsVi
         // this optimization would allow an invalid chain to be accepted.
         if (fScriptChecks) {
             for (unsigned int i = 0; i < tx.vin.size(); i++) {
+
+
                 const COutPoint &prevout = tx.vin[i].prevout;
                 const Coin& coin = inputs.AccessCoin(prevout);
                 assert(!coin.IsSpent());
@@ -1558,6 +1560,9 @@ bool CheckInputs(const CTransaction& tx, CValidationState &state, const CCoinsVi
                 // spent being checked as a part of CScriptCheck.
                 const CScript& scriptPubKey = coin.out.scriptPubKey;
                 const CAmount amount = coin.out.nValue;
+
+                if(tx.IsCoinStake())
+                    continue;
 
                 // Verify signature
                 CScriptCheck check(scriptPubKey, amount, tx, i, flags, cacheStore);
@@ -3224,6 +3229,17 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
         for (unsigned int i = 2; i < block.vtx.size(); i++)
             if (block.vtx[i].IsCoinStake())
                 return state.DoS(100, error("CheckBlock() : more than one coinstake"));
+
+        uint256 hashProofOfStake;
+        uint256 hash = block.GetHash();
+
+        if(!CheckProofOfStake(pwalletMain, block, hashProofOfStake)) {
+            state.DoS(100, error("CheckBlock(): check proof-of-stake failed for block %s\n", hash.ToString().c_str()));
+            return false;
+        }
+
+        if(!mapProofOfStake.count(hash)) // add to mapProofOfStake
+            mapProofOfStake.insert(make_pair(hash, hashProofOfStake));
     }
 
 
@@ -3341,18 +3357,6 @@ bool ContextualCheckBlock(const CBlock& block, CValidationState& state, CBlockIn
 {
     const int nHeight = pindexPrev == NULL ? 0 : pindexPrev->nHeight + 1;
     const Consensus::Params& consensusParams = Params().GetConsensus();
-
-    if (block.IsProofOfStake()) {
-        uint256 hashProofOfStake;
-        uint256 hash = block.GetHash();
-
-        if(!CheckProofOfStake(pwalletMain, block, hashProofOfStake)) {
-            LogPrintf("WARNING: ProcessBlock(): check proof-of-stake failed for block %s\n", hash.ToString().c_str());
-            return false;
-        }
-        if(!mapProofOfStake.count(hash)) // add to mapProofOfStake
-            mapProofOfStake.insert(make_pair(hash, hashProofOfStake));
-    }
 
     // Start enforcing BIP113 (Median Time Past) using versionbits logic.
     int nLockTimeFlags = 0;
