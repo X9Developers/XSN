@@ -3,6 +3,9 @@
 #include "utilmoneystr.h"
 #include "policy/policy.h"
 #include "coincontrol.h"
+#include "validation.h"
+#include "tpos/merchantnode-sync.h"
+#include "tpos/merchantnodeman.h"
 #include <sstream>
 
 static const std::string TPOSEXPORTHEADER("TPOSOWNERINFO");
@@ -176,6 +179,45 @@ COutPoint TPoSUtils::GetContractCollateralOutpoint(const TPoSContract &contract)
     }
 
     return result;
+}
+
+bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contract)
+{
+    CTransaction tx;
+    uint256 hashBlock;
+    if(!GetTransaction(hashContractTx, tx, Params().GetConsensus(), hashBlock))
+    {
+        return error("CheckContract() : failed to get transaction for tpos contract");
+    }
+
+    TPoSContract tmpContract = TPoSContract::FromTPoSContractTx(tx);
+
+    if(!tmpContract.IsValid())
+        return error("CheckContract() : invalid transaction for tpos contract");
+
+    auto tposContractOutpoint = TPoSUtils::GetContractCollateralOutpoint(tmpContract);
+    Coin coin;
+    if(!pcoinsTip->GetCoin(tposContractOutpoint, coin) || coin.IsSpent())
+        return error("CheckContract() : tpos contract invalid, collateral is spent");
+
+    contract = tmpContract;
+
+    return true;
+}
+
+bool TPoSUtils::IsMerchantPaymentValid(const CBlock &block, int nBlockHeight, CAmount expectedReward, CAmount actualReward)
+{
+    if(!merchantnodeSync.IsSynced()) {
+        //there is no merchant node info to check anything, let's just accept the longest chain
+        if(fDebug) LogPrintf("IsMerchantPaymentValid -- WARNING: Client not synced, skipping block payee checks\n");
+        return true;
+    }
+
+    merchantnodeman.GetMerchantnodeInfo()
+
+//    block.vtx[1].vout[1]
+
+
 }
 
 #endif

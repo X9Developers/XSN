@@ -1067,23 +1067,10 @@ UniValue checkposblock(const UniValue& params, bool fHelp)
     if (!ReadBlockFromDisk(blockprev, pindex->GetBlockPos(), cons))
         return error("CheckProofOfStake(): INFO: failed to find block");
 
-    CMutableTransaction proxyTx(txPrev);
-    if(block.IsTPoSBlock())
-    {
-        CTransaction tposTransaction;
-        uint256 hashBlock;
-        if(!GetTransaction(block.tposStakePoint.hash, tposTransaction, Params().GetConsensus(), hashBlock))
-            return error("CheckProofOfStake(): failed to find transaction of tpos stake point: (%s, %d)", block.tposStakePoint.hash.ToString().c_str(), block.tposStakePoint.n);
-
-
-        auto &nValue = proxyTx.vout[txin.prevout.n].nValue;
-        nValue = tposTransaction.vout[block.tposStakePoint.n].nValue;
-    }
-
     uint256 hashProofOfStake;
 
     unsigned int nTime = block.nTime;
-    if (!CheckStakeKernelHash(block.nBits, blockprev, /*postx.nTxOffset + */sizeof(CBlock), proxyTx, txin.prevout, nTime, hashProofOfStake, true))
+    if (!CheckStakeKernelHash(block.nBits, blockprev, /*postx.nTxOffset + */sizeof(CBlock), txPrev, txin.prevout, nTime, hashProofOfStake, true))
         return error("CheckProofOfStake() : INFO: check kernel failed on coinstake %s, hashProof=%s \n", tx.GetHash().ToString().c_str(), hashProofOfStake.ToString().c_str()); // may occur during initial download or if behind on block chain sync
 
     return true;

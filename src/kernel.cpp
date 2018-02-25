@@ -496,9 +496,10 @@ bool CheckProofOfStake(CWallet *wallet, const CBlock &block, uint256& hashProofO
     if (!GetTransaction(txin.prevout.hash, txPrev, cons, hashBlock, true))
         return error("CheckProofOfStake() : INFO: read txPrev failed");
 
-    //verify signature and script
-//    if (!VerifyScript(txin.scriptSig, txPrev.vout[txin.prevout.n].scriptPubKey, STANDARD_SCRIPT_VERIFY_FLAGS, TransactionSignatureChecker(&tx, 0)))
-//        return error("CheckProofOfStake() : VerifySignature failed on coinstake %s", tx.GetHash().ToString().c_str());
+
+    //verify signature and script, don't check script if it's tpos block, signature check will happen in different place
+    if (!block.IsTPoSBlock() && !VerifyScript(txin.scriptSig, txPrev.vout[txin.prevout.n].scriptPubKey, STANDARD_SCRIPT_VERIFY_FLAGS, TransactionSignatureChecker(&tx, 0)))
+        return error("CheckProofOfStake() : VerifySignature failed on coinstake %s", tx.GetHash().ToString().c_str());
 
     CBlockIndex* pindex = NULL;
     BlockMap::iterator it = mapBlockIndex.find(hashBlock);
@@ -512,27 +513,8 @@ bool CheckProofOfStake(CWallet *wallet, const CBlock &block, uint256& hashProofO
     if (!ReadBlockFromDisk(blockprev, pindex->GetBlockPos(), cons))
         return error("CheckProofOfStake(): INFO: failed to find block");
 
-    CMutableTransaction proxyTx(txPrev);
-    if(block.IsTPoSBlock())
-    {
-        CTransaction tposTransaction;
-        uint256 hashBlock;
-        if(!GetTransaction(block.tposStakePoint.hash, tposTransaction, Params().GetConsensus(), hashBlock))
-            return error("CheckProofOfStake(): failed to find transaction of tpos stake point: (%s, %d)", block.tposStakePoint.hash.ToString().c_str(), block.tposStakePoint.n);
-
-
-//        if (tposTransaction + nStakeMinAge > nTimeTx) // Min age requirement
-
-//        Coin coin;
-//        if(!pcoinsTip->GetCoin(block.tposStakePoint, coin) || coin.IsSpent())
-//            return error("CheckProofOfStake(): tpos stake point was spent: (%s, %d)", block.tposStakePoint.hash.ToString().c_str(), block.tposStakePoint.n);
-
-        auto &nValue = proxyTx.vout[txin.prevout.n].nValue;
-        nValue = tposTransaction.vout[block.tposStakePoint.n].nValue;
-    }
-
     unsigned int nTime = block.nTime;
-    if (!CheckStakeKernelHash(block.nBits, blockprev, /*postx.nTxOffset + */sizeof(CBlock), proxyTx, txin.prevout, nTime, hashProofOfStake, fDebug))
+    if (!CheckStakeKernelHash(block.nBits, blockprev, /*postx.nTxOffset + */sizeof(CBlock), txPrev, txin.prevout, nTime, hashProofOfStake, fDebug))
         return error("CheckProofOfStake() : INFO: check kernel failed on coinstake %s, hashProof=%s \n", tx.GetHash().ToString().c_str(), hashProofOfStake.ToString().c_str()); // may occur during initial download or if behind on block chain sync
 
     return true;

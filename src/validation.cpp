@@ -36,6 +36,7 @@
 #include "validationinterface.h"
 #include "versionbits.h"
 #include "kernel.h"
+#include "tpos/tposutils.h"
 
 #include "instantx.h"
 #include "masternodeman.h"
@@ -2276,6 +2277,10 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
 
     const auto& coinbaseTransaction = (pindex->nHeight > Params().GetConsensus().nLastPoWBlock ? block.vtx[1] : block.vtx[0]);
 
+    if(block.IsTPoSBlock() && !TPoSUtils::IsMerchantPaymentValid(block, pindex->nHeight, expectedReward)) {
+
+    }
+
     if (!IsBlockPayeeValid(coinbaseTransaction, pindex->nHeight, expectedReward, pindex->nMint)) {
         mapRejectedBlocks.insert(make_pair(block.GetHash(), GetTime()));
         return state.DoS(0, error("ConnectBlock(DASH): couldn't find masternode or superblock payments"),
@@ -3235,17 +3240,25 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
         uint256 hashProofOfStake;
         uint256 hash = block.GetHash();
 
+        TPoSContract contract;
+        if(block.IsTPoSBlock()) {
+            if(!TPoSUtils::CheckContract(block.hashTPoSContractTx, contract)) {
+                state.DoS(100, error("CheckBlock(): check contract failed for tpos block %s\n", hash.ToString().c_str()));
+                return false;
+            }
+
+
+        }
+
 
         if(!mapProofOfStake.count(hash)) // add to mapProofOfStake
             mapProofOfStake.insert(make_pair(hash, hashProofOfStake));
-
 
         if(!CheckProofOfStake(pwalletMain, block, hashProofOfStake)) {
             state.DoS(100, error("CheckBlock(): check proof-of-stake failed for block %s\n", hash.ToString().c_str()));
             return false;
         }
     }
-
 
 
     // DASH : CHECK TRANSACTIONS FOR INSTANTSEND

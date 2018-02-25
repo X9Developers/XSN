@@ -59,7 +59,10 @@ public:
                                                             int merchantCommission,
                                                             std::string &strError);
 
-    COutPoint GetContractCollateralOutpoint(const TPoSContract &contract);
+    static COutPoint GetContractCollateralOutpoint(const TPoSContract &contract);
+    static bool CheckContract(const uint256 &hashContractTx, TPoSContract &contract);
+    static bool IsMerchantPaymentValid(const CBlock &block, int nBlockHeight, CAmount expectedReward, CAmount actualReward);
+
 #endif
 
 };
