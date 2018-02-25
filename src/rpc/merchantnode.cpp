@@ -399,9 +399,7 @@ UniValue tposcontract(const UniValue& params, bool fHelp)
 
             object.push_back(Pair("txid", contract.rawTx.GetHash().ToString()));
             object.push_back(Pair("tposAddress", contract.tposAddress.ToString()));
-//            object.push_back(Pair("merchantAddress", contract.merchantAddress.ToString()));
-            object.push_back(Pair("merchantTxId", HexStr(contract.merchantOutPoint.hash)));
-            object.push_back(Pair("merchantTxOut", static_cast<int>(contract.merchantOutPoint.n)));
+            object.push_back(Pair("merchantAddress", contract.merchantAddress.ToString()));
             object.push_back(Pair("commission", contract.stakePercentage));
 
             return object;

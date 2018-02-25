@@ -13,10 +13,11 @@ class CWalletTx;
 class CMutableTransaction;
 class CReserveKey;
 
-struct TPoSContract {
+struct TPoSContract
+{
     TPoSContract() = default;
     TPoSContract(CTransaction tx,
-                 COutPoint merchantOutPoint,
+                 CBitcoinAddress merchantAddress,
                  CBitcoinAddress tposAddress,
                  short stakePercentage);
 
@@ -25,7 +26,7 @@ struct TPoSContract {
     static TPoSContract FromTPoSContractTx(const CTransaction &tx);
 
     CTransaction rawTx;
-    COutPoint merchantOutPoint;
+    CBitcoinAddress merchantAddress;
     CBitcoinAddress tposAddress;
     int stakePercentage = 0;
 };

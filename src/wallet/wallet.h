@@ -808,8 +808,7 @@ public:
     // Coin selection
     using StakeCoinsSet = std::set<std::pair<const CWalletTx*, unsigned int> >;
     bool MintableCoins();
-    bool SelectStakeCoins(StakeCoinsSet& setCoins, CAmount nTargetAmount) const;
-    bool SelectStakeTPoSCoins(StakeCoinsSet& setCoins, StakeCoinsSet &tposCoins, const TPoSContract &contract) const;
+    bool SelectStakeCoins(StakeCoinsSet& setCoins, CAmount nTargetAmount, const CScript &scriptPubKey = CScript()) const;
 
     bool SelectCoinsByDenominations(int nDenom, CAmount nValueMin, CAmount nValueMax, std::vector<CTxDSIn>& vecTxDSInRet, std::vector<COutput>& vCoinsRet, CAmount& nValueRet, int nPrivateSendRoundsMin, int nPrivateSendRoundsMax);
     bool GetCollateralTxDSIn(CTxDSIn& txdsinRet, CAmount& nValueRet) const;

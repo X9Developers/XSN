@@ -29,6 +29,7 @@
 #include "validationinterface.h"
 #include "tpos/tposutils.h"
 #include "wallet/wallet.h"
+#include "blocksigner.h"
 
 #include <boost/thread.hpp>
 #include <boost/tuple/tuple.hpp>
@@ -123,7 +124,7 @@ CBlockTemplate* CreateNewBlock(CWallet *wallet, const CChainParams& chainparams,
 
                 if(tposContract.IsValid())
                 {
-                    pblock->tposStakePoint = tposCoinStake;
+                    pblock->hashTPoSContractTx = tposContract.rawTx.GetHash();
                 }
 
                 fStakeFound = true;
@@ -504,7 +505,11 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
             CBlockIndex* pindexPrev = chainActive.Tip();
             if(!pindexPrev) break;
 
-            std::unique_ptr<CBlockTemplate> pblocktemplate(CreateNewBlock(pwallet, chainparams, coinbaseScript->reserveScript, fProofOfStake, {}));
+            TPoSContract contract;
+            if(!pwallet->tposMerchantContracts.empty())
+                contract = pwallet->tposMerchantContracts.begin()->second;
+
+            std::unique_ptr<CBlockTemplate> pblocktemplate(CreateNewBlock(pwallet, chainparams, coinbaseScript->reserveScript, fProofOfStake, contract));
             if (!pblocktemplate.get())
             {
                 LogPrintf("DashMiner -- Keypool ran out, please call keypoolrefill before restarting the mining thread\n");
@@ -521,7 +526,10 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
             if (fProofOfStake)
             {
                 LogPrintf("CPUMiner : proof-of-stake block found %s \n", pblock->GetHash().ToString().c_str());
-                if (!pblock->SignBlock(*pwallet)) {
+
+                CBlockSigner signer(*pblock, *pwallet, contract);
+
+                if (!signer.SignBlock()) {
                     LogPrintf("BitcoinMiner(): Signing new block failed \n");
                     continue;
                 }

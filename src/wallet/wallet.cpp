@@ -249,10 +249,14 @@ bool CWallet::CreateCoinStakeKernel(CScript &kernelScript,
     const CKeyStore &keystore = *this;
     unsigned int nTryTime = 0;
     uint256 hashProofOfStake;
+
+    if (blockFrom.GetBlockTime() + Params().GetConsensus().nStakeMinAge > nTimeTx) // Min age requirement
+        return false;
+
     for(int i = 0; i < nHashDrift; ++i)
     {
         nTryTime = nTimeTx - i;
-        if (CheckStakeKernelHash(nBits, blockFrom, nTxPrevOffset, txPrev, prevout, nTryTime, hashProofOfStake, false /*fPrintProofOfStake*/))
+        if (CheckStakeKernelHash(nBits, blockFrom, nTxPrevOffset, txPrev, prevout, nTryTime, hashProofOfStake, fPrintProofOfStake))
         {
             //Double check that this will pass time requirements
             if (nTryTime <= chainActive.Tip()->GetMedianTimePast()) {
@@ -2854,8 +2858,7 @@ bool CWallet::MintableCoins()
     return false;
 }
 
-bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins,
-                               CAmount nTargetAmount) const
+bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, const CScript &scriptPubKey) const
 {
     vector<COutput> vCoins;
     AvailableCoins(vCoins, true);
@@ -2865,7 +2868,6 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins,
         //make sure not to outrun target amount
         CScript scriptPubKeyKernel;
         scriptPubKeyKernel = out.tx->vout[out.i].scriptPubKey;
-
 
         if(scriptPubKeyKernel.IsPayToScriptHash())
             continue;
@@ -2882,60 +2884,12 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins,
         if (out.nDepth < (out.tx->IsCoinStake() ? COINBASE_MATURITY : 10))
             continue;
 
-        //        auto it = std::find_if(tposMerchantContracts.begin(), tposMerchantContracts.end(), [&scriptPubKeyKernel](const std::pair<uint256, TPoSContract> &entry) {
-        //            return GetScriptForDestination(entry.second.merchantAddress.Get()) == scriptPubKeyKernel;
-        //        });
-
-        //        if(it != tposMerchantContracts.end())
-        //            continue;
+        if(!scriptPubKey.empty() && out.tx->vout[out.i].scriptPubKey != scriptPubKey)
+            continue;
 
         nAmountSelected += out.tx->vout[out.i].nValue; //maybe change here for tpos
         setCoins.insert(make_pair(out.tx, out.i));
     }
-    return true;
-}
-
-bool CWallet::SelectStakeTPoSCoins(CWallet::StakeCoinsSet &setCoins, CWallet::StakeCoinsSet &tposCoins, const TPoSContract &contract) const
-{
-    auto coinsMap = AvailableCoinsByAddress();
-    {
-        CBitcoinAddress merchantAddress("yjMJSAwC6wfYJgzjDRTVx2vSKCYZFe6mq8");
-//        merchantAddress.Set(activeMerchantnode.pubKeyMerchantnode.GetID());
-
-        const std::vector<COutput> &coins = coinsMap[merchantAddress];
-
-        for(auto &&out : coins)
-        {
-            //            //check for min age
-            if (GetTime() - out.tx->GetTxTime() < Params().GetConsensus().nStakeMinAge)
-                continue;
-
-            //check that it is matured
-            if (out.nDepth < (out.tx->IsCoinStake() ? COINBASE_MATURITY : 10))
-                continue;
-
-            //            // if it's not a coinstake this has to be out of tpos contract
-            //            if(!out.tx->IsTPoSCoinStake() && out.tx->GetHash() == contract.rawTx.GetHash())
-            //                continue;
-
-            setCoins.emplace(out.tx, out.i);
-        }
-    }
-
-    if(!setCoins.empty())
-    {
-        const std::vector<COutput> &coins = coinsMap[contract.tposAddress];
-
-        for(auto &&out : coins)
-        {
-            //check that it is matured
-            if (out.nDepth < (out.tx->IsCoinStake() ? COINBASE_MATURITY : 10))
-                continue;
-
-            tposCoins.emplace(out.tx, out.i);
-        }
-    }
-
     return true;
 }
 
@@ -3956,20 +3910,18 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
     //        setStakeCoins.clear();
 
 
-    StakeCoinsSet tposCoins;
-    StakeCoinsSet tposStakeCoins;
-    if (tposContract.IsValid())
+    CScript scriptPubKey;
+
+    bool fIsTPoS = tposContract.IsValid();
+
+    if(fIsTPoS)
     {
-        if(SelectStakeTPoSCoins(tposStakeCoins, tposCoins, tposContract))
-        {
-            setStakeCoins = tposStakeCoins;
-        }
-        else
-        {
-            return error("Failed to select tpos coins for staking");
-        }
+        scriptPubKey = GetScriptForDestination(tposContract.tposAddress.Get());
+        if(fDebug)
+            LogPrintf("CreateCoinStake() : finding tpos, contract tposAddress: %s", tposContract.tposAddress.ToString().c_str());
     }
-    else if (!SelectStakeCoins(setStakeCoins, nBalance /*- nReserveBalance*/)) {
+
+    if (!SelectStakeCoins(setStakeCoins, nBalance /*- nReserveBalance*/, scriptPubKey)) {
         return error("Failed to select coins for staking");
     }
 
@@ -3977,10 +3929,7 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
     //    }
 
     if (setStakeCoins.empty())
-        return error("No Coins to stake");
-
-    if(tposContract.IsValid() && tposCoins.empty())
-        return error("No TPoS coins to stake");
+        return error("CreateCoinStake() : No Coins to stake");
 
     std::vector< pair<const CWalletTx*, unsigned int> > vwtxPrev;
 
@@ -4008,78 +3957,37 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
         CBlockHeader block = pindex->GetBlockHeader();
         COutPoint prevoutStake = COutPoint(pcoin.first->GetHash(), pcoin.second);
 
-        CMutableTransaction tposProxyTx = *pcoin.first;
-
-        auto tposCoinsIt = tposCoins.begin();
-        for(size_t i = 0; i <  std::max<size_t>(1, tposCoins.size()); ++i)
-        {
-            /*! We can't do in another way because we can't use multisignature transaction as input for coin stake. So we need to use
-            * plain output that can be spent by us. Thats why we select simple P2PK or P2PKH output which can be spent/signed by ourself.
-            */
-            if(tposContract.IsValid())
-            {
-                auto &nValue = tposProxyTx.vout[prevoutStake.n].nValue;
-                nValue = tposCoinsIt->first->vout[tposCoinsIt->second].nValue;
-                tposStakeCoin = COutPoint(tposCoinsIt->first->GetHash(), tposCoinsIt->second);
-                ++tposCoinsIt;
-            }
-
-            nTxNewTime = GetAdjustedTime();
-            //iterates each utxo inside of CheckStakeKernelHash()
-            CScript kernelScript;
-            auto stakeScript = pcoin.first->vout[pcoin.second].scriptPubKey;
-            fKernelFound = CreateCoinStakeKernel(kernelScript, stakeScript, nBits,
-                                                 block, sizeof(CBlock), tposProxyTx,
-                                                 prevoutStake, nTxNewTime, false);
-
-            if(fKernelFound)
-            {
-                vwtxPrev.push_back(pcoin);
-                FillCoinStakePayments(txNew, tposContract, kernelScript, prevoutStake, blockReward);
-                break;
-            }
-        }
+        nTxNewTime = GetAdjustedTime();
+        //iterates each utxo inside of CheckStakeKernelHash()
+        CScript kernelScript;
+        auto stakeScript = pcoin.first->vout[pcoin.second].scriptPubKey;
+        fKernelFound = CreateCoinStakeKernel(kernelScript, stakeScript, nBits,
+                                             block, sizeof(CBlock), *pcoin.first,
+                                             prevoutStake, nTxNewTime, false);
 
         if(fKernelFound)
+        {
+            if(!fIsTPoS) // we won't sign in case of tpos block
+                vwtxPrev.push_back(pcoin);
+
+            FillCoinStakePayments(txNew, tposContract, kernelScript, prevoutStake, blockReward);
             break;
+        }
     }
 
     if(!fKernelFound)
-        return error("Failed to find coinstake kernel");
-
-    // by this point all rewards are splitted and populated.
-    // lets adjust txfee.
-
-    //    auto txOutOriginalValues = txNew.vout;
-    //    int txCount = txNew.vout.size() - 1;
+    {
+        if(fDebug) {
+            LogPrintf("CreateCoinStake() : Failed to find coinstake kernel");
+        }
+        return false;
+    }
 
     // Limit size
     unsigned int nBytes = ::GetSerializeSize(txNew, SER_NETWORK, PROTOCOL_VERSION);
     if (nBytes >= DEFAULT_BLOCK_MAX_SIZE / 5){
-        return error("CreateCoinStake : exceeded coinstake size limit");
+        return error("CreateCoinStake() : exceeded coinstake size limit");
     }
-
-    //    //Masternode payment
-    //    bool isSuperblockPayment = false;
-    //    if(FillBlockPayee(txNew, nMinFee, true, isSuperblockPayment) && !isSuperblockPayment)
-    //    {
-    //        //subtract mn payment from the stake reward
-    //        auto masternodePayment = txNew.vout.back().nValue;
-    //        int i = txNew.vout.size() - 2;
-    //        if(tposContract.IsValid())
-    //        {
-    //            masternodePayment /= 100; // to calculate percentage
-    //            txNew.vout[i - 1].nValue -= masternodePayment * (100 - tposContract.stakePercentage); // adjust reward for merchant.
-    //            txNew.vout[i].nValue -= masternodePayment * tposContract.stakePercentage; // adjust reward for owner
-    //        }
-    //        else
-    //        {
-    //            txNew.vout[i].nValue -= masternodePayment; // last vout is mn payment.
-    //        }
-    //    }
-
-    if(tposContract.IsValid())
-        cout << "this is tpos" << endl;
 
     // Update coinbase transaction with additional info about masternode and governance payments,
     // get some info back to pass to getblocktemplate
@@ -4093,16 +4001,13 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
 
     // Sign
     int nIn = 0;
-
-
-
-//    for(const auto &pcoinEntry : vwtxPrev)
-//    {
-//        if(!SignSignature(*this, *pcoinEntry.first, txNew, nIn++))
-//        {
-//            continue;
-//        }
-//    }
+    for(const auto &pcoinEntry : vwtxPrev)
+    {
+        if(!SignSignature(*this, *pcoinEntry.first, txNew, nIn++))
+        {
+            continue;
+        }
+    }
 
     nLastStakeSetUpdate = 0; //this will trigger stake set to repopulate next round
     return true;

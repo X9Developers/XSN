@@ -16,6 +16,8 @@ base58.h
 bip39.cpp
 bip39.h
 bip39_english.h
+blocksigner.cpp
+blocksigner.h
 bloom.cpp
 bloom.h
 cachemap.h

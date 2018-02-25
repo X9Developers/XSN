@@ -10,40 +10,6 @@ static const int TPOSEXPORTHEADERWIDTH = 40;
 
 static const int TPOS_CONTRACT_COLATERAL = 1 * COIN;
 
-std::string TPoSUtils::PrepareTPoSExportBlock(std::string content)
-{
-    std::stringstream stream;
-
-    std::string footer(TPOSEXPORTHEADERWIDTH, '=');
-    auto header = footer;
-    header = header.replace(5, TPOSEXPORTHEADER.size(), TPOSEXPORTHEADER);
-    stream << header << std::endl << content << std::endl << footer;
-    stream.flush();
-
-    return stream.str();
-}
-
-std::string TPoSUtils::ParseTPoSExportBlock(std::string block)
-{
-
-    std::stringstream stream(block);
-
-    std::string header, encodedData, footer;
-    stream >> header;
-    stream >> encodedData;
-    stream >> footer;
-
-    if(!header.empty() && header.size() == footer.size() &&
-            header.substr(0, 5 + TPOSEXPORTHEADER.size()) == std::string(5, '=') + TPOSEXPORTHEADER)
-    {
-        return encodedData;
-    }
-    else
-    {
-        return std::string();
-    }
-}
-
 bool TPoSUtils::IsTPoSContract(const CTransaction &tx)
 {
     return TPoSContract::FromTPoSContractTx(tx).IsValid();
@@ -214,17 +180,17 @@ COutPoint TPoSUtils::GetContractCollateralOutpoint(const TPoSContract &contract)
 
 #endif
 
-TPoSContract::TPoSContract(CTransaction tx, COutPoint merchantOutPoint, CBitcoinAddress tposAddress, short stakePercentage)
+TPoSContract::TPoSContract(CTransaction tx, CBitcoinAddress merchantAddress, CBitcoinAddress tposAddress, short stakePercentage)
 {
     this->rawTx = tx;
-    this->merchantOutPoint = merchantOutPoint;
+    this->merchantAddress = merchantAddress;
     this->tposAddress = tposAddress;
     this->stakePercentage = stakePercentage;
 }
 
 bool TPoSContract::IsValid() const
 {
-    return !rawTx.IsNull() && !merchantOutPoint.hash.IsNull() &&
+    return !rawTx.IsNull() && merchantAddress.IsValid() &&
             tposAddress.IsValid() &&
             stakePercentage > 0 && stakePercentage < 100;
 }
