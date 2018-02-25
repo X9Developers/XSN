@@ -2277,7 +2277,7 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
 
     const auto& coinbaseTransaction = (pindex->nHeight > Params().GetConsensus().nLastPoWBlock ? block.vtx[1] : block.vtx[0]);
 
-    if (!IsBlockPayeeValid(coinbaseTransaction, pindex->nHeight, expectedReward)) {
+    if (!IsBlockPayeeValid(coinbaseTransaction, pindex->nHeight, expectedReward, pindex->nMint)) {
         mapRejectedBlocks.insert(make_pair(block.GetHash(), GetTime()));
         return state.DoS(0, error("ConnectBlock(DASH): couldn't find masternode or superblock payments"),
                          REJECT_INVALID, "bad-cb-payee");
