@@ -376,6 +376,19 @@ bool CMerchantnodeMan::GetMerchantnodeInfo(const CPubKey& pubKeyMerchantnode, me
     return true;
 }
 
+bool CMerchantnodeMan::GetMerchantnodeInfo(const CKeyID &pubKeyMerchantnode, merchantnode_info_t &mnInfoRet)
+{
+    LOCK(cs);
+    for (auto& mnpair : mapMerchantnodes) {
+        CKeyID keyID = mnpair.second.pubKeyMerchantnode.GetID();
+        if (keyID == pubKeyMerchantnode) {
+            mnInfoRet = mnpair.second.GetInfo();
+            return true;
+        }
+    }
+    return false;
+}
+
 bool CMerchantnodeMan::GetMerchantnodeInfo(const CScript& payee, merchantnode_info_t& mnInfoRet)
 {
     LOCK(cs);

@@ -320,7 +320,7 @@ void CWallet::FillCoinStakePayments(CMutableTransaction &transaction,
     unsigned int percentage = 100;
 
     if(tposContract.IsValid())
-        percentage = 100 - tposContract.stakePercentage; // first transaction is merchant, so he will need to get only commission
+        percentage = tposContract.stakePercentage; // first vout is owner
 
 
     // if this is tpos, we need to age coin, without paying reward to this address.
@@ -353,8 +353,8 @@ void CWallet::FillCoinStakePayments(CMutableTransaction &transaction,
 
     if(tposContract.IsValid())
     {
-        transaction.vout.emplace_back(GetStakeReward(blockReward, tposContract.stakePercentage),
-                                      GetScriptForDestination(tposContract.tposAddress.Get()));
+        transaction.vout.emplace_back(GetStakeReward(blockReward, 100 - tposContract.stakePercentage),
+                                      GetScriptForDestination(tposContract.merchantAddress.Get()));
     }
 }
 

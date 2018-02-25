@@ -3247,7 +3247,7 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
                 return false;
             }
 
-
+            block.txTPoSContract = contract.rawTx;
         }
 
 

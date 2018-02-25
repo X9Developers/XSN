@@ -143,6 +143,7 @@ public:
     bool Has(const CPubKey &pubKeyMerchantnode);
 
     bool GetMerchantnodeInfo(const CPubKey& pubKeyMerchantnode, merchantnode_info_t& mnInfoRet);
+    bool GetMerchantnodeInfo(const CKeyID& pubKeyMerchantnode, merchantnode_info_t& mnInfoRet);
     bool GetMerchantnodeInfo(const CScript& payee, merchantnode_info_t& mnInfoRet);
 
     std::map<CPubKey, CMerchantnode> GetFullMerchantnodeMap() { return mapMerchantnodes; }

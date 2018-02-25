@@ -83,6 +83,7 @@ public:
     // memory only
     mutable CTxOut txoutMasternode; // masternode payment
     mutable std::vector<CTxOut> voutSuperblock; // superblock payment
+    mutable CTransaction txTPoSContract;
     mutable bool fChecked;
 
     CBlock();
