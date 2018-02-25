@@ -1244,6 +1244,9 @@ CAmount GetBlockSubsidy(int nPrevHeight, const Consensus::Params& consensusParam
     if(nPrevHeight < 20)
         return 0;
 
+    if(fSuperblockPartOnly)
+        return 60 * COIN;
+
     //    if(Params().NetworkIDString() == CBaseChainParams::TESTNET)
     return 200 * COIN;
 
