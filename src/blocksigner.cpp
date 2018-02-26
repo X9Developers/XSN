@@ -3,6 +3,7 @@
 #include "tpos/activemerchantnode.h"
 #include "keystore.h"
 #include "primitives/block.h"
+#include "utilstrencodings.h"
 
 CBlockSigner::CBlockSigner(CBlock &block, const CKeyStore &keystore, const TPoSContract &contract) :
     refBlock(block),
@@ -21,6 +22,12 @@ bool CBlockSigner::SignBlock()
 
     if(refBlock.IsProofOfStake())
     {
+
+        const CTxOut& txout = refBlock.vtx[1].vout[1];
+
+        if (!Solver(txout.scriptPubKey, whichType, vSolutions))
+            return false;
+
         if(refBlock.IsTPoSBlock())
         {
             CKeyID merchantKeyID;
@@ -75,7 +82,8 @@ bool CBlockSigner::SignBlock()
             return false;
     }
 
-    return keySecret.Sign(refBlock.IsTPoSBlock() ? refBlock.GetTPoSHash() : refBlock.GetHash(), refBlock.vchBlockSig);
+
+    return keySecret.SignCompact(refBlock.IsTPoSBlock() ? refBlock.GetTPoSHash() : refBlock.GetHash(), refBlock.vchBlockSig);
 }
 
 bool CBlockSigner::CheckBlockSignature() const
@@ -88,6 +96,11 @@ bool CBlockSigner::CheckBlockSignature() const
 
     std::vector<std::vector<unsigned char>> vSolutions;
     txnouttype whichType;
+
+    const CTxOut& txout = refBlock.vtx[1].vout[1];
+
+    if (!Solver(txout.scriptPubKey, whichType, vSolutions))
+        return false;
 
     CKeyID signatureKeyID;
     CPubKey recoveredKey;

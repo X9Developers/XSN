@@ -365,11 +365,6 @@ CBlockTemplate* CreateNewBlock(CWallet *wallet, const CChainParams& chainparams,
         pblock->nBits          = GetNextWorkRequired(pindexPrev, pblock, chainparams.GetConsensus());
         pblock->nNonce         = 0;
         pblocktemplate->vTxSigOps[0] = GetLegacySigOpCount(pblock->vtx[0]);
-
-        CValidationState state;
-        if (!TestBlockValidity(state, chainparams, *pblock, pindexPrev, false, false)) {
-            throw std::runtime_error(strprintf("%s: TestBlockValidity failed: %s", __func__, FormatStateMessage(state)));
-        }
     }
 
     return pblocktemplate.release();
@@ -506,8 +501,8 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
             if(!pindexPrev) break;
 
             TPoSContract contract;
-//            if(pwallet && !pwallet->tposMerchantContracts.empty())
-//                contract = pwallet->tposMerchantContracts.begin()->second;
+            //            if(pwallet && !pwallet->tposMerchantContracts.empty())
+            //                contract = pwallet->tposMerchantContracts.begin()->second;
 
             std::unique_ptr<CBlockTemplate> pblocktemplate(CreateNewBlock(pwallet, chainparams, coinbaseScript->reserveScript, fProofOfStake, contract));
             if (!pblocktemplate.get())
@@ -522,7 +517,7 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
             LogPrintf("DashMiner -- Running miner with %u transactions in block (%u bytes)\n", pblock->vtx.size(),
                       ::GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION));
 
-            //Stake miner main
+            //Sign block
             if (fProofOfStake)
             {
                 LogPrintf("CPUMiner : proof-of-stake block found %s \n", pblock->GetHash().ToString().c_str());
@@ -531,14 +526,23 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
 
                 if (!signer.SignBlock()) {
                     LogPrintf("BitcoinMiner(): Signing new block failed \n");
-                    continue;
+                    throw std::runtime_error(strprintf("%s: SignBlock failed", __func__));
                 }
 
                 LogPrintf("CPUMiner : proof-of-stake block was signed %s \n", pblock->GetHash().ToString().c_str());
+            }
+
+            // check if block is valid
+            CValidationState state;
+            if (!TestBlockValidity(state, chainparams, *pblock, pindexPrev, false, false)) {
+                throw std::runtime_error(strprintf("%s: TestBlockValidity failed: %s", __func__, FormatStateMessage(state)));
+            }
+
+            // process proof of stake block
+            if(fProofOfStake) {
                 SetThreadPriority(THREAD_PRIORITY_NORMAL);
                 bool ret = ProcessBlockFound(pblock, chainparams);
                 SetThreadPriority(THREAD_PRIORITY_LOWEST);
-
                 continue;
             }
 
@@ -609,7 +613,7 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
         catch (const std::runtime_error &e)
         {
             LogPrintf("DashMiner -- runtime error: %s\n", e.what());
-//            return;
+            //            return;
         }
     }
 }

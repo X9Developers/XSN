@@ -3984,7 +3984,7 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
     if(!fKernelFound)
     {
         if(fDebug) {
-            LogPrintf("CreateCoinStake() : Failed to find coinstake kernel");
+            LogPrintf("CreateCoinStake() : Failed to find coinstake kernel\n");
         }
         return false;
     }
