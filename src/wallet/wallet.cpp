@@ -3872,8 +3872,7 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
                               CAmount blockReward,
                               CMutableTransaction &txNew,
                               unsigned int &nTxNewTime,
-                              const TPoSContract &tposContract,
-                              COutPoint &tposStakeCoin)
+                              const TPoSContract &tposContract)
 {
     // The following split & combine thresholds are important to security
     // Should not be adjusted if you don't understand the consequences

@@ -112,10 +112,9 @@ CBlockTemplate* CreateNewBlock(CWallet *wallet, const CChainParams& chainparams,
         bool fStakeFound = false;
         if (nSearchTime >= nLastCoinStakeSearchTime) {
             unsigned int nTxNewTime = 0;
-            COutPoint tposCoinStake;
             if (wallet->CreateCoinStake(pblock->nBits, blockReward,
                                         txCoinStake, nTxNewTime,
-                                        tposContract, tposCoinStake))
+                                        tposContract))
             {
                 pblock->nTime = nTxNewTime;
                 txNew.vout[0].SetEmpty();
