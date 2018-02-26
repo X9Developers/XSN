@@ -205,8 +205,26 @@ bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contr
     return true;
 }
 
-bool TPoSUtils::IsMerchantPaymentValid(const CBlock &block, int nBlockHeight, CAmount expectedReward)
+bool TPoSUtils::IsMerchantPaymentValid(const CBlock &block, int nBlockHeight, CAmount expectedReward, CAmount actualReward)
 {
+    auto contract = TPoSContract::FromTPoSContractTx(block.txTPoSContract);
+    CScript scriptMerchantPubKey = GetScriptForDestination(contract.merchantAddress.Get());
+
+    auto it = std::find_if(std::begin(coinstake.vout) + 2, std::end(coinstake.vout), [scriptMerchantPubKey](const CTxOut &txOut) {
+        return txOut.scriptPubKey == scriptMerchantPubKey;
+    });
+
+    if(it != std::end(coinstake.vout))
+    {
+        auto maxAllowedValue = (expectedReward / 100) * (100 - contract.stakePercentage);
+        if(it->nValue > maxAllowedValue)
+            return error("IsMerchantPaymentValid -- ERROR: merchant was paid more than allowed: %s\n", tmpAddress.ToString().c_str());
+    }
+    else
+    {
+        LogPrintf("IsMerchantPaymentValid -- WARNING: merchant wasn't paid, this is weird, but totally acceptable. Shouldn't happen.");
+    }
+
     if(!merchantnodeSync.IsSynced()) {
         //there is no merchant node info to check anything, let's just accept the longest chain
         if(fDebug) LogPrintf("IsMerchantPaymentValid -- WARNING: Client not synced, skipping block payee checks\n");
@@ -234,26 +252,6 @@ bool TPoSUtils::IsMerchantPaymentValid(const CBlock &block, int nBlockHeight, CA
     {
         return false;
     }
-
-    auto contract = TPoSContract::FromTPoSContractTx(block.txTPoSContract);
-
-    CScript scriptMerchantPubKey = GetScriptForDestination(contract.merchantAddress.Get());
-
-    auto it = std::find_if(std::begin(coinstake.vout) + 2, std::end(coinstake.vout), [scriptMerchantPubKey](const CTxOut &txOut) {
-        return txOut.scriptPubKey == scriptMerchantPubKey;
-    });
-
-    if(it != std::end(coinstake.vout))
-    {
-        auto maxAllowedValue = (expectedReward / 100) * (100 - contract.stakePercentage);
-        if(it->nValue > maxAllowedValue)
-            return error("IsMerchantPaymentValid -- ERROR: merchant was paid more than allowed: %s\n", tmpAddress.ToString().c_str());
-    }
-    else
-    {
-        LogPrintf("IsMerchantPaymentValid -- WARNING: merchant wasn't paid, this is weird, but totally acceptable. Shouldn't happen.");
-    }
-
 
     return true;
 }
