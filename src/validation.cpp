@@ -1248,7 +1248,7 @@ CAmount GetBlockSubsidy(int nPrevHeight, const Consensus::Params& consensusParam
         return 76500000 * COIN;
     }
 
-    if(nPrevHeight < 20)
+    if(nPrevHeight < 100)
         return 0;
 
     if(fSuperblockPartOnly)
