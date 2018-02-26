@@ -4699,7 +4699,7 @@ void CWallet::LoadTPoSContract(const CWalletTx &walletTx)
     else {
         // we need to lock this coin, because it can be spend
         tposOwnerContracts[txHash] = contract;
-        LockCoin(TPoSUtils::GetContractCollateralOutpoint(contract));
+//        LockCoin(TPoSUtils::GetContractCollateralOutpoint(contract));
     }
 }
 
