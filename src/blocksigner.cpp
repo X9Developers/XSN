@@ -22,7 +22,6 @@ bool CBlockSigner::SignBlock()
 
     if(refBlock.IsProofOfStake())
     {
-
         const CTxOut& txout = refBlock.vtx[1].vout[1];
 
         if (!Solver(txout.scriptPubKey, whichType, vSolutions))
