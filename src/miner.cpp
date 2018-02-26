@@ -506,8 +506,8 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
             if(!pindexPrev) break;
 
             TPoSContract contract;
-            if(pwallet && !pwallet->tposMerchantContracts.empty())
-                contract = pwallet->tposMerchantContracts.begin()->second;
+//            if(pwallet && !pwallet->tposMerchantContracts.empty())
+//                contract = pwallet->tposMerchantContracts.begin()->second;
 
             std::unique_ptr<CBlockTemplate> pblocktemplate(CreateNewBlock(pwallet, chainparams, coinbaseScript->reserveScript, fProofOfStake, contract));
             if (!pblocktemplate.get())
