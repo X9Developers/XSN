@@ -20,13 +20,15 @@ public:
         std::string alias;
         std::string ip;
         std::string merchantPrivKey;
+        std::string hashContractTxId;
 
     public:
 
-        CMerchantnodeEntry(std::string alias, std::string ip, std::string merchantPrivKey) {
+        CMerchantnodeEntry(std::string alias, std::string ip, std::string merchantPrivKey, std::string hashContractTxId) {
             this->alias = alias;
             this->ip = ip;
             this->merchantPrivKey = merchantPrivKey;
+            this->hashContractTxId = hashContractTxId;
         }
 
         const std::string& getAlias() const {
@@ -39,6 +41,10 @@ public:
 
         const std::string& getMerchantPrivKey() const {
             return merchantPrivKey;
+        }
+
+        const std::string& getContractTxID() const {
+            return this->hashContractTxId;
         }
 
         void setMerchantPrivKey(const std::string& merchantPrivKey) {
@@ -60,7 +66,7 @@ public:
 
     void clear();
     bool read(std::string& strErr);
-    void add(std::string alias, std::string ip, std::string merchantPrivKey);
+    void add(std::string alias, std::string ip, std::string merchantPrivKey, std::string hashContractTxId);
 
     std::vector<CMerchantnodeEntry>& getEntries() {
         return entries;

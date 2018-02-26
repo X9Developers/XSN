@@ -164,7 +164,8 @@ UniValue merchantnode(const UniValue& params, bool fHelp)
                 std::string strError;
                 CMerchantnodeBroadcast mnb;
 
-                bool fResult = CMerchantnodeBroadcast::Create(mrne.getIp(), mrne.getMerchantPrivKey(), strError, mnb);
+                bool fResult = CMerchantnodeBroadcast::Create(mrne.getIp(), mrne.getMerchantPrivKey(),
+                                                              mrne.getContractTxID(), strError, mnb);
 
                 statusObj.push_back(Pair("result", fResult ? "successful" : "failed"));
                 if(fResult) {
@@ -184,11 +185,6 @@ UniValue merchantnode(const UniValue& params, bool fHelp)
         }
 
         return statusObj;
-        //        bool fResult = CMerchantnodeBroadcast::Create("77.120.42.4:29999",
-        //                                                      "928g5ADKbe33FtXyNbNW7mwfGSxyZpRKTgPD4S6ekVS2K9M1vmP",
-        //                                                      "caccdbab8f60973009cf295e29f26dc7cc26e7e49de9f54b3306db041fc121c9",
-        //                                                      "0",
-        //                                                      strError, mnb);
     }
 
     if (strCommand == "status")
