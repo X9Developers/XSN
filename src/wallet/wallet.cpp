@@ -313,9 +313,9 @@ void CWallet::FillCoinStakePayments(CMutableTransaction &transaction,
                                     CAmount blockReward) const
 {
     const CWalletTx *walletTx = GetWalletTx(stakePrevout.hash);
-    CTxOut txOut = walletTx->vout[stakePrevout.n];
+    CTxOut prevTxOut = walletTx->vout[stakePrevout.n];
 
-    auto nCredit = txOut.nValue;
+    auto nCredit = prevTxOut.nValue;
 
     unsigned int percentage = 100;
 
@@ -334,7 +334,6 @@ void CWallet::FillCoinStakePayments(CMutableTransaction &transaction,
     // adding output which will pay to coin stake
     transaction.vout.emplace_back(nCoinStakeReward, scriptPubKeyOut);
 
-    // here we need to send reward to merchant to his reward address
     if(tposContract.IsValid())
     {
 
@@ -351,6 +350,7 @@ void CWallet::FillCoinStakePayments(CMutableTransaction &transaction,
 
     //                splitOutput(txNew.vout);
 
+    // here we need to send reward to merchant to his reward address
     if(tposContract.IsValid())
     {
         transaction.vout.emplace_back(GetStakeReward(blockReward, 100 - tposContract.stakePercentage),
@@ -3886,7 +3886,7 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
     txNew.vout.push_back(CTxOut(0, scriptEmpty));
     // Choose coins to use
     CAmount nBalance = GetBalance();
-    //    const CWalletTx *tposTx = nullptr;
+
     if(tposContract.IsValid())
     {
         //        if(pActi < 6)
@@ -3940,8 +3940,14 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
     bool fKernelFound = false;
     CAmount nCredit = 0;
 
+    COutPoint tposContractOutpoint = TPoSUtils::GetContractCollateralOutpoint(tposContract);
     for(const std::pair<const CWalletTx*, unsigned int> &pcoin : setStakeCoins)
     {
+        // this is probably collateral, don't stake it.
+        if(pcoin.first->GetHash() == tposContractOutpoint.hash &&
+                pcoin.second == tposContractOutpoint.n)
+            continue;
+
         //make sure that enough time has elapsed between
         CBlockIndex* pindex = NULL;
         BlockMap::iterator it = mapBlockIndex.find(pcoin.first->hashBlock);

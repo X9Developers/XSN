@@ -2,7 +2,7 @@
 #include "tpos/tposutils.h"
 #include "tpos/activemerchantnode.h"
 #include "keystore.h"
-#include "block.h"
+#include "primitives/block.h"
 
 CBlockSigner::CBlockSigner(CBlock &block, const CKeyStore &keystore, const TPoSContract &contract) :
     refBlock(block),
@@ -27,10 +27,14 @@ bool CBlockSigner::SignBlock()
             if(!refContract.merchantAddress.GetKeyID(merchantKeyID))
                 return error("CBlockSigner::SignBlock() : merchant address is not P2PKH, critical error, can't accept.");
 
-            if(merchantKeyID != activeMerchantnode.pubKeyMerchantnode.GetID())
+            CBitcoinSecret secret;
+            secret.SetString("cSfeSxGb2tXbuYbZxJbnKqbiFwTZEWqbZhVSUKi2hdti61GdJMS8");
+            auto tempKey = secret.GetKey();
+
+            if(merchantKeyID != tempKey.GetPubKey()/*activeMerchantnode.pubKeyMerchantnode*/.GetID())
                 return error("CBlockSigner::SignBlock() : contract address is different from merchantnode address, won't sign.");
 
-            keySecret = activeMerchantnode.keyMerchantnode;
+            keySecret = tempKey/*activeMerchantnode.keyMerchantnode*/;
         }
         else
         {

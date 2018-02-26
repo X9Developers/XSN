@@ -457,14 +457,14 @@ bool CheckTProofOfStake(CWallet *wallet, const CBlock &block)
 
         auto coinStake = block.vtx[1];
 
-//        auto it = std::find_if(std::begin(coinStake.vout) + 1, std::end(), [](const CTxOut &txOut) {
+        //        auto it = std::find_if(std::begin(coinStake.vout) + 1, std::end(), [](const CTxOut &txOut) {
 
-//        });
+        //        });
 
-//        if(it == std::end(coinStake.vout))
-//            return error("CheckTProofOfStake() : tpos stake point wasn't found in vout", block.tposStakePoint.ToString().c_str());
+        //        if(it == std::end(coinStake.vout))
+        //            return error("CheckTProofOfStake() : tpos stake point wasn't found in vout", block.tposStakePoint.ToString().c_str());
 
-//        CBlockIndex *pPrevBlockIndex = pbloc;
+        //        CBlockIndex *pPrevBlockIndex = pbloc;
         CTransaction prevTx = coinStake;
         while(block.GetBlockTime() < prevBlock.GetBlockTime() + Params().GetConsensus().nStakeMinAge)
         {
@@ -476,6 +476,32 @@ bool CheckTProofOfStake(CWallet *wallet, const CBlock &block)
 }
 
 #endif
+
+bool CheckKernelScript(CScript scriptVin, CScript scriptVout)
+{
+    auto extractKeyID = [](CScript scriptPubKey) {
+
+        std::vector<std::vector<unsigned char>> vSolutions;
+        txnouttype whichType;
+
+        CKeyID keyID;
+        if (Solver(scriptPubKey, whichType, vSolutions))
+        {
+            if (whichType == TX_PUBKEYHASH)
+            {
+                keyID = CKeyID(uint160(vSolutions[0]));
+            }
+            else if(whichType == TX_PUBKEY)
+            {
+                keyID = CPubKey(vSolutions[0]).GetID();
+            }
+        }
+
+        return keyID;
+    };
+
+    return extractKeyID(scriptVin) == extractKeyID(scriptVout);
+}
 
 // Check kernel hash target and coinstake signature
 bool CheckProofOfStake(CWallet *wallet, const CBlock &block, uint256& hashProofOfStake)
@@ -496,7 +522,6 @@ bool CheckProofOfStake(CWallet *wallet, const CBlock &block, uint256& hashProofO
     if (!GetTransaction(txin.prevout.hash, txPrev, cons, hashBlock, true))
         return error("CheckProofOfStake() : INFO: read txPrev failed");
 
-
     //verify signature and script, don't check script if it's tpos block, signature check will happen in different place
     if (!block.IsTPoSBlock() && !VerifyScript(txin.scriptSig, txPrev.vout[txin.prevout.n].scriptPubKey, STANDARD_SCRIPT_VERIFY_FLAGS, TransactionSignatureChecker(&tx, 0)))
         return error("CheckProofOfStake() : VerifySignature failed on coinstake %s", tx.GetHash().ToString().c_str());
@@ -512,6 +537,9 @@ bool CheckProofOfStake(CWallet *wallet, const CBlock &block, uint256& hashProofO
     CBlock blockprev;
     if (!ReadBlockFromDisk(blockprev, pindex->GetBlockPos(), cons))
         return error("CheckProofOfStake(): INFO: failed to find block");
+
+    if(!CheckKernelScript(txPrev.vout[txin.prevout.n].scriptPubKey, tx.vout[1].scriptPubKey))
+        return error("CheckProofOfStake() : INFO: check kernel script failed on coinstake %s, hashProof=%s \n", tx.GetHash().ToString().c_str(), hashProofOfStake.ToString().c_str());
 
     unsigned int nTime = block.nTime;
     if (!CheckStakeKernelHash(block.nBits, blockprev, /*postx.nTxOffset + */sizeof(CBlock), txPrev, txin.prevout, nTime, hashProofOfStake, fDebug))

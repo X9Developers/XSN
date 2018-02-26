@@ -37,10 +37,12 @@
 #include "versionbits.h"
 #include "kernel.h"
 #include "tpos/tposutils.h"
+#include "wallet/wallet.h"
 
 #include "instantx.h"
 #include "masternodeman.h"
 #include "masternode-payments.h"
+#include "blocksigner.h"
 
 #include <sstream>
 
@@ -2278,7 +2280,7 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
     const auto& coinbaseTransaction = (pindex->nHeight > Params().GetConsensus().nLastPoWBlock ? block.vtx[1] : block.vtx[0]);
 
     if(block.IsTPoSBlock() && !TPoSUtils::IsMerchantPaymentValid(block, pindex->nHeight, expectedReward)) {
-
+        LogPrintf("Failed to validate merchant payment, but it's ok for now");
     }
 
     if (!IsBlockPayeeValid(coinbaseTransaction, pindex->nHeight, expectedReward, pindex->nMint)) {
@@ -3250,6 +3252,15 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
             block.txTPoSContract = contract.rawTx;
         }
 
+        CBlock blockTmp = block;
+
+        CKeyStore &keyStore = *pwalletMain;
+        CBlockSigner signer(blockTmp, keyStore, contract);
+
+        if(!signer.CheckBlockSignature()) {
+            return state.DoS(100, error("CheckBlock(): block signature invalid"),
+                             REJECT_INVALID, "bad-block-signature");
+        }
 
         if(!mapProofOfStake.count(hash)) // add to mapProofOfStake
             mapProofOfStake.insert(make_pair(hash, hashProofOfStake));
