@@ -1244,14 +1244,24 @@ NOTE:   unlike bitcoin we are using PREVIOUS block height here,
 CAmount GetBlockSubsidy(int nPrevHeight, const Consensus::Params& consensusParams, bool fSuperblockPartOnly)
 {
 
+    if(nPrevHeight == 1) {
+        return 76500000 * COIN;
+    }
+
     if(nPrevHeight < 20)
         return 0;
 
     if(fSuperblockPartOnly)
         return 60 * COIN;
 
+    if(nPrevHeight < 100)
+        return 200 * COIN;
+    else if(nPrevHeight < 200)
+        return 100 * COIN;
+    else
+        return 50 * COIN;
+
     //    if(Params().NetworkIDString() == CBaseChainParams::TESTNET)
-    return 200 * COIN;
 
     //    CAmount nSubsidyBase;
 
