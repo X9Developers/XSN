@@ -1043,6 +1043,11 @@ void CMerchantnodeMan::UpdateMerchantnodeList(CMerchantnodeBroadcast mnb, CConnm
 
     CMerchantnode* pmn = Find(mnb.pubKeyMerchantnode);
     if(pmn == NULL) {
+
+        int nDos;
+        bool checked = CheckMnbIPAddressAndRemoveExistingEntry(mnb, nDos);
+        assert(checked);
+
         if(Add(mnb)) {
             merchantnodeSync.BumpAssetLastTime("CMerchantnodeMan::UpdateMerchantnodeList - new");
         }
@@ -1124,8 +1129,8 @@ bool CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList(CNode* pfrom, CMerchant
     if(mnb.CheckMerchantnode(nDos)) {
 
         // Check if we have merchantnode with this IP, any pubkey will work. We need to be sure that one merchantnode holds one public key.
-//        if(CheckMnbIPAddressAndRemoveDuplicatedEntry(mnb, nDos))
-//            return false;
+        if(CheckMnbIPAddressAndRemoveExistingEntry(mnb, nDos))
+            return false;
 
         Add(mnb);
         merchantnodeSync.BumpAssetLastTime("CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList - new");
@@ -1153,7 +1158,7 @@ bool CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList(CNode* pfrom, CMerchant
     return true;
 }
 
-bool CMerchantnodeMan::CheckMnbIPAddressAndRemoveDuplicatedEntry(CMerchantnodeBroadcast mnb, int &nDos)
+bool CMerchantnodeMan::CheckMnbIPAddressAndRemoveExistingEntry(CMerchantnodeBroadcast mnb, int &nDos)
 {
     auto mnbIpAddress = static_cast<CNetAddr>(mnb.addr);
 
