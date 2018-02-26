@@ -481,10 +481,14 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
                 } while (true);
             }
 
-            if(fProofOfStake && ((chainActive.Tip()->nHeight < chainparams.GetConsensus().nLastPoWBlock) || pwallet->IsLocked()))
+            if(fProofOfStake)
             {
-                MilliSleep(5000);
-                continue;
+                if (chainActive.Tip()->nHeight < chainparams.GetConsensus().nLastPoWBlock ||
+                       pwallet->IsLocked() || !masternodeSync.IsSynced())
+                {
+                    MilliSleep(5000);
+                    continue;
+                }
             }
 
             if(!fProofOfStake && chainActive.Tip()->nHeight >= chainparams.GetConsensus().nLastPoWBlock)
