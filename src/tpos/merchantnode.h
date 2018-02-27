@@ -16,7 +16,8 @@ class CConnman;
 
 static const int MERCHANTNODE_CHECK_SECONDS               = 20;
 static const int MERCHANTNODE_MIN_MNB_SECONDS             = 5 * 60;
-static const int MERCHANTNODE_MIN_MNP_SECONDS             = 120 * 60;
+//static const int MERCHANTNODE_MIN_MNP_SECONDS             = 120 * 60;
+static const int MERCHANTNODE_MIN_MNP_SECONDS             = 2 * 60;
 static const int MERCHANTNODE_EXPIRATION_SECONDS          = 65 * 60;
 static const int MERCHANTNODE_MAX_EXPIRATION_SECONDS      = 25 * 60 * 60;
 static const int MERCHANTNODE_WATCHDOG_MAX_SECONDS        = 120 * 60;
@@ -302,8 +303,13 @@ public:
     }
 
     /// Create Merchantnode broadcast, needs to be relayed manually after that
-    static bool Create(const CService& service, const CKey& keyMerchantnodeNew, const CPubKey& pubKeyMerchantnodeNew, std::string &strErrorRet, CMerchantnodeBroadcast &mnbRet);
-    static bool Create(std::string strService, std::string strMerchantAddress, std::string& strErrorRet, CMerchantnodeBroadcast &mnbRet, bool fOffline = false);
+    static bool Create(const CService& service, const CKey& keyMerchantnodeNew,
+                       const CPubKey& pubKeyMerchantnodeNew, const uint256 &hashTPoSContractTx,
+                       std::string &strErrorRet, CMerchantnodeBroadcast &mnbRet);
+
+    static bool Create(std::string strService, std::string strMerchantAddress,
+                       std::string strHashTPoSContractTx, std::string& strErrorRet,
+                       CMerchantnodeBroadcast &mnbRet, bool fOffline = false);
 
     bool SimpleCheck(int& nDos);
     bool Update(CMerchantnode* pmn, int& nDos, CConnman& connman);

@@ -210,6 +210,12 @@ bool TPoSUtils::IsMerchantPaymentValid(const CBlock &block, int nBlockHeight, CA
     auto contract = TPoSContract::FromTPoSContractTx(block.txTPoSContract);
     CScript scriptMerchantPubKey = GetScriptForDestination(contract.merchantAddress.Get());
 
+    auto coinstake = block.vtx[1];
+    CTxDestination dest;
+    if(!ExtractDestination(coinstake.vout[1].scriptPubKey, dest))
+        return false;
+
+    CBitcoinAddress tmpAddress(dest);
     auto it = std::find_if(std::begin(coinstake.vout) + 2, std::end(coinstake.vout), [scriptMerchantPubKey](const CTxOut &txOut) {
         return txOut.scriptPubKey == scriptMerchantPubKey;
     });
@@ -231,12 +237,6 @@ bool TPoSUtils::IsMerchantPaymentValid(const CBlock &block, int nBlockHeight, CA
         return true;
     }
 
-    CTxDestination dest;
-    auto coinstake = block.vtx[1];
-    if(!ExtractDestination(coinstake.vout[1].scriptPubKey, dest))
-        return false;
-
-    CBitcoinAddress tmpAddress(dest);
 
     CKeyID coinstakeKeyID;
     if(!tmpAddress.GetKeyID(coinstakeKeyID))

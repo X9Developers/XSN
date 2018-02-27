@@ -51,6 +51,17 @@ using namespace std;
 uint64_t nLastBlockTx = 0;
 uint64_t nLastBlockSize = 0;
 
+struct TPoSParams
+{
+    bool fUseTPoS;
+    uint256 hashTPoSContractTxId;
+} tposParams = {
+    false,
+    uint256()
+};
+
+static CCriticalSection csTPoSParams;
+
 class ScoreCompare
 {
 public:
@@ -481,13 +492,28 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
                 } while (true);
             }
 
+            bool isTPoS = false;
+            uint256 hashTPoSContractTxId;
+            TPoSContract contract;
+
             if(fProofOfStake)
             {
                 if (chainActive.Tip()->nHeight < chainparams.GetConsensus().nLastPoWBlock ||
-                       pwallet->IsLocked() || !masternodeSync.IsSynced())
+                        pwallet->IsLocked() || !masternodeSync.IsSynced())
                 {
                     MilliSleep(5000);
                     continue;
+                }
+
+                LOCK(csTPoSParams);
+
+                isTPoS = tposParams.fUseTPoS;
+                hashTPoSContractTxId = tposParams.hashTPoSContractTxId;
+
+                if(isTPoS) {
+                    auto it = pwallet->tposMerchantContracts.find(hashTPoSContractTxId);
+                    if(it != std::end(pwallet->tposMerchantContracts))
+                        contract = it->second;
                 }
             }
 
@@ -502,10 +528,6 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
             unsigned int nTransactionsUpdatedLast = mempool.GetTransactionsUpdated();
             CBlockIndex* pindexPrev = chainActive.Tip();
             if(!pindexPrev) break;
-
-            TPoSContract contract;
-            //            if(pwallet && !pwallet->tposMerchantContracts.empty())
-            //                contract = pwallet->tposMerchantContracts.begin()->second;
 
             std::unique_ptr<CBlockTemplate> pblocktemplate(CreateNewBlock(pwallet, chainparams, coinbaseScript->reserveScript, fProofOfStake, contract));
             if (!pblocktemplate.get())
@@ -660,4 +682,17 @@ void ThreadStakeMinter(const CChainParams &chainparams, CConnman &connman, CWall
     }
     LogPrintf("ThreadStakeMinter exiting,\n");
 
+}
+
+void SetTPoSMinningParams(bool fUseTPoS, uint256 hashTPoSContractTxId)
+{
+    LOCK(csTPoSParams);
+    tposParams.fUseTPoS = fUseTPoS;
+    tposParams.hashTPoSContractTxId = hashTPoSContractTxId;
+}
+
+std::tuple<bool, uint256> GetTPoSMinningParams()
+{
+    LOCK(csTPoSParams);
+    return std::make_tuple(tposParams.fUseTPoS, tposParams.hashTPoSContractTxId);
 }

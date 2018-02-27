@@ -140,7 +140,7 @@ public:
 
     /// Versions of Find that are safe to use from outside the class
     bool Get(const CKeyID &pubKeyID, CMerchantnode& masternodeRet);
-    bool Get(const CPubKey &pubKeyMerchantnode, CMerchantnode& masternodeRet);
+    bool Get(const CPubKey &pubKeyMerchantnode, CMerchantnode& merchantnodeRet);
     bool Has(const CPubKey &pubKeyMerchantnode);
 
     bool GetMerchantnodeInfo(const CPubKey& pubKeyMerchantnode, merchantnode_info_t& mnInfoRet);

@@ -366,10 +366,10 @@ bool CMerchantnodeMan::Get(const CKeyID &pubKeyID, CMerchantnode& merchantnodeRe
     return false;
 }
 
-bool CMerchantnodeMan::Get(const CPubKey &pubKeyMerchantnode, CMerchantnode &masternodeRet)
+bool CMerchantnodeMan::Get(const CPubKey &pubKeyMerchantnode, CMerchantnode &merchantnodeRet)
 {
     LOCK(cs);
-    auto it = mapMerchantnodes.find(pubKeyID);
+    auto it = mapMerchantnodes.find(pubKeyMerchantnode);
     if (it == mapMerchantnodes.end()) {
         return false;
     }
