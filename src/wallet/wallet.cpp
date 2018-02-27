@@ -246,7 +246,7 @@ bool CWallet::CreateCoinStakeKernel(CScript &kernelScript,const CScript &stakeSc
     unsigned int nTryTime = 0;
     uint256 hashProofOfStake;
 
-    if (blockFrom.GetBlockTime() + Params().GetConsensus().nStakeMinAge > nTimeTx) // Min age requirement
+    if (blockFrom.GetBlockTime() + Params().GetConsensus().nStakeMinAge + nHashDrift > nTimeTx) // Min age requirement
         return false;
 
     for(int i = 0; i < nHashDrift; ++i)
@@ -3823,6 +3823,19 @@ bool CWallet::CommitTransaction(CWalletTx& wtxNew, CReserveKey& reservekey, CCon
 {
     {
         LOCK2(cs_main, cs_wallet);
+
+        if (fBroadcastTransactions)
+        {
+            // Broadcast
+            if (!wtxNew.AcceptToMemoryPool(false))
+            {
+                // This must not fail. The transaction has already been signed and recorded.
+                LogPrintf("CommitTransaction(): Error: Transaction not valid\n");
+                return false;
+            }
+            wtxNew.RelayWalletTransaction(connman, strCommand);
+        }
+
         LogPrintf("CommitTransaction:\n%s", wtxNew.ToString());
         {
             // This is only to keep the database open to defeat the auto-flush for the
@@ -3855,18 +3868,6 @@ bool CWallet::CommitTransaction(CWalletTx& wtxNew, CReserveKey& reservekey, CCon
 
         // Track how many getdata requests our transaction gets
         mapRequestCount[wtxNew.GetHash()] = 0;
-
-        if (fBroadcastTransactions)
-        {
-            // Broadcast
-            if (!wtxNew.AcceptToMemoryPool(false))
-            {
-                // This must not fail. The transaction has already been signed and recorded.
-                LogPrintf("CommitTransaction(): Error: Transaction not valid\n");
-                return false;
-            }
-            wtxNew.RelayWalletTransaction(connman, strCommand);
-        }
     }
     return true;
 }
