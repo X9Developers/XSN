@@ -265,10 +265,7 @@ bool CWallet::CreateCoinStakeKernel(CScript &kernelScript,const CScript &stakeSc
                 LogPrintf("CreateCoinStakeKernel : kernel found\n");
 
             kernelScript.clear();
-            if(contract.IsValid()) {
-                kernelScript = stakeScript;
-            }
-            else {
+            if(!contract.IsValid()) {
                 std::vector<std::vector<unsigned char>> vSolutions;
                 txnouttype whichType;
                 if (!Solver(stakeScript, whichType, vSolutions)) {//check the solver here
@@ -277,27 +274,16 @@ bool CWallet::CreateCoinStakeKernel(CScript &kernelScript,const CScript &stakeSc
 
                 if (fDebug && GetBoolArg("-printcoinstake", false))
                     LogPrintf("CreateCoinStakeKernel : parsed kernel type=%d\n", whichType);
+
                 if (whichType != TX_PUBKEY && whichType != TX_PUBKEYHASH) {
                     if (fDebug && GetBoolArg("-printcoinstake", false))
                         LogPrintf("CreateCoinStakeKernel : no support for kernel type=%d\n", whichType);
                     // only support pay to public key and pay to address
                     return error("CreateCoinStakeKernel : no support for kernel type=%d TX_PUBKEY=%d TX_PUBKEYHASH=%d\n", whichType, TX_PUBKEY, TX_PUBKEYHASH);
                 }
-                if (whichType == TX_PUBKEYHASH) // pay to address type
-                {
-                    //convert to pay to public key type
-                    CKey key;
-                    if (!keystore.GetKey(uint160(vSolutions[0]), key)) {
-                        return error("CreateCoinStake : failed to get key for kernel type=%d\n", whichType);
-                    }
-
-                    kernelScript << key.GetPubKey() << OP_CHECKSIG;
-                }
-                else {
-                    kernelScript = stakeScript;
-                }
             }
 
+            kernelScript = stakeScript;
             nTimeTx = nTryTime;
 
             return true;
@@ -2862,11 +2848,13 @@ bool CWallet::MintableCoins()
     return false;
 }
 
-bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, const CScript &scriptPubKey) const
+bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, const CScript &scriptFilterPubKey) const
 {
     vector<COutput> vCoins;
     AvailableCoins(vCoins, true);
     CAmount nAmountSelected = 0;
+
+    std::set<CScript> rejectCache;
 
     for (const COutput& out : vCoins) {
         //make sure not to outrun target amount
@@ -2888,8 +2876,24 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, c
         if (out.nDepth < (out.tx->IsCoinStake() ? COINBASE_MATURITY : 10))
             continue;
 
-        if(!scriptPubKey.empty() && out.tx->vout[out.i].scriptPubKey != scriptPubKey)
+        auto scriptPubKeyCoin = out.tx->vout[out.i].scriptPubKey;
+
+        if(!scriptFilterPubKey.empty() && scriptPubKeyCoin != scriptFilterPubKey)
             continue;
+
+        if(rejectCache.count(scriptPubKeyCoin)) {
+           continue;
+        }
+        else {
+            auto it = std::find_if(std::begin(tposMerchantContracts), std::end(tposMerchantContracts), [scriptPubKeyCoin](const std::pair<uint256, TPoSContract> &entry) {
+                return GetScriptForDestination(entry.second.tposAddress.Get()) == scriptPubKeyCoin;
+            });
+
+            if(it != std::end(tposMerchantContracts)) {
+                rejectCache.insert(scriptPubKeyCoin);
+                continue;
+            }
+        }
 
         nAmountSelected += out.tx->vout[out.i].nValue; //maybe change here for tpos
         setCoins.insert(make_pair(out.tx, out.i));
@@ -4628,7 +4632,7 @@ void CWallet::GetScriptForMining(boost::shared_ptr<CReserveScript> &script)
     script->reserveScript = CScript() << ToByteVector(pubkey) << OP_CHECKSIG;
 }
 
-void CWallet::LockCoin(COutPoint& output)
+void CWallet::LockCoin(const COutPoint& output)
 {
     AssertLockHeld(cs_wallet); // setLockedCoins
     setLockedCoins.insert(output);
@@ -4639,7 +4643,7 @@ void CWallet::LockCoin(COutPoint& output)
     fAnonymizableTallyCachedNonDenom = false;
 }
 
-void CWallet::UnlockCoin(COutPoint& output)
+void CWallet::UnlockCoin(const COutPoint& output)
 {
     AssertLockHeld(cs_wallet); // setLockedCoins
     setLockedCoins.erase(output);
@@ -4691,7 +4695,7 @@ void CWallet::LoadTPoSContract(const CWalletTx &walletTx)
     else {
         // we need to lock this coin, because it can be spend
         tposOwnerContracts[txHash] = contract;
-//        LockCoin(TPoSUtils::GetContractCollateralOutpoint(contract));
+        LockCoin(TPoSUtils::GetContractCollateralOutpoint(contract));
     }
 }
 
