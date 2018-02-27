@@ -237,7 +237,6 @@ bool TPoSUtils::IsMerchantPaymentValid(const CBlock &block, int nBlockHeight, CA
         return true;
     }
 
-
     CKeyID coinstakeKeyID;
     if(!tmpAddress.GetKeyID(coinstakeKeyID))
         return error("IsMerchantPaymentValid -- ERROR: coin stake was paid to invalid address\n");

@@ -2291,6 +2291,8 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
 
     if(block.IsTPoSBlock() && !TPoSUtils::IsMerchantPaymentValid(block, pindex->nHeight, expectedReward, pindex->nMint)) {
         LogPrintf("Failed to validate merchant payment, but it's ok for now\n");
+        return state.DoS(0, error("ConnectBlock(DASH): couldn't validate merchantnode payment"),
+                         REJECT_INVALID, "bad-tpos-payee");
     }
 
     if (!IsBlockPayeeValid(coinbaseTransaction, pindex->nHeight, expectedReward, pindex->nMint)) {
