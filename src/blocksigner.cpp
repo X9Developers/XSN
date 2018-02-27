@@ -33,14 +33,10 @@ bool CBlockSigner::SignBlock()
             if(!refContract.merchantAddress.GetKeyID(merchantKeyID))
                 return error("CBlockSigner::SignBlock() : merchant address is not P2PKH, critical error, can't accept.");
 
-            CBitcoinSecret secret;
-            secret.SetString("cSfeSxGb2tXbuYbZxJbnKqbiFwTZEWqbZhVSUKi2hdti61GdJMS8");
-            auto tempKey = secret.GetKey();
-
-            if(merchantKeyID != tempKey.GetPubKey()/*activeMerchantnode.pubKeyMerchantnode*/.GetID())
+            if(merchantKeyID != activeMerchantnode.pubKeyMerchantnode.GetID())
                 return error("CBlockSigner::SignBlock() : contract address is different from merchantnode address, won't sign.");
 
-            keySecret = tempKey/*activeMerchantnode.keyMerchantnode*/;
+            keySecret = activeMerchantnode.keyMerchantnode;
         }
         else
         {

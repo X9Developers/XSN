@@ -217,10 +217,11 @@ public:
         if(nActiveState == MERCHANTNODE_ENABLED) {
             return true;
         }
-        if(!sporkManager.IsSporkActive(SPORK_14_REQUIRE_SENTINEL_FLAG) &&
-           (nActiveState == MERCHANTNODE_WATCHDOG_EXPIRED)) {
-            return true;
-        }
+
+//        if(!sporkManager.IsSporkActive(SPORK_14_REQUIRE_SENTINEL_FLAG) &&
+//           (nActiveState == MERCHANTNODE_WATCHDOG_EXPIRED)) {
+//            return true;
+//        }
 
         return false;
     }

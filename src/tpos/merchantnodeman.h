@@ -139,6 +139,7 @@ public:
     void DsegUpdate(CNode* pnode, CConnman& connman);
 
     /// Versions of Find that are safe to use from outside the class
+    bool Get(const CKeyID &pubKeyID, CMerchantnode& masternodeRet);
     bool Get(const CPubKey &pubKeyMerchantnode, CMerchantnode& masternodeRet);
     bool Has(const CPubKey &pubKeyMerchantnode);
 

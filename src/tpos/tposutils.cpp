@@ -242,15 +242,20 @@ bool TPoSUtils::IsMerchantPaymentValid(const CBlock &block, int nBlockHeight, CA
     if(!tmpAddress.GetKeyID(coinstakeKeyID))
         return error("IsMerchantPaymentValid -- ERROR: coin stake was paid to invalid address\n");
 
-    merchantnode_info_t merchantNodeInfo;
-    if(!merchantnodeman.GetMerchantnodeInfo(coinstakeKeyID, merchantNodeInfo))
+    CMerchantnode merchantNode;
+    if(!merchantnodeman.Get(coinstakeKeyID, merchantNode))
     {
         return error("IsMerchantPaymentValid -- ERROR: failed to find merchantnode with address: %s\n", tmpAddress.ToString().c_str());
     }
 
-    if(merchantNodeInfo.hashTPoSContractTx != block.hashTPoSContractTx)
+    if(!merchantNode.IsValidForPayment()) {
+        return error("IsMerchantPaymentValid -- ERROR: merchantnode with address: %s is not valid for payment\n", tmpAddress.ToString().c_str());
+    }
+
+    if(merchantNode.hashTPoSContractTx != block.hashTPoSContractTx)
     {
-        return false;
+        return error("IsMerchantPaymentValid -- ERROR: merchantnode contract is invalid expected: %s, actual %s\n",
+                     block.hashTPoSContractTx.ToString().c_str(), merchantNode.hashTPoSContractTx.ToString().c_str());
     }
 
     return true;

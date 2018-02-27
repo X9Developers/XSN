@@ -352,11 +352,24 @@ CMerchantnode* CMerchantnodeMan::Find(const CPubKey &pubKeyMerchantnode)
     return it == mapMerchantnodes.end() ? NULL : &(it->second);
 }
 
-bool CMerchantnodeMan::Get(const CPubKey &pubKeyMerchantnode, CMerchantnode& merchantnodeRet)
+bool CMerchantnodeMan::Get(const CKeyID &pubKeyID, CMerchantnode& merchantnodeRet)
 {
     // Theses mutexes are recursive so double locking by the same thread is safe.
     LOCK(cs);
-    auto it = mapMerchantnodes.find(pubKeyMerchantnode);
+    for (auto& mnpair : mapMerchantnodes) {
+        CKeyID keyID = mnpair.second.pubKeyMerchantnode.GetID();
+        if (keyID == pubKeyID) {
+            merchantnodeRet = mnpair.second;
+            return true;
+        }
+    }
+    return false;
+}
+
+bool CMerchantnodeMan::Get(const CPubKey &pubKeyMerchantnode, CMerchantnode &masternodeRet)
+{
+    LOCK(cs);
+    auto it = mapMerchantnodes.find(pubKeyID);
     if (it == mapMerchantnodes.end()) {
         return false;
     }

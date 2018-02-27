@@ -3891,15 +3891,6 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
     // Choose coins to use
     CAmount nBalance = GetBalance();
 
-    if(tposContract.IsValid())
-    {
-        //        if(pActi < 6)
-        //        {
-        //            LogPrintf("Transaction was not accepted or it isn't deep enough\n");
-        //            return false;
-        //        }
-    }
-
     //    if (mapArgs.count("-reservebalance") && !ParseMoney(mapArgs["-reservebalance"], nReserveBalance))
     //        return error("CreateCoinStake : invalid reserve balance amount");
 
