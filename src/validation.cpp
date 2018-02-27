@@ -3274,13 +3274,13 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
                              REJECT_INVALID, "bad-block-signature");
         }
 
-        if(!mapProofOfStake.count(hash)) // add to mapProofOfStake
-            mapProofOfStake.insert(make_pair(hash, hashProofOfStake));
-
         if(!CheckProofOfStake(pwalletMain, block, hashProofOfStake)) {
             state.DoS(100, error("CheckBlock(): check proof-of-stake failed for block %s\n", hash.ToString().c_str()));
             return false;
         }
+
+        if(!mapProofOfStake.count(hash)) // add to mapProofOfStake
+            mapProofOfStake.insert(make_pair(hash, hashProofOfStake));
     }
 
 
