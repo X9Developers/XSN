@@ -4085,6 +4085,8 @@ DBErrors CWallet::LoadWallet(bool& fFirstRunRet)
         }
     }
 
+    finishLoadingTPoSContractsFromDB();
+
     if (nLoadWalletRet != DB_LOAD_OK)
         return nLoadWalletRet;
     fFirstRunRet = !vchDefaultKey.IsValid();
