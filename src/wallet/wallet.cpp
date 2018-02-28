@@ -1340,7 +1340,7 @@ bool CWallet::AddToWalletIfTPoSContract(const CTransaction &tx, const CBlock *pb
         // TODO: FIND CORRECT CONDITIONS TO erase contract
         //        if(!mempool.exists(tx.GetHash()))
         //        {
-        //            std::cout << "Tx doesn't exist in mempool" << std::endl;
+        //            std::cout << "Tx doesn't exist in mempool\n");
         //            if(tposOwnerContracts.count(tx.GetHash()))
         //                tposOwnerContracts.erase(tx.GetHash());
 
@@ -2865,32 +2865,32 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, c
         if(scriptPubKeyKernel.IsPayToScriptHash())
             continue;
 
-        std::cout << "scriptPubKeyKernel is good" << std::endl;
+        LogPrintf("scriptPubKeyKernel is good\n");
 
         //for now we will comment this out
         if (nAmountSelected + out.tx->vout[out.i].nValue > nTargetAmount)
             continue;
 
-        std::cout << "amount is good" << std::endl;
+        LogPrintf("amount is good\n");
 
         //check for min age
         if (GetTime() - out.tx->GetTxTime() < Params().GetConsensus().nStakeMinAge)
             continue;
 
-        std::cout << "min age is good" << std::endl;
+        LogPrintf("min age is good\n");
 
         //check that it is matured
         if (out.nDepth < (out.tx->IsCoinStake() ? COINBASE_MATURITY : 10))
             continue;
 
-        std::cout << "maturity is good" << std::endl;
+        LogPrintf("maturity is good\n");
 
         auto scriptPubKeyCoin = out.tx->vout[out.i].scriptPubKey;
 
         if(!scriptFilterPubKey.empty() && scriptPubKeyCoin != scriptFilterPubKey)
             continue;
 
-        std::cout << "filtering is good" << std::endl;
+        LogPrintf("filtering is good\n");
 
         if(rejectCache.count(scriptPubKeyCoin)) {
            continue;
@@ -2906,7 +2906,7 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, c
             }
         }
 
-        std::cout << "reject is good" << std::endl;
+        LogPrintf("reject is good\n");
 
         nAmountSelected += out.tx->vout[out.i].nValue; //maybe change here for tpos
         setCoins.insert(make_pair(out.tx, out.i));
