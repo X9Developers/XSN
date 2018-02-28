@@ -48,7 +48,7 @@ SendCoinsEntry::SendCoinsEntry(const PlatformStyle *platformStyle, QWidget *pare
 
     // Connect signals
     connect(ui->payAmount, SIGNAL(valueChanged()), this, SIGNAL(payAmountChanged()));
-    connect(ui->checkboxSubtractFeeFromAmount, SIGNAL(toggled(bool)), this, SIGNAL(subtractFeeFromAmountChanged()));
+//    connect(ui->checkboxSubtractFeeFromAmount, SIGNAL(toggled(bool)), this, SIGNAL(subtractFeeFromAmountChanged()));
     connect(ui->deleteButton, SIGNAL(clicked()), this, SLOT(deleteClicked()));
     connect(ui->deleteButton_is, SIGNAL(clicked()), this, SLOT(deleteClicked()));
     connect(ui->deleteButton_s, SIGNAL(clicked()), this, SLOT(deleteClicked()));
@@ -99,7 +99,7 @@ void SendCoinsEntry::clear()
     ui->payTo->clear();
     ui->addAsLabel->clear();
     ui->payAmount->clear();
-    ui->checkboxSubtractFeeFromAmount->setCheckState(Qt::Unchecked);
+//    ui->checkboxSubtractFeeFromAmount->setCheckState(Qt::Unchecked);
     ui->messageTextLabel->clear();
     ui->messageTextLabel->hide();
     ui->messageLabel->hide();
@@ -171,7 +171,7 @@ SendCoinsRecipient SendCoinsEntry::getValue()
     recipient.label = ui->addAsLabel->text();
     recipient.amount = ui->payAmount->value();
     recipient.message = ui->messageTextLabel->text();
-    recipient.fSubtractFeeFromAmount = (ui->checkboxSubtractFeeFromAmount->checkState() == Qt::Checked);
+//    recipient.fSubtractFeeFromAmount = (ui->checkboxSubtractFeeFromAmount->checkState() == Qt::Checked);
 
     return recipient;
 }
@@ -181,8 +181,8 @@ QWidget *SendCoinsEntry::setupTabChain(QWidget *prev)
     QWidget::setTabOrder(prev, ui->payTo);
     QWidget::setTabOrder(ui->payTo, ui->addAsLabel);
     QWidget *w = ui->payAmount->setupTabChain(ui->addAsLabel);
-    QWidget::setTabOrder(w, ui->checkboxSubtractFeeFromAmount);
-    QWidget::setTabOrder(ui->checkboxSubtractFeeFromAmount, ui->addressBookButton);
+//    QWidget::setTabOrder(w, ui->checkboxSubtractFeeFromAmount);
+//    QWidget::setTabOrder(ui->checkboxSubtractFeeFromAmount, ui->addressBookButton);
     QWidget::setTabOrder(ui->addressBookButton, ui->pasteButton);
     QWidget::setTabOrder(ui->pasteButton, ui->deleteButton);
     return ui->deleteButton;
@@ -200,7 +200,7 @@ void SendCoinsEntry::setValue(const SendCoinsRecipient &value)
             ui->memoTextLabel_is->setText(recipient.message);
             ui->payAmount_is->setValue(recipient.amount);
             ui->payAmount_is->setReadOnly(true);
-            setCurrentWidget(ui->SendCoins_UnauthenticatedPaymentRequest);
+//            setCurrentWidget(ui->SendCoins_UnauthenticatedPaymentRequest);
         }
         else // authenticated
         {
@@ -208,7 +208,7 @@ void SendCoinsEntry::setValue(const SendCoinsRecipient &value)
             ui->memoTextLabel_s->setText(recipient.message);
             ui->payAmount_s->setValue(recipient.amount);
             ui->payAmount_s->setReadOnly(true);
-            setCurrentWidget(ui->SendCoins_AuthenticatedPaymentRequest);
+//            setCurrentWidget(ui->SendCoins_AuthenticatedPaymentRequest);
         }
     }
     else // normal payment

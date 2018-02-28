@@ -643,8 +643,6 @@ private:
 
     std::vector<CWalletTx> tposContractsTxLoadedFromDB;
 
-    // we need this function, because at time when we are reading from DB, we don't have public keys and redeem scripts for multisign addresses
-    void finishLoadingTPoSContractsFromDB();
 
     /**
      * Used to keep track of spent outpoints, and
@@ -689,6 +687,9 @@ public:
 
     bool fFileBacked;
     const std::string strWalletFile;
+
+    // we need this function, because at time when we are reading from DB, we don't have public keys and redeem scripts for multisign addresses
+    void LoadContractsFromDB();
 
     void LoadKeyPool(int nIndex, const CKeyPool &keypool)
     {

@@ -16,10 +16,11 @@ static const struct {
     const int iconColorHueShift;
     const int iconColorSaturationReduction;
     const char *titleAddText;
+    const char *overviewLogoPath;
 } network_styles[] = {
-    {"main", QAPP_APP_NAME_DEFAULT, 0, 0, ""},
-    {"test", QAPP_APP_NAME_TESTNET, 190, 20, QT_TRANSLATE_NOOP("SplashScreen", "[testnet]")},
-    {"regtest", QAPP_APP_NAME_TESTNET, 160, 30, "[regtest]"}
+{"main", QAPP_APP_NAME_DEFAULT, 0, 0, "", ":/images/res/images/other/%1/logo_left_testnet.png"},
+{"test", QAPP_APP_NAME_TESTNET, 190, 20, QT_TRANSLATE_NOOP("SplashScreen", "[testnet]"), ":/images/res/images/other/%1/logo_left_testnet.png"},
+{"regtest", QAPP_APP_NAME_TESTNET, 160, 30, "[regtest]", ":/images/res/images/other/%1/logo_left_testnet.png"}
 };
 static const unsigned network_styles_count = sizeof(network_styles)/sizeof(*network_styles);
 
@@ -58,7 +59,7 @@ void NetworkStyle::rotateColors(QImage& img, const int iconColorHueShift, const 
 }
 
 // titleAddText needs to be const char* for tr()
-NetworkStyle::NetworkStyle(const QString &appName, const int iconColorHueShift, const int iconColorSaturationReduction, const char *titleAddText):
+NetworkStyle::NetworkStyle(const QString &appName, const int iconColorHueShift, const int iconColorSaturationReduction, const char *titleAddText, const QString &overviewLogoPath):
     appName(appName),
     titleAddText(qApp->translate("SplashScreen", titleAddText))
 {
@@ -94,6 +95,7 @@ NetworkStyle::NetworkStyle(const QString &appName, const int iconColorHueShift, 
     appIcon             = QIcon(appIconPixmap);
     trayAndWindowIcon   = QIcon(appIconPixmap.scaled(QSize(256,256)));
     splashImage         = splashImagePixmap;
+    overviewLogo        = overviewLogoPath;
 }
 
 const NetworkStyle *NetworkStyle::instantiate(const QString &networkId)
@@ -103,11 +105,17 @@ const NetworkStyle *NetworkStyle::instantiate(const QString &networkId)
         if (networkId == network_styles[x].networkId)
         {
             return new NetworkStyle(
-                    network_styles[x].appName,
-                    network_styles[x].iconColorHueShift,
-                    network_styles[x].iconColorSaturationReduction,
-                    network_styles[x].titleAddText);
+                        network_styles[x].appName,
+                        network_styles[x].iconColorHueShift,
+                        network_styles[x].iconColorSaturationReduction,
+                        network_styles[x].titleAddText,
+                        network_styles[x].overviewLogoPath);
         }
     }
     return 0;
+}
+
+QString NetworkStyle::getOverviewLogo(QString theme) const
+{
+    return overviewLogo.arg(theme);
 }

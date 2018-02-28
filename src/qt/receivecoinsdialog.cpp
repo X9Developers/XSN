@@ -23,7 +23,7 @@
 #include <QTextDocument>
 
 ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *platformStyle, QWidget *parent) :
-    QDialog(parent),
+    QWidget(parent),
     ui(new Ui::ReceiveCoinsDialog),
     columnResizingFixer(0),
     model(0),
@@ -65,6 +65,8 @@ ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *platformStyle, QWidg
     connect(copyAmountAction, SIGNAL(triggered()), this, SLOT(copyAmount()));
 
     connect(ui->clearButton, SIGNAL(clicked()), this, SLOT(clear()));
+
+    onThemeChanged();
 }
 
 void ReceiveCoinsDialog::setModel(WalletModel *model)
@@ -106,7 +108,7 @@ void ReceiveCoinsDialog::clear()
     ui->reqAmount->clear();
     ui->reqLabel->setText("");
     ui->reqMessage->setText("");
-    ui->reuseAddress->setChecked(false);
+//    ui->reuseAddress->setChecked(false);
     updateDisplayUnit();
 }
 
@@ -135,7 +137,7 @@ void ReceiveCoinsDialog::on_receiveButton_clicked()
 
     QString address;
     QString label = ui->reqLabel->text();
-    if(ui->reuseAddress->isChecked())
+    if(false /*ui->reuseAddress->isChecked()*/)
     {
         /* Choose existing receiving address */
         AddressBookPage dlg(platformStyle, AddressBookPage::ForSelection, AddressBookPage::ReceivingTab, this);
@@ -156,7 +158,7 @@ void ReceiveCoinsDialog::on_receiveButton_clicked()
     }
     SendCoinsRecipient info(address, label,
         ui->reqAmount->value(), ui->reqMessage->text());
-    info.fUseInstantSend = ui->checkUseInstantSend->isChecked();
+//    info.fUseInstantSend = ui->checkUseInstantSend->isChecked();
     ReceiveRequestDialog *dialog = new ReceiveRequestDialog(this);
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     dialog->setModel(model->getOptionsModel());
@@ -230,7 +232,7 @@ void ReceiveCoinsDialog::keyPressEvent(QKeyEvent *event)
         }
     }
 
-    this->QDialog::keyPressEvent(event);
+    this->QWidget::keyPressEvent(event);
 }
 
 QModelIndex ReceiveCoinsDialog::selectedRow()
@@ -293,4 +295,12 @@ void ReceiveCoinsDialog::copyMessage()
 void ReceiveCoinsDialog::copyAmount()
 {
     copyColumnToClipboard(RecentRequestsTableModel::Amount);
+}
+
+void ReceiveCoinsDialog::onThemeChanged()
+{
+    auto themeName = GUIUtil::getThemeName();
+    ui->label_8->setPixmap(QPixmap(
+                             QString(
+                                 ":/images/res/images/pages/receive/%1/receive-header.png").arg(themeName)));
 }

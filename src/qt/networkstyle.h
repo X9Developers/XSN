@@ -22,15 +22,20 @@ public:
     const QPixmap &getSplashImage() const { return splashImage; }
     const QIcon &getTrayAndWindowIcon() const { return trayAndWindowIcon; }
     const QString &getTitleAddText() const { return titleAddText; }
+    QString getOverviewLogo(QString theme) const;
 
 private:
-    NetworkStyle(const QString &appName, const int iconColorHueShift, const int iconColorSaturationReduction, const char *titleAddText);
+    NetworkStyle(const QString &appName, const int iconColorHueShift,
+                 const int iconColorSaturationReduction,
+                 const char *titleAddText,
+                 const QString &overviewLogoPath);
 
     QString appName;
     QIcon appIcon;
     QPixmap splashImage;
     QIcon trayAndWindowIcon;
     QString titleAddText;
+    QString overviewLogo;
 
     void rotateColors(QImage& img, const int iconColorHueShift, const int iconColorSaturationReduction);
 };

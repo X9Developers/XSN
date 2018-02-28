@@ -31,7 +31,7 @@
 #include <QTextDocument>
 
 SendCoinsDialog::SendCoinsDialog(const PlatformStyle *platformStyle, QWidget *parent) :
-    QDialog(parent),
+    QWidget(parent),
     ui(new Ui::SendCoinsDialog),
     clientModel(0),
     model(0),
@@ -133,17 +133,22 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *platformStyle, QWidget *pa
     if (!settings.contains("fSendFreeTransactions"))
         settings.setValue("fSendFreeTransactions", false);
 
-    ui->groupFee->setId(ui->radioSmartFee, 0);
-    ui->groupFee->setId(ui->radioCustomFee, 1);
-    ui->groupFee->button((int)std::max(0, std::min(1, settings.value("nFeeRadio").toInt())))->setChecked(true);
-    ui->groupCustomFee->setId(ui->radioCustomPerKilobyte, 0);
-    ui->groupCustomFee->setId(ui->radioCustomAtLeast, 1);
-    ui->groupCustomFee->button((int)std::max(0, std::min(1, settings.value("nCustomFeeRadio").toInt())))->setChecked(true);
+    groupFee = new QButtonGroup(this);
+    groupCustomFee = new QButtonGroup(this);
+
+    groupFee->addButton(ui->radioSmartFee, 0);
+    groupFee->addButton(ui->radioCustomFee, 1);
+    groupFee->button((int)std::max(0, std::min(1, settings.value("nFeeRadio").toInt())))->setChecked(true);
+    groupCustomFee->addButton(ui->radioCustomPerKilobyte, 0);
+    groupCustomFee->addButton(ui->radioCustomAtLeast, 1);
+    groupCustomFee->button((int)std::max(0, std::min(1, settings.value("nCustomFeeRadio").toInt())))->setChecked(true);
     ui->sliderSmartFee->setValue(settings.value("nSmartFeeSliderPosition").toInt());
     ui->customFee->setValue(settings.value("nTransactionFee").toLongLong());
     ui->checkBoxMinimumFee->setChecked(settings.value("fPayOnlyMinFee").toBool());
     ui->checkBoxFreeTx->setChecked(settings.value("fSendFreeTransactions").toBool());
     minimizeFeeSection(settings.value("fFeeSectionMinimized").toBool());
+
+    onThemeChanged();
 }
 
 void SendCoinsDialog::setClientModel(ClientModel *clientModel)
@@ -186,11 +191,11 @@ void SendCoinsDialog::setModel(WalletModel *model)
         connect(ui->sliderSmartFee, SIGNAL(valueChanged(int)), this, SLOT(updateSmartFeeLabel()));
         connect(ui->sliderSmartFee, SIGNAL(valueChanged(int)), this, SLOT(updateGlobalFeeVariables()));
         connect(ui->sliderSmartFee, SIGNAL(valueChanged(int)), this, SLOT(coinControlUpdateLabels()));
-        connect(ui->groupFee, SIGNAL(buttonClicked(int)), this, SLOT(updateFeeSectionControls()));
-        connect(ui->groupFee, SIGNAL(buttonClicked(int)), this, SLOT(updateGlobalFeeVariables()));
-        connect(ui->groupFee, SIGNAL(buttonClicked(int)), this, SLOT(coinControlUpdateLabels()));
-        connect(ui->groupCustomFee, SIGNAL(buttonClicked(int)), this, SLOT(updateGlobalFeeVariables()));
-        connect(ui->groupCustomFee, SIGNAL(buttonClicked(int)), this, SLOT(coinControlUpdateLabels()));
+        connect(groupFee, SIGNAL(buttonClicked(int)), this, SLOT(updateFeeSectionControls()));
+        connect(groupFee, SIGNAL(buttonClicked(int)), this, SLOT(updateGlobalFeeVariables()));
+        connect(groupFee, SIGNAL(buttonClicked(int)), this, SLOT(coinControlUpdateLabels()));
+        connect(groupCustomFee, SIGNAL(buttonClicked(int)), this, SLOT(updateGlobalFeeVariables()));
+        connect(groupCustomFee, SIGNAL(buttonClicked(int)), this, SLOT(coinControlUpdateLabels()));
         connect(ui->customFee, SIGNAL(valueChanged()), this, SLOT(updateGlobalFeeVariables()));
         connect(ui->customFee, SIGNAL(valueChanged()), this, SLOT(coinControlUpdateLabels()));
         connect(ui->checkBoxMinimumFee, SIGNAL(stateChanged(int)), this, SLOT(setMinimumFee()));
@@ -211,8 +216,8 @@ SendCoinsDialog::~SendCoinsDialog()
 {
     QSettings settings;
     settings.setValue("fFeeSectionMinimized", fFeeMinimized);
-    settings.setValue("nFeeRadio", ui->groupFee->checkedId());
-    settings.setValue("nCustomFeeRadio", ui->groupCustomFee->checkedId());
+    settings.setValue("nFeeRadio", groupFee->checkedId());
+    settings.setValue("nCustomFeeRadio", groupCustomFee->checkedId());
     settings.setValue("nSmartFeeSliderPosition", ui->sliderSmartFee->value());
     settings.setValue("nTransactionFee", (qint64)ui->customFee->value());
     settings.setValue("fPayOnlyMinFee", ui->checkBoxMinimumFee->isChecked());
@@ -583,9 +588,18 @@ void SendCoinsDialog::setBalance(const CAmount& balance, const CAmount& unconfir
 		    bal = balance;
 	    }
 
-        ui->labelBalance->setText(BitcoinUnits::formatWithUnit(model->getOptionsModel()->getDisplayUnit(), bal));
+//        ui->labelBalance->setText(BitcoinUnits::formatWithUnit(model->getOptionsModel()->getDisplayUnit(), bal));
     }
 }
+
+void SendCoinsDialog::onThemeChanged()
+{
+    auto themeName = GUIUtil::getThemeName();
+    ui->label->setPixmap(QPixmap(
+                             QString(
+                                 ":/images/res/images/pages/send/%1/send-header.png").arg(themeName)));
+}
+
 
 void SendCoinsDialog::updateDisplayUnit()
 {

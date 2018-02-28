@@ -78,7 +78,7 @@ struct CompareValueOnly
     }
 };
 
-void CWallet::finishLoadingTPoSContractsFromDB()
+void CWallet::LoadContractsFromDB()
 {
     for(auto &&contractTx : std::move(tposContractsTxLoadedFromDB))
         LoadTPoSContract(contractTx);
@@ -4097,8 +4097,6 @@ DBErrors CWallet::LoadWallet(bool& fFirstRunRet)
             }
         }
     }
-
-    finishLoadingTPoSContractsFromDB();
 
     if (nLoadWalletRet != DB_LOAD_OK)
         return nLoadWalletRet;

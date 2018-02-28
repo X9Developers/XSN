@@ -371,6 +371,8 @@ QString TransactionTableModel::formatTxType(const TransactionRecord *wtx) const
     {
     case TransactionRecord::RecvWithAddress:
         return tr("Received with");
+    case TransactionRecord::MNReward:
+        return tr("Masternode Reward");
     case TransactionRecord::RecvFromOther:
         return tr("Received from");
     case TransactionRecord::RecvWithPrivateSend:
@@ -382,7 +384,12 @@ QString TransactionTableModel::formatTxType(const TransactionRecord *wtx) const
         return tr("Payment to yourself");
     case TransactionRecord::Generated:
         return tr("Mined");
-
+    case TransactionRecord::StakeMint:
+        return tr("Minted");
+    case TransactionRecord::StakeMintTPoS:
+        return tr("Minted(TPoS)");
+    case TransactionRecord::StakeMintTPoSCommission:
+        return tr("Minted(Commission)");
     case TransactionRecord::PrivateSendDenominate:
         return tr("PrivateSend Denominate");
     case TransactionRecord::PrivateSendCollateralPayment:

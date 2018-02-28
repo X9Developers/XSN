@@ -19,6 +19,7 @@
 #include "transactiontablemodel.h"
 #include "transactionview.h"
 #include "walletmodel.h"
+#include "transactionsdialog.h"
 
 #include "ui_interface.h"
 
@@ -44,8 +45,9 @@ WalletView::WalletView(const PlatformStyle *platformStyle, QWidget *parent):
     transactionsPage = new QWidget(this);
     QVBoxLayout *vbox = new QVBoxLayout();
     QHBoxLayout *hbox_buttons = new QHBoxLayout();
-    transactionView = new TransactionView(platformStyle, this);
-    vbox->addWidget(transactionView);
+    transactionsDialog = new TransactionsDialog(platformStyle, this);
+    transactionView = transactionsDialog->transactionView();
+    vbox->addWidget(transactionsDialog);
     QPushButton *exportButton = new QPushButton(tr("&Export"), this);
     exportButton->setToolTip(tr("Export the data in the current tab to a file"));
     if (platformStyle->getImagesOnButtons()) {

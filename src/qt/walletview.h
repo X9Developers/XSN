@@ -20,6 +20,7 @@ class SendCoinsRecipient;
 class TransactionView;
 class WalletModel;
 class AddressBookPage;
+class TransactionsDialog;
 
 QT_BEGIN_NAMESPACE
 class QLabel;
@@ -68,6 +69,7 @@ private:
     AddressBookPage *usedReceivingAddressesPage;
     MasternodeList *masternodeListPage;
 
+    TransactionsDialog* transactionsDialog;
     TransactionView *transactionView;
 
     QProgressDialog *progressDialog;

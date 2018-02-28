@@ -72,6 +72,7 @@ MasternodeList::MasternodeList(const PlatformStyle *platformStyle, QWidget *pare
     fFilterUpdated = false;
     nTimeFilterUpdated = GetTime();
     updateNodeList();
+    onThemeChanged();
 }
 
 MasternodeList::~MasternodeList()
@@ -425,3 +426,12 @@ void MasternodeList::on_UpdateButton_clicked()
 {
     updateMyNodeList(true);
 }
+
+void MasternodeList::onThemeChanged()
+{
+    auto themeName = GUIUtil::getThemeName();
+    ui->label->setPixmap(QPixmap(
+                             QString(
+                                 ":/images/res/images/pages/masternodes/%1/masternodes-header.png").arg(themeName)));
+}
+

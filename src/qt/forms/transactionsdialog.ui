@@ -63,9 +63,6 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item>
-       <widget class="TransactionView" name="transactionsView" native="true"/>
-      </item>
      </layout>
     </widget>
    </item>
@@ -76,12 +73,6 @@
    <class>ClickableLabel</class>
    <extends>QLabel</extends>
    <header>clickablelabel.h</header>
-  </customwidget>
-  <customwidget>
-   <class>TransactionView</class>
-   <extends>QWidget</extends>
-   <header>transactionview.h</header>
-   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
