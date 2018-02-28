@@ -278,7 +278,7 @@ bool CMerchantnodeBroadcast::Create(std::string strService, std::string strMerch
     } else if (service.GetPort() == mainnetDefaultPort)
         return Log(strprintf("Invalid port %u for merchantnode %s, %d is the only supported on mainnet.", service.GetPort(), strService, mainnetDefaultPort));
 
-    return Create(service, keyMerchantnodeNew, pubKeyMerchantnodeNew, uint256(ParseHex(strHashTPoSContractTx)), strErrorRet, mnbRet);
+    return Create(service, keyMerchantnodeNew, pubKeyMerchantnodeNew, uint256S(strHashTPoSContractTx), strErrorRet, mnbRet);
 }
 
 bool CMerchantnodeBroadcast::Create(const CService& service, const CKey& keyMerchantnodeNew,
