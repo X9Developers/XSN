@@ -294,9 +294,9 @@ BITCOIN_QT_CPP += \
 endif
 
 RES_IMAGES = \
-  $(wildcard $(srcdir)/qt/res/images/other/*/*/*.png) \
-  $(wildcard $(srcdir)/qt/res/images/pages/*/*/*.png) \
-  $(wildcard $(srcdir)/qt/res/images/navigation buttons/*/*/*.png)
+  $(wildcard qt/res/images/other/*/*/*.png) \
+  $(wildcard qt/res/images/pages/*/*/*.png) \
+  $(wildcard qt/res/images/navigation buttons/*/*/*.png)
 
 RES_CSS = \
   qt/res/css/light.css \
