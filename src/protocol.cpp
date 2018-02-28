@@ -147,16 +147,16 @@ const static std::string allNetMessageTypes[] = {
     NetMsgType::DSTX,
     NetMsgType::DSQUEUE,
     NetMsgType::DSEG,
+    NetMsgType::MERCHANTNODESEG,
     NetMsgType::SYNCSTATUSCOUNT,
+    NetMsgType::MERCHANTSYNCSTATUSCOUNT,
     NetMsgType::MNGOVERNANCESYNC,
     NetMsgType::MNGOVERNANCEOBJECT,
     NetMsgType::MNGOVERNANCEOBJECTVOTE,
     NetMsgType::MNVERIFY,
     NetMsgType::MERCHANTNODEVERIFY,
     NetMsgType::MERCHANTNODEANNOUNCE,
-    NetMsgType::MERCHANTNODEPING,
-    NetMsgType::MERCHANTNODESEG,
-    NetMsgType::MERCHANTSYNCSTATUSCOUNT
+    NetMsgType::MERCHANTNODEPING
 };
 const static std::vector<std::string> allNetMessageTypesVec(allNetMessageTypes, allNetMessageTypes+ARRAYLEN(allNetMessageTypes));
 
