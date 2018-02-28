@@ -2884,11 +2884,11 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, c
            continue;
         }
         else {
-            auto it = std::find_if(std::begin(tposMerchantContracts), std::end(tposMerchantContracts), [scriptPubKeyCoin](const std::pair<uint256, TPoSContract> &entry) {
+            auto it = std::find_if(std::begin(tposOwnerContracts), std::end(tposOwnerContracts), [scriptPubKeyCoin](const std::pair<uint256, TPoSContract> &entry) {
                 return GetScriptForDestination(entry.second.tposAddress.Get()) == scriptPubKeyCoin;
             });
 
-            if(it != std::end(tposMerchantContracts)) {
+            if(it != std::end(tposOwnerContracts)) {
                 rejectCache.insert(scriptPubKeyCoin);
                 continue;
             }
