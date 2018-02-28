@@ -212,14 +212,21 @@ bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contr
 bool TPoSUtils::IsMerchantPaymentValid(const CBlock &block, int nBlockHeight, CAmount expectedReward, CAmount actualReward)
 {
     auto contract = TPoSContract::FromTPoSContractTx(block.txTPoSContract);
-    CScript scriptMerchantPubKey = GetScriptForDestination(contract.merchantAddress.Get());
+    CBitcoinAddress merchantAddress = contract.merchantAddress;
+    CScript scriptMerchantPubKey = GetScriptForDestination(merchantAddress.Get());
 
     auto coinstake = block.vtx[1];
-    CTxDestination dest;
-    if(!ExtractDestination(coinstake.vout[1].scriptPubKey, dest))
-        return false;
 
-    CBitcoinAddress tmpAddress(dest);
+    if(coinstake.vout[1].scriptPubKey != GetScriptForDestination(contract.tposAddress.Get()))
+    {
+        CTxDestination dest;
+        if(!ExtractDestination(coinstake.vout[1].scriptPubKey, dest))
+            return false;
+
+        return error("IsMerchantPaymentValid -- ERROR: coinstake is invalidm expected: %s, actual %s\n",
+                     contract.tposAddress.ToString().c_str(), CBitcoinAddress(dest).ToString().c_str());
+    }
+
     auto it = std::find_if(std::begin(coinstake.vout) + 2, std::end(coinstake.vout), [scriptMerchantPubKey](const CTxOut &txOut) {
         return txOut.scriptPubKey == scriptMerchantPubKey;
     });
@@ -228,11 +235,11 @@ bool TPoSUtils::IsMerchantPaymentValid(const CBlock &block, int nBlockHeight, CA
     {
         auto maxAllowedValue = (expectedReward / 100) * (100 - contract.stakePercentage);
         if(it->nValue > maxAllowedValue)
-            return error("IsMerchantPaymentValid -- ERROR: merchant was paid more than allowed: %s\n", tmpAddress.ToString().c_str());
+            return error("IsMerchantPaymentValid -- ERROR: merchant was paid more than allowed: %s\n", contract.merchantAddress.ToString().c_str());
     }
     else
     {
-        LogPrintf("IsMerchantPaymentValid -- WARNING: merchant wasn't paid, this is weird, but totally acceptable. Shouldn't happen.");
+        LogPrintf("IsMerchantPaymentValid -- WARNING: merchant wasn't paid, this is weird, but totally acceptable. Shouldn't happen.\n");
     }
 
     if(!merchantnodeSync.IsSynced()) {
@@ -242,23 +249,23 @@ bool TPoSUtils::IsMerchantPaymentValid(const CBlock &block, int nBlockHeight, CA
     }
 
     CKeyID coinstakeKeyID;
-    if(!tmpAddress.GetKeyID(coinstakeKeyID))
+    if(!merchantAddress.GetKeyID(coinstakeKeyID))
         return error("IsMerchantPaymentValid -- ERROR: coin stake was paid to invalid address\n");
 
     CMerchantnode merchantNode;
     if(!merchantnodeman.Get(coinstakeKeyID, merchantNode))
     {
-        return error("IsMerchantPaymentValid -- ERROR: failed to find merchantnode with address: %s\n", tmpAddress.ToString().c_str());
-    }
-
-    if(!merchantNode.IsValidForPayment()) {
-        return error("IsMerchantPaymentValid -- ERROR: merchantnode with address: %s is not valid for payment\n", tmpAddress.ToString().c_str());
+        return error("IsMerchantPaymentValid -- ERROR: failed to find merchantnode with address: %s\n", merchantAddress.ToString().c_str());
     }
 
     if(merchantNode.hashTPoSContractTx != block.hashTPoSContractTx)
     {
         return error("IsMerchantPaymentValid -- ERROR: merchantnode contract is invalid expected: %s, actual %s\n",
                      block.hashTPoSContractTx.ToString().c_str(), merchantNode.hashTPoSContractTx.ToString().c_str());
+    }
+
+    if(!merchantNode.IsValidForPayment()) {
+        return error("IsMerchantPaymentValid -- ERROR: merchantnode with address: %s is not valid for payment\n", merchantAddress.ToString().c_str());
     }
 
     return true;
