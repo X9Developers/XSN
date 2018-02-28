@@ -279,6 +279,7 @@ UniValue merchantnodelist(const UniValue& params, bool fHelp)
                           mn.GetStatus() << " " <<
                           mn.nProtocolVersion << " " <<
                           CBitcoinAddress(mn.pubKeyMerchantnode.GetID()).ToString() << " " <<
+                          mn.hashTPoSContractTx.ToString() << " " <<
                           (int64_t)mn.lastPing.sigTime << " " << std::setw(8) <<
                           (int64_t)(mn.lastPing.sigTime - mn.sigTime) << " " << std::setw(10) <<
                           mn.addr.ToString();

@@ -2850,7 +2850,7 @@ bool CWallet::MintableCoins()
 bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, const CScript &scriptFilterPubKey) const
 {
     vector<COutput> vCoins;
-    AvailableCoins(vCoins, false);
+    AvailableCoins(vCoins, scriptFilterPubKey.empty());
     CAmount nAmountSelected = 0;
 
     std::set<CScript> rejectCache;
