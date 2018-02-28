@@ -2855,6 +2855,8 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, c
 
     std::set<CScript> rejectCache;
 
+    std::cout << "Selected: " << vCoins.size() << std::endl;
+
     for (const COutput& out : vCoins) {
         //make sure not to outrun target amount
         CScript scriptPubKeyKernel;
@@ -2863,22 +2865,32 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, c
         if(scriptPubKeyKernel.IsPayToScriptHash())
             continue;
 
+        std::cout << "scriptPubKeyKernel is good" << std::endl;
+
         //for now we will comment this out
         if (nAmountSelected + out.tx->vout[out.i].nValue > nTargetAmount)
             continue;
+
+        std::cout << "amount is good" << std::endl;
 
         //check for min age
         if (GetTime() - out.tx->GetTxTime() < Params().GetConsensus().nStakeMinAge)
             continue;
 
+        std::cout << "min age is good" << std::endl;
+
         //check that it is matured
         if (out.nDepth < (out.tx->IsCoinStake() ? COINBASE_MATURITY : 10))
             continue;
+
+        std::cout << "maturity is good" << std::endl;
 
         auto scriptPubKeyCoin = out.tx->vout[out.i].scriptPubKey;
 
         if(!scriptFilterPubKey.empty() && scriptPubKeyCoin != scriptFilterPubKey)
             continue;
+
+        std::cout << "filtering is good" << std::endl;
 
         if(rejectCache.count(scriptPubKeyCoin)) {
            continue;
@@ -2893,6 +2905,8 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, c
                 continue;
             }
         }
+
+        std::cout << "reject is good" << std::endl;
 
         nAmountSelected += out.tx->vout[out.i].nValue; //maybe change here for tpos
         setCoins.insert(make_pair(out.tx, out.i));
