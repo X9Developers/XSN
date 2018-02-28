@@ -6,6 +6,7 @@
 #include "validation.h"
 #include "tpos/merchantnode-sync.h"
 #include "tpos/merchantnodeman.h"
+#include "tpos/activemerchantnode.h"
 #include <sstream>
 
 static const std::string TPOSEXPORTHEADER("TPOSOWNERINFO");
@@ -88,8 +89,11 @@ bool TPoSUtils::IsTPoSMerchantContract(CWallet *wallet, const CTransaction &tx)
 {
     TPoSContract contract = TPoSContract::FromTPoSContractTx(tx);
 
-    return contract.IsValid() &&
-            IsMine(*wallet, contract.merchantAddress.Get()) == ISMINE_SPENDABLE;
+    bool IsMerchantNode = GetScriptForDestination(contract.merchantAddress.Get()) ==
+            GetScriptForDestination(activeMerchantnode.pubKeyMerchantnode.GetID());
+
+    return contract.IsValid() && (IsMerchantNode ||
+            IsMine(*wallet, contract.merchantAddress.Get()) == ISMINE_SPENDABLE);
 }
 
 bool TPoSUtils::IsTPoSOwnerContract(CWallet *wallet, const CTransaction &tx)
@@ -312,9 +316,7 @@ TPoSContract TPoSContract::FromTPoSContractTx(const CTransaction &tx)
                     for(auto &token : tokens)
                     {
                         stringStream >> token;
-                        //                        std::cout << token << " ";
                     }
-                    //                    std::cout << std::endl;
 
                     CBitcoinAddress tposAddress(ParseAddressFromMetadata(tokens[1]));
                     CBitcoinAddress merchantAddress(ParseAddressFromMetadata(tokens[2]));
