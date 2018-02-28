@@ -295,7 +295,7 @@ endif
 
 RES_IMAGES = \
   $(wildcard qt/res/images/other/*/*/*.png) \
-  $(wildcard qt/res/images/pages/*/*/*.png) \
+  $(wildcard qt/res/images/pages/*/*/*/*.png) \
   $(wildcard qt/res/images/navigation buttons/*/*/*.png)
 
 RES_CSS = \
