@@ -441,6 +441,8 @@ QString TransactionTableModel::formatTxToAddress(const TransactionRecord *wtx, b
     case TransactionRecord::RecvWithPrivateSend:
     case TransactionRecord::SendToAddress:
     case TransactionRecord::Generated:
+    case TransactionRecord::MNReward:
+    case TransactionRecord::StakeMint:
     case TransactionRecord::PrivateSend:
         return lookupAddress(wtx->address, tooltip) + watchAddress;
     case TransactionRecord::SendToOther:
@@ -459,6 +461,8 @@ QVariant TransactionTableModel::addressColor(const TransactionRecord *wtx) const
     case TransactionRecord::RecvWithAddress:
     case TransactionRecord::SendToAddress:
     case TransactionRecord::Generated:
+    case TransactionRecord::StakeMint:
+    case TransactionRecord::MNReward:
     case TransactionRecord::PrivateSend:
     case TransactionRecord::RecvWithPrivateSend:
         {
