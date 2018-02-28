@@ -28,7 +28,7 @@ bool fTestNet = false; //Params().NetworkID() == CBaseChainParams::TESTNET;
 
 // Modifier interval: time to elapse before new modifier is computed
 // Set to 3-hour for production network and 20-minute for test network
-unsigned int nModifierInterval = MODIFIER_INTERVAL_TESTNET;
+unsigned int nModifierInterval = MODIFIER_INTERVAL;
 unsigned int getIntervalVersion(bool fTestNet)
 {
     if (fTestNet)
@@ -380,7 +380,7 @@ bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned 
     // this change increases active coins participating the hash and helps
     // to secure the network when proof-of-stake difficulty is low
     int64_t nTimeWeight = std::min<int64_t>(nTimeTx - txPrevTime, nStakeMaxAge - nStakeMinAge);
-    arith_uint256 bnCoinDayWeight = nValueIn * nTimeWeight / COIN / 100;//(60 * 60);
+    arith_uint256 bnCoinDayWeight = nValueIn * nTimeWeight / COIN / (60 * 60);
     // Calculate hash
     CDataStream ss(SER_GETHASH, 0);
     uint64_t nStakeModifier = 0;
@@ -429,53 +429,6 @@ bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned 
     }
     return true;
 }
-
-#if 0
-
-bool CheckTProofOfStake(CWallet *wallet, const CBlock &block)
-{
-    if(block.IsTPoSBlock())
-    {
-        CTransaction tx;
-        uint256 blockFrom;
-        if(!GetTransaction(block.tposTxContractHash, tx, Params().GetConsensus(), blockFrom, true))
-            return error("CheckTProofOfStake() : failed to get tposTxContractHash: %s", block.tposTxContractHash.ToString().c_str());
-
-        CBlockIndex* pblockindex = mapBlockIndex[hash];
-        if(pblockindex->GetBlockTime() + Params().GetConsensus().nStakeMinAge > block.GetBlockTime())
-            return error("CheckTProofOfStake() : tpos point min age violation");
-
-        auto nDepth = chainActive.Height() - pblockindex->nHeight;
-
-        if(nDepth < COINBASE_MATURITY)
-            return error("CheckTProofOfStake() : tpos point coinstake maturity not met, current %d, expected %d", nDepth, COINBASE_MATURITY);
-
-        auto tposContractOutpoint = TPoSUtils::GetContractCollateralOutpoint(TPoSContract::FromTPoSContractTx(tx));
-        Coin coin;
-        if(!pcoinsTip->GetCoin(tposContractOutpoint, coin) || coin.IsSpent())
-            return error("CheckTProofOfStake() : tpos contract invalid, collateral is spent");
-
-        auto coinStake = block.vtx[1];
-
-        //        auto it = std::find_if(std::begin(coinStake.vout) + 1, std::end(), [](const CTxOut &txOut) {
-
-        //        });
-
-        //        if(it == std::end(coinStake.vout))
-        //            return error("CheckTProofOfStake() : tpos stake point wasn't found in vout", block.tposStakePoint.ToString().c_str());
-
-        //        CBlockIndex *pPrevBlockIndex = pbloc;
-        CTransaction prevTx = coinStake;
-        while(block.GetBlockTime() < prevBlock.GetBlockTime() + Params().GetConsensus().nStakeMinAge)
-        {
-            GetTransaction(prevBlock)
-        }
-
-
-    }
-}
-
-#endif
 
 bool CheckKernelScript(CScript scriptVin, CScript scriptVout)
 {
