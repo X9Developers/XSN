@@ -1,6 +1,8 @@
 bin_PROGRAMS += qt/xsn-qt
 EXTRA_LIBRARIES += qt/libbitcoinqt.a
 
+rwildcard=$(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))
+
 # xsn qt core #
 QT_TS = \
   qt/locale/xsn_bg.ts \
@@ -173,11 +175,7 @@ BITCOIN_QT_H = \
   qt/winshutdownmonitor.h
 
 RES_ICONS = \
-  qt/res/icons/bitcoin.png \
-  qt/res/icons/chevron.png \
-  qt/res/icons/warning.png \
-  $(wildcard qt/res/icons/light/*.png) \
-  $(wildcard qt/res/icons/dark/*.png)
+  $(call rwildcard,qt/res/icons/,*.png)
 
 BITCOIN_QT_CPP = \
   qt/bantablemodel.cpp \
@@ -243,29 +241,7 @@ BITCOIN_QT_CPP += \
 endif
 
 RES_IMAGES = \
-  qt/res/images/qtreeview_selected.png \
-  qt/res/images/walletFrame_bg.png \
-  qt/res/images/walletFrame.png \
-  $(wildcard qt/res/images/navigation buttons/dark/*.png) \
-  $(wildcard qt/res/images/navigation buttons/light/*.png) \
-  $(wildcard qt/res/images/other/dark/*.png) \
-  $(wildcard qt/res/images/other/light/*.png) \
-  $(wildcard qt/res/images/pages/send/dark/*.png) \
-  $(wildcard qt/res/images/pages/send/light/*.png) \
-  $(wildcard qt/res/images/overview/send/dark/*.png) \
-  $(wildcard qt/res/images/overview/send/light/*.png) \
-  $(wildcard qt/res/images/transactions/send/dark/*.png) \
-  $(wildcard qt/res/images/transactions/send/light/*.png) \
-  $(wildcard qt/res/images/masternodes/send/dark/*.png) \
-  $(wildcard qt/res/images/masternodes/send/light/*.png) \
-  $(wildcard qt/res/images/receive/send/dark/*.png) \
-  $(wildcard qt/res/images/receive/send/light/*.png) \
-  $(wildcard qt/res/images/merchant/send/dark/*.png) \
-  $(wildcard qt/res/images/merchant/send/light/*.png) \
-  $(wildcard qt/res/images/tpos/send/dark/*.png) \
-  $(wildcard qt/res/images/tpos/send/light/*.png) \
-  $(wildcard qt/res/images/stealthmode/send/dark/*.png) \
-  $(wildcard qt/res/images/stealthmode/send/light/*.png)
+  $(call rwildcard,qt/res/images/,*.png)
 
 RES_CSS = \
   qt/res/css/light.css \
