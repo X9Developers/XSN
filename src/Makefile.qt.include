@@ -173,62 +173,11 @@ BITCOIN_QT_H = \
   qt/winshutdownmonitor.h
 
 RES_ICONS = \
-  qt/res/icons/add.png \
-  qt/res/icons/address-book.png \
-  qt/res/icons/bitcoin.ico \
   qt/res/icons/bitcoin.png \
-  qt/res/icons/bitcoin_testnet.ico \
-  qt/res/icons/bitcoin_testnet.png \
-  qt/res/icons/browse.png \
-  qt/res/icons/clock1.png \
-  qt/res/icons/clock2.png \
-  qt/res/icons/clock3.png \
-  qt/res/icons/clock4.png \
-  qt/res/icons/clock5.png \
-  qt/res/icons/configure.png \
-  qt/res/icons/connect0_16.png \
-  qt/res/icons/connect1_16.png \
-  qt/res/icons/connect2_16.png \
-  qt/res/icons/connect3_16.png \
-  qt/res/icons/connect4_16.png \
-  qt/res/icons/debugwindow.png \
-  qt/res/icons/edit.png \
-  qt/res/icons/editcopy.png \
-  qt/res/icons/editpaste.png \
-  qt/res/icons/explorer.png \
-  qt/res/icons/export.png \
-  qt/res/icons/eye.png \
-  qt/res/icons/eye_minus.png \
-  qt/res/icons/eye_plus.png \
-  qt/res/icons/filesave.png \
-  qt/res/icons/history.png \
-  qt/res/icons/key.png \
-  qt/res/icons/lock_closed.png \
-  qt/res/icons/lock_open.png \
-  qt/res/icons/masternodes.png \
-  qt/res/icons/overview.png \
-  qt/res/icons/qrcode.png \
-  qt/res/icons/quit.png \
-  qt/res/icons/receive.png \
-  qt/res/icons/remove.png \
-  qt/res/icons/send.png \
-  qt/res/icons/staking_active.png \
-  qt/res/icons/staking_inactive.png \
-  qt/res/icons/synced.png \
-  qt/res/icons/trade.png \
-  qt/res/icons/transaction0.png \
-  qt/res/icons/transaction2.png \
-  qt/res/icons/transaction_conflicted.png \
-  qt/res/icons/tx_inout.png \
-  qt/res/icons/tx_input.png \
-  qt/res/icons/tx_output.png \
-  qt/res/icons/tx_mined.png \
-  qt/res/icons/unit_xsn.png \
-  qt/res/icons/unit_mxsn.png \
-  qt/res/icons/unit_uxsn.png \
-  qt/res/icons/unit_txsn.png \
-  qt/res/icons/unit_tmxsn.png \
-  qt/res/icons/unit_tuxsn.png
+  qt/res/icons/chevron.png \
+  qt/res/icons/warning.png \
+  $(wildcard qt/res/icons/light/*.png) \
+  $(wildcard qt/res/icons/dark/*.png)
 
 BITCOIN_QT_CPP = \
   qt/bantablemodel.cpp \
@@ -293,10 +242,30 @@ BITCOIN_QT_CPP += \
   qt/walletview.cpp
 endif
 
-RES_IMAGES = 
-#  $(wildcard qt/res/images/other/*/*/*.png) \
-#  $(wildcard qt/res/images/pages/*/*/*/*.png) \
-#  $(wildcard qt/res/images/navigation buttons/*/*/*.png)
+RES_IMAGES = \
+  qt/res/images/qtreeview_selected.png \
+  qt/res/images/walletFrame_bg.png \
+  qt/res/images/walletFrame.png \
+  $(wildcard qt/res/images/navigation buttons/dark/*.png \
+  $(wildcard qt/res/images/navigation buttons/light/*.png \
+  $(wildcard qt/res/images/other/dark/*.png) \
+  $(wildcard qt/res/images/other/light/*.png) \
+  $(wildcard qt/res/images/pages/send/dark/*.png) \
+  $(wildcard qt/res/images/pages/send/light/*.png) \
+  $(wildcard qt/res/images/overview/send/dark/*.png) \
+  $(wildcard qt/res/images/overview/send/light/*.png) \
+  $(wildcard qt/res/images/transactions/send/dark/*.png) \
+  $(wildcard qt/res/images/transactions/send/light/*.png) \
+  $(wildcard qt/res/images/masternodes/send/dark/*.png) \
+  $(wildcard qt/res/images/masternodes/send/light/*.png) \
+  $(wildcard qt/res/images/receive/send/dark/*.png) \
+  $(wildcard qt/res/images/receive/send/light/*.png) \
+  $(wildcard qt/res/images/merchant/send/dark/*.png) \
+  $(wildcard qt/res/images/merchant/send/light/*.png) \
+  $(wildcard qt/res/images/tpos/send/dark/*.png) \
+  $(wildcard qt/res/images/tpos/send/light/*.png) \
+  $(wildcard qt/res/images/stealthmode/send/dark/*.png) \
+  $(wildcard qt/res/images/stealthmode/send/light/*.png)
 
 RES_CSS = \
   qt/res/css/light.css \
