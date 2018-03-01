@@ -34,14 +34,14 @@
 
 // Uncomment the following line to enable debugging messages
 // or enable on a per file basis prior to inclusion of util.h
-//#define ENABLE_DASH_DEBUG
-#ifdef ENABLE_DASH_DEBUG
+//#define ENABLE_XSN_DEBUG
+#ifdef ENABLE_XSN_DEBUG
 #define DBG( x ) x
 #else
 #define DBG( x ) 
 #endif
 
-//Xsn only features
+//XSN only features
 
 extern bool fMasterNode;
 extern bool fMerchantNode;

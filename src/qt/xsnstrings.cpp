@@ -42,7 +42,7 @@ QT_TRANSLATE_NOOP("xsn-core", ""
 "notation for IPv6. This option can be specified multiple times (default: "
 "bind to all interfaces)"),
 QT_TRANSLATE_NOOP("xsn-core", ""
-"Cannot obtain a lock on data directory %s. Xsn Core is probably already "
+"Cannot obtain a lock on data directory %s. XSN Core is probably already "
 "running."),
 QT_TRANSLATE_NOOP("xsn-core", ""
 "Create new files with system default permissions, instead of umask 077 (only "
@@ -51,7 +51,7 @@ QT_TRANSLATE_NOOP("xsn-core", ""
 "Delete all wallet transactions and only recover those parts of the "
 "blockchain through -rescan on startup"),
 QT_TRANSLATE_NOOP("xsn-core", ""
-"Disable all Xsn specific functionality (Masternodes, PrivateSend, "
+"Disable all XSN specific functionality (Masternodes, PrivateSend, "
 "InstantSend, Governance) (0-1, default: %u)"),
 QT_TRANSLATE_NOOP("xsn-core", ""
 "Discover own IP addresses (default: 1 when listening and no -externalip or -"
@@ -119,7 +119,7 @@ QT_TRANSLATE_NOOP("xsn-core", ""
 "testnet: %s)"),
 QT_TRANSLATE_NOOP("xsn-core", ""
 "InstantSend doesn't support sending values that high yet. Transactions are "
-"currently limited to %1 DASH."),
+"currently limited to %1 XSN."),
 QT_TRANSLATE_NOOP("xsn-core", ""
 "InstantSend requires inputs with at least %d confirmations, you might need "
 "to wait a few minutes and try again."),
@@ -158,7 +158,7 @@ QT_TRANSLATE_NOOP("xsn-core", ""
 "Output debugging information (default: %u, supplying <category> is optional)"),
 QT_TRANSLATE_NOOP("xsn-core", ""
 "Please check that your computer's date and time are correct! If your clock "
-"is wrong Xsn Core will not work properly."),
+"is wrong XSN Core will not work properly."),
 QT_TRANSLATE_NOOP("xsn-core", ""
 "PrivateSend uses exact denominated amounts to send funds, you might simply "
 "need to anonymize some more coins."),
@@ -221,15 +221,15 @@ QT_TRANSLATE_NOOP("xsn-core", ""
 "Tries to keep outbound traffic under the given target (in MiB per 24h), 0 = "
 "no limit (default: %d)"),
 QT_TRANSLATE_NOOP("xsn-core", ""
-"Unable to bind to %s on this computer. Xsn Core is probably already running."),
+"Unable to bind to %s on this computer. XSN Core is probably already running."),
 QT_TRANSLATE_NOOP("xsn-core", ""
 "Unable to locate enough PrivateSend denominated funds for this transaction."),
 QT_TRANSLATE_NOOP("xsn-core", ""
 "Unable to locate enough PrivateSend non-denominated funds for this "
-"transaction that are not equal 1000 DASH."),
+"transaction that are not equal 1000 XSN."),
 QT_TRANSLATE_NOOP("xsn-core", ""
 "Unable to locate enough funds for this transaction that are not equal 1000 "
-"DASH."),
+"XSN."),
 QT_TRANSLATE_NOOP("xsn-core", ""
 "Unsupported argument -socks found. Setting SOCKS version isn't possible "
 "anymore, only SOCKS5 proxies are supported."),
@@ -333,7 +333,7 @@ QT_TRANSLATE_NOOP("xsn-core", "Connect to KeePassHttp on port <port> (default: %
 QT_TRANSLATE_NOOP("xsn-core", "Connect to a node to retrieve peer addresses, and disconnect"),
 QT_TRANSLATE_NOOP("xsn-core", "Connection options:"),
 QT_TRANSLATE_NOOP("xsn-core", "Copyright (C) 2009-%i The Bitcoin Core Developers"),
-QT_TRANSLATE_NOOP("xsn-core", "Copyright (C) 2014-%i The Xsn Core Developers"),
+QT_TRANSLATE_NOOP("xsn-core", "Copyright (C) 2014-%i The XSN Core Developers"),
 QT_TRANSLATE_NOOP("xsn-core", "Corrupted block database detected"),
 QT_TRANSLATE_NOOP("xsn-core", "Could not parse masternode.conf"),
 QT_TRANSLATE_NOOP("xsn-core", "Debugging/Testing options:"),
@@ -358,7 +358,7 @@ QT_TRANSLATE_NOOP("xsn-core", "Error loading %s: You can't disable HD on a alrea
 QT_TRANSLATE_NOOP("xsn-core", "Error loading block database"),
 QT_TRANSLATE_NOOP("xsn-core", "Error loading wallet.dat"),
 QT_TRANSLATE_NOOP("xsn-core", "Error loading wallet.dat: Wallet corrupted"),
-QT_TRANSLATE_NOOP("xsn-core", "Error loading wallet.dat: Wallet requires newer version of Xsn Core"),
+QT_TRANSLATE_NOOP("xsn-core", "Error loading wallet.dat: Wallet requires newer version of XSN Core"),
 QT_TRANSLATE_NOOP("xsn-core", "Error opening block database"),
 QT_TRANSLATE_NOOP("xsn-core", "Error reading from database, shutting down."),
 QT_TRANSLATE_NOOP("xsn-core", "Error"),
@@ -385,7 +385,7 @@ QT_TRANSLATE_NOOP("xsn-core", "Incompatible mode."),
 QT_TRANSLATE_NOOP("xsn-core", "Incompatible version."),
 QT_TRANSLATE_NOOP("xsn-core", "Incorrect or no genesis block found. Wrong datadir for network?"),
 QT_TRANSLATE_NOOP("xsn-core", "Information"),
-QT_TRANSLATE_NOOP("xsn-core", "Initialization sanity check failed. Xsn Core is shutting down."),
+QT_TRANSLATE_NOOP("xsn-core", "Initialization sanity check failed. XSN Core is shutting down."),
 QT_TRANSLATE_NOOP("xsn-core", "Input is not valid."),
 QT_TRANSLATE_NOOP("xsn-core", "InstantSend options:"),
 QT_TRANSLATE_NOOP("xsn-core", "Insufficient funds."),
@@ -403,7 +403,7 @@ QT_TRANSLATE_NOOP("xsn-core", "Invalid port detected in masternode.conf"),
 QT_TRANSLATE_NOOP("xsn-core", "Invalid script detected."),
 QT_TRANSLATE_NOOP("xsn-core", "KeePassHttp id for the established association"),
 QT_TRANSLATE_NOOP("xsn-core", "KeePassHttp key for AES encrypted communication with KeePass"),
-QT_TRANSLATE_NOOP("xsn-core", "Keep N DASH anonymized (default: %u)"),
+QT_TRANSLATE_NOOP("xsn-core", "Keep N XSN anonymized (default: %u)"),
 QT_TRANSLATE_NOOP("xsn-core", "Keep at most <n> unconnectable transactions in memory (default: %u)"),
 QT_TRANSLATE_NOOP("xsn-core", "Keep the transaction memory pool below <n> megabytes (default: %u)"),
 QT_TRANSLATE_NOOP("xsn-core", "Keypool ran out, please call keypoolrefill first"),
@@ -537,7 +537,7 @@ QT_TRANSLATE_NOOP("xsn-core", "Verifying wallet..."),
 QT_TRANSLATE_NOOP("xsn-core", "Very low number of keys left: %d"),
 QT_TRANSLATE_NOOP("xsn-core", "Wallet %s resides outside data directory %s"),
 QT_TRANSLATE_NOOP("xsn-core", "Wallet is locked."),
-QT_TRANSLATE_NOOP("xsn-core", "Wallet needed to be rewritten: restart Xsn Core to complete"),
+QT_TRANSLATE_NOOP("xsn-core", "Wallet needed to be rewritten: restart XSN Core to complete"),
 QT_TRANSLATE_NOOP("xsn-core", "Wallet options:"),
 QT_TRANSLATE_NOOP("xsn-core", "Wallet window title"),
 QT_TRANSLATE_NOOP("xsn-core", "Warning"),

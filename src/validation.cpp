@@ -56,7 +56,7 @@
 using namespace std;
 
 #if defined(NDEBUG)
-# error "Xsn Core cannot be compiled without assertions."
+# error "XSN Core cannot be compiled without assertions."
 #endif
 
 /**
@@ -2261,7 +2261,7 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
     int64_t nTime3 = GetTimeMicros(); nTimeConnect += nTime3 - nTime2;
     LogPrint("bench", "      - Connect %u transactions: %.2fms (%.3fms/tx, %.3fms/txin) [%.2fs]\n", (unsigned)block.vtx.size(), 0.001 * (nTime3 - nTime2), 0.001 * (nTime3 - nTime2) / block.vtx.size(), nInputs <= 1 ? 0 : 0.001 * (nTime3 - nTime2) / (nInputs-1), nTimeConnect * 0.000001);
 
-    // DASH : MODIFIED TO CHECK MASTERNODE PAYMENTS AND SUPERBLOCKS
+    // XSN : MODIFIED TO CHECK MASTERNODE PAYMENTS AND SUPERBLOCKS
 
     // It's possible that we simply don't have enough data and this could fail
     // (i.e. block itself could be a correct one and we need to store it),
@@ -2274,23 +2274,23 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
 
     std::string strError = "";
     if (!IsBlockValueValid(block, pindex->nHeight, expectedReward, pindex->nMint, strError)) {
-        return state.DoS(0, error("ConnectBlock(DASH): %s", strError), REJECT_INVALID, "bad-cb-amount");
+        return state.DoS(0, error("ConnectBlock(XSN): %s", strError), REJECT_INVALID, "bad-cb-amount");
     }
 
     const auto& coinbaseTransaction = (pindex->nHeight > Params().GetConsensus().nLastPoWBlock ? block.vtx[1] : block.vtx[0]);
 
     if(block.IsTPoSBlock() && !TPoSUtils::IsMerchantPaymentValid(block, pindex->nHeight, expectedReward, pindex->nMint)) {
         LogPrintf("Failed to validate merchant payment, but it's ok for now\n");
-        return state.DoS(0, error("ConnectBlock(DASH): couldn't validate merchantnode payment"),
+        return state.DoS(0, error("ConnectBlock(XSN): couldn't validate merchantnode payment"),
                          REJECT_INVALID, "bad-tpos-payee");
     }
 
     if (!IsBlockPayeeValid(coinbaseTransaction, pindex->nHeight, expectedReward, pindex->nMint)) {
         mapRejectedBlocks.insert(make_pair(block.GetHash(), GetTime()));
-        return state.DoS(0, error("ConnectBlock(DASH): couldn't find masternode or superblock payments"),
+        return state.DoS(0, error("ConnectBlock(XSN): couldn't find masternode or superblock payments"),
                          REJECT_INVALID, "bad-cb-payee");
     }
-    // END DASH
+    // END XSN
 
     if (!control.Wait())
         return state.DoS(100, false);
@@ -3274,7 +3274,7 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
     }
 
 
-    // DASH : CHECK TRANSACTIONS FOR INSTANTSEND
+    // XSN : CHECK TRANSACTIONS FOR INSTANTSEND
 
     if(sporkManager.IsSporkActive(SPORK_3_INSTANTSEND_BLOCK_FILTERING)) {
         // We should never accept block which conflicts with completed transaction lock,
@@ -3291,17 +3291,17 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
                     // relaying instantsend data won't help it.
                     LOCK(cs_main);
                     mapRejectedBlocks.insert(make_pair(block.GetHash(), GetTime()));
-                    return state.DoS(0, error("CheckBlock(DASH): transaction %s conflicts with transaction lock %s",
+                    return state.DoS(0, error("CheckBlock(XSN): transaction %s conflicts with transaction lock %s",
                                               tx.GetHash().ToString(), hashLocked.ToString()),
                                      REJECT_INVALID, "conflict-tx-lock");
                 }
             }
         }
     } else {
-        LogPrintf("CheckBlock(DASH): spork is off, skipping transaction locking checks\n");
+        LogPrintf("CheckBlock(XSN): spork is off, skipping transaction locking checks\n");
     }
 
-    // END DASH
+    // END XSN
 
     // Check transactions
     BOOST_FOREACH(const CTransaction& tx, block.vtx)

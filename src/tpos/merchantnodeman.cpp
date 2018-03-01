@@ -464,7 +464,7 @@ std::pair<CService, std::set<uint256> > CMerchantnodeMan::PopScheduledMnbRequest
 
 void CMerchantnodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStream& vRecv, CConnman& connman)
 {
-    if(fLiteMode) return; // disable all Xsn specific functionality
+    if(fLiteMode) return; // disable all XSN specific functionality
 
     if (strCommand == NetMsgType::MERCHANTNODEANNOUNCE) { //Merchantnode Broadcast
 
@@ -1263,7 +1263,7 @@ void CMerchantnodeMan::UpdatedBlockTip(const CBlockIndex *pindex)
 
 void ThreadMerchantnodeCheck(CConnman &connman)
 {
-    if(fLiteMode) return; // disable all Xsn specific functionality
+    if(fLiteMode) return; // disable all XSN specific functionality
 
     static bool fOneThread;
     if(fOneThread) return;

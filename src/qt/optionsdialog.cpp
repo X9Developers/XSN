@@ -92,11 +92,11 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     }
     
     /* Theme selector */
-    ui->theme->addItem(QString("DASH-light"), QVariant("light"));
-//    ui->theme->addItem(QString("DASH-light-hires"), QVariant("light-hires"));
-//    ui->theme->addItem(QString("DASH-blue"), QVariant("drkblue"));
-//    ui->theme->addItem(QString("DASH-Crownium"), QVariant("crownium"));
-    ui->theme->addItem(QString("DASH-dark"), QVariant("dark"));
+    ui->theme->addItem(QString("XSN-light"), QVariant("light"));
+//    ui->theme->addItem(QString("XSN-light-hires"), QVariant("light-hires"));
+//    ui->theme->addItem(QString("XSN-blue"), QVariant("drkblue"));
+//    ui->theme->addItem(QString("XSN-Crownium"), QVariant("crownium"));
+    ui->theme->addItem(QString("XSN-dark"), QVariant("dark"));
     
     /* Language selector */
     QDir translations(":translations");

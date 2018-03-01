@@ -16,9 +16,9 @@ enum GovernanceObjectType {
     ValueOverride = 1, 
 
     // -------------------------------
-    // XsnNetwork - is the root node
-    XsnNetwork = 1000,
-    XsnNetworkVariable = 1001,
+    // XSNNetwork - is the root node
+    XSNNetwork = 1000,
+    XSNNetworkVariable = 1001,
     Category = 1002,
 
     // Actors

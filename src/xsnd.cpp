@@ -28,8 +28,8 @@
  *
  * \section intro_sec Introduction
  *
- * This is the developer documentation of the reference client for an experimental new digital currency called Xsn (https://www.xsn.org/),
- * which enables instant payments to anyone, anywhere in the world. Xsn uses peer-to-peer technology to operate
+ * This is the developer documentation of the reference client for an experimental new digital currency called XSN (https://www.xsn.org/),
+ * which enables instant payments to anyone, anywhere in the world. XSN uses peer-to-peer technology to operate
  * with no central authority: managing transactions and issuing money are carried out collectively by the network.
  *
  * The software is a community-driven open source project, released under the MIT license.
@@ -76,7 +76,7 @@ bool AppInit(int argc, char* argv[])
     // Process help and version before taking care about datadir
     if (mapArgs.count("-?") || mapArgs.count("-h") ||  mapArgs.count("-help") || mapArgs.count("-version"))
     {
-        std::string strUsage = _("Xsn Core Daemon") + " " + _("version") + " " + FormatFullVersion() + "\n";
+        std::string strUsage = _("XSN Core Daemon") + " " + _("version") + " " + FormatFullVersion() + "\n";
 
         if (mapArgs.count("-version"))
         {
@@ -85,7 +85,7 @@ bool AppInit(int argc, char* argv[])
         else
         {
             strUsage += "\n" + _("Usage:") + "\n" +
-                  "  xsnd [options]                     " + _("Start Xsn Core Daemon") + "\n";
+                  "  xsnd [options]                     " + _("Start XSN Core Daemon") + "\n";
 
             strUsage += "\n" + HelpMessage(HMM_BITCOIND);
         }
@@ -149,7 +149,7 @@ bool AppInit(int argc, char* argv[])
         fDaemon = GetBoolArg("-daemon", false);
         if (fDaemon)
         {
-            fprintf(stdout, "Xsn Core server starting\n");
+            fprintf(stdout, "XSN Core server starting\n");
 
             // Daemonize
             pid_t pid = fork();

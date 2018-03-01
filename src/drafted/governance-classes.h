@@ -45,7 +45,7 @@
  * =========================
  *
  *   // network
- *   CXsnNetwork lvl, network-type, network-status, network-error, milestone-status*
+ *   CXSNNetwork lvl, network-type, network-status, network-error, milestone-status*
  *   CCategory lvl, category-type, status, status-error
  *   CNetworkGlobalVariable lvl, global-type, status, status-error
  *   // base: actor
@@ -79,7 +79,7 @@
  *  TREE STRUCTURE
  *  ===========================================
  * 
- *  DASH NETWORK (ROOT)
+ *  XSN NETWORK (ROOT)
  *      -> NETWORK GLOBOLS
  *          -> SWITCHES, SETTINGS
  *      -> CATEGORIES
@@ -130,7 +130,7 @@ public:
 };
 
 // // root node
-class CXsnNetwork : public CGovernanceObject
+class CXSNNetwork : public CGovernanceObject
 {
 private:
     std::string strName;
@@ -138,7 +138,7 @@ private:
 
 
 public:
-    CXsnNetwork(UniValue objIn)
+    CXSNNetwork(UniValue objIn)
     {
         strName = objIn["name"].get_str();
         strURL = objIn["name"].get_str();
@@ -174,9 +174,9 @@ public:
 
 };
 
-// // can be under: XsnNetwork
+// // can be under: XSNNetwork
 // //   -- signature requirements : Key1(User)
-// class CXsnNetworkVariable : public CGovernanceObject
+// class CXSNNetworkVariable : public CGovernanceObject
 // {
 // private:
 
@@ -279,7 +279,7 @@ public:
 //     // isRootCategory()
 //     // {
 //     //     // root categories won't have categories as parents
-//     //     return (IsType() == XsnNetwork);
+//     //     return (IsType() == XSNNetwork);
 //     // }
 
 //     // isSubcategoryOf(std::string strParentName)

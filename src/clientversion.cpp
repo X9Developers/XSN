@@ -13,7 +13,7 @@
  * for both xsnd and xsn-qt, to make it harder for attackers to
  * target servers or GUI users specifically.
  */
-const std::string CLIENT_NAME("Xsn Core");
+const std::string CLIENT_NAME("XSN Core");
 
 /**
  * Client version number

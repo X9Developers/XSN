@@ -625,7 +625,7 @@ void CoinControlDialog::updateLabels(WalletModel *model, QWidget* dialog)
     }
 
     // actually update labels
-    int nDisplayUnit = BitcoinUnits::DASH;
+    int nDisplayUnit = BitcoinUnits::XSN;
     if (model && model->getOptionsModel())
         nDisplayUnit = model->getOptionsModel()->getDisplayUnit();
 

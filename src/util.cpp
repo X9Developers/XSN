@@ -104,7 +104,7 @@ namespace boost {
 
 using namespace std;
 
-//Xsn only features
+//XSN only features
 bool fMasterNode = false;
 bool fLiteMode = false;
 bool fMerchantNode = false;
@@ -272,7 +272,7 @@ bool LogAcceptCategory(const char* category)
             const vector<string>& categories = mapMultiArgs["-debug"];
             ptrCategory.reset(new set<string>(categories.begin(), categories.end()));
             // thread_specific_ptr automatically deletes the set when the thread ends.
-            // "xsn" is a composite category enabling all Xsn-related debug output
+            // "xsn" is a composite category enabling all XSN-related debug output
             if(ptrCategory->count(string("xsn"))) {
                 ptrCategory->insert(string("privatesend"));
                 ptrCategory->insert(string("instantsend"));
@@ -518,13 +518,13 @@ void PrintExceptionContinue(const std::exception* pex, const char* pszThread)
 boost::filesystem::path GetDefaultDataDir()
 {
     namespace fs = boost::filesystem;
-    // Windows < Vista: C:\Documents and Settings\Username\Application Data\XsnCore
-    // Windows >= Vista: C:\Users\Username\AppData\Roaming\XsnCore
-    // Mac: ~/Library/Application Support/XsnCore
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\XSNCore
+    // Windows >= Vista: C:\Users\Username\AppData\Roaming\XSNCore
+    // Mac: ~/Library/Application Support/XSNCore
     // Unix: ~/.xsncore
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "XsnCore";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "XSNCore";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -534,7 +534,7 @@ boost::filesystem::path GetDefaultDataDir()
         pathRet = fs::path(pszHome);
 #ifdef MAC_OSX
     // Mac
-    return pathRet / "Library/Application Support/XsnCore";
+    return pathRet / "Library/Application Support/XSNCore";
 #else
     // Unix
     return pathRet / ".xsncore";

@@ -84,7 +84,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="../dash.qrc">
+                <iconset resource="../xsn.qrc">
                  <normaloff>:/icons/warning</normaloff>
                  <disabledoff>:/icons/warning</disabledoff>:/icons/warning</iconset>
                </property>
@@ -125,7 +125,7 @@
              <item>
               <widget class="QLabel" name="infoText">
                <property name="text">
-                <string>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Xsn network, as detailed below.</string>
+                <string>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the XSN network, as detailed below.</string>
                </property>
                <property name="textFormat">
                 <enum>Qt::RichText</enum>
@@ -144,7 +144,7 @@
                 </font>
                </property>
                <property name="text">
-                <string>Attempting to spend Xsn that are affected by not-yet-displayed transactions will not be accepted by the network.</string>
+                <string>Attempting to spend XSN that are affected by not-yet-displayed transactions will not be accepted by the network.</string>
                </property>
                <property name="textFormat">
                 <enum>Qt::RichText</enum>
@@ -384,7 +384,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../dash.qrc"/>
+  <include location="../xsn.qrc"/>
  </resources>
  <connections/>
 </ui>

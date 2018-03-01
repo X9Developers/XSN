@@ -10,7 +10,7 @@
 
 /**
  * CBaseChainParams defines the base parameters (shared between xsn-cli and xsnd)
- * of a given instance of the Xsn system.
+ * of a given instance of the XSN system.
  */
 class CBaseChainParams
 {

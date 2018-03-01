@@ -132,8 +132,8 @@ public:
         consensus.BIP34Height = 1;
         consensus.BIP34Hash = uint256S("0x000007d91d1254d60e2dd1ae580383070a4ddffa4c64c2eeb4a2f9ecc0414343");
         consensus.powLimit = uint256S("00000fffff000000000000000000000000000000000000000000000000000000");
-        consensus.nPowTargetTimespan = 24 * 60 * 60; // Xsn: 1 day
-        consensus.nPowTargetSpacing = 2.5 * 60; // Xsn: 2.5 minutes
+        consensus.nPowTargetTimespan = 24 * 60 * 60; // XSN: 1 day
+        consensus.nPowTargetSpacing = 2.5 * 60; // XSN: 2.5 minutes
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
         consensus.nPowKGWHeight = 15200;
@@ -188,18 +188,18 @@ public:
         vSeeds.push_back(CDNSSeedData("masternode.io", "dnsseed.masternode.io"));
         vSeeds.push_back(CDNSSeedData("xsnpay.io", "dnsseed.xsnpay.io"));
 
-        // Xsn addresses start with 'X'
+        // XSN addresses start with 'X'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,76);
-        // Xsn script addresses start with '7'
+        // XSN script addresses start with '7'
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,16);
-        // Xsn private keys start with '7' or 'X'
+        // XSN private keys start with '7' or 'X'
         base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,204);
-        // Xsn BIP32 pubkeys start with 'xpub' (Bitcoin defaults)
+        // XSN BIP32 pubkeys start with 'xpub' (Bitcoin defaults)
         base58Prefixes[EXT_PUBLIC_KEY] = boost::assign::list_of(0x04)(0x88)(0xB2)(0x1E).convert_to_container<std::vector<unsigned char> >();
-        // Xsn BIP32 prvkeys start with 'xprv' (Bitcoin defaults)
+        // XSN BIP32 prvkeys start with 'xprv' (Bitcoin defaults)
         base58Prefixes[EXT_SECRET_KEY] = boost::assign::list_of(0x04)(0x88)(0xAD)(0xE4).convert_to_container<std::vector<unsigned char> >();
 
-        // Xsn BIP44 coin type is '5'
+        // XSN BIP44 coin type is '5'
         nExtCoinType = 5;
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
@@ -275,8 +275,8 @@ public:
         consensus.BIP34Height = 1;
         consensus.BIP34Hash = uint256S("0x0000047d24635e347be3aaaeb66c26be94901a2f962feccd4f95090191f208c1");
         consensus.powLimit = uint256S("00000fffff000000000000000000000000000000000000000000000000000000");
-        consensus.nPowTargetTimespan = 24 * 60 * 60; // Xsn: 1 day
-        consensus.nPowTargetSpacing = 1 * 60; // Xsn: 1 minutes
+        consensus.nPowTargetTimespan = 24 * 60 * 60; // XSN: 1 day
+        consensus.nPowTargetSpacing = 1 * 60; // XSN: 1 minutes
         consensus.nPosTargetSpacing = 1 * 60; // PoSW: 1 minutes
         consensus.nPosTargetTimespan = 60 * 40;
 //        consensus.fPowAllowMinDifficultyBlocks = true;
@@ -335,18 +335,18 @@ public:
 //        vSeeds.push_back(CDNSSeedData("18.195.52.21",  "18.195.52.21"));
 //        vSeeds.push_back(CDNSSeedData("masternode.io", "test.dnsseed.masternode.io"));
 
-        // Testnet Xsn addresses start with 'y'
+        // Testnet XSN addresses start with 'y'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,140);
-        // Testnet Xsn script addresses start with '8' or '9'
+        // Testnet XSN script addresses start with '8' or '9'
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,19);
         // Testnet private keys start with '9' or 'c' (Bitcoin defaults)
         base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,239);
-        // Testnet Xsn BIP32 pubkeys start with 'tpub' (Bitcoin defaults)
+        // Testnet XSN BIP32 pubkeys start with 'tpub' (Bitcoin defaults)
         base58Prefixes[EXT_PUBLIC_KEY] = boost::assign::list_of(0x04)(0x35)(0x87)(0xCF).convert_to_container<std::vector<unsigned char> >();
-        // Testnet Xsn BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
+        // Testnet XSN BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
         base58Prefixes[EXT_SECRET_KEY] = boost::assign::list_of(0x04)(0x35)(0x83)(0x94).convert_to_container<std::vector<unsigned char> >();
 
-        // Testnet Xsn BIP44 coin type is '1' (All coin's testnet default)
+        // Testnet XSN BIP44 coin type is '1' (All coin's testnet default)
         nExtCoinType = 1;
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
@@ -401,8 +401,8 @@ public:
         consensus.BIP34Height = -1; // BIP34 has not necessarily activated on regtest
         consensus.BIP34Hash = uint256();
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-        consensus.nPowTargetTimespan = 24 * 60 * 60; // Xsn: 1 day
-        consensus.nPowTargetSpacing = 2.5 * 60; // Xsn: 2.5 minutes
+        consensus.nPowTargetTimespan = 24 * 60 * 60; // XSN: 1 day
+        consensus.nPowTargetSpacing = 2.5 * 60; // XSN: 2.5 minutes
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = true;
         consensus.nPowKGWHeight = 15200; // same as mainnet
@@ -457,18 +457,18 @@ public:
             0,
             0
         };
-        // Regtest Xsn addresses start with 'y'
+        // Regtest XSN addresses start with 'y'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,140);
-        // Regtest Xsn script addresses start with '8' or '9'
+        // Regtest XSN script addresses start with '8' or '9'
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,19);
         // Regtest private keys start with '9' or 'c' (Bitcoin defaults)
         base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,239);
-        // Regtest Xsn BIP32 pubkeys start with 'tpub' (Bitcoin defaults)
+        // Regtest XSN BIP32 pubkeys start with 'tpub' (Bitcoin defaults)
         base58Prefixes[EXT_PUBLIC_KEY] = boost::assign::list_of(0x04)(0x35)(0x87)(0xCF).convert_to_container<std::vector<unsigned char> >();
-        // Regtest Xsn BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
+        // Regtest XSN BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
         base58Prefixes[EXT_SECRET_KEY] = boost::assign::list_of(0x04)(0x35)(0x83)(0x94).convert_to_container<std::vector<unsigned char> >();
 
-        // Regtest Xsn BIP44 coin type is '1' (All coin's testnet default)
+        // Regtest XSN BIP44 coin type is '1' (All coin's testnet default)
         nExtCoinType = 1;
    }
 };

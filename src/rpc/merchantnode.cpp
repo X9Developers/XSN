@@ -242,7 +242,7 @@ UniValue merchantnodelist(const UniValue& params, bool fHelp)
                     "  lastpaidblock  - Print the last block height a node was paid on the network\n"
                     "  lastpaidtime   - Print the last time a node was paid on the network\n"
                     "  lastseen       - Print timestamp of when a merchantnode was last seen on the network\n"
-                    "  payee          - Print Xsn address associated with a merchantnode (can be additionally filtered,\n"
+                    "  payee          - Print XSN address associated with a merchantnode (can be additionally filtered,\n"
                     "                   partial match)\n"
                     "  protocol       - Print protocol of a merchantnode (can be additionally filtered, exact match)\n"
                     "  pubkey         - Print the merchantnode (not collateral) public key\n"

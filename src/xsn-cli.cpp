@@ -75,10 +75,10 @@ static int AppInitRPC(int argc, char* argv[])
     //
     ParseParameters(argc, argv);
     if (argc<2 || mapArgs.count("-?") || mapArgs.count("-h") || mapArgs.count("-help") || mapArgs.count("-version")) {
-        std::string strUsage = _("Xsn Core RPC client version") + " " + FormatFullVersion() + "\n";
+        std::string strUsage = _("XSN Core RPC client version") + " " + FormatFullVersion() + "\n";
         if (!mapArgs.count("-version")) {
             strUsage += "\n" + _("Usage:") + "\n" +
-                  "  xsn-cli [options] <command> [params]  " + _("Send command to Xsn Core") + "\n" +
+                  "  xsn-cli [options] <command> [params]  " + _("Send command to XSN Core") + "\n" +
                   "  xsn-cli [options] help                " + _("List commands") + "\n" +
                   "  xsn-cli [options] help <command>      " + _("Get help for a command") + "\n";
 

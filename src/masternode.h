@@ -251,7 +251,7 @@ public:
         return false;
     }
 
-    /// Is the input associated with collateral public key? (and there is 1000 DASH - checking if valid masternode)
+    /// Is the input associated with collateral public key? (and there is 1000 XSN - checking if valid masternode)
     bool IsInputAssociatedWithPubkey() const;
 
     bool IsValidNetAddr() const;
