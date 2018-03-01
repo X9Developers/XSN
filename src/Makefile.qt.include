@@ -175,7 +175,117 @@ BITCOIN_QT_H = \
   qt/winshutdownmonitor.h
 
 RES_ICONS = \
-  $(call rwildcard,qt/res/icons/,*.png)
+  qt/res/icons/bitcoin.png \
+  qt/res/icons/chevron.png \
+  qt/res/icons/warning.png \
+  qt/res/icons/light/address-book.png \
+  qt/res/icons/light/quit.png \
+  qt/res/icons/light/send.png \
+  qt/res/icons/light/connect0_16.png \
+  qt/res/icons/light/connect1_16.png \
+  qt/res/icons/light/connect2_16.png \
+  qt/res/icons/light/connect3_16.png \
+  qt/res/icons/light/connect4_16.png \
+  qt/res/icons/light/transaction0.png \
+  qt/res/icons/light/transaction2.png \
+  qt/res/icons/light/transaction_conflicted.png \
+  qt/res/icons/light/clock1.png \
+  qt/res/icons/light/clock2.png \
+  qt/res/icons/light/clock3.png \
+  qt/res/icons/light/clock4.png \
+  qt/res/icons/light/clock5.png \
+  qt/res/icons/light/eye.png \
+  qt/res/icons/light/eye_minus.png \
+  qt/res/icons/light/eye_plus.png \
+  qt/res/icons/light/configure.png \
+  qt/res/icons/light/receive.png \
+  qt/res/icons/light/editpaste.png \
+  qt/res/icons/light/editcopy.png \
+  qt/res/icons/light/add.png \
+  qt/res/icons/light/edit.png \
+  qt/res/icons/light/history.png \
+  qt/res/icons/light/masternodes.png \
+  qt/res/icons/light/overview.png \
+  qt/res/icons/light/export.png \
+  qt/res/icons/light/synced.png \
+  qt/res/icons/light/remove.png \
+  qt/res/icons/light/tx_mined.png \
+  qt/res/icons/light/tx_input.png \
+  qt/res/icons/light/tx_output.png \
+  qt/res/icons/light/tx_inout.png \
+  qt/res/icons/light/lock_closed.png \
+  qt/res/icons/light/lock_open.png \
+  qt/res/icons/light/key.png \
+  qt/res/icons/light/filesave.png \
+  qt/res/icons/light/debugwindow.png \
+  qt/res/icons/light/drkblue_editpaste.png \
+  qt/res/icons/light/drkblue_address-book.png \
+  qt/res/icons/light/drkblue_editcopy.png \
+  qt/res/icons/light/drkblue_remove.png \
+  qt/res/icons/light/browse.png \
+  qt/res/icons/light/about.png \
+  qt/res/icons/light/about_qt.png \
+  qt/res/icons/light/verify.png \
+  qt/res/icons/light/hd_enabled.png \
+  qt/res/icons/light/hd_disabled.png \
+  qt/res/icons/light/fontbigger.png \
+  qt/res/icons/light/fontsmaller.png \
+  qt/res/icons/light/transaction_abandoned.png \
+  qt/res/icons/light/network_disabled.png \
+  qt/res/icons/dark/address-book.png \
+  qt/res/icons/dark/quit.png \
+  qt/res/icons/dark/send.png \
+  qt/res/icons/dark/connect0_16.png \
+  qt/res/icons/dark/connect1_16.png \
+  qt/res/icons/dark/connect2_16.png \
+  qt/res/icons/dark/connect3_16.png \
+  qt/res/icons/dark/connect4_16.png \
+  qt/res/icons/dark/transaction0.png \
+  qt/res/icons/dark/transaction2.png \
+  qt/res/icons/dark/transaction_conflicted.png \
+  qt/res/icons/dark/clock1.png \
+  qt/res/icons/dark/clock2.png \
+  qt/res/icons/dark/clock3.png \
+  qt/res/icons/dark/clock4.png \
+  qt/res/icons/dark/clock5.png \
+  qt/res/icons/dark/eye.png \
+  qt/res/icons/dark/eye_minus.png \
+  qt/res/icons/dark/eye_plus.png \
+  qt/res/icons/dark/configure.png \
+  qt/res/icons/dark/receive.png \
+  qt/res/icons/dark/editpaste.png \
+  qt/res/icons/dark/editcopy.png \
+  qt/res/icons/dark/add.png \
+  qt/res/icons/dark/edit.png \
+  qt/res/icons/dark/history.png \
+  qt/res/icons/dark/masternodes.png \
+  qt/res/icons/dark/overview.png \
+  qt/res/icons/dark/export.png \
+  qt/res/icons/dark/synced.png \
+  qt/res/icons/dark/remove.png \
+  qt/res/icons/dark/tx_mined.png \
+  qt/res/icons/dark/tx_input.png \
+  qt/res/icons/dark/tx_output.png \
+  qt/res/icons/dark/tx_inout.png \
+  qt/res/icons/dark/lock_closed.png \
+  qt/res/icons/dark/lock_open.png \
+  qt/res/icons/dark/key.png \
+  qt/res/icons/dark/filesave.png \
+  qt/res/icons/dark/debugwindow.png \
+  qt/res/icons/dark/drkblue_editpaste.png \
+  qt/res/icons/dark/drkblue_address-book.png \
+  qt/res/icons/dark/drkblue_editcopy.png \
+  qt/res/icons/dark/drkblue_remove.png \
+  qt/res/icons/dark/browse.png \
+  qt/res/icons/dark/about.png \
+  qt/res/icons/dark/about_qt.png \
+  qt/res/icons/dark/verify.png \
+  qt/res/icons/dark/hd_enabled.png \
+  qt/res/icons/dark/hd_disabled.png \
+  qt/res/icons/dark/fontbigger.png \
+  qt/res/icons/dark/fontsmaller.png \
+  qt/res/icons/dark/transaction_abandoned.png \
+  qt/res/icons/dark/network_disabled.png 
 
 BITCOIN_QT_CPP = \
   qt/bantablemodel.cpp \
@@ -241,7 +351,66 @@ BITCOIN_QT_CPP += \
 endif
 
 RES_IMAGES = \
-  $(call rwildcard,qt/res/images/,*.png)
+  qt/res/images/qtreeview_selected.png \
+  qt/res/images/walletFrame_bg.png \
+  qt/res/images/walletFrame.png \
+  qt/res/images/pages/send/dark/send-button.png \
+  qt/res/images/pages/send/dark/send-header.png \
+  qt/res/images/pages/send/light/send-header.png \
+  qt/res/images/navigation buttons/dark/masternodes-activated.png \
+  qt/res/images/navigation buttons/dark/masternodes-button.png \
+  qt/res/images/navigation buttons/dark/overview-activated.png \
+  qt/res/images/navigation buttons/dark/overview-button.png \
+  qt/res/images/navigation buttons/dark/receive-activated.png \
+  qt/res/images/navigation buttons/dark/receive-button.png \
+  qt/res/images/navigation buttons/dark/send-activated.png \
+  qt/res/images/navigation buttons/dark/send-button.png \
+  qt/res/images/navigation buttons/dark/stealthmode-activated.png \
+  qt/res/images/navigation buttons/dark/stealthmode-button.png \
+  qt/res/images/navigation buttons/dark/transactions-activated.png \
+  qt/res/images/navigation buttons/dark/transactions-button.png \
+  qt/res/images/navigation buttons/dark/merchant-activated.png \
+  qt/res/images/navigation buttons/dark/merchant-button.png \
+  qt/res/images/pages/overview/dark/overview-header.png \
+  qt/res/images/pages/overview/light/overview-header.png \
+  qt/res/images/pages/transactions/dark/transactions-header.png \
+  qt/res/images/pages/transactions/light/transactions-header.png \
+  qt/res/images/pages/masternodes/dark/masternodes-header.png \
+  qt/res/images/pages/masternodes/light/masternodes-header.png \
+  qt/res/images/pages/receive/dark/receive-header.png \
+  qt/res/images/pages/receive/light/receive-header.png \
+  qt/res/images/pages/stealthmode/dark/exchange.png \
+  qt/res/images/pages/stealthmode/light/exchange.png \
+  qt/res/images/pages/stealthmode/dark/stealth-header.png \
+  qt/res/images/pages/stealthmode/light/stealth-header.png \
+  qt/res/images/pages/merchant/dark/merchant-header.png \
+  qt/res/images/pages/overview/dark/overview_box.png \
+  qt/res/images/pages/overview/light/overview_box.png \
+  qt/res/images/other/dark/logo_left_testnet.png \
+  qt/res/images/other/dark/splash.png \
+  qt/res/images/navigation buttons/light/masternodes-activated.png \
+  qt/res/images/navigation buttons/light/masternodes-button.png \
+  qt/res/images/navigation buttons/light/overview-activated.png \
+  qt/res/images/navigation buttons/light/overview-button.png \
+  qt/res/images/navigation buttons/light/receive-button.png \
+  qt/res/images/navigation buttons/light/send-activated.png \
+  qt/res/images/navigation buttons/light/send-button.png \
+  qt/res/images/navigation buttons/light/stealthmode-activated.png \
+  qt/res/images/navigation buttons/light/stealthmode-button.png \
+  qt/res/images/navigation buttons/light/transactions-activated.png \
+  qt/res/images/navigation buttons/light/transactions-button.png \
+  qt/res/images/other/light/logo_left_testnet.png \
+  qt/res/images/other/light/splash.png \
+  qt/res/images/pages/merchant/light/merchant-header.png \
+  qt/res/images/navigation buttons/light/merchant-activated.png \
+  qt/res/images/navigation buttons/light/merchant-button.png \
+  qt/res/images/navigation buttons/light/receive-activated.png \
+  qt/res/images/navigation buttons/light/tpos-activated.png \
+  qt/res/images/navigation buttons/light/tpos-button.png \
+  qt/res/images/navigation buttons/dark/tpos-activated.png \
+  qt/res/images/navigation buttons/dark/tpos-button.png \
+  qt/res/images/pages/tpos/dark/tpos-header.png \
+  qt/res/images/pages/tpos/light/tpos-header.png 
 
 RES_CSS = \
   qt/res/css/light.css \
