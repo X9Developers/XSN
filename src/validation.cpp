@@ -36,10 +36,13 @@
 #include "validationinterface.h"
 #include "versionbits.h"
 #include "kernel.h"
+#include "tpos/tposutils.h"
+#include "wallet/wallet.h"
 
 #include "instantx.h"
 #include "masternodeman.h"
 #include "masternode-payments.h"
+#include "blocksigner.h"
 
 #include <sstream>
 
@@ -1241,11 +1244,24 @@ NOTE:   unlike bitcoin we are using PREVIOUS block height here,
 CAmount GetBlockSubsidy(int nPrevHeight, const Consensus::Params& consensusParams, bool fSuperblockPartOnly)
 {
 
+    if(nPrevHeight == 1) {
+        return 76500000 * COIN;
+    }
+
     if(nPrevHeight < 20)
         return 0;
 
+    if(fSuperblockPartOnly)
+        return 60 * COIN;
+
+    if(nPrevHeight < 100)
+        return 200 * COIN;
+    else if(nPrevHeight < 200)
+        return 100 * COIN;
+    else
+        return 50 * COIN;
+
     //    if(Params().NetworkIDString() == CBaseChainParams::TESTNET)
-    return 200 * COIN;
 
     //    CAmount nSubsidyBase;
 
@@ -1537,7 +1553,6 @@ bool CheckInputs(const CTransaction& tx, CValidationState &state, const CCoinsVi
         // this optimization would allow an invalid chain to be accepted.
         if (fScriptChecks) {
             for (unsigned int i = 0; i < tx.vin.size(); i++) {
-
 
                 const COutPoint &prevout = tx.vin[i].prevout;
                 const Coin& coin = inputs.AccessCoin(prevout);
@@ -2264,7 +2279,13 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
 
     const auto& coinbaseTransaction = (pindex->nHeight > Params().GetConsensus().nLastPoWBlock ? block.vtx[1] : block.vtx[0]);
 
-    if (!IsBlockPayeeValid(coinbaseTransaction, pindex->nHeight, expectedReward)) {
+    if(block.IsTPoSBlock() && !TPoSUtils::IsMerchantPaymentValid(block, pindex->nHeight, expectedReward, pindex->nMint)) {
+        LogPrintf("Failed to validate merchant payment, but it's ok for now\n");
+        return state.DoS(0, error("ConnectBlock(DASH): couldn't validate merchantnode payment"),
+                         REJECT_INVALID, "bad-tpos-payee");
+    }
+
+    if (!IsBlockPayeeValid(coinbaseTransaction, pindex->nHeight, expectedReward, pindex->nMint)) {
         mapRejectedBlocks.insert(make_pair(block.GetHash(), GetTime()));
         return state.DoS(0, error("ConnectBlock(DASH): couldn't find masternode or superblock payments"),
                          REJECT_INVALID, "bad-cb-payee");
@@ -3223,6 +3244,26 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
         uint256 hashProofOfStake;
         uint256 hash = block.GetHash();
 
+        TPoSContract contract;
+        if(block.IsTPoSBlock()) {
+            if(!TPoSUtils::CheckContract(block.hashTPoSContractTx, contract)) {
+                state.DoS(100, error("CheckBlock(): check contract failed for tpos block %s\n", hash.ToString().c_str()));
+                return false;
+            }
+
+            block.txTPoSContract = contract.rawTx;
+        }
+
+        CBlock blockTmp = block;
+
+        CKeyStore &keyStore = *pwalletMain;
+        CBlockSigner signer(blockTmp, keyStore, contract);
+
+        if(!signer.CheckBlockSignature()) {
+            return state.DoS(100, error("CheckBlock(): block signature invalid"),
+                             REJECT_INVALID, "bad-block-signature");
+        }
+
         if(!CheckProofOfStake(pwalletMain, block, hashProofOfStake)) {
             state.DoS(100, error("CheckBlock(): check proof-of-stake failed for block %s\n", hash.ToString().c_str()));
             return false;
@@ -3231,7 +3272,6 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
         if(!mapProofOfStake.count(hash)) // add to mapProofOfStake
             mapProofOfStake.insert(make_pair(hash, hashProofOfStake));
     }
-
 
 
     // DASH : CHECK TRANSACTIONS FOR INSTANTSEND

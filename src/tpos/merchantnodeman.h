@@ -139,10 +139,12 @@ public:
     void DsegUpdate(CNode* pnode, CConnman& connman);
 
     /// Versions of Find that are safe to use from outside the class
-    bool Get(const CPubKey &pubKeyMerchantnode, CMerchantnode& masternodeRet);
+    bool Get(const CKeyID &pubKeyID, CMerchantnode& masternodeRet);
+    bool Get(const CPubKey &pubKeyMerchantnode, CMerchantnode& merchantnodeRet);
     bool Has(const CPubKey &pubKeyMerchantnode);
 
     bool GetMerchantnodeInfo(const CPubKey& pubKeyMerchantnode, merchantnode_info_t& mnInfoRet);
+    bool GetMerchantnodeInfo(const CKeyID& pubKeyMerchantnode, merchantnode_info_t& mnInfoRet);
     bool GetMerchantnodeInfo(const CScript& payee, merchantnode_info_t& mnInfoRet);
 
     std::map<CPubKey, CMerchantnode> GetFullMerchantnodeMap() { return mapMerchantnodes; }
@@ -168,7 +170,7 @@ public:
     void UpdateMerchantnodeList(CMerchantnodeBroadcast mnb, CConnman& connman);
     /// Perform complete check and only then update list and maps
     bool CheckMnbAndUpdateMerchantnodeList(CNode* pfrom, CMerchantnodeBroadcast mnb, int& nDos, CConnman& connman);
-    bool CheckMnbIPAddressAndRemoveDuplicatedEntry(CMerchantnodeBroadcast mnb, int &nDos);
+    bool CheckMnbIPAddressAndRemoveExistingEntry(CMerchantnodeBroadcast mnb, int &nDos);
     bool IsMnbRecoveryRequested(const uint256& hash) { return mMnbRecoveryRequests.count(hash); }
 
     bool IsWatchdogActive();

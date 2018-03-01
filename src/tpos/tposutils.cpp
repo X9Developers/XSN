@@ -3,6 +3,10 @@
 #include "utilmoneystr.h"
 #include "policy/policy.h"
 #include "coincontrol.h"
+#include "validation.h"
+#include "tpos/merchantnode-sync.h"
+#include "tpos/merchantnodeman.h"
+#include "tpos/activemerchantnode.h"
 #include <sstream>
 
 static const std::string TPOSEXPORTHEADER("TPOSOWNERINFO");
@@ -10,38 +14,15 @@ static const int TPOSEXPORTHEADERWIDTH = 40;
 
 static const int TPOS_CONTRACT_COLATERAL = 1 * COIN;
 
-std::string TPoSUtils::PrepareTPoSExportBlock(std::string content)
+std::string ParseAddressFromMetadata(std::string str)
 {
-    std::stringstream stream;
+    auto tposAddressRaw = ParseHex(str);
+    std::string addressAsStr(tposAddressRaw.size(), '0');
 
-    std::string footer(TPOSEXPORTHEADERWIDTH, '=');
-    auto header = footer;
-    header = header.replace(5, TPOSEXPORTHEADER.size(), TPOSEXPORTHEADER);
-    stream << header << std::endl << content << std::endl << footer;
-    stream.flush();
+    for(size_t i = 0; i < tposAddressRaw.size(); ++i)
+        addressAsStr[i] = static_cast<char>(tposAddressRaw[i]);
 
-    return stream.str();
-}
-
-std::string TPoSUtils::ParseTPoSExportBlock(std::string block)
-{
-
-    std::stringstream stream(block);
-
-    std::string header, encodedData, footer;
-    stream >> header;
-    stream >> encodedData;
-    stream >> footer;
-
-    if(!header.empty() && header.size() == footer.size() &&
-            header.substr(0, 5 + TPOSEXPORTHEADER.size()) == std::string(5, '=') + TPOSEXPORTHEADER)
-    {
-        return encodedData;
-    }
-    else
-    {
-        return std::string();
-    }
+    return addressAsStr;
 }
 
 bool TPoSUtils::IsTPoSContract(const CTransaction &tx)
@@ -107,34 +88,26 @@ bool TPoSUtils::GetTPoSPayments(const CWallet *wallet,
 bool TPoSUtils::IsTPoSMerchantContract(CWallet *wallet, const CTransaction &tx)
 {
     TPoSContract contract = TPoSContract::FromTPoSContractTx(tx);
-    auto walletTx = wallet->GetWalletTx(contract.merchantOutPoint.hash);
 
-    if(!walletTx)
-        return false;
+    bool IsMerchantNode = GetScriptForDestination(contract.merchantAddress.Get()) ==
+            GetScriptForDestination(activeMerchantnode.pubKeyMerchantnode.GetID());
 
-    CTxDestination txDestination;
-    if(!ExtractDestination(walletTx->vout[contract.merchantOutPoint.n].scriptPubKey, txDestination))
-        return false;
-
-    return contract.IsValid() && IsMine(*wallet, txDestination) == ISMINE_SPENDABLE;
+    return contract.IsValid() && (IsMerchantNode ||
+            IsMine(*wallet, contract.merchantAddress.Get()) == ISMINE_SPENDABLE);
 }
 
 bool TPoSUtils::IsTPoSOwnerContract(CWallet *wallet, const CTransaction &tx)
 {
     TPoSContract contract = TPoSContract::FromTPoSContractTx(tx);
-    auto txDestination = contract.tposAddress.Get();
-
-    std::cout << contract.tposAddress.ToString() << std::endl;
 
     return contract.IsValid() &&
-            IsMine(*wallet, txDestination) == ISMINE_SPENDABLE;
+            IsMine(*wallet, contract.tposAddress.Get()) == ISMINE_SPENDABLE;
 }
 
 std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
                                                             CReserveKey& reservekey,
                                                             const CBitcoinAddress &tposAddress,
-                                                            const CAmount &nValue,
-                                                            const COutPoint &merchantTxOutPoint,
+                                                            const CBitcoinAddress &merchantAddress,
                                                             int merchantCommission,
                                                             std::string &strError)
 {
@@ -142,25 +115,25 @@ std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
     auto &wtxNew = *result;
 
     auto tposAddressAsStr = tposAddress.ToString();
+    auto merchantAddressAsStr = merchantAddress.ToString();
 
     CScript metadataScriptPubKey;
     metadataScriptPubKey << OP_RETURN
                          << std::vector<unsigned char>(tposAddressAsStr.begin(), tposAddressAsStr.end())
-                         << (100 - merchantCommission)
-                         << ParseHex(merchantTxOutPoint.hash.GetHex())
-                         << merchantTxOutPoint.n;
+                         << std::vector<unsigned char>(merchantAddressAsStr.begin(), merchantAddressAsStr.end())
+                         << (100 - merchantCommission);
 
     std::stringstream stringStream(metadataScriptPubKey.ToString());
 
-    std::string tokens[5];
+    std::string tokens[4];
 
     for(auto &token : tokens)
     {
         stringStream >> token;
-//        std::cout << token << " ";
+        //        std::cout << token << " ";
     }
 
-//    std::cout << std::endl;
+    //    std::cout << std::endl;
 
     std::vector<CRecipient> vecSend {
         { metadataScriptPubKey, 0, false },
@@ -178,7 +151,7 @@ std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
 
     if (!wallet->CreateTransaction(vecSend, wtxNew, reservekey, nFeeRequired, nChangePos, strError))
     {
-        if (nValue + nFeeRequired > wallet->GetBalance())
+        if (TPOS_CONTRACT_COLATERAL + nFeeRequired > wallet->GetBalance())
             strError = strprintf("Error: This transaction requires a transaction fee of at least %s because of its amount, complexity, or use of recently received funds!", FormatMoney(nFeeRequired));
         LogPrintf("Error() : %s\n", strError);
         return nullptr;
@@ -212,19 +185,105 @@ COutPoint TPoSUtils::GetContractCollateralOutpoint(const TPoSContract &contract)
     return result;
 }
 
+bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contract)
+{
+    CTransaction tx;
+    uint256 hashBlock;
+    if(!GetTransaction(hashContractTx, tx, Params().GetConsensus(), hashBlock))
+    {
+        return error("CheckContract() : failed to get transaction for tpos contract");
+    }
+
+    TPoSContract tmpContract = TPoSContract::FromTPoSContractTx(tx);
+
+    if(!tmpContract.IsValid())
+        return error("CheckContract() : invalid transaction for tpos contract");
+
+    auto tposContractOutpoint = TPoSUtils::GetContractCollateralOutpoint(tmpContract);
+    Coin coin;
+    if(!pcoinsTip->GetCoin(tposContractOutpoint, coin) || coin.IsSpent())
+        return error("CheckContract() : tpos contract invalid, collateral is spent");
+
+    contract = tmpContract;
+
+    return true;
+}
+
+bool TPoSUtils::IsMerchantPaymentValid(const CBlock &block, int nBlockHeight, CAmount expectedReward, CAmount actualReward)
+{
+    auto contract = TPoSContract::FromTPoSContractTx(block.txTPoSContract);
+    CBitcoinAddress merchantAddress = contract.merchantAddress;
+    CScript scriptMerchantPubKey = GetScriptForDestination(merchantAddress.Get());
+
+    auto coinstake = block.vtx[1];
+
+    if(coinstake.vout[1].scriptPubKey != GetScriptForDestination(contract.tposAddress.Get()))
+    {
+        CTxDestination dest;
+        if(!ExtractDestination(coinstake.vout[1].scriptPubKey, dest))
+            return false;
+
+        return error("IsMerchantPaymentValid -- ERROR: coinstake is invalidm expected: %s, actual %s\n",
+                     contract.tposAddress.ToString().c_str(), CBitcoinAddress(dest).ToString().c_str());
+    }
+
+    auto it = std::find_if(std::begin(coinstake.vout) + 2, std::end(coinstake.vout), [scriptMerchantPubKey](const CTxOut &txOut) {
+        return txOut.scriptPubKey == scriptMerchantPubKey;
+    });
+
+    if(it != std::end(coinstake.vout))
+    {
+        auto maxAllowedValue = (expectedReward / 100) * (100 - contract.stakePercentage);
+        if(it->nValue > maxAllowedValue)
+            return error("IsMerchantPaymentValid -- ERROR: merchant was paid more than allowed: %s\n", contract.merchantAddress.ToString().c_str());
+    }
+    else
+    {
+        LogPrintf("IsMerchantPaymentValid -- WARNING: merchant wasn't paid, this is weird, but totally acceptable. Shouldn't happen.\n");
+    }
+
+    if(!merchantnodeSync.IsSynced()) {
+        //there is no merchant node info to check anything, let's just accept the longest chain
+        if(fDebug) LogPrintf("IsMerchantPaymentValid -- WARNING: Client not synced, skipping block payee checks\n");
+        return true;
+    }
+
+    CKeyID coinstakeKeyID;
+    if(!merchantAddress.GetKeyID(coinstakeKeyID))
+        return error("IsMerchantPaymentValid -- ERROR: coin stake was paid to invalid address\n");
+
+    CMerchantnode merchantNode;
+    if(!merchantnodeman.Get(coinstakeKeyID, merchantNode))
+    {
+        return error("IsMerchantPaymentValid -- ERROR: failed to find merchantnode with address: %s\n", merchantAddress.ToString().c_str());
+    }
+
+    if(merchantNode.hashTPoSContractTx != block.hashTPoSContractTx)
+    {
+        return error("IsMerchantPaymentValid -- ERROR: merchantnode contract is invalid expected: %s, actual %s\n",
+                     block.hashTPoSContractTx.ToString().c_str(), merchantNode.hashTPoSContractTx.ToString().c_str());
+    }
+
+    if(!merchantNode.IsValidForPayment()) {
+        return error("IsMerchantPaymentValid -- ERROR: merchantnode with address: %s is not valid for payment\n", merchantAddress.ToString().c_str());
+    }
+
+    return true;
+}
+
 #endif
 
-TPoSContract::TPoSContract(CTransaction tx, COutPoint merchantOutPoint, CBitcoinAddress tposAddress, short stakePercentage)
+TPoSContract::TPoSContract(CTransaction tx, CBitcoinAddress merchantAddress, CBitcoinAddress tposAddress, short stakePercentage)
 {
     this->rawTx = tx;
-    this->merchantOutPoint = merchantOutPoint;
+    this->merchantAddress = merchantAddress;
     this->tposAddress = tposAddress;
     this->stakePercentage = stakePercentage;
 }
 
 bool TPoSContract::IsValid() const
 {
-    return !rawTx.IsNull() && !merchantOutPoint.hash.IsNull() &&
+    return !rawTx.IsNull() && merchantAddress.IsValid() &&
             tposAddress.IsValid() &&
             stakePercentage > 0 && stakePercentage < 100;
 }
@@ -259,32 +318,22 @@ TPoSContract TPoSContract::FromTPoSContractTx(const CTransaction &tx)
                     // Here we can have a chance that it is transaction which is a tpos contract, let's check if it has
                     std::stringstream stringStream(metadataOut.scriptPubKey.ToString());
 
-                    std::string tokens[5];
+                    std::string tokens[4];
 
                     for(auto &token : tokens)
                     {
                         stringStream >> token;
-                        //                        std::cout << token << " ";
                     }
-                    //                    std::cout << std::endl;
 
-                    auto tposAddressRaw = ParseHex(tokens[1]);
-                    std::string tposAddressAsStr(tposAddressRaw.size(), '0');
-
-                    for(size_t i = 0; i < tposAddressRaw.size(); ++i)
-                        tposAddressAsStr[i] = static_cast<char>(tposAddressRaw[i]);
-
-                    int commission = std::stoi(tokens[2]);
-                    uint256 merchantTxId;
-                    merchantTxId.SetHex(tokens[3]);
-                    int outIndex = std::stoi(tokens[4]);
-                    CBitcoinAddress tposAddress(tposAddressAsStr);
-                    if(tokens[0] == GetOpName(OP_RETURN) && tposAddress.IsValid() &&
-                            commission > 0 && commission < 100 && !merchantTxId.IsNull() && outIndex >= 0)
+                    CBitcoinAddress tposAddress(ParseAddressFromMetadata(tokens[1]));
+                    CBitcoinAddress merchantAddress(ParseAddressFromMetadata(tokens[2]));
+                    int commission = std::stoi(tokens[3]);
+                    if(tokens[0] == GetOpName(OP_RETURN) && tposAddress.IsValid() && merchantAddress.IsValid() &&
+                            commission > 0 && commission < 100)
                     {
 
                         // if we get to this point, it means that we have found tpos contract that was created for us to act as merchant.
-                        return TPoSContract(tx, COutPoint(merchantTxId, outIndex), tposAddress, commission);
+                        return TPoSContract(tx, merchantAddress, tposAddress, commission);
                     }
                 }
             }

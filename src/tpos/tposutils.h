@@ -13,10 +13,11 @@ class CWalletTx;
 class CMutableTransaction;
 class CReserveKey;
 
-struct TPoSContract {
+struct TPoSContract
+{
     TPoSContract() = default;
     TPoSContract(CTransaction tx,
-                 COutPoint merchantOutPoint,
+                 CBitcoinAddress merchantAddress,
                  CBitcoinAddress tposAddress,
                  short stakePercentage);
 
@@ -25,7 +26,7 @@ struct TPoSContract {
     static TPoSContract FromTPoSContractTx(const CTransaction &tx);
 
     CTransaction rawTx;
-    COutPoint merchantOutPoint;
+    CBitcoinAddress merchantAddress;
     CBitcoinAddress tposAddress;
     int stakePercentage = 0;
 };
@@ -51,14 +52,17 @@ public:
     static bool IsTPoSOwnerContract(CWallet *wallet, const CTransaction &tx);
     static bool IsTPoSMerchantContract(CWallet *wallet, const CTransaction &tx);
 
-    static std::unique_ptr<CWalletTx> CreateTPoSTransaction(CWallet *wallet, CReserveKey &reserveKey,
+    static std::unique_ptr<CWalletTx> CreateTPoSTransaction(CWallet *wallet,
+                                                            CReserveKey &reserveKey,
                                                             const CBitcoinAddress &tposAddress,
-                                                            const CAmount &nValue,
-                                                            const COutPoint &merchantTxOutPoint,
+                                                            const CBitcoinAddress &merchantAddress,
                                                             int merchantCommission,
                                                             std::string &strError);
 
-    COutPoint GetContractCollateralOutpoint(const TPoSContract &contract);
+    static COutPoint GetContractCollateralOutpoint(const TPoSContract &contract);
+    static bool CheckContract(const uint256 &hashContractTx, TPoSContract &contract);
+    static bool IsMerchantPaymentValid(const CBlock &block, int nBlockHeight, CAmount expectedReward, CAmount actualReward);
+
 #endif
 
 };

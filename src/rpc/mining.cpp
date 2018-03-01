@@ -84,19 +84,19 @@ UniValue getnetworkhashps(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() > 2)
         throw runtime_error(
-            "getnetworkhashps ( blocks height )\n"
-            "\nReturns the estimated network hashes per second based on the last n blocks.\n"
-            "Pass in [blocks] to override # of blocks, -1 specifies since last difficulty change.\n"
-            "Pass in [height] to estimate the network speed at the time when a certain block was found.\n"
-            "\nArguments:\n"
-            "1. blocks     (numeric, optional, default=120) The number of blocks, or -1 for blocks since last difficulty change.\n"
-            "2. height     (numeric, optional, default=-1) To estimate at the time of the given height.\n"
-            "\nResult:\n"
-            "x             (numeric) Hashes per second estimated\n"
-            "\nExamples:\n"
-            + HelpExampleCli("getnetworkhashps", "")
-            + HelpExampleRpc("getnetworkhashps", "")
-       );
+                "getnetworkhashps ( blocks height )\n"
+                "\nReturns the estimated network hashes per second based on the last n blocks.\n"
+                "Pass in [blocks] to override # of blocks, -1 specifies since last difficulty change.\n"
+                "Pass in [height] to estimate the network speed at the time when a certain block was found.\n"
+                "\nArguments:\n"
+                "1. blocks     (numeric, optional, default=120) The number of blocks, or -1 for blocks since last difficulty change.\n"
+                "2. height     (numeric, optional, default=-1) To estimate at the time of the given height.\n"
+                "\nResult:\n"
+                "x             (numeric) Hashes per second estimated\n"
+                "\nExamples:\n"
+                + HelpExampleCli("getnetworkhashps", "")
+                + HelpExampleRpc("getnetworkhashps", "")
+                );
 
     LOCK(cs_main);
     return GetNetworkHashPS(params.size() > 0 ? params[0].get_int() : 120, params.size() > 1 ? params[1].get_int() : -1);
@@ -106,16 +106,16 @@ UniValue getgenerate(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() != 0)
         throw runtime_error(
-            "getgenerate\n"
-            "\nReturn if the server is set to generate coins or not. The default is false.\n"
-            "It is set with the command line argument -gen (or " + std::string(BITCOIN_CONF_FILENAME) + " setting gen)\n"
-            "It can also be set with the setgenerate call.\n"
-            "\nResult\n"
-            "true|false      (boolean) If the server is set to generate coins or not\n"
-            "\nExamples:\n"
-            + HelpExampleCli("getgenerate", "")
-            + HelpExampleRpc("getgenerate", "")
-        );
+                "getgenerate\n"
+                "\nReturn if the server is set to generate coins or not. The default is false.\n"
+                "It is set with the command line argument -gen (or " + std::string(BITCOIN_CONF_FILENAME) + " setting gen)\n"
+                                                                                                            "It can also be set with the setgenerate call.\n"
+                                                                                                            "\nResult\n"
+                                                                                                            "true|false      (boolean) If the server is set to generate coins or not\n"
+                                                                                                            "\nExamples:\n"
+                + HelpExampleCli("getgenerate", "")
+                + HelpExampleRpc("getgenerate", "")
+                );
 
     LOCK(cs_main);
     return GetBoolArg("-gen", DEFAULT_GENERATE);
@@ -125,17 +125,17 @@ UniValue generate(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() < 1 || params.size() > 1)
         throw runtime_error(
-            "generate numblocks\n"
-            "\nMine blocks immediately (before the RPC call returns)\n"
-            "\nNote: this function can only be used on the regtest network\n"
-            "\nArguments:\n"
-            "1. numblocks    (numeric, required) How many blocks are generated immediately.\n"
-            "\nResult\n"
-            "[ blockhashes ]     (array) hashes of blocks generated\n"
-            "\nExamples:\n"
-            "\nGenerate 11 blocks\n"
-            + HelpExampleCli("generate", "11")
-        );
+                "generate numblocks\n"
+                "\nMine blocks immediately (before the RPC call returns)\n"
+                "\nNote: this function can only be used on the regtest network\n"
+                "\nArguments:\n"
+                "1. numblocks    (numeric, required) How many blocks are generated immediately.\n"
+                "\nResult\n"
+                "[ blockhashes ]     (array) hashes of blocks generated\n"
+                "\nExamples:\n"
+                "\nGenerate 11 blocks\n"
+                + HelpExampleCli("generate", "11")
+                );
 
     if (!Params().MineBlocksOnDemand())
         throw JSONRPCError(RPC_METHOD_NOT_FOUND, "This method can only be used on regtest");
@@ -192,25 +192,25 @@ UniValue generate(const UniValue& params, bool fHelp)
 
 UniValue setgenerate(const UniValue& params, bool fHelp)
 {
-    if (fHelp || params.size() < 1 || params.size() > 2)
+    if (fHelp || params.size() < 1 || params.size() > 4)
         throw runtime_error(
-            "setgenerate generate ( genproclimit )\n"
-            "\nSet 'generate' true or false to turn generation on or off.\n"
-            "Generation is limited to 'genproclimit' processors, -1 is unlimited.\n"
-            "See the getgenerate call for the current setting.\n"
-            "\nArguments:\n"
-            "1. generate         (boolean, required) Set to true to turn on generation, false to turn off.\n"
-            "2. genproclimit     (numeric, optional) Set the processor limit for when generation is on. Can be -1 for unlimited.\n"
-            "\nExamples:\n"
-            "\nSet the generation on with a limit of one processor\n"
-            + HelpExampleCli("setgenerate", "true 1") +
-            "\nCheck the setting\n"
-            + HelpExampleCli("getgenerate", "") +
-            "\nTurn off generation\n"
-            + HelpExampleCli("setgenerate", "false") +
-            "\nUsing json rpc\n"
-            + HelpExampleRpc("setgenerate", "true, 1")
-        );
+                "setgenerate generate ( genproclimit )\n"
+                "\nSet 'generate' true or false to turn generation on or off.\n"
+                "Generation is limited to 'genproclimit' processors, -1 is unlimited.\n"
+                "See the getgenerate call for the current setting.\n"
+                "\nArguments:\n"
+                "1. generate         (boolean, required) Set to true to turn on generation, false to turn off.\n"
+                "2. genproclimit     (numeric, optional) Set the processor limit for when generation is on. Can be -1 for unlimited.\n"
+                "\nExamples:\n"
+                "\nSet the generation on with a limit of one processor\n"
+                + HelpExampleCli("setgenerate", "true 1") +
+                "\nCheck the setting\n"
+                + HelpExampleCli("getgenerate", "") +
+                "\nTurn off generation\n"
+                + HelpExampleCli("setgenerate", "false") +
+                "\nUsing json rpc\n"
+                + HelpExampleRpc("setgenerate", "true, 1")
+                );
 
     if (Params().MineBlocksOnDemand())
         throw JSONRPCError(RPC_METHOD_NOT_FOUND, "Use the generate method instead of setgenerate on this network");
@@ -225,7 +225,23 @@ UniValue setgenerate(const UniValue& params, bool fHelp)
         nGenProcLimit = params[1].get_int();
         if (nGenProcLimit == 0)
             fGenerate = false;
+
+        if(params.size() > 2)
+        {
+            if(params[2].get_str() == "false") {
+                SetTPoSMinningParams(false, uint256());
+            }
+            else if (params.size() > 3 && params[2].get_str() == "true") {
+                uint256 tposTxId = ParseHashV(params[3], "parameter 4");
+
+                if(tposTxId.IsNull())
+                    throw JSONRPCError(RPC_INTERNAL_ERROR, "Parsing error, one of txids is incorrect");
+
+                SetTPoSMinningParams(true, tposTxId);
+            }
+        }
     }
+
 
     mapArgs["-gen"] = (fGenerate ? "1" : "0");
     mapArgs ["-genproclimit"] = itostr(nGenProcLimit);
@@ -238,26 +254,26 @@ UniValue getmininginfo(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() != 0)
         throw runtime_error(
-            "getmininginfo\n"
-            "\nReturns a json object containing mining-related information."
-            "\nResult:\n"
-            "{\n"
-            "  \"blocks\": nnn,             (numeric) The current block\n"
-            "  \"currentblocksize\": nnn,   (numeric) The last block size\n"
-            "  \"currentblocktx\": nnn,     (numeric) The last block transaction\n"
-            "  \"difficulty\": xxx.xxxxx    (numeric) The current difficulty\n"
-            "  \"errors\": \"...\"          (string) Current errors\n"
-            "  \"genproclimit\": n          (numeric) The processor limit for generation. -1 if no generation. (see getgenerate or setgenerate calls)\n"
-            "  \"networkhashps\": n         (numeric) An estimate of the number of hashes per second the network is generating to maintain the current difficulty\n"
-            "  \"pooledtx\": n              (numeric) The size of the mem pool\n"
-            "  \"testnet\": true|false      (boolean) If using testnet or not\n"
-            "  \"chain\": \"xxxx\",         (string) current network name as defined in BIP70 (main, test, regtest)\n"
-            "  \"generate\": true|false     (boolean) If the generation is on or off (see getgenerate or setgenerate calls)\n"
-            "}\n"
-            "\nExamples:\n"
-            + HelpExampleCli("getmininginfo", "")
-            + HelpExampleRpc("getmininginfo", "")
-        );
+                "getmininginfo\n"
+                "\nReturns a json object containing mining-related information."
+                "\nResult:\n"
+                "{\n"
+                "  \"blocks\": nnn,             (numeric) The current block\n"
+                "  \"currentblocksize\": nnn,   (numeric) The last block size\n"
+                "  \"currentblocktx\": nnn,     (numeric) The last block transaction\n"
+                "  \"difficulty\": xxx.xxxxx    (numeric) The current difficulty\n"
+                "  \"errors\": \"...\"          (string) Current errors\n"
+                "  \"genproclimit\": n          (numeric) The processor limit for generation. -1 if no generation. (see getgenerate or setgenerate calls)\n"
+                "  \"networkhashps\": n         (numeric) An estimate of the number of hashes per second the network is generating to maintain the current difficulty\n"
+                "  \"pooledtx\": n              (numeric) The size of the mem pool\n"
+                "  \"testnet\": true|false      (boolean) If using testnet or not\n"
+                "  \"chain\": \"xxxx\",         (string) current network name as defined in BIP70 (main, test, regtest)\n"
+                "  \"generate\": true|false     (boolean) If the generation is on or off (see getgenerate or setgenerate calls)\n"
+                "}\n"
+                "\nExamples:\n"
+                + HelpExampleCli("getmininginfo", "")
+                + HelpExampleRpc("getmininginfo", "")
+                );
 
 
     LOCK(cs_main);
@@ -283,22 +299,22 @@ UniValue prioritisetransaction(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() != 3)
         throw runtime_error(
-            "prioritisetransaction <txid> <priority delta> <fee delta>\n"
-            "Accepts the transaction into mined blocks at a higher (or lower) priority\n"
-            "\nArguments:\n"
-            "1. \"txid\"       (string, required) The transaction id.\n"
-            "2. priority delta (numeric, required) The priority to add or subtract.\n"
-            "                  The transaction selection algorithm considers the tx as it would have a higher priority.\n"
-            "                  (priority of a transaction is calculated: coinage * value_in_duffs / txsize) \n"
-            "3. fee delta      (numeric, required) The fee value (in duffs) to add (or subtract, if negative).\n"
-            "                  The fee is not actually paid, only the algorithm for selecting transactions into a block\n"
-            "                  considers the transaction as it would have paid a higher (or lower) fee.\n"
-            "\nResult\n"
-            "true              (boolean) Returns true\n"
-            "\nExamples:\n"
-            + HelpExampleCli("prioritisetransaction", "\"txid\" 0.0 10000")
-            + HelpExampleRpc("prioritisetransaction", "\"txid\", 0.0, 10000")
-        );
+                "prioritisetransaction <txid> <priority delta> <fee delta>\n"
+                "Accepts the transaction into mined blocks at a higher (or lower) priority\n"
+                "\nArguments:\n"
+                "1. \"txid\"       (string, required) The transaction id.\n"
+                "2. priority delta (numeric, required) The priority to add or subtract.\n"
+                "                  The transaction selection algorithm considers the tx as it would have a higher priority.\n"
+                "                  (priority of a transaction is calculated: coinage * value_in_duffs / txsize) \n"
+                "3. fee delta      (numeric, required) The fee value (in duffs) to add (or subtract, if negative).\n"
+                "                  The fee is not actually paid, only the algorithm for selecting transactions into a block\n"
+                "                  considers the transaction as it would have paid a higher (or lower) fee.\n"
+                "\nResult\n"
+                "true              (boolean) Returns true\n"
+                "\nExamples:\n"
+                + HelpExampleCli("prioritisetransaction", "\"txid\" 0.0 10000")
+                + HelpExampleRpc("prioritisetransaction", "\"txid\", 0.0, 10000")
+                );
 
     LOCK(cs_main);
     uint256 hash = ParseHashStr(params[0].get_str(), "txid");
@@ -341,89 +357,89 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() > 1)
         throw runtime_error(
-            "getblocktemplate ( \"jsonrequestobject\" )\n"
-            "\nIf the request parameters include a 'mode' key, that is used to explicitly select between the default 'template' request or a 'proposal'.\n"
-            "It returns data needed to construct a block to work on.\n"
-            "For full specification, see BIPs 22 and 9:\n"
-            "    https://github.com/bitcoin/bips/blob/master/bip-0022.mediawiki\n"
-            "    https://github.com/bitcoin/bips/blob/master/bip-0009.mediawiki#getblocktemplate_changes\n"
+                "getblocktemplate ( \"jsonrequestobject\" )\n"
+                "\nIf the request parameters include a 'mode' key, that is used to explicitly select between the default 'template' request or a 'proposal'.\n"
+                "It returns data needed to construct a block to work on.\n"
+                "For full specification, see BIPs 22 and 9:\n"
+                "    https://github.com/bitcoin/bips/blob/master/bip-0022.mediawiki\n"
+                "    https://github.com/bitcoin/bips/blob/master/bip-0009.mediawiki#getblocktemplate_changes\n"
 
-            "\nArguments:\n"
-            "1. \"jsonrequestobject\"       (string, optional) A json object in the following spec\n"
-            "     {\n"
-            "       \"mode\":\"template\"    (string, optional) This must be set to \"template\" or omitted\n"
-            "       \"capabilities\":[       (array, optional) A list of strings\n"
-            "           \"support\"           (string) client side supported feature, 'longpoll', 'coinbasetxn', 'coinbasevalue', 'proposal', 'serverlist', 'workid'\n"
-            "           ,...\n"
-            "         ]\n"
-            "     }\n"
-            "\n"
+                "\nArguments:\n"
+                "1. \"jsonrequestobject\"       (string, optional) A json object in the following spec\n"
+                "     {\n"
+                "       \"mode\":\"template\"    (string, optional) This must be set to \"template\" or omitted\n"
+                "       \"capabilities\":[       (array, optional) A list of strings\n"
+                "           \"support\"           (string) client side supported feature, 'longpoll', 'coinbasetxn', 'coinbasevalue', 'proposal', 'serverlist', 'workid'\n"
+                "           ,...\n"
+                "         ]\n"
+                "     }\n"
+                "\n"
 
-            "\nResult:\n"
-            "{\n"
-            "  \"capabilities\" : [ \"capability\", ... ],    (array of strings) specific client side supported features\n"
-            "  \"version\" : n,                    (numeric) The block version\n"
-            "  \"rules\" : [ \"rulename\", ... ],    (array of strings) specific block rules that are to be enforced\n"
-            "  \"vbavailable\" : {                 (json object) set of pending, supported versionbit (BIP 9) softfork deployments\n"
-            "      \"rulename\" : bitnumber        (numeric) identifies the bit number as indicating acceptance and readiness for the named softfork rule\n"
-            "      ,...\n"
-            "  },\n"
-            "  \"vbrequired\" : n,                 (numeric) bit mask of versionbits the server requires set in submissions\n"
-            "  \"previousblockhash\" : \"xxxx\",    (string) The hash of current highest block\n"
-            "  \"transactions\" : [                (array) contents of non-coinbase transactions that should be included in the next block\n"
-            "      {\n"
-            "         \"data\" : \"xxxx\",          (string) transaction data encoded in hexadecimal (byte-for-byte)\n"
-            "         \"hash\" : \"xxxx\",          (string) hash/id encoded in little-endian hexadecimal\n"
-            "         \"depends\" : [              (array) array of numbers \n"
-            "             n                        (numeric) transactions before this one (by 1-based index in 'transactions' list) that must be present in the final block if this one is\n"
-            "             ,...\n"
-            "         ],\n"
-            "         \"fee\": n,                   (numeric) difference in value between transaction inputs and outputs (in duffs); for coinbase transactions, this is a negative Number of the total collected block fees (ie, not including the block subsidy); if key is not present, fee is unknown and clients MUST NOT assume there isn't one\n"
-            "         \"sigops\" : n,               (numeric) total number of SigOps, as counted for purposes of block limits; if key is not present, sigop count is unknown and clients MUST NOT assume there aren't any\n"
-            "         \"required\" : true|false     (boolean) if provided and true, this transaction must be in the final block\n"
-            "      }\n"
-            "      ,...\n"
-            "  ],\n"
-            "  \"coinbaseaux\" : {                  (json object) data that should be included in the coinbase's scriptSig content\n"
-            "      \"flags\" : \"flags\"            (string) \n"
-            "  },\n"
-            "  \"coinbasevalue\" : n,               (numeric) maximum allowable input to coinbase transaction, including the generation award and transaction fees (in duffs)\n"
-            "  \"coinbasetxn\" : { ... },           (json object) information for coinbase transaction\n"
-            "  \"target\" : \"xxxx\",               (string) The hash target\n"
-            "  \"mintime\" : xxx,                   (numeric) The minimum timestamp appropriate for next block time in seconds since epoch (Jan 1 1970 GMT)\n"
-            "  \"mutable\" : [                      (array of string) list of ways the block template may be changed \n"
-            "     \"value\"                         (string) A way the block template may be changed, e.g. 'time', 'transactions', 'prevblock'\n"
-            "     ,...\n"
-            "  ],\n"
-            "  \"noncerange\" : \"00000000ffffffff\",   (string) A range of valid nonces\n"
-            "  \"sigoplimit\" : n,                 (numeric) limit of sigops in blocks\n"
-            "  \"sizelimit\" : n,                  (numeric) limit of block size\n"
-            "  \"curtime\" : ttt,                  (numeric) current timestamp in seconds since epoch (Jan 1 1970 GMT)\n"
-            "  \"bits\" : \"xxx\",                 (string) compressed target of next block\n"
-            "  \"height\" : n                      (numeric) The height of the next block\n"
-            "  \"masternode\" : {                  (json object) required masternode payee that must be included in the next block\n"
-            "      \"payee\" : \"xxxx\",             (string) payee address\n"
-            "      \"script\" : \"xxxx\",            (string) payee scriptPubKey\n"
-            "      \"amount\": n                   (numeric) required amount to pay\n"
-            "  },\n"
-            "  \"masternode_payments_started\" :  true|false, (boolean) true, if masternode payments started\n"
-            "  \"masternode_payments_enforced\" : true|false, (boolean) true, if masternode payments are enforced\n"
-            "  \"superblock\" : [                  (array) required superblock payees that must be included in the next block\n"
-            "      {\n"
-            "         \"payee\" : \"xxxx\",          (string) payee address\n"
-            "         \"script\" : \"xxxx\",         (string) payee scriptPubKey\n"
-            "         \"amount\": n                (numeric) required amount to pay\n"
-            "      }\n"
-            "      ,...\n"
-            "  ],\n"
-            "  \"superblocks_started\" : true|false, (boolean) true, if superblock payments started\n"
-            "  \"superblocks_enabled\" : true|false  (boolean) true, if superblock payments are enabled\n"
-            "}\n"
+                "\nResult:\n"
+                "{\n"
+                "  \"capabilities\" : [ \"capability\", ... ],    (array of strings) specific client side supported features\n"
+                "  \"version\" : n,                    (numeric) The block version\n"
+                "  \"rules\" : [ \"rulename\", ... ],    (array of strings) specific block rules that are to be enforced\n"
+                "  \"vbavailable\" : {                 (json object) set of pending, supported versionbit (BIP 9) softfork deployments\n"
+                "      \"rulename\" : bitnumber        (numeric) identifies the bit number as indicating acceptance and readiness for the named softfork rule\n"
+                "      ,...\n"
+                "  },\n"
+                "  \"vbrequired\" : n,                 (numeric) bit mask of versionbits the server requires set in submissions\n"
+                "  \"previousblockhash\" : \"xxxx\",    (string) The hash of current highest block\n"
+                "  \"transactions\" : [                (array) contents of non-coinbase transactions that should be included in the next block\n"
+                "      {\n"
+                "         \"data\" : \"xxxx\",          (string) transaction data encoded in hexadecimal (byte-for-byte)\n"
+                "         \"hash\" : \"xxxx\",          (string) hash/id encoded in little-endian hexadecimal\n"
+                "         \"depends\" : [              (array) array of numbers \n"
+                "             n                        (numeric) transactions before this one (by 1-based index in 'transactions' list) that must be present in the final block if this one is\n"
+                "             ,...\n"
+                "         ],\n"
+                "         \"fee\": n,                   (numeric) difference in value between transaction inputs and outputs (in duffs); for coinbase transactions, this is a negative Number of the total collected block fees (ie, not including the block subsidy); if key is not present, fee is unknown and clients MUST NOT assume there isn't one\n"
+                "         \"sigops\" : n,               (numeric) total number of SigOps, as counted for purposes of block limits; if key is not present, sigop count is unknown and clients MUST NOT assume there aren't any\n"
+                "         \"required\" : true|false     (boolean) if provided and true, this transaction must be in the final block\n"
+                "      }\n"
+                "      ,...\n"
+                "  ],\n"
+                "  \"coinbaseaux\" : {                  (json object) data that should be included in the coinbase's scriptSig content\n"
+                "      \"flags\" : \"flags\"            (string) \n"
+                "  },\n"
+                "  \"coinbasevalue\" : n,               (numeric) maximum allowable input to coinbase transaction, including the generation award and transaction fees (in duffs)\n"
+                "  \"coinbasetxn\" : { ... },           (json object) information for coinbase transaction\n"
+                "  \"target\" : \"xxxx\",               (string) The hash target\n"
+                "  \"mintime\" : xxx,                   (numeric) The minimum timestamp appropriate for next block time in seconds since epoch (Jan 1 1970 GMT)\n"
+                "  \"mutable\" : [                      (array of string) list of ways the block template may be changed \n"
+                "     \"value\"                         (string) A way the block template may be changed, e.g. 'time', 'transactions', 'prevblock'\n"
+                "     ,...\n"
+                "  ],\n"
+                "  \"noncerange\" : \"00000000ffffffff\",   (string) A range of valid nonces\n"
+                "  \"sigoplimit\" : n,                 (numeric) limit of sigops in blocks\n"
+                "  \"sizelimit\" : n,                  (numeric) limit of block size\n"
+                "  \"curtime\" : ttt,                  (numeric) current timestamp in seconds since epoch (Jan 1 1970 GMT)\n"
+                "  \"bits\" : \"xxx\",                 (string) compressed target of next block\n"
+                "  \"height\" : n                      (numeric) The height of the next block\n"
+                "  \"masternode\" : {                  (json object) required masternode payee that must be included in the next block\n"
+                "      \"payee\" : \"xxxx\",             (string) payee address\n"
+                "      \"script\" : \"xxxx\",            (string) payee scriptPubKey\n"
+                "      \"amount\": n                   (numeric) required amount to pay\n"
+                "  },\n"
+                "  \"masternode_payments_started\" :  true|false, (boolean) true, if masternode payments started\n"
+                "  \"masternode_payments_enforced\" : true|false, (boolean) true, if masternode payments are enforced\n"
+                "  \"superblock\" : [                  (array) required superblock payees that must be included in the next block\n"
+                "      {\n"
+                "         \"payee\" : \"xxxx\",          (string) payee address\n"
+                "         \"script\" : \"xxxx\",         (string) payee scriptPubKey\n"
+                "         \"amount\": n                (numeric) required amount to pay\n"
+                "      }\n"
+                "      ,...\n"
+                "  ],\n"
+                "  \"superblocks_started\" : true|false, (boolean) true, if superblock payments started\n"
+                "  \"superblocks_enabled\" : true|false  (boolean) true, if superblock payments are enabled\n"
+                "}\n"
 
-            "\nExamples:\n"
-            + HelpExampleCli("getblocktemplate", "")
-            + HelpExampleRpc("getblocktemplate", "")
-         );
+                "\nExamples:\n"
+                + HelpExampleCli("getblocktemplate", "")
+                + HelpExampleRpc("getblocktemplate", "")
+                );
 
     LOCK(cs_main);
 
@@ -568,7 +584,7 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
     static int64_t nStart;
     static CBlockTemplate* pblocktemplate;
     if (pindexPrev != chainActive.Tip() ||
-        (mempool.GetTransactionsUpdated() != nTransactionsUpdatedLast && GetTime() - nStart > 5))
+            (mempool.GetTransactionsUpdated() != nTransactionsUpdatedLast && GetTime() - nStart > 5))
     {
         // Clear pindexPrev so future calls make a new block, despite any failures from here on
         pindexPrev = NULL;
@@ -651,40 +667,40 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
         Consensus::DeploymentPos pos = Consensus::DeploymentPos(i);
         ThresholdState state = VersionBitsState(pindexPrev, consensusParams, pos, versionbitscache);
         switch (state) {
-            case THRESHOLD_DEFINED:
-            case THRESHOLD_FAILED:
-                // Not exposed to GBT at all
-                break;
-            case THRESHOLD_LOCKED_IN:
-                // Ensure bit is set in block version
-                pblock->nVersion |= VersionBitsMask(consensusParams, pos);
-                // FALL THROUGH to get vbavailable set...
-            case THRESHOLD_STARTED:
-            {
-                const struct BIP9DeploymentInfo& vbinfo = VersionBitsDeploymentInfo[pos];
-                vbavailable.push_back(Pair(gbt_vb_name(pos), consensusParams.vDeployments[pos].bit));
-                if (setClientRules.find(vbinfo.name) == setClientRules.end()) {
-                    if (!vbinfo.gbt_force) {
-                        // If the client doesn't support this, don't indicate it in the [default] version
-                        pblock->nVersion &= ~VersionBitsMask(consensusParams, pos);
-                    }
+        case THRESHOLD_DEFINED:
+        case THRESHOLD_FAILED:
+            // Not exposed to GBT at all
+            break;
+        case THRESHOLD_LOCKED_IN:
+            // Ensure bit is set in block version
+            pblock->nVersion |= VersionBitsMask(consensusParams, pos);
+            // FALL THROUGH to get vbavailable set...
+        case THRESHOLD_STARTED:
+        {
+            const struct BIP9DeploymentInfo& vbinfo = VersionBitsDeploymentInfo[pos];
+            vbavailable.push_back(Pair(gbt_vb_name(pos), consensusParams.vDeployments[pos].bit));
+            if (setClientRules.find(vbinfo.name) == setClientRules.end()) {
+                if (!vbinfo.gbt_force) {
+                    // If the client doesn't support this, don't indicate it in the [default] version
+                    pblock->nVersion &= ~VersionBitsMask(consensusParams, pos);
                 }
-                break;
             }
-            case THRESHOLD_ACTIVE:
-            {
-                // Add to rules only
-                const struct BIP9DeploymentInfo& vbinfo = VersionBitsDeploymentInfo[pos];
-                aRules.push_back(gbt_vb_name(pos));
-                if (setClientRules.find(vbinfo.name) == setClientRules.end()) {
-                    // Not supported by the client; make sure it's safe to proceed
-                    if (!vbinfo.gbt_force) {
-                        // If we do anything other than throw an exception here, be sure version/force isn't sent to old clients
-                        throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("Support for '%s' rule requires explicit client support", vbinfo.name));
-                    }
+            break;
+        }
+        case THRESHOLD_ACTIVE:
+        {
+            // Add to rules only
+            const struct BIP9DeploymentInfo& vbinfo = VersionBitsDeploymentInfo[pos];
+            aRules.push_back(gbt_vb_name(pos));
+            if (setClientRules.find(vbinfo.name) == setClientRules.end()) {
+                // Not supported by the client; make sure it's safe to proceed
+                if (!vbinfo.gbt_force) {
+                    // If we do anything other than throw an exception here, be sure version/force isn't sent to old clients
+                    throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("Support for '%s' rule requires explicit client support", vbinfo.name));
                 }
-                break;
             }
+            break;
+        }
         }
     }
     result.push_back(Pair("version", pblock->nVersion));
@@ -770,22 +786,22 @@ UniValue submitblock(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() < 1 || params.size() > 2)
         throw runtime_error(
-            "submitblock \"hexdata\" ( \"jsonparametersobject\" )\n"
-            "\nAttempts to submit new block to network.\n"
-            "The 'jsonparametersobject' parameter is currently ignored.\n"
-            "See https://en.bitcoin.it/wiki/BIP_0022 for full specification.\n"
+                "submitblock \"hexdata\" ( \"jsonparametersobject\" )\n"
+                "\nAttempts to submit new block to network.\n"
+                "The 'jsonparametersobject' parameter is currently ignored.\n"
+                "See https://en.bitcoin.it/wiki/BIP_0022 for full specification.\n"
 
-            "\nArguments\n"
-            "1. \"hexdata\"    (string, required) the hex-encoded block data to submit\n"
-            "2. \"jsonparametersobject\"     (string, optional) object of optional parameters\n"
-            "    {\n"
-            "      \"workid\" : \"id\"    (string, optional) if the server provided a workid, it MUST be included with submissions\n"
-            "    }\n"
-            "\nResult:\n"
-            "\nExamples:\n"
-            + HelpExampleCli("submitblock", "\"mydata\"")
-            + HelpExampleRpc("submitblock", "\"mydata\"")
-        );
+                "\nArguments\n"
+                "1. \"hexdata\"    (string, required) the hex-encoded block data to submit\n"
+                "2. \"jsonparametersobject\"     (string, optional) object of optional parameters\n"
+                "    {\n"
+                "      \"workid\" : \"id\"    (string, optional) if the server provided a workid, it MUST be included with submissions\n"
+                "    }\n"
+                "\nResult:\n"
+                "\nExamples:\n"
+                + HelpExampleCli("submitblock", "\"mydata\"")
+                + HelpExampleRpc("submitblock", "\"mydata\"")
+                );
 
     CBlock block;
     if (!DecodeHexBlk(block, params[0].get_str()))
@@ -826,19 +842,19 @@ UniValue estimatefee(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() != 1)
         throw runtime_error(
-            "estimatefee nblocks\n"
-            "\nEstimates the approximate fee per kilobyte needed for a transaction to begin\n"
-            "confirmation within nblocks blocks.\n"
-            "\nArguments:\n"
-            "1. nblocks     (numeric)\n"
-            "\nResult:\n"
-            "n              (numeric) estimated fee-per-kilobyte\n"
-            "\n"
-            "A negative value is returned if not enough transactions and blocks\n"
-            "have been observed to make an estimate.\n"
-            "\nExample:\n"
-            + HelpExampleCli("estimatefee", "6")
-            );
+                "estimatefee nblocks\n"
+                "\nEstimates the approximate fee per kilobyte needed for a transaction to begin\n"
+                "confirmation within nblocks blocks.\n"
+                "\nArguments:\n"
+                "1. nblocks     (numeric)\n"
+                "\nResult:\n"
+                "n              (numeric) estimated fee-per-kilobyte\n"
+                "\n"
+                "A negative value is returned if not enough transactions and blocks\n"
+                "have been observed to make an estimate.\n"
+                "\nExample:\n"
+                + HelpExampleCli("estimatefee", "6")
+                );
 
     RPCTypeCheck(params, boost::assign::list_of(UniValue::VNUM));
 
@@ -857,19 +873,19 @@ UniValue estimatepriority(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() != 1)
         throw runtime_error(
-            "estimatepriority nblocks\n"
-            "\nEstimates the approximate priority a zero-fee transaction needs to begin\n"
-            "confirmation within nblocks blocks.\n"
-            "\nArguments:\n"
-            "1. nblocks     (numeric)\n"
-            "\nResult:\n"
-            "n              (numeric) estimated priority\n"
-            "\n"
-            "A negative value is returned if not enough transactions and blocks\n"
-            "have been observed to make an estimate.\n"
-            "\nExample:\n"
-            + HelpExampleCli("estimatepriority", "6")
-            );
+                "estimatepriority nblocks\n"
+                "\nEstimates the approximate priority a zero-fee transaction needs to begin\n"
+                "confirmation within nblocks blocks.\n"
+                "\nArguments:\n"
+                "1. nblocks     (numeric)\n"
+                "\nResult:\n"
+                "n              (numeric) estimated priority\n"
+                "\n"
+                "A negative value is returned if not enough transactions and blocks\n"
+                "have been observed to make an estimate.\n"
+                "\nExample:\n"
+                + HelpExampleCli("estimatepriority", "6")
+                );
 
     RPCTypeCheck(params, boost::assign::list_of(UniValue::VNUM));
 
@@ -884,25 +900,25 @@ UniValue estimatesmartfee(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() != 1)
         throw runtime_error(
-            "estimatesmartfee nblocks\n"
-            "\nWARNING: This interface is unstable and may disappear or change!\n"
-            "\nEstimates the approximate fee per kilobyte needed for a transaction to begin\n"
-            "confirmation within nblocks blocks if possible and return the number of blocks\n"
-            "for which the estimate is valid.\n"
-            "\nArguments:\n"
-            "1. nblocks     (numeric)\n"
-            "\nResult:\n"
-            "{\n"
-            "  \"feerate\" : x.x,     (numeric) estimate fee-per-kilobyte (in BTC)\n"
-            "  \"blocks\" : n         (numeric) block number where estimate was found\n"
-            "}\n"
-            "\n"
-            "A negative value is returned if not enough transactions and blocks\n"
-            "have been observed to make an estimate for any number of blocks.\n"
-            "However it will not return a value below the mempool reject fee.\n"
-            "\nExample:\n"
-            + HelpExampleCli("estimatesmartfee", "6")
-            );
+                "estimatesmartfee nblocks\n"
+                "\nWARNING: This interface is unstable and may disappear or change!\n"
+                "\nEstimates the approximate fee per kilobyte needed for a transaction to begin\n"
+                "confirmation within nblocks blocks if possible and return the number of blocks\n"
+                "for which the estimate is valid.\n"
+                "\nArguments:\n"
+                "1. nblocks     (numeric)\n"
+                "\nResult:\n"
+                "{\n"
+                "  \"feerate\" : x.x,     (numeric) estimate fee-per-kilobyte (in BTC)\n"
+                "  \"blocks\" : n         (numeric) block number where estimate was found\n"
+                "}\n"
+                "\n"
+                "A negative value is returned if not enough transactions and blocks\n"
+                "have been observed to make an estimate for any number of blocks.\n"
+                "However it will not return a value below the mempool reject fee.\n"
+                "\nExample:\n"
+                + HelpExampleCli("estimatesmartfee", "6")
+                );
 
     RPCTypeCheck(params, boost::assign::list_of(UniValue::VNUM));
 
@@ -920,25 +936,25 @@ UniValue estimatesmartpriority(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() != 1)
         throw runtime_error(
-            "estimatesmartpriority nblocks\n"
-            "\nWARNING: This interface is unstable and may disappear or change!\n"
-            "\nEstimates the approximate priority a zero-fee transaction needs to begin\n"
-            "confirmation within nblocks blocks if possible and return the number of blocks\n"
-            "for which the estimate is valid.\n"
-            "\nArguments:\n"
-            "1. nblocks     (numeric)\n"
-            "\nResult:\n"
-            "{\n"
-            "  \"priority\" : x.x,    (numeric) estimated priority\n"
-            "  \"blocks\" : n         (numeric) block number where estimate was found\n"
-            "}\n"
-            "\n"
-            "A negative value is returned if not enough transactions and blocks\n"
-            "have been observed to make an estimate for any number of blocks.\n"
-            "However if the mempool reject fee is set it will return 1e9 * MAX_MONEY.\n"
-            "\nExample:\n"
-            + HelpExampleCli("estimatesmartpriority", "6")
-            );
+                "estimatesmartpriority nblocks\n"
+                "\nWARNING: This interface is unstable and may disappear or change!\n"
+                "\nEstimates the approximate priority a zero-fee transaction needs to begin\n"
+                "confirmation within nblocks blocks if possible and return the number of blocks\n"
+                "for which the estimate is valid.\n"
+                "\nArguments:\n"
+                "1. nblocks     (numeric)\n"
+                "\nResult:\n"
+                "{\n"
+                "  \"priority\" : x.x,    (numeric) estimated priority\n"
+                "  \"blocks\" : n         (numeric) block number where estimate was found\n"
+                "}\n"
+                "\n"
+                "A negative value is returned if not enough transactions and blocks\n"
+                "have been observed to make an estimate for any number of blocks.\n"
+                "However if the mempool reject fee is set it will return 1e9 * MAX_MONEY.\n"
+                "\nExample:\n"
+                + HelpExampleCli("estimatesmartpriority", "6")
+                );
 
     RPCTypeCheck(params, boost::assign::list_of(UniValue::VNUM));
 

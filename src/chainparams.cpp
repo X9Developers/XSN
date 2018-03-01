@@ -258,15 +258,16 @@ public:
         consensus.nMasternodePaymentsIncreaseBlock = 4030;
         consensus.nMasternodePaymentsIncreasePeriod = 10;
         consensus.nInstantSendKeepLock = 6;
-        consensus.nBudgetPaymentsStartBlock = 4100;
+        consensus.nBudgetPaymentsStartBlock = 1000;
         consensus.nBudgetPaymentsCycleBlocks = 50;
         consensus.nBudgetPaymentsWindowBlocks = 10;
         consensus.nBudgetProposalEstablishingTime = 60*20;
-        consensus.nSuperblockStartBlock = 4200; // NOTE: Should satisfy nSuperblockStartBlock > nBudgetPeymentsStartBlock
+        consensus.nSuperblockStartBlock = 1010; // NOTE: Should satisfy nSuperblockStartBlock > nBudgetPeymentsStartBlock
         consensus.nSuperblockCycle = 24; // Superblocks can be issued hourly on testnet
         consensus.nGovernanceMinQuorum = 1;
         consensus.nGovernanceFilterElements = 500;
-        consensus.nMasternodeMinimumConfirmations = 1;
+        consensus.nMasternodeMinimumConfirmations = 15;
+//        consensus.nMasternodeMinimumConfirmations = 1;
         consensus.nMerchantnodeMinimumConfirmations = 1;
         consensus.nMajorityEnforceBlockUpgrade = 51;
         consensus.nMajorityRejectBlockOutdated = 75;
@@ -278,13 +279,14 @@ public:
         consensus.nPowTargetSpacing = 1 * 60; // Xsn: 1 minutes
         consensus.nPosTargetSpacing = 1 * 60; // PoSW: 1 minutes
         consensus.nPosTargetTimespan = 60 * 40;
-        consensus.fPowAllowMinDifficultyBlocks = true;
+//        consensus.fPowAllowMinDifficultyBlocks = true;
+        consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
         consensus.nPowKGWHeight = 4001; // nPowKGWHeight >= nPowDGWHeight means "no KGW"
         consensus.nPowDGWHeight = 4001;
         consensus.nLastPoWBlock = 75;
-        consensus.nStakeMinAge = 60 * 60 / 2;
-        consensus.nStakeMaxAge = 60 * 60 * 24 * 7; // one week
+        consensus.nStakeMinAge = 60 * 60;
+        consensus.nStakeMaxAge = 60 * 60 * 24; // one day
         consensus.nCoinbaseMaturity = 20;
         consensus.nRuleChangeActivationThreshold = 1512; // 75% for testchains
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
@@ -357,7 +359,7 @@ public:
 
         nPoolMaxTransactions = 3;
         nFulfilledRequestExpireTime = 5*60; // fulfilled requests expire in 5 minutes
-        strSporkPubKey = "046f78dcf911fbd61910136f7f0f8d90578f68d0b3ac973b5040fb7afb501b5939f39b108b0569dca71488f5bbf498d92e4d1194f6f941307ffd95f75e76869f0e";
+        strSporkPubKey = "02a80a535f8adae9b557d5b1cf1e088333efdfd51c5e1af7f913483197e66433ab";
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of

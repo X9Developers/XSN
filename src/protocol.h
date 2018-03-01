@@ -239,7 +239,9 @@ extern const char *DSSTATUSUPDATE;
 extern const char *DSTX;
 extern const char *DSQUEUE;
 extern const char *DSEG;
+extern const char *MERCHANTNODESEG;
 extern const char *SYNCSTATUSCOUNT;
+extern const char *MERCHANTSYNCSTATUSCOUNT;
 extern const char *MNGOVERNANCESYNC;
 extern const char *MNGOVERNANCEOBJECT;
 extern const char *MNGOVERNANCEOBJECTVOTE;
@@ -247,8 +249,6 @@ extern const char *MNVERIFY;
 extern const char *MERCHANTNODEVERIFY;
 extern const char *MERCHANTNODEANNOUNCE;
 extern const char *MERCHANTNODEPING;
-extern const char *MERCHANTNODESEG;
-extern const char *MERCHANTSYNCSTATUSCOUNT;
 }
 
 /* Get a vector of all valid message types (see above) */

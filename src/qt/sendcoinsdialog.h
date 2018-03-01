@@ -17,6 +17,7 @@ class OptionsModel;
 class PlatformStyle;
 class SendCoinsEntry;
 class SendCoinsRecipient;
+class QButtonGroup;
 
 namespace Ui {
     class SendCoinsDialog;
@@ -29,7 +30,7 @@ QT_END_NAMESPACE
 const int defaultConfirmTarget = 25;
 
 /** Dialog for sending bitcoins */
-class SendCoinsDialog : public QDialog
+class SendCoinsDialog : public QWidget
 {
     Q_OBJECT
 
@@ -61,6 +62,8 @@ private:
     Ui::SendCoinsDialog *ui;
     ClientModel *clientModel;
     WalletModel *model;
+    QButtonGroup *groupFee = nullptr;
+    QButtonGroup *groupCustomFee = nullptr;
     bool fNewRecipientAllowed;
     void send(QList<SendCoinsRecipient> recipients, QString strFee, QString strFunds);
     bool fFeeMinimized;
@@ -97,6 +100,7 @@ private Q_SLOTS:
     void updateMinFeeLabel();
     void updateSmartFeeLabel();
     void updateGlobalFeeVariables();
+    void onThemeChanged();
 
 Q_SIGNALS:
     // Fired when a message should be reported to the user

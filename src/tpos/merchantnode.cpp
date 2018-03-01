@@ -23,8 +23,8 @@ CMerchantnode::CMerchantnode() :
     merchantnode_info_t{ MERCHANTNODE_ENABLED, PROTOCOL_VERSION, GetAdjustedTime()}
 {}
 
-CMerchantnode::CMerchantnode(CService addr, CPubKey pubKeyMerchantnode, int nProtocolVersionIn) :
-    merchantnode_info_t{ MERCHANTNODE_ENABLED, nProtocolVersionIn, GetAdjustedTime(), addr, pubKeyMerchantnode}
+CMerchantnode::CMerchantnode(CService addr, CPubKey pubKeyMerchantnode, uint256 hashTPoSContractTxNew, int nProtocolVersionIn) :
+    merchantnode_info_t{ MERCHANTNODE_ENABLED, nProtocolVersionIn, GetAdjustedTime(), addr, pubKeyMerchantnode, hashTPoSContractTxNew }
 {}
 
 CMerchantnode::CMerchantnode(const CMerchantnode& other) :
@@ -40,6 +40,7 @@ CMerchantnode::CMerchantnode(const CMerchantnodeBroadcast& mnb) :
     merchantnode_info_t{ mnb.nActiveState, mnb.nProtocolVersion,
                          mnb.sigTime, mnb.addr,
                          mnb.pubKeyMerchantnode,
+                         mnb.hashTPoSContractTx,
                          mnb.sigTime /*nTimeLastWatchdogVote*/},
     lastPing(mnb.lastPing),
     vchSig(mnb.vchSig)
@@ -53,6 +54,7 @@ bool CMerchantnode::UpdateFromNewBroadcast(CMerchantnodeBroadcast& mnb, CConnman
     if(mnb.sigTime <= sigTime && !mnb.fRecovery) return false;
 
     pubKeyMerchantnode = mnb.pubKeyMerchantnode;
+    hashTPoSContractTx = mnb.hashTPoSContractTx;
     sigTime = mnb.sigTime;
     vchSig = mnb.vchSig;
     nProtocolVersion = mnb.nProtocolVersion;
@@ -245,7 +247,9 @@ std::string CMerchantnode::GetStatus() const
 }
 
 #ifdef ENABLE_WALLET
-bool CMerchantnodeBroadcast::Create(std::string strService, std::string strMerchantPrivKey, std::string& strErrorRet, CMerchantnodeBroadcast &mnbRet, bool fOffline)
+bool CMerchantnodeBroadcast::Create(std::string strService, std::string strMerchantPrivKey,
+                                    std::string strHashTPoSContractTx, std::string& strErrorRet,
+                                    CMerchantnodeBroadcast &mnbRet, bool fOffline)
 {
     CPubKey pubKeyMerchantnodeNew;
     CKey keyMerchantnodeNew;
@@ -274,10 +278,12 @@ bool CMerchantnodeBroadcast::Create(std::string strService, std::string strMerch
     } else if (service.GetPort() == mainnetDefaultPort)
         return Log(strprintf("Invalid port %u for merchantnode %s, %d is the only supported on mainnet.", service.GetPort(), strService, mainnetDefaultPort));
 
-    return Create(service, keyMerchantnodeNew, pubKeyMerchantnodeNew, strErrorRet, mnbRet);
+    return Create(service, keyMerchantnodeNew, pubKeyMerchantnodeNew, uint256S(strHashTPoSContractTx), strErrorRet, mnbRet);
 }
 
-bool CMerchantnodeBroadcast::Create(const CService& service, const CKey& keyMerchantnodeNew, const CPubKey& pubKeyMerchantnodeNew, std::string &strErrorRet, CMerchantnodeBroadcast &mnbRet)
+bool CMerchantnodeBroadcast::Create(const CService& service, const CKey& keyMerchantnodeNew,
+                                    const CPubKey& pubKeyMerchantnodeNew, const uint256 &hashTPoSContractTx,
+                                    std::string &strErrorRet, CMerchantnodeBroadcast &mnbRet)
 {
     // wait for reindex and/or import to finish
     if (fImporting || fReindex) return false;
@@ -297,7 +303,7 @@ bool CMerchantnodeBroadcast::Create(const CService& service, const CKey& keyMerc
     if (!mnp.Sign(keyMerchantnodeNew, pubKeyMerchantnodeNew))
         return Log(strprintf("Failed to sign ping, merchantnode=%s", HexStr(pubKeyMerchantnodeNew.Raw())));
 
-    mnbRet = CMerchantnodeBroadcast(service, pubKeyMerchantnodeNew, PROTOCOL_VERSION);
+    mnbRet = CMerchantnodeBroadcast(service, pubKeyMerchantnodeNew, hashTPoSContractTx, PROTOCOL_VERSION);
 
     if (!mnbRet.IsValidNetAddr())
         return Log(strprintf("Invalid IP address, merchantnode=%s", HexStr(pubKeyMerchantnodeNew.Raw())));

@@ -352,9 +352,22 @@ CMerchantnode* CMerchantnodeMan::Find(const CPubKey &pubKeyMerchantnode)
     return it == mapMerchantnodes.end() ? NULL : &(it->second);
 }
 
-bool CMerchantnodeMan::Get(const CPubKey &pubKeyMerchantnode, CMerchantnode& merchantnodeRet)
+bool CMerchantnodeMan::Get(const CKeyID &pubKeyID, CMerchantnode& merchantnodeRet)
 {
     // Theses mutexes are recursive so double locking by the same thread is safe.
+    LOCK(cs);
+    for (auto& mnpair : mapMerchantnodes) {
+        CKeyID keyID = mnpair.second.pubKeyMerchantnode.GetID();
+        if (keyID == pubKeyID) {
+            merchantnodeRet = mnpair.second;
+            return true;
+        }
+    }
+    return false;
+}
+
+bool CMerchantnodeMan::Get(const CPubKey &pubKeyMerchantnode, CMerchantnode &merchantnodeRet)
+{
     LOCK(cs);
     auto it = mapMerchantnodes.find(pubKeyMerchantnode);
     if (it == mapMerchantnodes.end()) {
@@ -374,6 +387,19 @@ bool CMerchantnodeMan::GetMerchantnodeInfo(const CPubKey& pubKeyMerchantnode, me
     }
     mnInfoRet = it->second.GetInfo();
     return true;
+}
+
+bool CMerchantnodeMan::GetMerchantnodeInfo(const CKeyID &pubKeyMerchantnode, merchantnode_info_t &mnInfoRet)
+{
+    LOCK(cs);
+    for (auto& mnpair : mapMerchantnodes) {
+        CKeyID keyID = mnpair.second.pubKeyMerchantnode.GetID();
+        if (keyID == pubKeyMerchantnode) {
+            mnInfoRet = mnpair.second.GetInfo();
+            return true;
+        }
+    }
+    return false;
 }
 
 bool CMerchantnodeMan::GetMerchantnodeInfo(const CScript& payee, merchantnode_info_t& mnInfoRet)
@@ -1030,6 +1056,11 @@ void CMerchantnodeMan::UpdateMerchantnodeList(CMerchantnodeBroadcast mnb, CConnm
 
     CMerchantnode* pmn = Find(mnb.pubKeyMerchantnode);
     if(pmn == NULL) {
+
+        int nDos;
+        bool checked = CheckMnbIPAddressAndRemoveExistingEntry(mnb, nDos);
+        assert(checked);
+
         if(Add(mnb)) {
             merchantnodeSync.BumpAssetLastTime("CMerchantnodeMan::UpdateMerchantnodeList - new");
         }
@@ -1111,8 +1142,8 @@ bool CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList(CNode* pfrom, CMerchant
     if(mnb.CheckMerchantnode(nDos)) {
 
         // Check if we have merchantnode with this IP, any pubkey will work. We need to be sure that one merchantnode holds one public key.
-//        if(CheckMnbIPAddressAndRemoveDuplicatedEntry(mnb, nDos))
-//            return false;
+        if(!CheckMnbIPAddressAndRemoveExistingEntry(mnb, nDos))
+            return false;
 
         Add(mnb);
         merchantnodeSync.BumpAssetLastTime("CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList - new");
@@ -1140,7 +1171,7 @@ bool CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList(CNode* pfrom, CMerchant
     return true;
 }
 
-bool CMerchantnodeMan::CheckMnbIPAddressAndRemoveDuplicatedEntry(CMerchantnodeBroadcast mnb, int &nDos)
+bool CMerchantnodeMan::CheckMnbIPAddressAndRemoveExistingEntry(CMerchantnodeBroadcast mnb, int &nDos)
 {
     auto mnbIpAddress = static_cast<CNetAddr>(mnb.addr);
 

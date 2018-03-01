@@ -29,6 +29,7 @@
 #include "validationinterface.h"
 #include "tpos/tposutils.h"
 #include "wallet/wallet.h"
+#include "blocksigner.h"
 
 #include <boost/thread.hpp>
 #include <boost/tuple/tuple.hpp>
@@ -49,6 +50,17 @@ using namespace std;
 
 uint64_t nLastBlockTx = 0;
 uint64_t nLastBlockSize = 0;
+
+struct TPoSParams
+{
+    bool fUseTPoS;
+    uint256 hashTPoSContractTxId;
+} tposParams = {
+    false,
+    uint256()
+};
+
+static CCriticalSection csTPoSParams;
 
 class ScoreCompare
 {
@@ -111,10 +123,9 @@ CBlockTemplate* CreateNewBlock(CWallet *wallet, const CChainParams& chainparams,
         bool fStakeFound = false;
         if (nSearchTime >= nLastCoinStakeSearchTime) {
             unsigned int nTxNewTime = 0;
-            COutPoint tposCoinStake;
             if (wallet->CreateCoinStake(pblock->nBits, blockReward,
                                         txCoinStake, nTxNewTime,
-                                        tposContract, tposCoinStake))
+                                        tposContract))
             {
                 pblock->nTime = nTxNewTime;
                 txNew.vout[0].SetEmpty();
@@ -123,7 +134,7 @@ CBlockTemplate* CreateNewBlock(CWallet *wallet, const CChainParams& chainparams,
 
                 if(tposContract.IsValid())
                 {
-                    pblock->tposStakePoint = tposCoinStake;
+                    pblock->hashTPoSContractTx = tposContract.rawTx.GetHash();
                 }
 
                 fStakeFound = true;
@@ -364,11 +375,6 @@ CBlockTemplate* CreateNewBlock(CWallet *wallet, const CChainParams& chainparams,
         pblock->nBits          = GetNextWorkRequired(pindexPrev, pblock, chainparams.GetConsensus());
         pblock->nNonce         = 0;
         pblocktemplate->vTxSigOps[0] = GetLegacySigOpCount(pblock->vtx[0]);
-
-        CValidationState state;
-        if (!TestBlockValidity(state, chainparams, *pblock, pindexPrev, false, false)) {
-            throw std::runtime_error(strprintf("%s: TestBlockValidity failed: %s", __func__, FormatStateMessage(state)));
-        }
     }
 
     return pblocktemplate.release();
@@ -469,6 +475,9 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
 
     while (true) {
         try {
+
+            MilliSleep(1000);
+
             // Throw an error if no script was provided.  This can happen
             // due to some internal error but also if the keypool is empty.
             // In the latter case, already the pointer is NULL.
@@ -486,10 +495,29 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
                 } while (true);
             }
 
-            if(fProofOfStake && ((chainActive.Tip()->nHeight < chainparams.GetConsensus().nLastPoWBlock) || pwallet->IsLocked()))
+            bool isTPoS = false;
+            uint256 hashTPoSContractTxId;
+            TPoSContract contract;
+
+            if(fProofOfStake)
             {
-                MilliSleep(5000);
-                continue;
+                if (chainActive.Tip()->nHeight < chainparams.GetConsensus().nLastPoWBlock ||
+                        pwallet->IsLocked() || !masternodeSync.IsSynced())
+                {
+                    MilliSleep(5000);
+                    continue;
+                }
+
+                LOCK(csTPoSParams);
+
+                isTPoS = tposParams.fUseTPoS;
+                hashTPoSContractTxId = tposParams.hashTPoSContractTxId;
+
+                if(isTPoS) {
+                    auto it = pwallet->tposMerchantContracts.find(hashTPoSContractTxId);
+                    if(it != std::end(pwallet->tposMerchantContracts))
+                        contract = it->second;
+                }
             }
 
             if(!fProofOfStake && chainActive.Tip()->nHeight >= chainparams.GetConsensus().nLastPoWBlock)
@@ -504,7 +532,7 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
             CBlockIndex* pindexPrev = chainActive.Tip();
             if(!pindexPrev) break;
 
-            std::unique_ptr<CBlockTemplate> pblocktemplate(CreateNewBlock(pwallet, chainparams, coinbaseScript->reserveScript, fProofOfStake, {}));
+            std::unique_ptr<CBlockTemplate> pblocktemplate(CreateNewBlock(pwallet, chainparams, coinbaseScript->reserveScript, fProofOfStake, contract));
             if (!pblocktemplate.get())
             {
                 LogPrintf("XsnMiner -- Keypool ran out, please call keypoolrefill before restarting the mining thread\n");
@@ -517,20 +545,32 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
             LogPrintf("XsnMiner -- Running miner with %u transactions in block (%u bytes)\n", pblock->vtx.size(),
                       ::GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION));
 
-            //Stake miner main
+            //Sign block
             if (fProofOfStake)
             {
                 LogPrintf("CPUMiner : proof-of-stake block found %s \n", pblock->GetHash().ToString().c_str());
-                if (!pblock->SignBlock(*pwallet)) {
+
+                CBlockSigner signer(*pblock, *pwallet, contract);
+
+                if (!signer.SignBlock()) {
                     LogPrintf("BitcoinMiner(): Signing new block failed \n");
-                    continue;
+                    throw std::runtime_error(strprintf("%s: SignBlock failed", __func__));
                 }
 
                 LogPrintf("CPUMiner : proof-of-stake block was signed %s \n", pblock->GetHash().ToString().c_str());
+            }
+
+            // check if block is valid
+            CValidationState state;
+            if (!TestBlockValidity(state, chainparams, *pblock, pindexPrev, false, false)) {
+                throw std::runtime_error(strprintf("%s: TestBlockValidity failed: %s", __func__, FormatStateMessage(state)));
+            }
+
+            // process proof of stake block
+            if(fProofOfStake) {
                 SetThreadPriority(THREAD_PRIORITY_NORMAL);
                 bool ret = ProcessBlockFound(pblock, chainparams);
                 SetThreadPriority(THREAD_PRIORITY_LOWEST);
-
                 continue;
             }
 
@@ -645,4 +685,17 @@ void ThreadStakeMinter(const CChainParams &chainparams, CConnman &connman, CWall
     }
     LogPrintf("ThreadStakeMinter exiting,\n");
 
+}
+
+void SetTPoSMinningParams(bool fUseTPoS, uint256 hashTPoSContractTxId)
+{
+    LOCK(csTPoSParams);
+    tposParams.fUseTPoS = fUseTPoS;
+    tposParams.hashTPoSContractTxId = hashTPoSContractTxId;
+}
+
+std::tuple<bool, uint256> GetTPoSMinningParams()
+{
+    LOCK(csTPoSParams);
+    return std::make_tuple(tposParams.fUseTPoS, tposParams.hashTPoSContractTxId);
 }

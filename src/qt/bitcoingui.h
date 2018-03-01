@@ -106,6 +106,9 @@ private:
     QAction *verifyMessageAction;
     QAction *aboutAction;
     QAction *receiveCoinsAction;
+    QAction* ghostCoinsAction;
+    QAction* merchantAction;
+    QAction* tposTabAction;
     QAction *receiveCoinsMenuAction;
     QAction *optionsAction;
     QAction *toggleHideAction;
@@ -145,8 +148,10 @@ private:
     void createActions();
     /** Create the menu bar and sub-menus. */
     void createMenuBar();
+    /** Create the toolbar widgets */
+    void createToolBarWidgets(QToolBar *toolbar);
     /** Create the toolbars */
-    void createToolBars();
+    void createToolBars(const NetworkStyle *networkStyle);
     /** Create system tray icon and notification */
     void createTrayIcon(const NetworkStyle *networkStyle);
     /** Create system tray menu (or setup the dock menu) */

@@ -913,24 +913,31 @@ QString getThemeName()
 // Open CSS when configured
 QString loadStyleSheet()
 {
-    QString styleSheet;
     QSettings settings;
+//    settings.setValue("theme", "light");
+
+
+    QString styleSheet;
     QString cssName;
     QString theme = settings.value("theme", "").toString();
 
-    if(!theme.isEmpty()){
-        cssName = QString(":/css/") + theme; 
+
+    if (theme.isEmpty()) {
+        settings.setValue("theme", "dark");
+        theme = "dark";
     }
-    else {
-        cssName = QString(":/css/light");  
-        settings.setValue("theme", "light");
-    }
-    
-    QFile qFile(cssName);      
+
+    cssName = QString(":/css/res/css/%1.css").arg(theme);
+
+    QFile qFile(cssName);
     if (qFile.open(QFile::ReadOnly)) {
         styleSheet = QLatin1String(qFile.readAll());
     }
-        
+    else {
+        settings.setValue("theme", QVariant());
+        return loadStyleSheet();
+    }
+
     return styleSheet;
 }
 

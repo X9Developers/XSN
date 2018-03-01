@@ -29,6 +29,11 @@ CBlock::CBlock(const CBlockHeader &header)
     *((CBlockHeader*)this) = header;
 }
 
+uint256 CBlock::GetTPoSHash()
+{
+    return HashX11(BEGIN(nVersion), END(hashTPoSContractTx));
+}
+
 void CBlock::SetNull()
 {
     CBlockHeader::SetNull();
@@ -58,7 +63,7 @@ bool CBlock::IsProofOfStake() const
 
 bool CBlock::IsTPoSBlock() const
 {
-    return !tposTxContractHash.IsNull() && !tposStakePoint.IsNull();
+    return IsProofOfStake() && !hashTPoSContractTx.IsNull();
 }
 
 bool CBlock::IsProofOfWork() const
@@ -82,6 +87,8 @@ std::string CBlock::ToString() const
     }
     return s.str();
 }
+
+#if 0
 
 bool CBlock::SignBlock(const CKeyStore& keystore)
 {
@@ -167,56 +174,6 @@ bool CBlock::SignBlock(const CKeyStore& keystore)
     LogPrintf("Sign failed\n");
     return false;
 }
+#endif
 
-bool CBlock::CheckBlockSignature() const
-{
-    if (IsProofOfWork())
-        return vchBlockSig.empty();
 
-    std::vector<std::vector<unsigned char>> vSolutions;
-    txnouttype whichType;
-
-    const CTxOut& txout = vtx[1].vout[1];
-
-    if (!Solver(txout.scriptPubKey, whichType, vSolutions))
-        return false;
-
-    if (whichType == TX_PUBKEY)
-    {
-        auto& vchPubKey = vSolutions[0];
-        CPubKey pubkey(vchPubKey);
-        if (!pubkey.IsValid())
-            return false;
-
-        if (vchBlockSig.empty())
-            return false;
-//        if(IsTProofOfStake()){
-//            return pubkey.Verify(GetTPoSHash(), vchBlockSig);
-//        }
-//        else{
-            return pubkey.Verify(GetHash(), vchBlockSig);
-//        }
-    }
-    else if(whichType == TX_PUBKEYHASH)
-    {
-        auto& vchPubKey = vSolutions[0];
-        CKeyID keyID;
-        keyID = CKeyID(uint160(vchPubKey));
-        CPubKey pubkey(vchPubKey);
-
-        if (!pubkey.IsValid())
-            return false;
-
-        if (vchBlockSig.empty())
-            return false;
-        //        if(IsTProofOfStake()){
-        //            return pubkey.Verify(GetTPoSHash(), vchBlockSig);
-        //        }
-        //        else{
-        return pubkey.Verify(GetHash(), vchBlockSig);
-        //        }
-
-    }
-
-    return false;
-}

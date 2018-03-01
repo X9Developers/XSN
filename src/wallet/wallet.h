@@ -97,7 +97,7 @@ enum AvailableCoinsType
     ALL_COINS,
     ONLY_DENOMINATED,
     ONLY_NONDENOMINATED,
-    ONLY_1000, // find masternode outputs including locked ones (use with caution)
+    ONLY_MASTERNODE_COLLATERAL, // find masternode outputs including locked ones (use with caution)
     ONLY_MERCHANTNODE_COLLATERAL,
     ONLY_PRIVATESEND_COLLATERAL
 };
@@ -643,8 +643,6 @@ private:
 
     std::vector<CWalletTx> tposContractsTxLoadedFromDB;
 
-    // we need this function, because at time when we are reading from DB, we don't have public keys and redeem scripts for multisign addresses
-    void finishLoadingTPoSContractsFromDB();
 
     /**
      * Used to keep track of spent outpoints, and
@@ -666,15 +664,11 @@ private:
     /* HD derive new child key (on internal or external chain) */
     void DeriveNewChildKey(const CKeyMetadata& metadata, CKey& secretRet, uint32_t nAccountIndex, bool fInternal /*= false*/);
 
-    bool CreateCoinStakeKernel(CScript &kernelScript,
-                               const CScript &stakeScript,
-                               unsigned int nBits,
-                               const CBlock& blockFrom,
-                               unsigned int nTxPrevOffset,
-                               const CTransaction& txPrev,
-                               const COutPoint& prevout,
-                               unsigned int &nTimeTx,
-                               bool fPrintProofOfStake) const;
+    bool CreateCoinStakeKernel(CScript &kernelScript, const CScript &stakeScript,
+                               unsigned int nBits, const CBlock& blockFrom,
+                               unsigned int nTxPrevOffset, const CTransaction& txPrev,
+                               const COutPoint& prevout, unsigned int &nTimeTx,
+                               const TPoSContract &contract, bool fPrintProofOfStake) const;
 
     void FillCoinStakePayments(CMutableTransaction &transaction,
                                const TPoSContract &tposContract,
@@ -693,6 +687,9 @@ public:
 
     bool fFileBacked;
     const std::string strWalletFile;
+
+    // we need this function, because at time when we are reading from DB, we don't have public keys and redeem scripts for multisign addresses
+    void LoadContractsFromDB();
 
     void LoadKeyPool(int nIndex, const CKeyPool &keypool)
     {
@@ -808,8 +805,7 @@ public:
     // Coin selection
     using StakeCoinsSet = std::set<std::pair<const CWalletTx*, unsigned int> >;
     bool MintableCoins();
-    bool SelectStakeCoins(StakeCoinsSet& setCoins, CAmount nTargetAmount) const;
-    bool SelectStakeTPoSCoins(StakeCoinsSet& setCoins, StakeCoinsSet &tposCoins, const TPoSContract &contract) const;
+    bool SelectStakeCoins(StakeCoinsSet& setCoins, CAmount nTargetAmount, const CScript &scriptFilterPubKey = CScript()) const;
 
     bool SelectCoinsByDenominations(int nDenom, CAmount nValueMin, CAmount nValueMax, std::vector<CTxDSIn>& vecTxDSInRet, std::vector<COutput>& vCoinsRet, CAmount& nValueRet, int nPrivateSendRoundsMin, int nPrivateSendRoundsMax);
     bool GetCollateralTxDSIn(CTxDSIn& txdsinRet, CAmount& nValueRet) const;
@@ -837,8 +833,8 @@ public:
     bool IsSpent(const uint256& hash, unsigned int n) const;
 
     bool IsLockedCoin(uint256 hash, unsigned int n) const;
-    void LockCoin(COutPoint& output);
-    void UnlockCoin(COutPoint& output);
+    void LockCoin(const COutPoint &output);
+    void UnlockCoin(const COutPoint &output);
     void UnlockAllCoins();
     void ListLockedCoins(std::vector<COutPoint>& vOutpts);
 
@@ -945,12 +941,9 @@ public:
                            std::string& strFailReason, const CCoinControl *coinControl = NULL, bool sign = true, AvailableCoinsType nCoinType=ALL_COINS, bool fUseInstantSend=false);
     bool CommitTransaction(CWalletTx& wtxNew, CReserveKey& reservekey, CConnman* connman, std::string strCommand="tx");
 
-    bool CreateCoinStake(unsigned int nBits,
-                         CAmount blockReward,
-                         CMutableTransaction& txNew,
-                         unsigned int& nTxNewTime,
-                         const TPoSContract &tposContract,
-                         COutPoint &tposStakeCoin);
+    bool CreateCoinStake(unsigned int nBits, CAmount blockReward,
+                         CMutableTransaction& txNew, unsigned int& nTxNewTime,
+                         const TPoSContract &tposContract);
 
     bool CreateCollateralTransaction(CMutableTransaction& txCollateral, std::string& strReason);
     bool ConvertList(std::vector<CTxIn> vecTxIn, std::vector<CAmount>& vecAmounts);

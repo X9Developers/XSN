@@ -14,11 +14,12 @@ class CMerchantnode;
 class CMerchantnodeBroadcast;
 class CConnman;
 
-static const int MERCHANTNODE_CHECK_SECONDS               =   5;
-static const int MERCHANTNODE_MIN_MNB_SECONDS             =   5 * 60;
-static const int MERCHANTNODE_MIN_MNP_SECONDS             =   1 * 60;
-static const int MERCHANTNODE_EXPIRATION_SECONDS          =  65 * 60;
-static const int MERCHANTNODE_MAX_EXPIRATION_SECONDS      =  25 * 60 * 60;
+static const int MERCHANTNODE_CHECK_SECONDS               = 20;
+static const int MERCHANTNODE_MIN_MNB_SECONDS             = 5 * 60;
+//static const int MERCHANTNODE_MIN_MNP_SECONDS             = 120 * 60;
+static const int MERCHANTNODE_MIN_MNP_SECONDS             = 2 * 60;
+static const int MERCHANTNODE_EXPIRATION_SECONDS          = 65 * 60;
+static const int MERCHANTNODE_MAX_EXPIRATION_SECONDS      = 25 * 60 * 60;
 static const int MERCHANTNODE_WATCHDOG_MAX_SECONDS        = 120 * 60;
 static const int MERCHANTNODE_NEW_START_REQUIRED_SECONDS  = 180 * 60;
 static const int MERCHANTNODE_POSE_BAN_MAX_SCORE          = 5;
@@ -101,10 +102,10 @@ struct merchantnode_info_t
         nActiveState{activeState}, nProtocolVersion{protoVer}, sigTime{sTime} {}
 
     merchantnode_info_t(int activeState, int protoVer, int64_t sTime,
-                        CService const& addr, CPubKey const& pkMN,
+                        CService const& addr, CPubKey const& pkMN, uint256 const &hashTPoSContractTxNew,
                       int64_t tWatchdogV = 0) :
         nActiveState{activeState}, nProtocolVersion{protoVer}, sigTime{sTime},
-        addr{addr}, pubKeyMerchantnode{pkMN},
+        addr{addr}, pubKeyMerchantnode{pkMN}, hashTPoSContractTx{hashTPoSContractTxNew},
         nTimeLastWatchdogVote{tWatchdogV} {}
 
     int nActiveState = 0;
@@ -113,6 +114,7 @@ struct merchantnode_info_t
 
     CService addr{};
     CPubKey pubKeyMerchantnode{};
+    uint256 hashTPoSContractTx{};
     int64_t nTimeLastWatchdogVote = 0;
 
     int64_t nLastDsq = 0; //the dsq count from the last dsq broadcast of this node
@@ -153,7 +155,7 @@ public:
     CMerchantnode();
     CMerchantnode(const CMerchantnode& other);
     CMerchantnode(const CMerchantnodeBroadcast& mnb);
-    CMerchantnode(CService addrNew, CPubKey pubKeyMerchantnodeNew, int nProtocolVersionIn);
+    CMerchantnode(CService addrNew, CPubKey pubKeyMerchantnodeNew, uint256 hashTPoSContractTxNew, int nProtocolVersionIn);
 
     ADD_SERIALIZE_METHODS;
 
@@ -162,6 +164,7 @@ public:
         LOCK(cs);
         READWRITE(addr);
         READWRITE(pubKeyMerchantnode);
+        READWRITE(hashTPoSContractTx);
         READWRITE(lastPing);
         READWRITE(vchSig);
         READWRITE(sigTime);
@@ -215,10 +218,11 @@ public:
         if(nActiveState == MERCHANTNODE_ENABLED) {
             return true;
         }
-        if(!sporkManager.IsSporkActive(SPORK_14_REQUIRE_SENTINEL_FLAG) &&
-           (nActiveState == MERCHANTNODE_WATCHDOG_EXPIRED)) {
-            return true;
-        }
+
+//        if(!sporkManager.IsSporkActive(SPORK_14_REQUIRE_SENTINEL_FLAG) &&
+//           (nActiveState == MERCHANTNODE_WATCHDOG_EXPIRED)) {
+//            return true;
+//        }
 
         return false;
     }
@@ -272,8 +276,8 @@ public:
 
     CMerchantnodeBroadcast() : CMerchantnode(), fRecovery(false) {}
     CMerchantnodeBroadcast(const CMerchantnode& mn) : CMerchantnode(mn), fRecovery(false) {}
-    CMerchantnodeBroadcast(CService addrNew, CPubKey pubKeyMerchantnodeNew, int nProtocolVersionIn) :
-        CMerchantnode(addrNew, pubKeyMerchantnodeNew, nProtocolVersionIn), fRecovery(false) {}
+    CMerchantnodeBroadcast(CService addrNew, CPubKey pubKeyMerchantnodeNew, uint256 hashTPoSContractTxNew, int nProtocolVersionIn) :
+        CMerchantnode(addrNew, pubKeyMerchantnodeNew, hashTPoSContractTxNew, nProtocolVersionIn), fRecovery(false) {}
 
     ADD_SERIALIZE_METHODS;
 
@@ -281,6 +285,7 @@ public:
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
         READWRITE(addr);
         READWRITE(pubKeyMerchantnode);
+        READWRITE(hashTPoSContractTx);
         READWRITE(vchSig);
         READWRITE(sigTime);
         READWRITE(nProtocolVersion);
@@ -291,14 +296,20 @@ public:
     {
         CHashWriter ss(SER_GETHASH, PROTOCOL_VERSION);
         ss << pubKeyMerchantnode;
+        ss << hashTPoSContractTx;
 
         ss << sigTime;
         return ss.GetHash();
     }
 
     /// Create Merchantnode broadcast, needs to be relayed manually after that
-    static bool Create(const CService& service, const CKey& keyMerchantnodeNew, const CPubKey& pubKeyMerchantnodeNew, std::string &strErrorRet, CMerchantnodeBroadcast &mnbRet);
-    static bool Create(std::string strService, std::string strMerchantAddress, std::string& strErrorRet, CMerchantnodeBroadcast &mnbRet, bool fOffline = false);
+    static bool Create(const CService& service, const CKey& keyMerchantnodeNew,
+                       const CPubKey& pubKeyMerchantnodeNew, const uint256 &hashTPoSContractTx,
+                       std::string &strErrorRet, CMerchantnodeBroadcast &mnbRet);
+
+    static bool Create(std::string strService, std::string strMerchantAddress,
+                       std::string strHashTPoSContractTx, std::string& strErrorRet,
+                       CMerchantnodeBroadcast &mnbRet, bool fOffline = false);
 
     bool SimpleCheck(int& nDos);
     bool Update(CMerchantnode* pmn, int& nDos, CConnman& connman);

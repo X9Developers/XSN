@@ -1934,6 +1934,10 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
         }
     }
 
+    if(pwalletMain) {
+           pwalletMain->LoadContractsFromDB();
+    }
+
 #ifdef ENABLE_WALLET
     LogPrintf("Using masternode config file %s\n", GetMasternodeConfigFile().string());
 

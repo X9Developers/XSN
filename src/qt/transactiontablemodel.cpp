@@ -371,6 +371,8 @@ QString TransactionTableModel::formatTxType(const TransactionRecord *wtx) const
     {
     case TransactionRecord::RecvWithAddress:
         return tr("Received with");
+    case TransactionRecord::MNReward:
+        return tr("Masternode Reward");
     case TransactionRecord::RecvFromOther:
         return tr("Received from");
     case TransactionRecord::RecvWithPrivateSend:
@@ -382,7 +384,12 @@ QString TransactionTableModel::formatTxType(const TransactionRecord *wtx) const
         return tr("Payment to yourself");
     case TransactionRecord::Generated:
         return tr("Mined");
-
+    case TransactionRecord::StakeMint:
+        return tr("Minted");
+    case TransactionRecord::StakeMintTPoS:
+        return tr("Minted(TPoS)");
+    case TransactionRecord::StakeMintTPoSCommission:
+        return tr("Minted(Commission)");
     case TransactionRecord::PrivateSendDenominate:
         return tr("PrivateSend Denominate");
     case TransactionRecord::PrivateSendCollateralPayment:
@@ -434,6 +441,8 @@ QString TransactionTableModel::formatTxToAddress(const TransactionRecord *wtx, b
     case TransactionRecord::RecvWithPrivateSend:
     case TransactionRecord::SendToAddress:
     case TransactionRecord::Generated:
+    case TransactionRecord::MNReward:
+    case TransactionRecord::StakeMint:
     case TransactionRecord::PrivateSend:
         return lookupAddress(wtx->address, tooltip) + watchAddress;
     case TransactionRecord::SendToOther:
@@ -452,6 +461,8 @@ QVariant TransactionTableModel::addressColor(const TransactionRecord *wtx) const
     case TransactionRecord::RecvWithAddress:
     case TransactionRecord::SendToAddress:
     case TransactionRecord::Generated:
+    case TransactionRecord::StakeMint:
+    case TransactionRecord::MNReward:
     case TransactionRecord::PrivateSend:
     case TransactionRecord::RecvWithPrivateSend:
         {

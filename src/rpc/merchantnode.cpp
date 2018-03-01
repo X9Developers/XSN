@@ -164,7 +164,8 @@ UniValue merchantnode(const UniValue& params, bool fHelp)
                 std::string strError;
                 CMerchantnodeBroadcast mnb;
 
-                bool fResult = CMerchantnodeBroadcast::Create(mrne.getIp(), mrne.getMerchantPrivKey(), strError, mnb);
+                bool fResult = CMerchantnodeBroadcast::Create(mrne.getIp(), mrne.getMerchantPrivKey(),
+                                                              mrne.getContractTxID(), strError, mnb);
 
                 statusObj.push_back(Pair("result", fResult ? "successful" : "failed"));
                 if(fResult) {
@@ -184,11 +185,6 @@ UniValue merchantnode(const UniValue& params, bool fHelp)
         }
 
         return statusObj;
-        //        bool fResult = CMerchantnodeBroadcast::Create("77.120.42.4:29999",
-        //                                                      "928g5ADKbe33FtXyNbNW7mwfGSxyZpRKTgPD4S6ekVS2K9M1vmP",
-        //                                                      "caccdbab8f60973009cf295e29f26dc7cc26e7e49de9f54b3306db041fc121c9",
-        //                                                      "0",
-        //                                                      strError, mnb);
     }
 
     if (strCommand == "status")
@@ -283,6 +279,7 @@ UniValue merchantnodelist(const UniValue& params, bool fHelp)
                           mn.GetStatus() << " " <<
                           mn.nProtocolVersion << " " <<
                           CBitcoinAddress(mn.pubKeyMerchantnode.GetID()).ToString() << " " <<
+                          mn.hashTPoSContractTx.ToString() << " " <<
                           (int64_t)mn.lastPing.sigTime << " " << std::setw(8) <<
                           (int64_t)(mn.lastPing.sigTime - mn.sigTime) << " " << std::setw(10) <<
                           mn.addr.ToString();
@@ -376,7 +373,7 @@ UniValue tposcontract(const UniValue& params, bool fHelp)
         strCommand = params[0].get_str();
     }
 
-    if (fHelp  || (strCommand != "list" && strCommand != "create" && strCommand != "merchant-prepare"))
+    if (fHelp  || (strCommand != "list" && strCommand != "create"))
         throw std::runtime_error(
                 "tposcontract \"command\"...\n"
                 "Set of commands to execute merchantnode related actions\n"
@@ -385,7 +382,6 @@ UniValue tposcontract(const UniValue& params, bool fHelp)
                 "\nAvailable commands:\n"
                 "  create           - Create tpos transaction\n"
                 "  list             - Print list of all tpos contracts that you are owner or merchant\n"
-                "  merchant-prepare - Prepare a magic string which constists of txid and outpoint index of merchant address\n"
                 );
 
     if (strCommand == "list")
@@ -399,9 +395,7 @@ UniValue tposcontract(const UniValue& params, bool fHelp)
 
             object.push_back(Pair("txid", contract.rawTx.GetHash().ToString()));
             object.push_back(Pair("tposAddress", contract.tposAddress.ToString()));
-//            object.push_back(Pair("merchantAddress", contract.merchantAddress.ToString()));
-            object.push_back(Pair("merchantTxId", HexStr(contract.merchantOutPoint.hash)));
-            object.push_back(Pair("merchantTxOut", static_cast<int>(contract.merchantOutPoint.n)));
+            object.push_back(Pair("merchantAddress", contract.merchantAddress.ToString()));
             object.push_back(Pair("commission", contract.stakePercentage));
 
             return object;
@@ -424,35 +418,28 @@ UniValue tposcontract(const UniValue& params, bool fHelp)
     }
     else if(strCommand == "create")
     {
-        if (params.size() < 5)
+        if (params.size() < 4)
             throw JSONRPCError(RPC_INVALID_PARAMETER,
-                               "Expected format: tposcontract create tpos_address magic_string 5000 5");
+                               "Expected format: tposcontract create tpos_address merchant_address commission");
 
         CBitcoinAddress tposAddress(params[1].get_str());
-        std::string merchantMagicStr = DecodeBase64(params[2].get_str());
-        CAmount amount = AmountFromValue(params[3]);
-        int commission = std::stoi(params[4].get_str());
+        CBitcoinAddress merchantAddress(params[2].get_str());
+        int commission = std::stoi(params[3].get_str());
 
         if(!tposAddress.IsValid())
             throw JSONRPCError(RPC_INVALID_PARAMETER,
                                "tpos address is not valid, won't continue");
 
-        std::stringstream ss(merchantMagicStr);
-        std::string hashId;
-        std::string outpointIndex;
-        if(!(ss >> hashId >> outpointIndex) || !IsHex(hashId))
+        if(!merchantAddress.IsValid())
             throw JSONRPCError(RPC_INVALID_PARAMETER,
-                               "Malformed magic string");
+                               "merchant address is not valid, won't continue");
 
-
-        uint256 txHash(ParseHex(hashId));
-        COutPoint merchantOutpoint(txHash, std::stoi(outpointIndex));
         CReserveKey reserveKey(pwalletMain);
 
         std::string strError;
         auto walletTx = TPoSUtils::CreateTPoSTransaction(pwalletMain, reserveKey,
-                                                         tposAddress, amount,
-                                                         merchantOutpoint, commission, strError);
+                                                         tposAddress, merchantAddress,
+                                                         commission, strError);
 
         if(walletTx)
         {
@@ -462,33 +449,6 @@ UniValue tposcontract(const UniValue& params, bool fHelp)
         {
             return "Failed to create tpos transaction, reason: " + strError;
         }
-    }
-    else if(strCommand == "merchant-prepare")
-    {
-        if (params.size() < 2)
-            throw JSONRPCError(RPC_INVALID_PARAMETER, "Transaction id and outpoint index required for merchantnode address.");
-
-        auto txId = ParseHashV(params[1], "parameter 1");
-        std::string outpointIndexStr = params[2].get_str();
-
-        int outpointIndex = std::stoi(outpointIndexStr);
-
-        assert(pwalletMain != NULL);
-        LOCK2(cs_main, pwalletMain->cs_wallet);
-
-        auto walletTx = pwalletMain->GetWalletTx(txId);
-
-        if (!walletTx)
-            return "invalid hash tx id, this transaction is not recorded into wallet.";
-
-        const CTxOut& txOut = walletTx->vout.at(outpointIndex);
-        if (pwalletMain->IsMine(txOut) != ISMINE_SPENDABLE)
-            return "coin is not spendable";
-
-        if (pwalletMain->IsSpent(txId, outpointIndex))
-            return "coin is already spent";
-
-        return EncodeBase64(HexStr(txId) + " " + outpointIndexStr);
     }
 
     return NullUniValue;
