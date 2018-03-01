@@ -22,7 +22,7 @@ QList<BitcoinUnits::Unit> BitcoinUnits::availableUnits()
     unitlist.append(XSN);
     unitlist.append(mXSN);
     unitlist.append(uXSN);
-    unitlist.append(duffs);
+//    unitlist.append(duffs);
     return unitlist;
 }
 

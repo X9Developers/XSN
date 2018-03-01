@@ -20,7 +20,7 @@ void AppendParamsHelpMessages(std::string& strUsage, bool debugHelp)
     strUsage += HelpMessageOpt("-testnet", _("Use the test chain"));
     if (debugHelp) {
         strUsage += HelpMessageOpt("-regtest", "Enter regression test mode, which uses a special chain in which blocks can be solved instantly. "
-                                   "This is intended for regression testing tools and app development.");
+                                               "This is intended for regression testing tools and app development.");
     }
 }
 
@@ -32,7 +32,7 @@ class CBaseMainParams : public CBaseChainParams
 public:
     CBaseMainParams()
     {
-        nRPCPort = 9998;
+        nRPCPort = 51473;
     }
 };
 static CBaseMainParams mainParams;
@@ -92,16 +92,16 @@ void SelectBaseParams(const std::string& chain)
 
 std::string ChainNameFromCommandLine()
 {
-//    bool fRegTest = GetBoolArg("-regtest", false);
-//    bool fTestNet = GetBoolArg("-testnet", false);
+    bool fRegTest = GetBoolArg("-regtest", false);
+    bool fTestNet = GetBoolArg("-testnet", false);
 
-//    if (fTestNet && fRegTest)
-//        throw std::runtime_error("Invalid combination of -regtest and -testnet.");
-//    if (fRegTest)
-//        return CBaseChainParams::REGTEST;
-//    if (fTestNet)
+    if (fTestNet && fRegTest)
+        throw std::runtime_error("Invalid combination of -regtest and -testnet.");
+    if (fRegTest)
+        return CBaseChainParams::REGTEST;
+    if (fTestNet)
         return CBaseChainParams::TESTNET;
-//    return CBaseChainParams::MAIN;
+    return CBaseChainParams::MAIN;
 }
 
 bool AreBaseParamsConfigured()
