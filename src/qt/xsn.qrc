@@ -127,20 +127,20 @@
         <file>res/images/pages/send/dark/send-button.png</file>
         <file>res/images/pages/send/dark/send-header.png</file>
         <file>res/images/pages/send/light/send-header.png</file>
-        <file>res/images/navigation buttons/dark/masternodes-activated.png</file>
-        <file>res/images/navigation buttons/dark/masternodes-button.png</file>
-        <file>res/images/navigation buttons/dark/overview-activated.png</file>
-        <file>res/images/navigation buttons/dark/overview-button.png</file>
-        <file>res/images/navigation buttons/dark/receive-activated.png</file>
-        <file>res/images/navigation buttons/dark/receive-button.png</file>
-        <file>res/images/navigation buttons/dark/send-activated.png</file>
-        <file>res/images/navigation buttons/dark/send-button.png</file>
-        <file>res/images/navigation buttons/dark/stealthmode-activated.png</file>
-        <file>res/images/navigation buttons/dark/stealthmode-button.png</file>
-        <file>res/images/navigation buttons/dark/transactions-activated.png</file>
-        <file>res/images/navigation buttons/dark/transactions-button.png</file>
-        <file>res/images/navigation buttons/dark/merchant-activated.png</file>
-        <file>res/images/navigation buttons/dark/merchant-button.png</file>
+        <file>res/images/navigation-buttons/dark/masternodes-activated.png</file>
+        <file>res/images/navigation-buttons/dark/masternodes-button.png</file>
+        <file>res/images/navigation-buttons/dark/overview-activated.png</file>
+        <file>res/images/navigation-buttons/dark/overview-button.png</file>
+        <file>res/images/navigation-buttons/dark/receive-activated.png</file>
+        <file>res/images/navigation-buttons/dark/receive-button.png</file>
+        <file>res/images/navigation-buttons/dark/send-activated.png</file>
+        <file>res/images/navigation-buttons/dark/send-button.png</file>
+        <file>res/images/navigation-buttons/dark/stealthmode-activated.png</file>
+        <file>res/images/navigation-buttons/dark/stealthmode-button.png</file>
+        <file>res/images/navigation-buttons/dark/transactions-activated.png</file>
+        <file>res/images/navigation-buttons/dark/transactions-button.png</file>
+        <file>res/images/navigation-buttons/dark/merchant-activated.png</file>
+        <file>res/images/navigation-buttons/dark/merchant-button.png</file>
         <file>res/images/pages/overview/dark/overview-header.png</file>
         <file>res/images/pages/overview/light/overview-header.png</file>
         <file>res/images/pages/transactions/dark/transactions-header.png</file>
@@ -158,27 +158,27 @@
         <file>res/images/pages/overview/light/overview_box.png</file>
         <file>res/images/other/dark/logo_left_testnet.png</file>
         <file>res/images/other/dark/splash.png</file>
-        <file>res/images/navigation buttons/light/masternodes-activated.png</file>
-        <file>res/images/navigation buttons/light/masternodes-button.png</file>
-        <file>res/images/navigation buttons/light/overview-activated.png</file>
-        <file>res/images/navigation buttons/light/overview-button.png</file>
-        <file>res/images/navigation buttons/light/receive-button.png</file>
-        <file>res/images/navigation buttons/light/send-activated.png</file>
-        <file>res/images/navigation buttons/light/send-button.png</file>
-        <file>res/images/navigation buttons/light/stealthmode-activated.png</file>
-        <file>res/images/navigation buttons/light/stealthmode-button.png</file>
-        <file>res/images/navigation buttons/light/transactions-activated.png</file>
-        <file>res/images/navigation buttons/light/transactions-button.png</file>
+        <file>res/images/navigation-buttons/light/masternodes-activated.png</file>
+        <file>res/images/navigation-buttons/light/masternodes-button.png</file>
+        <file>res/images/navigation-buttons/light/overview-activated.png</file>
+        <file>res/images/navigation-buttons/light/overview-button.png</file>
+        <file>res/images/navigation-buttons/light/receive-button.png</file>
+        <file>res/images/navigation-buttons/light/send-activated.png</file>
+        <file>res/images/navigation-buttons/light/send-button.png</file>
+        <file>res/images/navigation-buttons/light/stealthmode-activated.png</file>
+        <file>res/images/navigation-buttons/light/stealthmode-button.png</file>
+        <file>res/images/navigation-buttons/light/transactions-activated.png</file>
+        <file>res/images/navigation-buttons/light/transactions-button.png</file>
         <file>res/images/other/light/logo_left_testnet.png</file>
         <file>res/images/other/light/splash.png</file>
         <file>res/images/pages/merchant/light/merchant-header.png</file>
-        <file>res/images/navigation buttons/light/merchant-activated.png</file>
-        <file>res/images/navigation buttons/light/merchant-button.png</file>
-        <file>res/images/navigation buttons/light/receive-activated.png</file>
-        <file>res/images/navigation buttons/light/tpos-activated.png</file>
-        <file>res/images/navigation buttons/light/tpos-button.png</file>
-        <file>res/images/navigation buttons/dark/tpos-activated.png</file>
-        <file>res/images/navigation buttons/dark/tpos-button.png</file>
+        <file>res/images/navigation-buttons/light/merchant-activated.png</file>
+        <file>res/images/navigation-buttons/light/merchant-button.png</file>
+        <file>res/images/navigation-buttons/light/receive-activated.png</file>
+        <file>res/images/navigation-buttons/light/tpos-activated.png</file>
+        <file>res/images/navigation-buttons/light/tpos-button.png</file>
+        <file>res/images/navigation-buttons/dark/tpos-activated.png</file>
+        <file>res/images/navigation-buttons/dark/tpos-button.png</file>
         <file>res/images/pages/tpos/dark/tpos-header.png</file>
         <file>res/images/pages/tpos/light/tpos-header.png</file>
     </qresource>

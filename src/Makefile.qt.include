@@ -357,20 +357,20 @@ RES_IMAGES = \
   qt/res/images/pages/send/dark/send-button.png \
   qt/res/images/pages/send/dark/send-header.png \
   qt/res/images/pages/send/light/send-header.png \
-  qt/res/images/navigation buttons/dark/masternodes-activated.png \
-  qt/res/images/navigation buttons/dark/masternodes-button.png \
-  qt/res/images/navigation buttons/dark/overview-activated.png \
-  qt/res/images/navigation buttons/dark/overview-button.png \
-  qt/res/images/navigation buttons/dark/receive-activated.png \
-  qt/res/images/navigation buttons/dark/receive-button.png \
-  qt/res/images/navigation buttons/dark/send-activated.png \
-  qt/res/images/navigation buttons/dark/send-button.png \
-  qt/res/images/navigation buttons/dark/stealthmode-activated.png \
-  qt/res/images/navigation buttons/dark/stealthmode-button.png \
-  qt/res/images/navigation buttons/dark/transactions-activated.png \
-  qt/res/images/navigation buttons/dark/transactions-button.png \
-  qt/res/images/navigation buttons/dark/merchant-activated.png \
-  qt/res/images/navigation buttons/dark/merchant-button.png \
+  qt/res/images/navigation-buttons/dark/masternodes-activated.png \
+  qt/res/images/navigation-buttons/dark/masternodes-button.png \
+  qt/res/images/navigation-buttons/dark/overview-activated.png \
+  qt/res/images/navigation-buttons/dark/overview-button.png \
+  qt/res/images/navigation-buttons/dark/receive-activated.png \
+  qt/res/images/navigation-buttons/dark/receive-button.png \
+  qt/res/images/navigation-buttons/dark/send-activated.png \
+  qt/res/images/navigation-buttons/dark/send-button.png \
+  qt/res/images/navigation-buttons/dark/stealthmode-activated.png \
+  qt/res/images/navigation-buttons/dark/stealthmode-button.png \
+  qt/res/images/navigation-buttons/dark/transactions-activated.png \
+  qt/res/images/navigation-buttons/dark/transactions-button.png \
+  qt/res/images/navigation-buttons/dark/merchant-activated.png \
+  qt/res/images/navigation-buttons/dark/merchant-button.png \
   qt/res/images/pages/overview/dark/overview-header.png \
   qt/res/images/pages/overview/light/overview-header.png \
   qt/res/images/pages/transactions/dark/transactions-header.png \
@@ -388,27 +388,27 @@ RES_IMAGES = \
   qt/res/images/pages/overview/light/overview_box.png \
   qt/res/images/other/dark/logo_left_testnet.png \
   qt/res/images/other/dark/splash.png \
-  qt/res/images/navigation buttons/light/masternodes-activated.png \
-  qt/res/images/navigation buttons/light/masternodes-button.png \
-  qt/res/images/navigation buttons/light/overview-activated.png \
-  qt/res/images/navigation buttons/light/overview-button.png \
-  qt/res/images/navigation buttons/light/receive-button.png \
-  qt/res/images/navigation buttons/light/send-activated.png \
-  qt/res/images/navigation buttons/light/send-button.png \
-  qt/res/images/navigation buttons/light/stealthmode-activated.png \
-  qt/res/images/navigation buttons/light/stealthmode-button.png \
-  qt/res/images/navigation buttons/light/transactions-activated.png \
-  qt/res/images/navigation buttons/light/transactions-button.png \
+  qt/res/images/navigation-buttons/light/masternodes-activated.png \
+  qt/res/images/navigation-buttons/light/masternodes-button.png \
+  qt/res/images/navigation-buttons/light/overview-activated.png \
+  qt/res/images/navigation-buttons/light/overview-button.png \
+  qt/res/images/navigation-buttons/light/receive-button.png \
+  qt/res/images/navigation-buttons/light/send-activated.png \
+  qt/res/images/navigation-buttons/light/send-button.png \
+  qt/res/images/navigation-buttons/light/stealthmode-activated.png \
+  qt/res/images/navigation-buttons/light/stealthmode-button.png \
+  qt/res/images/navigation-buttons/light/transactions-activated.png \
+  qt/res/images/navigation-buttons/light/transactions-button.png \
   qt/res/images/other/light/logo_left_testnet.png \
   qt/res/images/other/light/splash.png \
   qt/res/images/pages/merchant/light/merchant-header.png \
-  qt/res/images/navigation buttons/light/merchant-activated.png \
-  qt/res/images/navigation buttons/light/merchant-button.png \
-  qt/res/images/navigation buttons/light/receive-activated.png \
-  qt/res/images/navigation buttons/light/tpos-activated.png \
-  qt/res/images/navigation buttons/light/tpos-button.png \
-  qt/res/images/navigation buttons/dark/tpos-activated.png \
-  qt/res/images/navigation buttons/dark/tpos-button.png \
+  qt/res/images/navigation-buttons/light/merchant-activated.png \
+  qt/res/images/navigation-buttons/light/merchant-button.png \
+  qt/res/images/navigation-buttons/light/receive-activated.png \
+  qt/res/images/navigation-buttons/light/tpos-activated.png \
+  qt/res/images/navigation-buttons/light/tpos-button.png \
+  qt/res/images/navigation-buttons/dark/tpos-activated.png \
+  qt/res/images/navigation-buttons/dark/tpos-button.png \
   qt/res/images/pages/tpos/dark/tpos-header.png \
   qt/res/images/pages/tpos/light/tpos-header.png 
 

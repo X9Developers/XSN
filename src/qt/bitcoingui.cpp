@@ -95,7 +95,7 @@ static std::tuple<ClickableLabel*, QAction*> CreateToolBarClickableLabel(QToolBa
                                                                          QActionGroup *actionGroup)
 {
 
-    basePath = QString(":/images/res/images/navigation buttons/%2/%1-%3.png").arg(basePath);
+    basePath = QString(":/images/res/images/navigation-buttons/%2/%1-%3.png").arg(basePath);
 
     ClickableLabel *clickableLabel = new ClickableLabel(toolBar);
     clickableLabel->setProperty("basePath", basePath);
