@@ -112,7 +112,7 @@ void CMerchantnode::Check(bool fForce)
     } else if(nPoSeBanScore >= MERCHANTNODE_POSE_BAN_MAX_SCORE) {
         nActiveState = MERCHANTNODE_POSE_BAN;
         // ban for the whole payment cycle
-        nPoSeBanHeight = nHeight + merchantnodeman.size();
+        nPoSeBanHeight = 60;
         LogPrintf("CMerchantnode::Check -- Merchantnode %s is banned till block %d now\n", HexStr(pubKeyMerchantnode.Raw()), nPoSeBanHeight);
         return;
     }
