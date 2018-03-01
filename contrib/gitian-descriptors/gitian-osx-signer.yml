@@ -1,5 +1,5 @@
 ---
-name: "dash-dmg-signer"
+name: "xsn-dmg-signer"
 suites:
 - "trusty"
 architectures:
@@ -8,10 +8,10 @@ packages:
 - "faketime"
 reference_datetime: "2017-01-01 00:00:00"
 remotes:
-- "url": "https://github.com/dashpay/dash-detached-sigs.git"
+- "url": "https://github.com/xsnpay/xsn-detached-sigs.git"
   "dir": "signature"
 files:
-- "dash-osx-unsigned.tar.gz"
+- "xsn-osx-unsigned.tar.gz"
 script: |
   WRAP_DIR=$HOME/wrapped
   mkdir -p ${WRAP_DIR}
@@ -28,8 +28,8 @@ script: |
     chmod +x ${WRAP_DIR}/${prog}
   done
 
-  UNSIGNED=dash-osx-unsigned.tar.gz
-  SIGNED=dash-osx-signed.dmg
+  UNSIGNED=xsn-osx-unsigned.tar.gz
+  SIGNED=xsn-osx-signed.dmg
 
   tar -xf ${UNSIGNED}
   ./detached-sig-apply.sh ${UNSIGNED} signature/osx

@@ -176,8 +176,8 @@
         <translation>Потвърдете на шифрирането на портфейла</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR DASH&lt;/b&gt;!</source>
-        <translation>Внимание: Ако шифрирате вашия портфейл и загубите паролата си,  &lt;b&gt;ЩЕ ЗАГУБИТЕ ВСИЧКИ DASH МОНЕТИ!&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR XSN&lt;/b&gt;!</source>
+        <translation>Внимание: Ако шифрирате вашия портфейл и загубите паролата си,  &lt;b&gt;ЩЕ ЗАГУБИТЕ ВСИЧКИ XSN МОНЕТИ!&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -857,28 +857,28 @@
         <translation>Моля изберете ниво на сигурност.</translation>
     </message>
     <message>
-        <source>Use 2 separate masternodes to mix funds up to 1000 DASH</source>
-        <translation>Използване на 2 различни masternodes за смесване на средства до 1000 DASH</translation>
+        <source>Use 2 separate masternodes to mix funds up to 1000 XSN</source>
+        <translation>Използване на 2 различни masternodes за смесване на средства до 1000 XSN</translation>
     </message>
     <message>
-        <source>Use 8 separate masternodes to mix funds up to 1000 DASH</source>
-        <translation>Използване на 8 различни masternodes за смесване на средства до 1000 DASH</translation>
+        <source>Use 8 separate masternodes to mix funds up to 1000 XSN</source>
+        <translation>Използване на 8 различни masternodes за смесване на средства до 1000 XSN</translation>
     </message>
     <message>
         <source>Use 16 separate masternodes</source>
-        <translation>Използване на 16 различни masternodes за смесване на средства до 1000 DASH</translation>
+        <translation>Използване на 16 различни masternodes за смесване на средства до 1000 XSN</translation>
     </message>
     <message>
-        <source>This option is the quickest and will cost about ~0.025 DASH to anonymize 1000 DASH</source>
-        <translation>Това е най-бързият вариант, анонимизиране на 1000 DASH ще ви струва около 0.025 DASH</translation>
+        <source>This option is the quickest and will cost about ~0.025 XSN to anonymize 1000 XSN</source>
+        <translation>Това е най-бързият вариант, анонимизиране на 1000 XSN ще ви струва около 0.025 XSN</translation>
     </message>
     <message>
-        <source>This option is moderately fast and will cost about 0.05 DASH to anonymize 1000 DASH</source>
-        <translation>Това е средно бърз вариант, анонимизиране на 1000 DASH ще ви струва около 0.05 DASH</translation>
+        <source>This option is moderately fast and will cost about 0.05 XSN to anonymize 1000 XSN</source>
+        <translation>Това е средно бърз вариант, анонимизиране на 1000 XSN ще ви струва около 0.05 XSN</translation>
     </message>
     <message>
-        <source>0.1 DASH per 1000 DASH you anonymize.</source>
-        <translation>0.1 DASH за всеки 1000 DASH които анонимизирате.</translation>
+        <source>0.1 XSN per 1000 XSN you anonymize.</source>
+        <translation>0.1 XSN за всеки 1000 XSN които анонимизирате.</translation>
     </message>
     <message>
         <source>This is the slowest and most secure option. Using maximum anonymity will cost</source>
@@ -1042,8 +1042,8 @@
         <translation>PrivateSend информация</translation>
     </message>
     <message>
-        <source>&lt;h3&gt;PrivateSend Basics&lt;/h3&gt; PrivateSend gives you true financial privacy by obscuring the origins of your funds. All the Xsn in your wallet is comprised of different "inputs" which you can think of as separate, discrete coins.&lt;br&gt; PrivateSend uses an innovative process to mix your inputs with the inputs of two other people, without having your coins ever leave your wallet. You retain control of your money at all times..&lt;hr&gt; &lt;b&gt;The PrivateSend process works like this:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;PrivateSend begins by breaking your transaction inputs down into standard denominations. These denominations are 0.01 DASH, 0.1 DASH, 1 DASH and 10 DASH -- sort of like the paper money you use every day.&lt;/li&gt; &lt;li&gt;Your wallet then sends requests to specially configured software nodes on the network, called "masternodes." These masternodes are informed then that you are interested in mixing a certain denomination. No identifiable information is sent to the masternodes, so they never know "who" you are.&lt;/li&gt; &lt;li&gt;When two other people send similar messages, indicating that they wish to mix the same denomination, a mixing session begins. The masternode mixes up the inputs and instructs all three users' wallets to pay the now-transformed input back to themselves. Your wallet pays that denomination directly to itself, but in a different address (called a change address).&lt;/li&gt; &lt;li&gt;In order to fully obscure your funds, your wallet must repeat this process a number of times with each denomination. Each time the process is completed, it's called a "round." Each round of PrivateSend makes it exponentially more difficult to determine where your funds originated.&lt;/li&gt; &lt;li&gt;This mixing process happens in the background without any intervention on your part. When you wish to make a transaction, your funds will already be anonymized. No additional waiting is required.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;IMPORTANT:&lt;/b&gt; Your wallet only contains 1000 of these "change addresses." Every time a mixing event happens, up to 9 of your addresses are used up. This means those 1000 addresses last for about 100 mixing events. When 900 of them are used, your wallet must create more addresses. It can only do this, however, if you have automatic backups enabled.&lt;br&gt; Consequently, users who have backups disabled will also have PrivateSend disabled. &lt;hr&gt;For more info see &lt;a href="https://xsnpay.atlassian.net/wiki/display/DOC/PrivateSend"&gt;https://xsnpay.atlassian.net/wiki/display/DOC/PrivateSend&lt;/a&gt;         </source>
-        <translation>&lt;h3&gt;PrivateSend основни понятия&lt;/h3&gt; PrivateSend ви дава истинска финансова независимост чрез скриване произхода на средствата ви. Всички Xsn монети в портфейла ви са съставени от различни "входове" които можете да приемете като отделни дискретни монети&lt;br&gt; PrivateSend използва иновативен процес като смесва вашите входове с входовете на други двама души без монетите да напускат изобщо портфейла ви. Имате пълен контрол върху парите си през цялото време. &lt;hr&gt; &lt;b&gt; PrivateSend процесът работи по следния начин:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;PrivateSend започва чрез разделяне на транзакцията ви до стандартни деноминации. Тези деноминации са 0.01 DASH, 0.1 DASH, 1 DASH и 10 DASH --подобно на стандартните пари, които ползваме ежедневно.&lt;/li&gt; &lt;li&gt;Вашия портфейл изпраща запитване към специално конфигурираните софтуерни възли в мрежата, наречени "masternodes." Тези masternodes са информирани, че се интересувате от смесване на определена деноминация. Никаква идентификационна информация не се изпраща към   masternodes, така, че те никога не знаят "кой" сте.&lt;/li&gt; &lt;li&gt;Когато други двама души изпратят подобни съобщения, обозначаващи, че искат да смесят същата деноминация, смесващата сесия започва. Masternode смесват входовете и инструктират портфейлите на тримата потребители да платят новотрансформираните входове обратно към притежателите им. Вашият портфейл плаща деноминацията директно на себе си, но с различен адрес (наричан сменен адрес).  &lt;/li&gt; &lt;li&gt;С цел напълно скриване на доходите ви, вашият портфейл трябва да повтори този процес няколко пъти във всяка деноминация.  Всеки път завършеният процес се нарича "цикъл." Всеки цикъл на PrivateSend прави откриването на първоначалния източник на вашите средства напълно непроследим.&lt;/li&gt; &lt;li&gt;Този смесващ процес се случва като процес на заден фон без никаква намеса от ваша страна. Когато искате да направите транзакция, вашите средства са винаги анонимни. Не е необходимо допълнително изчакване. &lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;ВАЖНО:&lt;/b&gt; Вашият портфейл съдържа само 1000 от тези "сменяеми адреси". Всеки път когато се случва смесването до 9 от вашите адреси се ползват.  Това означава, че тези 1000 адреси се миксират в около 100 смесващи събития. Когато 900 се използват, вашия портфейл трябва да създаде повече адреси. Това може да стане само ако имате автоматично архивиране.&lt;br&gt; Следователно, потребителите, на които е изключено автоматичното архивиране, нямат и  PrivateSend включено. &lt;hr&gt;За повече информация вижте&lt;a href="https://xsnpay.atlassian.net/wiki/display/DOC/PrivateSend"&gt;https://xsnpay.atlassian.net/wiki/display/DOC/PrivateSend&lt;/a&gt;         </translation>
+        <source>&lt;h3&gt;PrivateSend Basics&lt;/h3&gt; PrivateSend gives you true financial privacy by obscuring the origins of your funds. All the Xsn in your wallet is comprised of different "inputs" which you can think of as separate, discrete coins.&lt;br&gt; PrivateSend uses an innovative process to mix your inputs with the inputs of two other people, without having your coins ever leave your wallet. You retain control of your money at all times..&lt;hr&gt; &lt;b&gt;The PrivateSend process works like this:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;PrivateSend begins by breaking your transaction inputs down into standard denominations. These denominations are 0.01 XSN, 0.1 XSN, 1 XSN and 10 XSN -- sort of like the paper money you use every day.&lt;/li&gt; &lt;li&gt;Your wallet then sends requests to specially configured software nodes on the network, called "masternodes." These masternodes are informed then that you are interested in mixing a certain denomination. No identifiable information is sent to the masternodes, so they never know "who" you are.&lt;/li&gt; &lt;li&gt;When two other people send similar messages, indicating that they wish to mix the same denomination, a mixing session begins. The masternode mixes up the inputs and instructs all three users' wallets to pay the now-transformed input back to themselves. Your wallet pays that denomination directly to itself, but in a different address (called a change address).&lt;/li&gt; &lt;li&gt;In order to fully obscure your funds, your wallet must repeat this process a number of times with each denomination. Each time the process is completed, it's called a "round." Each round of PrivateSend makes it exponentially more difficult to determine where your funds originated.&lt;/li&gt; &lt;li&gt;This mixing process happens in the background without any intervention on your part. When you wish to make a transaction, your funds will already be anonymized. No additional waiting is required.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;IMPORTANT:&lt;/b&gt; Your wallet only contains 1000 of these "change addresses." Every time a mixing event happens, up to 9 of your addresses are used up. This means those 1000 addresses last for about 100 mixing events. When 900 of them are used, your wallet must create more addresses. It can only do this, however, if you have automatic backups enabled.&lt;br&gt; Consequently, users who have backups disabled will also have PrivateSend disabled. &lt;hr&gt;For more info see &lt;a href="https://xsnpay.atlassian.net/wiki/display/DOC/PrivateSend"&gt;https://xsnpay.atlassian.net/wiki/display/DOC/PrivateSend&lt;/a&gt;         </source>
+        <translation>&lt;h3&gt;PrivateSend основни понятия&lt;/h3&gt; PrivateSend ви дава истинска финансова независимост чрез скриване произхода на средствата ви. Всички Xsn монети в портфейла ви са съставени от различни "входове" които можете да приемете като отделни дискретни монети&lt;br&gt; PrivateSend използва иновативен процес като смесва вашите входове с входовете на други двама души без монетите да напускат изобщо портфейла ви. Имате пълен контрол върху парите си през цялото време. &lt;hr&gt; &lt;b&gt; PrivateSend процесът работи по следния начин:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;PrivateSend започва чрез разделяне на транзакцията ви до стандартни деноминации. Тези деноминации са 0.01 XSN, 0.1 XSN, 1 XSN и 10 XSN --подобно на стандартните пари, които ползваме ежедневно.&lt;/li&gt; &lt;li&gt;Вашия портфейл изпраща запитване към специално конфигурираните софтуерни възли в мрежата, наречени "masternodes." Тези masternodes са информирани, че се интересувате от смесване на определена деноминация. Никаква идентификационна информация не се изпраща към   masternodes, така, че те никога не знаят "кой" сте.&lt;/li&gt; &lt;li&gt;Когато други двама души изпратят подобни съобщения, обозначаващи, че искат да смесят същата деноминация, смесващата сесия започва. Masternode смесват входовете и инструктират портфейлите на тримата потребители да платят новотрансформираните входове обратно към притежателите им. Вашият портфейл плаща деноминацията директно на себе си, но с различен адрес (наричан сменен адрес).  &lt;/li&gt; &lt;li&gt;С цел напълно скриване на доходите ви, вашият портфейл трябва да повтори този процес няколко пъти във всяка деноминация.  Всеки път завършеният процес се нарича "цикъл." Всеки цикъл на PrivateSend прави откриването на първоначалния източник на вашите средства напълно непроследим.&lt;/li&gt; &lt;li&gt;Този смесващ процес се случва като процес на заден фон без никаква намеса от ваша страна. Когато искате да направите транзакция, вашите средства са винаги анонимни. Не е необходимо допълнително изчакване. &lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;ВАЖНО:&lt;/b&gt; Вашият портфейл съдържа само 1000 от тези "сменяеми адреси". Всеки път когато се случва смесването до 9 от вашите адреси се ползват.  Това означава, че тези 1000 адреси се миксират в около 100 смесващи събития. Когато 900 се използват, вашия портфейл трябва да създаде повече адреси. Това може да стане само ако имате автоматично архивиране.&lt;br&gt; Следователно, потребителите, на които е изключено автоматичното архивиране, нямат и  PrivateSend включено. &lt;hr&gt;За повече информация вижте&lt;a href="https://xsnpay.atlassian.net/wiki/display/DOC/PrivateSend"&gt;https://xsnpay.atlassian.net/wiki/display/DOC/PrivateSend&lt;/a&gt;         </translation>
     </message>
 </context>
 <context>
@@ -1694,8 +1694,8 @@ https://www.transifex.com/projects/p/xsn/</translation>
         <translation>Количество и цикли:</translation>
     </message>
     <message>
-        <source>0 DASH / 0 Rounds</source>
-        <translation>0 DASH / 0 Цикъла</translation>
+        <source>0 XSN / 0 Rounds</source>
+        <translation>0 XSN / 0 Цикъла</translation>
     </message>
     <message>
         <source>Submitted Denom:</source>
@@ -3735,8 +3735,8 @@ https://www.transifex.com/projects/p/xsn/</translation>
         <translation>Изпращане</translation>
     </message>
     <message>
-        <source>InstantSend doesn't support sending values that high yet. Transactions are currently limited to %1 DASH.</source>
-        <translation>InstantSend не поддържа толкова високи стойности за изпращане все още. Транзакциите в момента са ограничени до %1 DASH.</translation>
+        <source>InstantSend doesn't support sending values that high yet. Transactions are currently limited to %1 XSN.</source>
+        <translation>InstantSend не поддържа толкова високи стойности за изпращане все още. Транзакциите в момента са ограничени до %1 XSN.</translation>
     </message>
     <message>
         <source>Used way too many inputs (&gt;%1) for this InstantSend transaction, fees could be huge.</source>
@@ -4073,8 +4073,8 @@ https://www.transifex.com/projects/p/xsn/</translation>
         <translation>Този продукт включва софтуер, разработен от проекта OpenSSL за използване в OpenSSL Toolkit &lt;https://www.openssl.org/&gt; и криптографски софтуер, написан от Eric Young и UPnP софтуер, написан от Thomas Bernard.</translation>
     </message>
     <message>
-        <source>Unable to locate enough funds for this transaction that are not equal 1000 DASH.</source>
-        <translation>Не са намерени достатъчно  средства за тази транзакция, които не са равни на 1000 DASH.</translation>
+        <source>Unable to locate enough funds for this transaction that are not equal 1000 XSN.</source>
+        <translation>Не са намерени достатъчно  средства за тази транзакция, които не са равни на 1000 XSN.</translation>
     </message>
     <message>
         <source>Use hierarchical deterministic key generation (HD) after bip39/bip44. Only has effect during wallet creation/first start</source>
@@ -4525,7 +4525,7 @@ https://www.transifex.com/projects/p/xsn/</translation>
         <translation>KeePassHttp ключ за  AES криптирана връзка с KeePass</translation>
     </message>
     <message>
-        <source>Keep N DASH anonymized (default: %u)</source>
+        <source>Keep N XSN anonymized (default: %u)</source>
         <translation>Поддържай N Xsn анонимизирани (по подразбиране: %u)</translation>
     </message>
     <message>
@@ -4585,8 +4585,8 @@ https://www.transifex.com/projects/p/xsn/</translation>
         <translation>Ако &lt;category&gt; не е предоставена или ако &lt;category&gt; = 1, изведи цялата информация за отстраняване на грешки.</translation>
     </message>
     <message>
-        <source>InstantSend doesn't support sending values that high yet. Transactions are currently limited to %1 DASH.</source>
-        <translation>InstantSend не поддържа толкова високи стойности за изпращане все още. Транзакциите в момента са ограничени до %1 DASH.</translation>
+        <source>InstantSend doesn't support sending values that high yet. Transactions are currently limited to %1 XSN.</source>
+        <translation>InstantSend не поддържа толкова високи стойности за изпращане все още. Транзакциите в момента са ограничени до %1 XSN.</translation>
     </message>
     <message>
         <source>InstantSend requires inputs with at least %d confirmations, you might need to wait a few minutes and try again.</source>
@@ -4673,8 +4673,8 @@ https://www.transifex.com/projects/p/xsn/</translation>
         <translation>Не са намерени достатъчно PrivateSend деноминирани средства за тази транзакция.</translation>
     </message>
     <message>
-        <source>Unable to locate enough PrivateSend non-denominated funds for this transaction that are not equal 1000 DASH.</source>
-        <translation>Не са намерени достатъчно PrivateSend неденоминирани средства за тази транзакция, които не са равни на 1000 DASH.</translation>
+        <source>Unable to locate enough PrivateSend non-denominated funds for this transaction that are not equal 1000 XSN.</source>
+        <translation>Не са намерени достатъчно PrivateSend неденоминирани средства за тази транзакция, които не са равни на 1000 XSN.</translation>
     </message>
     <message>
         <source>Unsupported argument -socks found. Setting SOCKS version isn't possible anymore, only SOCKS5 proxies are supported.</source>
