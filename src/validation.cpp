@@ -1251,15 +1251,11 @@ CAmount GetBlockSubsidy(int nPrevHeight, const Consensus::Params& consensusParam
     if(nPrevHeight < 20)
         return 0;
 
-    if(fSuperblockPartOnly)
-        return 60 * COIN;
+    CAmount nSubsidy = 200 * COIN;
 
-    if(nPrevHeight < 100)
-        return 200 * COIN;
-    else if(nPrevHeight < 200)
-        return 100 * COIN;
-    else
-        return 50 * COIN;
+    for (int i = consensusParams.nSubsidyHalvingInterval; i <= nPrevHeight; i += consensusParams.nSubsidyHalvingInterval) {
+        nSubsidy -= nSubsidy / 2;
+    }
 
     //    if(Params().NetworkIDString() == CBaseChainParams::TESTNET)
 
@@ -1301,20 +1297,23 @@ CAmount GetBlockSubsidy(int nPrevHeight, const Consensus::Params& consensusParam
     //    }
 
     //    // Hard fork to reduce the block reward by 10 extra percent (allowing budget/superblocks)
-    //    CAmount nSuperblockPart = (nPrevHeight > consensusParams.nBudgetPaymentsStartBlock) ? nSubsidy/10 : 0;
+    CAmount nSuperblockPart = (nPrevHeight > consensusParams.nBudgetPaymentsStartBlock) ? nSubsidy / 10 : 0;
 
-    //    return fSuperblockPartOnly ? nSuperblockPart : nSubsidy - nSuperblockPart;
+    return fSuperblockPartOnly ? nSuperblockPart : nSubsidy - nSuperblockPart;
 }
 
 CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
 {
+#if 0
     int treasuryPercent = 10;
     CAmount moneySupply = chainActive.Tip()->nMoneySupply;
     int nMasternodeCount = mnodeman.size();
-    int64_t mNodeCoins = nMasternodeCount * 10000 * COIN;
+    int64_t mNodeCoins = nMasternodeCount * 15000 * COIN;
     CAmount ret = blockValue * ((moneySupply - mNodeCoins) / moneySupply) * ((100 - treasuryPercent)/100);
+#endif
 
-    return ret;
+    // half of the block for now
+    return blockValue / 2;
 }
 
 bool IsInitialBlockDownload()
