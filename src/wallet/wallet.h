@@ -633,7 +633,6 @@ private:
     // Stake Settings
     unsigned int nHashDrift;
     unsigned int nHashInterval;
-    uint64_t nStakeSplitThreshold;
     int nStakeSetUpdateTime;
 
     mutable bool fAnonymizableTallyCached;
@@ -778,6 +777,7 @@ public:
 
     int64_t nTimeFirstKey;
     int64_t nKeysLeftSinceAutoBackup;
+    uint64_t nStakeSplitThreshold;
 
     std::map<CKeyID, CHDPubKey> mapHdPubKeys; //<! memory map of HD extended pubkeys
 

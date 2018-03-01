@@ -105,6 +105,7 @@ public:
 
     bool WriteOrderPosNext(int64_t nOrderPosNext);
 
+    bool WriteStakeSplitThreshold(uint64_t nStakeSplitThreshold);
     bool WriteTPoSContractTx(uint256 hash, const CWalletTx& wtx);
     bool EraseTPoSContractTx(uint256 hash);
 

@@ -227,14 +227,15 @@ bool TPoSUtils::IsMerchantPaymentValid(const CBlock &block, int nBlockHeight, CA
                      contract.tposAddress.ToString().c_str(), CBitcoinAddress(dest).ToString().c_str());
     }
 
-    auto it = std::find_if(std::begin(coinstake.vout) + 2, std::end(coinstake.vout), [scriptMerchantPubKey](const CTxOut &txOut) {
-        return txOut.scriptPubKey == scriptMerchantPubKey;
+    CAmount merchantPayment = 0;
+    merchantPayment = std::accumulate(std::begin(coinstake.vout) + 2, std::end(coinstake.vout), CAmount(0), [scriptMerchantPubKey](CAmount accum, const CTxOut &txOut) {
+        return txOut.scriptPubKey == scriptMerchantPubKey ? accum + txOut.nValue : accum;
     });
 
-    if(it != std::end(coinstake.vout))
+    if(merchantPayment > 0)
     {
         auto maxAllowedValue = (expectedReward / 100) * (100 - contract.stakePercentage);
-        if(it->nValue > maxAllowedValue)
+        if(merchantPayment > maxAllowedValue)
             return error("IsMerchantPaymentValid -- ERROR: merchant was paid more than allowed: %s\n", contract.merchantAddress.ToString().c_str());
     }
     else

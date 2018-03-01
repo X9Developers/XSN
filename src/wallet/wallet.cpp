@@ -320,21 +320,14 @@ void CWallet::FillCoinStakePayments(CMutableTransaction &transaction,
     // adding output which will pay to coin stake
     transaction.vout.emplace_back(nCoinStakeReward, scriptPubKeyOut);
 
-    if(tposContract.IsValid())
     {
-
+        CTxOut &lastTx = transaction.vout.back();
+        if(lastTx.nValue > nStakeSplitThreshold * COIN)
+        {
+            lastTx.nValue /= 2;
+            transaction.vout.emplace_back(lastTx.nValue, lastTx.scriptPubKey);
+        }
     }
-
-    //    auto splitOutput = [this](std::vector<CTxOut> &vout) {
-    //        CTxOut &lastTx = vout.back();
-    //        if(lastTx.nValue / 2 > nStakeSplitThreshold * COIN)
-    //        {
-    //            lastTx.nValue /= 2;
-    //            vout.push_back(CTxOut(lastTx.nValue, lastTx.scriptPubKey));
-    //        }
-    //    };
-
-    //                splitOutput(txNew.vout);
 
     // here we need to send reward to merchant to his reward address
     if(tposContract.IsValid())
@@ -2864,35 +2857,35 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, c
         if(scriptPubKeyKernel.IsPayToScriptHash())
             continue;
 
-//        LogPrintf("scriptPubKeyKernel is good\n");
+        //        LogPrintf("scriptPubKeyKernel is good\n");
 
         //for now we will comment this out
-//        if (nAmountSelected + out.tx->vout[out.i].nValue > nTargetAmount)
-//            continue;
+        //        if (nAmountSelected + out.tx->vout[out.i].nValue > nTargetAmount)
+        //            continue;
 
-//        LogPrintf("amount is good\n");
+        //        LogPrintf("amount is good\n");
 
         //check for min age
         if (GetTime() - out.tx->GetTxTime() < Params().GetConsensus().nStakeMinAge)
             continue;
 
-//        LogPrintf("min age is good\n");
+        //        LogPrintf("min age is good\n");
 
         //check that it is matured
         if (out.nDepth < (out.tx->IsCoinStake() ? COINBASE_MATURITY : 10))
             continue;
 
-//        LogPrintf("maturity is good\n");
+        //        LogPrintf("maturity is good\n");
 
         auto scriptPubKeyCoin = out.tx->vout[out.i].scriptPubKey;
 
         if(!scriptFilterPubKey.empty() && scriptPubKeyCoin != scriptFilterPubKey)
             continue;
 
-//        LogPrintf("filtering is good\n");
+        //        LogPrintf("filtering is good\n");
 
         if(rejectCache.count(scriptPubKeyCoin)) {
-           continue;
+            continue;
         }
         else {
             auto it = std::find_if(std::begin(tposOwnerContracts), std::end(tposOwnerContracts), [scriptPubKeyCoin](const std::pair<uint256, TPoSContract> &entry) {
@@ -2905,7 +2898,7 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, c
             }
         }
 
-//        LogPrintf("reject is good\n");
+        //        LogPrintf("reject is good\n");
 
         nAmountSelected += out.tx->vout[out.i].nValue; //maybe change here for tpos
         setCoins.insert(make_pair(out.tx, out.i));
