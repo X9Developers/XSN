@@ -28,7 +28,7 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
 
     // transparent background
     setAttribute(Qt::WA_TranslucentBackground);
-    setStyleSheet("background:transparent;");
+    setStyleSheet("background:white;");
 
     // no window decorations
     setWindowFlags(Qt::FramelessWindowHint);
@@ -48,11 +48,12 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     QString copyrightTextXSN   = QChar(0xA9)+QString(" 2014-%1 ").arg(COPYRIGHT_YEAR) + QString(tr("The Dash Core developers"));
     QString titleAddText    = networkStyle->getTitleAddText();
     // networkstyle.cpp can't (yet) read themes, so we do it here to get the correct Splash-screen
-    QString splashScreenPath = ":/images/" + GUIUtil::getThemeName() + "/splash";
+    QString basePath = QString(":/images/res/images/other/%1/%2.png").arg(GUIUtil::getThemeName());
+    QString splashScreenPath = basePath.arg("splash");
     if(GetBoolArg("-regtest", false))
-        splashScreenPath = ":/images/" + GUIUtil::getThemeName() + "/splash_testnet";
+        splashScreenPath = basePath.arg("splash");
     if(GetBoolArg("-testnet", false))
-        splashScreenPath = ":/images/" + GUIUtil::getThemeName() + "/splash_testnet";
+        splashScreenPath = basePath.arg("splash");
 
     QString font = QApplication::font().toString();
 

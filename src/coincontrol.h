@@ -21,6 +21,8 @@ public:
     //! Minimum absolute fee (not per kilobyte)
     CAmount nMinimumTotalFee;
 
+    int nSplitBlock;
+
     CCoinControl()
     {
         SetNull();
@@ -35,6 +37,7 @@ public:
         fUseInstantSend = false;
         fUsePrivateSend = true;
         nMinimumTotalFee = 0;
+        nSplitBlock = 1;
     }
 
     bool HasSelected() const
