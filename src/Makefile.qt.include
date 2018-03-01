@@ -246,8 +246,8 @@ RES_IMAGES = \
   qt/res/images/qtreeview_selected.png \
   qt/res/images/walletFrame_bg.png \
   qt/res/images/walletFrame.png \
-  $(wildcard qt/res/images/navigation buttons/dark/*.png \
-  $(wildcard qt/res/images/navigation buttons/light/*.png \
+  $(wildcard qt/res/images/navigation buttons/dark/*.png) \
+  $(wildcard qt/res/images/navigation buttons/light/*.png) \
   $(wildcard qt/res/images/other/dark/*.png) \
   $(wildcard qt/res/images/other/light/*.png) \
   $(wildcard qt/res/images/pages/send/dark/*.png) \
