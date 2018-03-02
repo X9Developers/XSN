@@ -249,6 +249,11 @@ bool TPoSUtils::IsMerchantPaymentValid(const CBlock &block, int nBlockHeight, CA
         return true;
     }
 
+    if(sporkManager.IsSporkActive(SPORK_15_TPOS_ENABLED)) {
+        LogPrintf("IsBlockPayeeValid -- ERROR: Invalid merchantnode payment detected at height %d: %s", nBlockHeight, txNew.ToString());
+        return false;
+    }
+
     CKeyID coinstakeKeyID;
     if(!merchantAddress.GetKeyID(coinstakeKeyID))
         return error("IsMerchantPaymentValid -- ERROR: coin stake was paid to invalid address\n");
