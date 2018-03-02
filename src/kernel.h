@@ -15,7 +15,7 @@ class CBlockIndex;
 class CTransaction;
 
 // MODIFIER_INTERVAL: time to elapse before new modifier is computed
-static const unsigned int MODIFIER_INTERVAL = 30;
+static const unsigned int MODIFIER_INTERVAL = 30 * 60;
 static const unsigned int MODIFIER_INTERVAL_TESTNET = 20;
 extern unsigned int nModifierInterval;
 extern unsigned int getIntervalVersion(bool fTestNet);
