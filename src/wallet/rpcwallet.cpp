@@ -431,21 +431,22 @@ UniValue sendtoaddress(const UniValue& params, bool fHelp)
                 + HelpRequiringPassphrase() +
                 "\nArguments:\n"
                 "1. \"xsnaddress\" (string, required) The xsn address to send to.\n"
-                "2. \"amount\"      (numeric or string, required) The amount in " + CURRENCY_UNIT + " to send. eg 0.1\n"
-                                                                                                    "3. \"amount of splits\"     (numeric, optional) amount of UTXO splits. \n"
-                                                                                                    "                             This is not part of the transaction, just kept in your wallet.\n"
-                                                                                                    "4. \"comment\"     (string, optional) A comment used to store what the transaction is for. \n"
-                                                                                                    "                             This is not part of the transaction, just kept in your wallet.\n"
-                                                                                                    "5. \"comment-to\"  (string, optional) A comment to store the name of the person or organization \n"
-                                                                                                    "                             to which you're sending the transaction. This is not part of the \n"
-                                                                                                    "                             transaction, just kept in your wallet.\n"
-                                                                                                    "6. subtractfeefromamount  (boolean, optional, default=false) The fee will be deducted from the amount being sent.\n"
-                                                                                                    "                             The recipient will receive less amount of XSN than you enter in the amount field.\n"
-                                                                                                    "7. \"use_is\"      (bool, optional) Send this transaction as InstantSend (default: false)\n"
-                                                                                                    "8. \"use_ps\"      (bool, optional) Use anonymized funds only (default: false)\n"
-                                                                                                    "\nResult:\n"
-                                                                                                    "\"transactionid\"  (string) The transaction id.\n"
-                                                                                                    "\nExamples:\n"
+                "2. \"amount\"      (numeric or string, required) The amount in " + CURRENCY_UNIT +
+                " to send. eg 0.1\n"
+                "3. \"amount of splits\"     (numeric, optional) amount of UTXO splits. \n"
+                "                             This is not part of the transaction, just kept in your wallet.\n"
+                "4. \"comment\"     (string, optional) A comment used to store what the transaction is for. \n"
+                "                             This is not part of the transaction, just kept in your wallet.\n"
+                "5. \"comment-to\"  (string, optional) A comment to store the name of the person or organization \n"
+                "                             to which you're sending the transaction. This is not part of the \n"
+                "                             transaction, just kept in your wallet.\n"
+                "6. subtractfeefromamount  (boolean, optional, default=false) The fee will be deducted from the amount being sent.\n"
+                "                             The recipient will receive less amount of XSN than you enter in the amount field.\n"
+                "7. \"use_is\"      (bool, optional) Send this transaction as InstantSend (default: false)\n"
+                "8. \"use_ps\"      (bool, optional) Use anonymized funds only (default: false)\n"
+                "\nResult:\n"
+                "\"transactionid\"  (string) The transaction id.\n"
+                "\nExamples:\n"
                 + HelpExampleCli("sendtoaddress", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 0.1")
                 + HelpExampleCli("sendtoaddress", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 0.1 \"donation\" \"seans outpost\"")
                 + HelpExampleCli("sendtoaddress", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 0.1 \"\" \"\" true")
@@ -487,7 +488,7 @@ UniValue sendtoaddress(const UniValue& params, bool fHelp)
 
     EnsureWalletIsUnlocked();
 
-    SendMoney(address.Get(), nAmount, fSubtractFeeFromAmount, 1, wtx, fUseInstantSend, fUsePrivateSend);
+    SendMoney(address.Get(), nAmount, fSubtractFeeFromAmount, amountOfSplits, wtx, fUseInstantSend, fUsePrivateSend);
 
     return wtx.GetHash().GetHex();
 }
@@ -2478,18 +2479,18 @@ UniValue setstakesplitthreshold(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() != 1)
         throw runtime_error(
-            "setstakesplitthreshold value\n"
-            "\nThis will set the output size of your stakes to never be below this number\n"
+                "setstakesplitthreshold value\n"
+                "\nThis will set the output size of your stakes to never be below this number\n"
 
-            "\nArguments:\n"
-            "1. value   (numeric, required) Threshold value between 1 and 999999\n"
-            "\nResult:\n"
-            "{\n"
-            "  \"threshold\": n,    (numeric) Threshold value set\n"
-            "  \"saved\": true|false    (boolean) 'true' if successfully saved to the wallet file\n"
-            "}\n"
-            "\nExamples:\n" +
-            HelpExampleCli("setstakesplitthreshold", "5000") + HelpExampleRpc("setstakesplitthreshold", "5000"));
+                "\nArguments:\n"
+                "1. value   (numeric, required) Threshold value between 1 and 999999\n"
+                "\nResult:\n"
+                "{\n"
+                "  \"threshold\": n,    (numeric) Threshold value set\n"
+                "  \"saved\": true|false    (boolean) 'true' if successfully saved to the wallet file\n"
+                "}\n"
+                "\nExamples:\n" +
+                HelpExampleCli("setstakesplitthreshold", "5000") + HelpExampleRpc("setstakesplitthreshold", "5000"));
 
     uint64_t nStakeSplitThreshold = params[0].get_int();
     if (pwalletMain->IsLocked())
@@ -2520,12 +2521,12 @@ UniValue getstakesplitthreshold(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() != 0)
         throw runtime_error(
-            "getstakesplitthreshold\n"
-            "Returns the threshold for stake splitting\n"
-            "\nResult:\n"
-            "n      (numeric) Threshold value\n"
-            "\nExamples:\n" +
-            HelpExampleCli("getstakesplitthreshold", "") + HelpExampleRpc("getstakesplitthreshold", ""));
+                "getstakesplitthreshold\n"
+                "Returns the threshold for stake splitting\n"
+                "\nResult:\n"
+                "n      (numeric) Threshold value\n"
+                "\nExamples:\n" +
+                HelpExampleCli("getstakesplitthreshold", "") + HelpExampleRpc("getstakesplitthreshold", ""));
 
     return int(pwalletMain->nStakeSplitThreshold);
 }
