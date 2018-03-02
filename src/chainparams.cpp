@@ -138,7 +138,7 @@ public:
         consensus.nStakeMinAge = 60 * 60;
         consensus.nStakeMaxAge = 60 * 60 * 24; // one day
         consensus.nCoinbaseMaturity = 20;
-        consensus.nLastPoWBlock = 100;
+        consensus.nLastPoWBlock = 80;
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
         consensus.nPowKGWHeight = 15200;
