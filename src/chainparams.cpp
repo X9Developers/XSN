@@ -133,6 +133,8 @@ public:
         consensus.powLimit = uint256S("00000fffff000000000000000000000000000000000000000000000000000000");
         consensus.nPowTargetTimespan = 24 * 60 * 60; // XSN: 1 day
         consensus.nPowTargetSpacing = 1 * 60; // XSN: 1 minutes
+        consensus.nPosTargetSpacing = 1 * 60; // PoSW: 1 minutes
+        consensus.nPosTargetTimespan = 60 * 40;
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
         consensus.nPowKGWHeight = 15200;
@@ -173,7 +175,7 @@ public:
         pchMessageStart[3] = 0xbd;
         vAlertPubKey = ParseHex("028321fb95ddb36bdb30129ada6f2ba9564b99fa144b186323d69b1a4964560909");
         nDefaultPort = 62583;
-        nMaxTipAge = 10 * 60 * 60; // ~144 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
+        nMaxTipAge = 24 * 60 * 60; // ~144 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
         nDelayGetHeadersTime = 24 * 60 * 60;
         nPruneAfterHeight = 100000;
 

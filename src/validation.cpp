@@ -1248,6 +1248,9 @@ CAmount GetBlockSubsidy(int nPrevHeight, const Consensus::Params& consensusParam
         return 76500000 * COIN;
     }
 
+    if(nPrevHeight > consensusParams.nLastPoWBlock && nPrevHeight < 100)
+        return 0;
+
     CAmount nSubsidy = 50;
 
     for (int i = consensusParams.nSubsidyHalvingInterval; i <= nPrevHeight; i += consensusParams.nSubsidyHalvingInterval) {
