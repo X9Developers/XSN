@@ -139,6 +139,7 @@ public:
         consensus.nStakeMaxAge = 60 * 60 * 24; // one day
         consensus.nCoinbaseMaturity = 20;
         consensus.nLastPoWBlock = 80;
+        consensus.nFirstBlocksEmpty = 10080;
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
         consensus.nPowKGWHeight = 15200;
@@ -188,10 +189,10 @@ public:
         assert(consensus.hashGenesisBlock == uint256S("0x00000e97f7f0b4d0615bcfb485ebdf65e7f98eae9c15d4fc72b4d43e8fbbdbc9"));
         assert(genesis.hashMerkleRoot == uint256S("0x922ab2360f766457416dfc59c6594248c5b79e33c8785bce491c0e01930738f6"));
 
-        vSeeds.push_back(CDNSSeedData("52.206.132.46", "52.206.132.46"));
-        vSeeds.push_back(CDNSSeedData("34.239.183.49", "34.239.183.49"));
-        vSeeds.push_back(CDNSSeedData("35.173.237.68", "35.173.237.68"));
-        vSeeds.push_back(CDNSSeedData("34.239.43.223", "34.239.43.223"));
+        vSeeds.push_back(CDNSSeedData("54.175.152.141", "54.175.152.141"));
+        vSeeds.push_back(CDNSSeedData("52.90.188.111", "52.90.188.111"));
+        vSeeds.push_back(CDNSSeedData("35.170.186.157", "35.170.186.157"));
+        vSeeds.push_back(CDNSSeedData("54.172.213.46", "54.172.213.46"));
 
         // XSN addresses start with 'X'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,76);
