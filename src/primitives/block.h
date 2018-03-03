@@ -21,7 +21,8 @@ class CBlockHeader
 {
 public:
     // header
-    int32_t nVersion;
+    int16_t nVersion;
+    int16_t nProofOfStake;
     uint256 hashPrevBlock;
     uint256 hashMerkleRoot;
     uint32_t nTime;
@@ -39,6 +40,7 @@ public:
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
         READWRITE(this->nVersion);
         nVersion = this->nVersion;
+        READWRITE(nProofOfStake);
         READWRITE(hashPrevBlock);
         READWRITE(hashMerkleRoot);
         READWRITE(nTime);
@@ -49,6 +51,7 @@ public:
     void SetNull()
     {
         nVersion = 0;
+        nProofOfStake = 0;
         hashPrevBlock.SetNull();
         hashMerkleRoot.SetNull();
         nTime = 0;
@@ -62,6 +65,7 @@ public:
     }
 
     uint256 GetHash() const;
+    bool IsProofOfStake() const;
 
     int64_t GetBlockTime() const
     {
@@ -78,7 +82,6 @@ public:
 
     std::vector<CTransaction> vtx;
     std::vector<unsigned char> vchBlockSig;
-
 
     // memory only
     mutable CTxOut txoutMasternode; // masternode payment
@@ -111,7 +114,6 @@ public:
 
     CBlockHeader GetBlockHeader() const;
 
-    bool IsProofOfStake() const;
     bool IsTPoSBlock() const;
     bool IsProofOfWork() const;
 

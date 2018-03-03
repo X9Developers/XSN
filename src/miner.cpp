@@ -127,6 +127,7 @@ CBlockTemplate* CreateNewBlock(CWallet *wallet, const CChainParams& chainparams,
                                         txCoinStake, nTxNewTime,
                                         tposContract))
             {
+                pblock->nProofOfStake = 1;
                 pblock->nTime = nTxNewTime;
                 txNew.vout[0].SetEmpty();
                 pblock->vtx[0] = txNew;
