@@ -43,7 +43,7 @@ static void MineGenesis(CBlockHeader& genesisBlock, const uint32_t& nBits, bool 
 {
     if(noProduction)
         genesisBlock.nTime = std::time(0);
-    genesisBlock.nNonce = 0;
+//    genesisBlock.nNonce = 0;
 
     printf("NOTE: Genesis nTime = %u \n", genesisBlock.nTime);
     printf("WARN: Genesis nNonce (BLANK!) = %u \n", genesisBlock.nNonce);
@@ -83,7 +83,7 @@ static void MineGenesis(CBlockHeader& genesisBlock, const uint32_t& nBits, bool 
  * transaction cannot be spent since it did not originally exist in the
  * database.
  *
- *   CBlock(hash=00000e97f7f0b4d0615bcfb485ebdf65e7f98eae9c15d4fc72b4d43e8fbbdbc9, ver=1, hashPrevBlock=0000000000000000000000000000000000000000000000000000000000000000, hashMerkleRoot=922ab2360f766457416dfc59c6594248c5b79e33c8785bce491c0e01930738f6, nTime=1520001847, nBits=1e0ffff0, nNonce=914267, vtx=1)
+ *   CBlock(hash=00000e8df19afda8dda6195894941baecbc58ec80c2e830a57c5685a49533f37, ver=1, hashPrevBlock=0000000000000000000000000000000000000000000000000000000000000000, hashMerkleRoot=922ab2360f766457416dfc59c6594248c5b79e33c8785bce491c0e01930738f6, nTime=1520079963, nBits=1e0ffff0, nNonce=914267, vtx=1)
  *     CTransaction(hash=922ab2360f, ver=1, vin.size=1, vout.size=1, nLockTime=0)
  *     CTxIn(COutPoint(0000000000000000000000000000000000000000000000000000000000000000, 4294967295), coinbase 04ffff001d01044c5957697265642030312f4d61722f3230313820546865205345432069732070726f62696e672063727970746f63757272656e637920636f6d70616e696573207769746820696e697469616c20636f696e206f66666572696e6773)
  *     CTxOut(nValue=50.00000000, scriptPubKey=2103042a235a39a72d7b1296313b01)
@@ -183,10 +183,13 @@ public:
         nDelayGetHeadersTime = 24 * 60 * 60;
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlock(1520001847, 601065, 0x1e0ffff0, 1, 50 * COIN);
+        genesis = CreateGenesisBlock(1520079963, 377275, 0x1e0ffff0, 1, 50 * COIN);
+
+//        MineGenesis(genesis, 0x1e0ffff0, false);
+
         consensus.hashGenesisBlock = genesis.GetHash();
 
-        assert(consensus.hashGenesisBlock == uint256S("0x00000e97f7f0b4d0615bcfb485ebdf65e7f98eae9c15d4fc72b4d43e8fbbdbc9"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00000e8df19afda8dda6195894941baecbc58ec80c2e830a57c5685a49533f37"));
         assert(genesis.hashMerkleRoot == uint256S("0x922ab2360f766457416dfc59c6594248c5b79e33c8785bce491c0e01930738f6"));
 
         vSeeds.push_back(CDNSSeedData("34.230.44.87", "34.230.44.87"));
@@ -223,8 +226,8 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            ( 0, uint256S("0x00000e97f7f0b4d0615bcfb485ebdf65e7f98eae9c15d4fc72b4d43e8fbbdbc9")),
-            1520001847, // * UNIX timestamp of last checkpoint block
+            ( 0, uint256S("0x00000e8df19afda8dda6195894941baecbc58ec80c2e830a57c5685a49533f37")),
+            1520079963, // * UNIX timestamp of last checkpoint block
             10,    // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             2000        // * estimated number of transactions per day after checkpoint
