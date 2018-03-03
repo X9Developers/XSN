@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.5.0, 2018-03-01T23:03:06. -->
+<!-- Written by QtCreator 4.5.0, 2018-03-03T18:11:32. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -167,7 +167,7 @@
     </valuelist>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.CustomExecutableRunConfiguration.Arguments">-debug </value>
+    <value type="QString" key="ProjectExplorer.CustomExecutableRunConfiguration.Arguments">-debug -reindex</value>
     <value type="QString" key="ProjectExplorer.CustomExecutableRunConfiguration.Executable">/home/durkmurder/Work/Reps/POSWDev/src/qt/xsn-qt</value>
     <value type="QString" key="ProjectExplorer.CustomExecutableRunConfiguration.WorkingDirectory">%{buildDir}</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Run /home/durkmurder/Work/Reps/POSWDev/src/qt/xsn-qt</value>
