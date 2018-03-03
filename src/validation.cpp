@@ -4119,6 +4119,7 @@ bool InitBlockIndex(const CChainParams& chainparams)
             if (!WriteBlockToDisk(block, blockPos, chainparams.MessageStart()))
                 return error("%s: writing genesis block to disk failed", __func__);
             CBlockIndex *pindex = AddToBlockIndex(block);
+            AcceptProofOfStakeBlock(block, pindex);
             if (!ReceivedBlockTransactions(block, state, pindex, blockPos))
                 return error("%s: genesis block not accepted", __func__);
             if (!ActivateBestChain(state, chainparams, &block))
