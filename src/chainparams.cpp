@@ -189,10 +189,10 @@ public:
         assert(consensus.hashGenesisBlock == uint256S("0x00000e97f7f0b4d0615bcfb485ebdf65e7f98eae9c15d4fc72b4d43e8fbbdbc9"));
         assert(genesis.hashMerkleRoot == uint256S("0x922ab2360f766457416dfc59c6594248c5b79e33c8785bce491c0e01930738f6"));
 
-//        vSeeds.push_back(CDNSSeedData("54.175.152.141", "54.175.152.141"));
-//        vSeeds.push_back(CDNSSeedData("52.90.188.111", "52.90.188.111"));
-//        vSeeds.push_back(CDNSSeedData("35.170.186.157", "35.170.186.157"));
-//        vSeeds.push_back(CDNSSeedData("54.172.213.46", "54.172.213.46"));
+        vSeeds.push_back(CDNSSeedData("34.230.44.87", "34.230.44.87"));
+        vSeeds.push_back(CDNSSeedData("54.174.48.232", "54.174.48.232"));
+        vSeeds.push_back(CDNSSeedData("107.21.133.151", "107.21.133.151"));
+        vSeeds.push_back(CDNSSeedData("54.173.9.42", "54.173.9.42"));
 
         // XSN addresses start with 'X'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,76);
