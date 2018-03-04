@@ -2957,7 +2957,7 @@ bool ReconsiderBlock(CValidationState& state, CBlockIndex *pindex) {
     return true;
 }
 
-static void AcceptProofOfStakeBlock(const CBlockHeader &block, CBlockIndex *pindexNew)
+static void AcceptProofOfStakeBlock(const CBlock &block, CBlockIndex *pindexNew)
 {
     if(!pindexNew)
         return;
