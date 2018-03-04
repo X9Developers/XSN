@@ -1057,10 +1057,6 @@ void CMerchantnodeMan::UpdateMerchantnodeList(CMerchantnodeBroadcast mnb, CConnm
     CMerchantnode* pmn = Find(mnb.pubKeyMerchantnode);
     if(pmn == NULL) {
 
-        int nDos;
-        bool checked = CheckMnbIPAddressAndRemoveExistingEntry(mnb, nDos);
-        assert(checked);
-
         if(Add(mnb)) {
             merchantnodeSync.BumpAssetLastTime("CMerchantnodeMan::UpdateMerchantnodeList - new");
         }
@@ -1141,10 +1137,6 @@ bool CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList(CNode* pfrom, CMerchant
 
     if(mnb.CheckMerchantnode(nDos)) {
 
-        // Check if we have merchantnode with this IP, any pubkey will work. We need to be sure that one merchantnode holds one public key.
-        if(!CheckMnbIPAddressAndRemoveExistingEntry(mnb, nDos))
-            return false;
-
         Add(mnb);
         merchantnodeSync.BumpAssetLastTime("CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList - new");
         // if it matches our Merchantnode privkey...
@@ -1166,29 +1158,6 @@ bool CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList(CNode* pfrom, CMerchant
     } else {
         LogPrintf("CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- Rejected Merchantnode entry: %s  addr=%s\n", HexStr(mnb.pubKeyMerchantnode.Raw()), mnb.addr.ToString());
         return false;
-    }
-
-    return true;
-}
-
-bool CMerchantnodeMan::CheckMnbIPAddressAndRemoveExistingEntry(CMerchantnodeBroadcast mnb, int &nDos)
-{
-    auto mnbIpAddress = static_cast<CNetAddr>(mnb.addr);
-
-    if(!mnb.CheckSignature(nDos))
-        return false;
-
-    auto it = std::find_if(std::begin(mapMerchantnodes), std::end(mapMerchantnodes), [mnbIpAddress](const std::pair<CPubKey, CMerchantnode> &entry) {
-        return static_cast<CNetAddr>(entry.second.addr) == mnbIpAddress;
-    });
-
-    // we have merchantnode assigned to this address already
-    if(it != std::end(mapMerchantnodes))
-    {
-        LogPrintf("CMerchantnodeMan::CheckMnbIPAddressAndRemoveDuplicatedEntry -- Found Merchantnode entry: %s  addr=%s, removing it. Fresh entry: %s\n",
-                  HexStr(it->second.pubKeyMerchantnode.Raw()), mnb.addr.ToString(), HexStr(mnb.pubKeyMerchantnode.Raw()));
-
-        mapMerchantnodes.erase(it);
     }
 
     return true;
