@@ -305,6 +305,7 @@ public:
     {
         CBlockHeader block;
         block.nVersion       = nVersion;
+        block.nProofOfStake  = IsProofOfStake();
         if (pprev)
             block.hashPrevBlock = pprev->GetBlockHash();
         block.hashMerkleRoot = hashMerkleRoot;
@@ -475,6 +476,7 @@ public:
         // should never really get here, keeping this as a fallback
         CBlockHeader block;
         block.nVersion        = nVersion;
+        block.nProofOfStake   = IsProofOfStake();
         block.hashPrevBlock   = hashPrev;
         block.hashMerkleRoot  = hashMerkleRoot;
         block.nTime           = nTime;
