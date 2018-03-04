@@ -276,7 +276,7 @@ public:
 
         if (block.IsProofOfStake()) {
             SetProofOfStake();
-            prevoutStake = block.vtx[1].vin[0].prevout;
+//            prevoutStake = block.vtx[1].vin[0].prevout;
             nStakeTime = block.nTime;
         } else {
             prevoutStake.SetNull();
