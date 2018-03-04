@@ -192,10 +192,11 @@ public:
         assert(consensus.hashGenesisBlock == uint256S("0x00000ec857c9e6f989a520b29ffde3d80a743473795cb924fd71eef109b77cc7"));
         assert(genesis.hashMerkleRoot == uint256S("0x922ab2360f766457416dfc59c6594248c5b79e33c8785bce491c0e01930738f6"));
 
-        vSeeds.push_back(CDNSSeedData("34.230.44.87", "34.230.44.87"));
         vSeeds.push_back(CDNSSeedData("54.174.48.232", "54.174.48.232"));
         vSeeds.push_back(CDNSSeedData("107.21.133.151", "107.21.133.151"));
         vSeeds.push_back(CDNSSeedData("54.173.9.42", "54.173.9.42"));
+        vSeeds.push_back(CDNSSeedData("54.197.20.70", "54.197.20.70"));
+        vSeeds.push_back(CDNSSeedData("54.227.247.2", "54.227.247.2"));
 
         // XSN addresses start with 'X'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,76);
