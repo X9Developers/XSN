@@ -1927,27 +1927,49 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
         CInv inv(MSG_BLOCK, block.GetHash());
         LogPrint("net", "received block %s peer=%d\n", inv.hash.ToString(), pfrom->id);
 
-        pfrom->AddInventoryKnown(inv);
-
-        // Process all blocks from whitelisted peers, even if not requested,
-        // unless we're still syncing with the network.
-        // Such an unrequested block may still be processed, subject to the
-        // conditions in AcceptBlock().
-        bool forceProcessing = pfrom->fWhitelisted && !IsInitialBlockDownload();
-        const uint256 hash(block.GetHash());
+        //sometimes we will be sent their most recent block and its not the one we want, in that case tell where we are
+        auto it = mapBlockIndex.find(block.hashPrevBlock);
+        if (it != mapBlockIndex.end() && ((it->second->nStatus & BLOCK_HAVE_DATA) == 0))
         {
-            LOCK(cs_main);
-            // Also always process if we requested the block explicitly, as we may
-            // need it even though it is not a candidate for a new best tip.
-            forceProcessing |= MarkBlockAsReceived(hash);
-            // mapBlockSource is only used for sending reject messages and DoS scores,
-            // so the race between here and cs_main in ProcessNewBlock is fine.
-            mapBlockSource.emplace(hash, pfrom->GetId());
+            if (!mapBlocksInFlight.count(block.hashPrevBlock))
+            {
+                //ask to sync to this block
+                pfrom->PushInventory(CInv(MSG_BLOCK, block.hashPrevBlock));
+                MarkBlockAsInFlight(pfrom->GetId(), block.hashPrevBlock, chainparams.GetConsensus(), it->second);
+
+            }
+
+            pfrom->AskFor(inv);
+
+            // arrives in bad order, let's reject this one and ask again.
+//            pfrom->PushInventory(CInv(MSG_BLOCK, block.GetHash()));
+//            CBlockIndex *currentIndex = mapBlockIndex.count(block.GetHash()) ? mapBlockIndex[block.GetHash()] : nullptr;
+//            MarkBlockAsInFlight(pfrom->GetId(), block.GetHash(), chainparams.GetConsensus(), currentIndex);
         }
-        bool fNewBlock = false;
-        ProcessNewBlock(chainparams, &block, forceProcessing, NULL, &fNewBlock);
-        if (fNewBlock)
-            pfrom->nLastBlockTime = GetTime();
+        else
+        {
+            pfrom->AddInventoryKnown(inv);
+
+            // Process all blocks from whitelisted peers, even if not requested,
+            // unless we're still syncing with the network.
+            // Such an unrequested block may still be processed, subject to the
+            // conditions in AcceptBlock().
+            bool forceProcessing = pfrom->fWhitelisted && !IsInitialBlockDownload();
+            const uint256 hash(block.GetHash());
+            {
+                LOCK(cs_main);
+                // Also always process if we requested the block explicitly, as we may
+                // need it even though it is not a candidate for a new best tip.
+                forceProcessing |= MarkBlockAsReceived(hash);
+                // mapBlockSource is only used for sending reject messages and DoS scores,
+                // so the race between here and cs_main in ProcessNewBlock is fine.
+                mapBlockSource.emplace(hash, pfrom->GetId());
+            }
+            bool fNewBlock = false;
+            ProcessNewBlock(chainparams, &block, forceProcessing, NULL, &fNewBlock);
+            if (fNewBlock)
+                pfrom->nLastBlockTime = GetTime();
+        }
     }
 
 
