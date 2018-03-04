@@ -543,7 +543,7 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDa
         CPubKey pubKeyMerchantnode;
         vRecv >> pubKeyMerchantnode;
 
-        LogPrint("merchantnode", "DSEG -- Merchantnode list, merchantnode=%s\n", HexStr(pubKeyMerchantnode.Raw()));
+        LogPrint("merchantnode", "MERCHANTNODESEG -- Merchantnode list, merchantnode=%s\n", HexStr(pubKeyMerchantnode.Raw()));
 
         LOCK(cs);
 
@@ -555,7 +555,7 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDa
                 std::map<CNetAddr, int64_t>::iterator it = mAskedUsForMerchantnodeList.find(pfrom->addr);
                 if (it != mAskedUsForMerchantnodeList.end() && it->second > GetTime()) {
                     Misbehaving(pfrom->GetId(), 34);
-                    LogPrintf("DSEG -- peer already asked me for the list, peer=%d\n", pfrom->id);
+                    LogPrintf("MERCHANTNODESEG -- peer already asked me for the list, peer=%d\n", pfrom->id);
                     return;
                 }
                 int64_t askAgain = GetTime() + DSEG_UPDATE_SECONDS;
@@ -571,7 +571,7 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDa
             if (mnpair.second.IsUpdateRequired()) continue; // do not send outdated merchantnodes
 
             CMerchantnodeBroadcast mnb = CMerchantnodeBroadcast(mnpair.second);
-            LogPrint("merchantnode", "DSEG -- Sending Merchantnode entry: merchantnode=%s  addr=%s\n", HexStr(mnb.pubKeyMerchantnode.Raw()), mnb.addr.ToString());
+            LogPrint("merchantnode", "MERCHANTNODESEG -- Sending Merchantnode entry: merchantnode=%s  addr=%s\n", HexStr(mnb.pubKeyMerchantnode.Raw()), mnb.addr.ToString());
             CMerchantnodePing mnp = mnpair.second.lastPing;
             uint256 hashMNB = mnb.GetHash();
             uint256 hashMNP = mnp.GetHash();
@@ -583,18 +583,18 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDa
             mapSeenMerchantnodePing.insert(std::make_pair(hashMNP, mnp));
 
             if (pubKeyMerchantnode == mnpair.first) {
-                LogPrintf("DSEG -- Sent 1 Merchantnode inv to peer %d\n", pfrom->id);
+                LogPrintf("MERCHANTNODESEG -- Sent 1 Merchantnode inv to peer %d\n", pfrom->id);
                 return;
             }
         }
 
         if(!pubKeyMerchantnode.IsValid()) {
             connman.PushMessage(pfrom, NetMsgType::MERCHANTSYNCSTATUSCOUNT, MERCHANTNODE_SYNC_LIST, nInvCount);
-            LogPrintf("DSEG -- Sent %d Merchantnode invs to peer %d\n", nInvCount, pfrom->id);
+            LogPrintf("MERCHANTNODESEG -- Sent %d Merchantnode invs to peer %d\n", nInvCount, pfrom->id);
             return;
         }
         // smth weird happen - someone asked us for vin we have no idea about?
-        LogPrint("merchantnode", "DSEG -- No invs sent to peer %d\n", pfrom->id);
+        LogPrint("merchantnode", "MERCHANTNODESEG -- No invs sent to peer %d\n", pfrom->id);
 
     } else if (strCommand == NetMsgType::MERCHANTNODEVERIFY) { // Merchantnode Verify
 

@@ -20,7 +20,7 @@ class CMerchantnodeMan
 private:
     static const std::string SERIALIZATION_VERSION_STRING;
 
-    static const int DSEG_UPDATE_SECONDS        = 3 * 60 * 60;
+    static const int DSEG_UPDATE_SECONDS        = 1 * 60 * 60;
 
     static const int LAST_PAID_SCAN_BLOCKS      = 100;
 

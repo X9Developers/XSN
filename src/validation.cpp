@@ -2964,6 +2964,7 @@ static void AcceptProofOfStakeBlock(const CBlockHeader &block, CBlockIndex *pind
 
     if (block.IsProofOfStake()) {
         pindexNew->SetProofOfStake();
+        pindexNew->prevoutStake = block.vtx[1].vin[0].prevout;
         pindexNew->nStakeTime = block.nTime;
     } else {
         pindexNew->prevoutStake.SetNull();
@@ -2998,6 +2999,8 @@ static void AcceptProofOfStakeBlock(const CBlockHeader &block, CBlockIndex *pind
     pindexNew->nStakeModifierChecksum = GetStakeModifierChecksum(pindexNew);
     if (!CheckStakeModifierCheckpoints(pindexNew->nHeight, pindexNew->nStakeModifierChecksum))
         LogPrintf("AcceptProofOfStakeBlock() : Rejected by stake modifier checkpoint height=%d, modifier=%s \n", pindexNew->nHeight, boost::lexical_cast<std::string>(nStakeModifier));
+
+    setDirtyBlockIndex.insert(pindexNew);
 }
 
 CBlockIndex* AddToBlockIndex(const CBlockHeader& block)
@@ -3030,8 +3033,6 @@ CBlockIndex* AddToBlockIndex(const CBlockHeader& block)
         pindexNew->BuildSkip();
 
     }
-
-    AcceptProofOfStakeBlock(block, pindexNew);
 
     pindexNew->nChainWork = (pindexNew->pprev ? pindexNew->pprev->nChainWork : 0) + GetBlockProof(*pindexNew);
     pindexNew->RaiseValidity(BLOCK_VALID_TREE);
@@ -3531,9 +3532,6 @@ static bool AcceptBlock(const CBlock& block, CValidationState& state, const CCha
     if (!AcceptBlockHeader(block, state, chainparams, &pindex))
         return false;
 
-    if(block.IsProofOfStake())
-        pindex->prevoutStake = block.vtx[1].vin[0].prevout;
-
     // Try to process all requested blocks that we don't have, but only
     // process an unrequested block if it's new and has enough work to
     // advance our tip, and isn't too many blocks ahead.
@@ -3570,6 +3568,8 @@ static bool AcceptBlock(const CBlock& block, CValidationState& state, const CCha
     }
 
     int nHeight = pindex->nHeight;
+
+    AcceptProofOfStakeBlock(block, pindex);
 
     // Write block to history file
     try {
@@ -4119,6 +4119,7 @@ bool InitBlockIndex(const CChainParams& chainparams)
             if (!WriteBlockToDisk(block, blockPos, chainparams.MessageStart()))
                 return error("%s: writing genesis block to disk failed", __func__);
             CBlockIndex *pindex = AddToBlockIndex(block);
+            AcceptProofOfStakeBlock(block, pindex);
             if (!ReceivedBlockTransactions(block, state, pindex, blockPos))
                 return error("%s: genesis block not accepted", __func__);
             if (!ActivateBestChain(state, chainparams, &block))
