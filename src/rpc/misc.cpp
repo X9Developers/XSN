@@ -1075,6 +1075,6 @@ UniValue checkposblock(const UniValue& params, bool fHelp)
 
     UniValue obj(UniValue::VOBJ);
     obj.push_back(Pair("modifier", pblockindex->nStakeModifier));
-    obj.push_back(Pair("time", pblockindex->nStakeTime));
+    obj.push_back(Pair("time", (uint64_t)pblockindex->nStakeTime));
     return obj;
 }
