@@ -1073,5 +1073,8 @@ UniValue checkposblock(const UniValue& params, bool fHelp)
     if (!CheckStakeKernelHash(block.nBits, blockprev, /*postx.nTxOffset + */sizeof(CBlock), txPrev, txin.prevout, nTime, hashProofOfStake, true))
         return error("CheckProofOfStake() : INFO: check kernel failed on coinstake %s, hashProof=%s \n", tx.GetHash().ToString().c_str(), hashProofOfStake.ToString().c_str()); // may occur during initial download or if behind on block chain sync
 
-    return true;
+    UniValue obj(UniValue::VOBJ);
+    obj.push_back(Pair("modifier", pblockindex->nStakeModifier));
+    obj.push_back(Pair("time", pblockindex->nStakeTime));
+    return obj;
 }
