@@ -16,8 +16,8 @@ class CConnman;
 
 static const int MERCHANTNODE_CHECK_SECONDS               = 20;
 static const int MERCHANTNODE_MIN_MNB_SECONDS             = 5 * 60;
-static const int MERCHANTNODE_MIN_MNP_SECONDS             = 120 * 60;
-static const int MERCHANTNODE_EXPIRATION_SECONDS          = 65 * 60;
+static const int MERCHANTNODE_MIN_MNP_SECONDS             = 60 * 60;
+static const int MERCHANTNODE_EXPIRATION_SECONDS          = 70 * 60;
 static const int MERCHANTNODE_MAX_EXPIRATION_SECONDS      = 25 * 60 * 60;
 static const int MERCHANTNODE_WATCHDOG_MAX_SECONDS        = 120 * 60;
 static const int MERCHANTNODE_NEW_START_REQUIRED_SECONDS  = 180 * 60;
