@@ -249,7 +249,7 @@ bool TPoSUtils::IsMerchantPaymentValid(const CBlock &block, int nBlockHeight, CA
         return true;
     }
 
-    if(sporkManager.IsSporkActive(SPORK_15_TPOS_ENABLED)) {
+    if(!sporkManager.IsSporkActive(SPORK_15_TPOS_ENABLED)) {
         LogPrintf("IsBlockPayeeValid -- ERROR: Invalid merchantnode payment detected at height %d\n", nBlockHeight);
         return false;
     }
