@@ -1069,11 +1069,17 @@ UniValue checkposblock(const UniValue& params, bool fHelp)
 
     uint256 hashProofOfStake;
 
+    uint64_t nStakeModifier = 0;
+    bool fGeneratedStakeModifier = false;
+    if (!ComputeNextStakeModifier(pblockindex, nStakeModifier, fGeneratedStakeModifier))
+        LogPrintf("ComputeNextStakeModifier failed");
+
     unsigned int nTime = block.nTime;
     if (!CheckStakeKernelHash(block.nBits, blockprev, /*postx.nTxOffset + */sizeof(CBlock), txPrev, txin.prevout, nTime, hashProofOfStake, true))
         LogPrintf("CheckProofOfStake() : INFO: check kernel failed on coinstake %s, hashProof=%s \n", tx.GetHash().ToString().c_str(), hashProofOfStake.ToString().c_str()); // may occur during initial download or if behind on block chain sync
 
     UniValue obj(UniValue::VOBJ);
+    obj.push_back(Pair("calculated", nStakeModifier));
     obj.push_back(Pair("modifier", pblockindex->nStakeModifier));
     obj.push_back(Pair("time", (uint64_t)pblockindex->nStakeTime));
     return obj;

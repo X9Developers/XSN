@@ -197,6 +197,7 @@ public:
         vSeeds.push_back(CDNSSeedData("54.173.9.42", "54.173.9.42"));
         vSeeds.push_back(CDNSSeedData("54.197.20.70", "54.197.20.70"));
         vSeeds.push_back(CDNSSeedData("54.227.247.2", "54.227.247.2"));
+        vSeeds.push_back(CDNSSeedData("34.207.70.89", "34.207.70.89"));
 
         // XSN addresses start with 'X'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,76);

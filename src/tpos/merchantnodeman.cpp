@@ -629,7 +629,6 @@ void CMerchantnodeMan::DoFullVerificationStep(CConnman& connman)
     if(!merchantnodeSync.IsSynced()) return;
 
 #if 0
-
     // Need LOCK2 here to ensure consistent locking order because the SendVerifyRequest call below locks cs_main
     // through GetHeight() signal in ConnectNode
     LOCK2(cs_main, cs);
@@ -691,6 +690,7 @@ void CMerchantnodeMan::DoFullVerificationStep(CConnman& connman)
         if(nOffset >= (int)vecMerchantnodeRanks.size()) break;
         it += MAX_POSE_CONNECTIONS;
     }
+
 
     LogPrint("merchantnode", "CMerchantnodeMan::DoFullVerificationStep -- Sent verification requests to %d merchantnodes\n", nCount);
 #endif
@@ -756,7 +756,7 @@ void CMerchantnodeMan::CheckSameAddr()
 
 bool CMerchantnodeMan::SendVerifyRequest(const CAddress& addr, const std::vector<CMerchantnode*>& vSortedByAddr, CConnman& connman)
 {
-    if(netfulfilledman.HasFulfilledRequest(addr, strprintf("%s", NetMsgType::MNVERIFY)+"-request")) {
+    if(netfulfilledman.HasFulfilledRequest(addr, strprintf("%s", NetMsgType::MERCHANTNODEVERIFY)+"-request")) {
         // we already asked for verification, not a good idea to do this too often, skip it
         LogPrint("merchantnode", "CMerchantnodeMan::SendVerifyRequest -- too many requests, skipping... addr=%s\n", addr.ToString());
         return false;
@@ -768,12 +768,12 @@ bool CMerchantnodeMan::SendVerifyRequest(const CAddress& addr, const std::vector
         return false;
     }
 
-    netfulfilledman.AddFulfilledRequest(addr, strprintf("%s", NetMsgType::MNVERIFY)+"-request");
+    netfulfilledman.AddFulfilledRequest(addr, strprintf("%s", NetMsgType::MERCHANTNODEVERIFY)+"-request");
     // use random nonce, store it and require node to reply with correct one later
     CMerchantnodeVerification mnv(addr, GetRandInt(999999), nCachedBlockHeight - 1);
     mWeAskedForVerification[addr] = mnv;
     LogPrintf("CMerchantnodeMan::SendVerifyRequest -- verifying node using nonce %d addr=%s\n", mnv.nonce, addr.ToString());
-    connman.PushMessage(pnode, NetMsgType::MNVERIFY, mnv);
+    connman.PushMessage(pnode, NetMsgType::MERCHANTNODEVERIFY, mnv);
 
     return true;
 }
@@ -787,7 +787,7 @@ void CMerchantnodeMan::SendVerifyReply(CNode* pnode, CMerchantnodeVerification& 
         return;
     }
 
-    if(netfulfilledman.HasFulfilledRequest(pnode->addr, strprintf("%s", NetMsgType::MNVERIFY)+"-reply")) {
+    if(netfulfilledman.HasFulfilledRequest(pnode->addr, strprintf("%s", NetMsgType::MERCHANTNODEVERIFY)+"-reply")) {
         // peer should not ask us that often
         LogPrintf("MerchantnodeMan::SendVerifyReply -- ERROR: peer already asked me recently, peer=%d\n", pnode->id);
         Misbehaving(pnode->id, 20);
@@ -814,8 +814,8 @@ void CMerchantnodeMan::SendVerifyReply(CNode* pnode, CMerchantnodeVerification& 
         return;
     }
 
-    connman.PushMessage(pnode, NetMsgType::MNVERIFY, mnv);
-    netfulfilledman.AddFulfilledRequest(pnode->addr, strprintf("%s", NetMsgType::MNVERIFY)+"-reply");
+    connman.PushMessage(pnode, NetMsgType::MERCHANTNODEVERIFY, mnv);
+    netfulfilledman.AddFulfilledRequest(pnode->addr, strprintf("%s", NetMsgType::MERCHANTNODEVERIFY)+"-reply");
 }
 
 void CMerchantnodeMan::ProcessVerifyReply(CNode* pnode, CMerchantnodeVerification& mnv)
@@ -823,7 +823,7 @@ void CMerchantnodeMan::ProcessVerifyReply(CNode* pnode, CMerchantnodeVerificatio
     std::string strError;
 
     // did we even ask for it? if that's the case we should have matching fulfilled request
-    if(!netfulfilledman.HasFulfilledRequest(pnode->addr, strprintf("%s", NetMsgType::MNVERIFY)+"-request")) {
+    if(!netfulfilledman.HasFulfilledRequest(pnode->addr, strprintf("%s", NetMsgType::MERCHANTNODEVERIFY)+"-request")) {
         LogPrintf("CMerchantnodeMan::ProcessVerifyReply -- ERROR: we didn't ask for verification of %s, peer=%d\n", pnode->addr.ToString(), pnode->id);
         Misbehaving(pnode->id, 20);
         return;
@@ -853,7 +853,7 @@ void CMerchantnodeMan::ProcessVerifyReply(CNode* pnode, CMerchantnodeVerificatio
     }
 
     // we already verified this address, why node is spamming?
-    if(netfulfilledman.HasFulfilledRequest(pnode->addr, strprintf("%s", NetMsgType::MNVERIFY)+"-done")) {
+    if(netfulfilledman.HasFulfilledRequest(pnode->addr, strprintf("%s", NetMsgType::MERCHANTNODEVERIFY)+"-done")) {
         LogPrintf("CMerchantnodeMan::ProcessVerifyReply -- ERROR: already verified %s recently\n", pnode->addr.ToString());
         Misbehaving(pnode->id, 20);
         return;
@@ -873,7 +873,7 @@ void CMerchantnodeMan::ProcessVerifyReply(CNode* pnode, CMerchantnodeVerificatio
                     if(!mnpair.second.IsPoSeVerified()) {
                         mnpair.second.DecreasePoSeBanScore();
                     }
-                    netfulfilledman.AddFulfilledRequest(pnode->addr, strprintf("%s", NetMsgType::MNVERIFY)+"-done");
+                    netfulfilledman.AddFulfilledRequest(pnode->addr, strprintf("%s", NetMsgType::MERCHANTNODEVERIFY)+"-done");
 
                     // we can only broadcast it if we are an activated merchantnode
                     if(!activeMerchantnode.pubKeyMerchantnode.IsValid()) continue;

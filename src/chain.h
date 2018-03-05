@@ -276,7 +276,7 @@ public:
 
         if (block.IsProofOfStake()) {
             SetProofOfStake();
-//            prevoutStake = block.vtx[1].vin[0].prevout;
+            prevoutStake = block.vtx[1].vin[0].prevout;
             nStakeTime = block.nTime;
         } else {
             prevoutStake.SetNull();
@@ -306,7 +306,6 @@ public:
     {
         CBlockHeader block;
         block.nVersion       = nVersion;
-        block.nProofOfStake  = IsProofOfStake();
         if (pprev)
             block.hashPrevBlock = pprev->GetBlockHash();
         block.hashMerkleRoot = hashMerkleRoot;
@@ -454,6 +453,7 @@ public:
         if (IsProofOfStake()) {
             READWRITE(prevoutStake);
             READWRITE(nStakeTime);
+            READWRITE(hashProofOfStake);
         } else {
             const_cast<CDiskBlockIndex*>(this)->prevoutStake.SetNull();
             const_cast<CDiskBlockIndex*>(this)->nStakeTime = 0;
@@ -477,7 +477,6 @@ public:
         // should never really get here, keeping this as a fallback
         CBlockHeader block;
         block.nVersion        = nVersion;
-        block.nProofOfStake   = IsProofOfStake();
         block.hashPrevBlock   = hashPrev;
         block.hashMerkleRoot  = hashMerkleRoot;
         block.nTime           = nTime;

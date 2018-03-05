@@ -48,7 +48,6 @@ CBlockHeader CBlock::GetBlockHeader() const
 {
     CBlockHeader block;
     block.nVersion       = nVersion;
-    block.nProofOfStake  = nProofOfStake;
     block.hashPrevBlock  = hashPrevBlock;
     block.hashMerkleRoot = hashMerkleRoot;
     block.nTime          = nTime;
@@ -57,9 +56,9 @@ CBlockHeader CBlock::GetBlockHeader() const
     return block;
 }
 
-bool CBlockHeader::IsProofOfStake() const
+bool CBlock::IsProofOfStake() const
 {
-    return nProofOfStake > 0;
+    return (vtx.size() > 1 && vtx[1].IsCoinStake());
 }
 
 bool CBlock::IsTPoSBlock() const
