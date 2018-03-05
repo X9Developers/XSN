@@ -1053,25 +1053,25 @@ UniValue checkposblock(const UniValue& params, bool fHelp)
 
     //verify signature and script
     if (!VerifyScript(txin.scriptSig, txPrev.vout[txin.prevout.n].scriptPubKey, STANDARD_SCRIPT_VERIFY_FLAGS, TransactionSignatureChecker(&tx, 0)))
-        return error("CheckProofOfStake() : VerifySignature failed on coinstake %s", tx.GetHash().ToString().c_str());
+        LogPrintf("CheckProofOfStake() : VerifySignature failed on coinstake %s", tx.GetHash().ToString().c_str());
 
     CBlockIndex* pindex = NULL;
     BlockMap::iterator it = mapBlockIndex.find(hashBlock);
     if (it != mapBlockIndex.end())
         pindex = it->second;
     else
-        return error("CheckProofOfStake() : read block failed");
+        LogPrintf("CheckProofOfStake() : read block failed");
 
     // Read block header
     CBlock blockprev;
     if (!ReadBlockFromDisk(blockprev, pindex->GetBlockPos(), cons))
-        return error("CheckProofOfStake(): INFO: failed to find block");
+        LogPrintf("CheckProofOfStake(): INFO: failed to find block");
 
     uint256 hashProofOfStake;
 
     unsigned int nTime = block.nTime;
     if (!CheckStakeKernelHash(block.nBits, blockprev, /*postx.nTxOffset + */sizeof(CBlock), txPrev, txin.prevout, nTime, hashProofOfStake, true))
-        return error("CheckProofOfStake() : INFO: check kernel failed on coinstake %s, hashProof=%s \n", tx.GetHash().ToString().c_str(), hashProofOfStake.ToString().c_str()); // may occur during initial download or if behind on block chain sync
+        LogPrintf("CheckProofOfStake() : INFO: check kernel failed on coinstake %s, hashProof=%s \n", tx.GetHash().ToString().c_str(), hashProofOfStake.ToString().c_str()); // may occur during initial download or if behind on block chain sync
 
     UniValue obj(UniValue::VOBJ);
     obj.push_back(Pair("modifier", pblockindex->nStakeModifier));
