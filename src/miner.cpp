@@ -33,6 +33,7 @@
 #include "tpos/activemerchantnode.h"
 #include "tpos/merchantnodeman.h"
 #include "tpos/merchantnode.h"
+#include "tpos/merchantnode-sync.h"
 
 #include <boost/thread.hpp>
 #include <boost/tuple/tuple.hpp>
@@ -506,7 +507,7 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
             if(fProofOfStake)
             {
                 if (chainActive.Tip()->nHeight < chainparams.GetConsensus().nLastPoWBlock ||
-                        pwallet->IsLocked() || !masternodeSync.IsSynced())
+                        pwallet->IsLocked() || !masternodeSync.IsSynced() || !merchantnodeSync.IsSynced())
                 {
                     MilliSleep(5000);
                     continue;
