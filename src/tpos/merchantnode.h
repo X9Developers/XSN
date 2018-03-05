@@ -215,7 +215,7 @@ public:
     bool IsValidForPayment() const
     {
 
-        if(nActiveState == MERCHANTNODE_ENABLED && IsPoSeVerified()) {
+        if(nActiveState == MERCHANTNODE_ENABLED && !IsPoSeBanned()) {
             return true;
         }
 
