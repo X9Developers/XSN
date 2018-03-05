@@ -184,9 +184,6 @@ public:
         nPruneAfterHeight = 100000;
 
         genesis = CreateGenesisBlock(1520274471, 627829, 0x1e0ffff0, 1, 50 * COIN);
-
-//        MineGenesis(genesis, 0x1e0ffff0, false);
-
         consensus.hashGenesisBlock = genesis.GetHash();
 
         assert(consensus.hashGenesisBlock == uint256S("0x00000c822abdbb23e28f79a49d29b41429737c6c7e15df40d1b1f1b35907ae34"));
@@ -228,9 +225,10 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            ( 0, uint256S("0x00000c822abdbb23e28f79a49d29b41429737c6c7e15df40d1b1f1b35907ae34")),
+            ( 0, uint256S("0x00000c822abdbb23e28f79a49d29b41429737c6c7e15df40d1b1f1b35907ae34"))
+            ( 310, uint256S("5f2e88d57b09fbcf8983edbf5d297ca491bac9d85e477426891e281d107dd31d")),
             1520274471, // * UNIX timestamp of last checkpoint block
-            10,    // * total number of transactions between genesis and last checkpoint
+            800,    // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             2000        // * estimated number of transactions per day after checkpoint
         };
