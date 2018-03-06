@@ -1599,6 +1599,23 @@ color:#818181;
    background-color: rgb(107, 107, 107);
 }
 
+#MasternodeList QTabBar::tab {
+  background-color: rgb(218, 217, 213);
+  border-radius:1px;
+  color: #ffffff;
+  font-size:12px;
+  font-weight:bold;
+  min-height: 25px;
+  padding-left:25px;
+  padding-right:25px;
+  padding-top:5px;
+  padding-bottom:5px;
+}
+
+#MasternodeList QTabBar::tab:selected {
+  background-color: rgb(107, 107, 107);
+}
+
 /********************************* STEALTHMODE **************************************/
 
 #StealthModePage QPushButton {
