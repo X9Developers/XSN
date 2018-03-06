@@ -1,5 +1,5 @@
 ---
-name: "pbs-win-1.0"
+name: "xsn-win"
 enable_cache: true
 suites:
 - "trusty"
