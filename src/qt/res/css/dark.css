@@ -156,21 +156,12 @@ width:1px;
 }*/
 
 QTabWidget {
-background-color:#f2f2f2;
+background-color: transparent;
 }
 
 QTabWidget::pane {
-background-color:#f2f2f2;
+background-color: transparent;
 border:1px solid #c2c2c2;
-}
-
-QTabBar {
-background-color:#f2f2f2;
-color:#333;
-}
-
-QTabBar::tab:hover:!selected {
-background-color:#dedbe5;
 }
 
 QWidget {
@@ -1613,6 +1604,30 @@ color:#818181;
 #MasternodeListContent QPushButton:checked {
    background-color: rgb(107, 107, 107);
 }
+
+#MasternodeList QTabBar {
+background-color: transparent;
+color:#333;
+}
+
+#MasternodeList QTabBar::tab {
+  background-color: rgb(44, 48, 52);
+  border-radius:1px;
+  color: #ffffff;
+  font-size:12px;
+  font-weight:bold;
+  min-height: 25px;
+  padding-left:25px;
+  margin-right: 5px;
+  padding-right:25px;
+  padding-top:5px;
+  padding-bottom:5px;
+}
+
+#MasternodeList QTabBar::tab:selected {
+  background-color: rgb(107, 107, 107);
+}
+
 
 /********************************* STEALTHMODE **************************************/
 
