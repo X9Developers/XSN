@@ -1,8 +1,6 @@
 XSN Core staging tree v1.0.0
 ===============================
 
-https://xsncoin.io/
-
 
 What is XSN?
 ----------------
