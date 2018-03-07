@@ -17,9 +17,6 @@
    <bool>false</bool>
   </property>
   <widget class="QFrame" name="SendCoins">
-   <property name="toolTip">
-    <string>This is a normal payment.</string>
-   </property>
    <property name="frameShape">
     <enum>QFrame::StyledPanel</enum>
    </property>
@@ -83,7 +80,7 @@
        </sizepolicy>
       </property>
       <property name="toolTip">
-       <string>The XSN address to send the payment to</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a label for this address to add it to the list of used addresses&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
     </item>
@@ -152,7 +149,7 @@
     <item row="0" column="1">
      <widget class="QValidatedLineEdit" name="payTo">
       <property name="toolTip">
-       <string>Enter a label for this address to add it to the list of used addresses</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The XSN address to send the payment to&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
     </item>
@@ -617,7 +614,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../xsn.qrc">
+         <iconset>
           <normaloff>:/icons/remove</normaloff>:/icons/remove</iconset>
         </property>
        </widget>
@@ -1153,7 +1150,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../xsn.qrc">
+         <iconset>
           <normaloff>:/icons/remove</normaloff>:/icons/remove</iconset>
         </property>
        </widget>
@@ -1219,8 +1216,6 @@
   <tabstop>payAmount_s</tabstop>
   <tabstop>deleteButton_s</tabstop>
  </tabstops>
- <resources>
-  <include location="../xsn.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
