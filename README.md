@@ -1,15 +1,13 @@
-XSN Core staging tree 0.12.2
+XSN Core integration/staging repository
 ===============================
 
-https://xsncoin.io/
 
+XSN Coin Features
 
-What is XSN?
-----------------
-
-XSN is a new digital currency that has Trustless-Proof of Stake. Built from the vision of PoSW,
-XSN enables a DAO that will carry out PoSW vision of building crypto related technology around 
-proof of stake. XSN believes the future of cryptocurrency is in POS.
+- Anonymized transactions using our "Stealth Mode"
+- Fast transactions or Flash Send.
+- Decentralized voting providing for consensus based advancement
+- Trustless Proof of Stake (TPoS) - Allow a 3rd party to stake your XSN with zero trust involved
 
 For more information, as well as an immediately useable, binary version of
 the XSN Core software, see https://xsncoin.io/
@@ -20,3 +18,4 @@ License
 
 XSN Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
 information or see https://opensource.org/licenses/MIT.
+
