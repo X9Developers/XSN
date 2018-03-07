@@ -1,7 +1,7 @@
 XSN Core staging tree 0.12.2
 ===============================
 
-https://www.poswallet.com
+https://xsncoin.io/
 
 
 What is XSN?
@@ -12,7 +12,7 @@ XSN enables a DAO that will carry out PoSW vision of building crypto related tec
 proof of stake. XSN believes the future of cryptocurrency is in POS.
 
 For more information, as well as an immediately useable, binary version of
-the XSN Core software, see https://www.poswallet.com
+the XSN Core software, see https://xsncoin.io/
 
 
 License
