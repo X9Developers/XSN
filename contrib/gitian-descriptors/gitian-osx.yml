@@ -1,5 +1,5 @@
 ---
-name: "xsn-osx-0.12"
+name: "xsn-osx"
 enable_cache: true
 suites:
 - "trusty"
@@ -23,14 +23,14 @@ packages:
 - "python"
 reference_datetime: "2017-01-01 00:00:00"
 remotes:
-- "url": "https://github.com/xsnpay/xsn.git"
-  "dir": "xsn"
+- "url": "https://github.com/bwang22/POSWDev.git"
+  "dir": "POSWDev"
 files:
 - "MacOSX10.9.sdk.tar.gz"
 script: |
   WRAP_DIR=$HOME/wrapped
   HOSTS="x86_64-apple-darwin11"
-  CONFIGFLAGS="--enable-reduce-exports --disable-bench --disable-gui-tests GENISOIMAGE=$WRAP_DIR/genisoimage"
+  CONFIGFLAGS="--enable-reduce-exports --disable-bench --disable-tests --disable-gui-tests GENISOIMAGE=$WRAP_DIR/genisoimage"
   FAKETIME_HOST_PROGS=""
   FAKETIME_PROGS="ar ranlib date dmg genisoimage"
 
@@ -71,7 +71,7 @@ script: |
   done
   export PATH=${WRAP_DIR}:${PATH}
 
-  cd xsn
+  cd POSWDev
   BASEPREFIX=`pwd`/depends
 
   mkdir -p ${BASEPREFIX}/SDKs

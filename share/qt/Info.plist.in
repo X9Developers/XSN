@@ -29,16 +29,16 @@
   <string>????</string>
 
   <key>CFBundleExecutable</key>
-  <string>Dash-Qt</string>
+  <string>XSN-Qt</string>
   
   <key>CFBundleName</key>
-  <string>Dash-Qt</string>
+  <string>XSN-Qt</string>
 
   <key>LSHasLocalizedDisplayName</key>
   <true/>
 
   <key>CFBundleIdentifier</key>
-  <string>org.xsn.Dash-Qt</string>
+  <string>org.xsn.XSN-Qt</string>
 
   <key>CFBundleURLTypes</key>
   <array>
@@ -46,7 +46,7 @@
       <key>CFBundleTypeRole</key>
       <string>Editor</string>
       <key>CFBundleURLName</key>
-      <string>org.xsn.DashPayment</string>
+      <string>org.xsn.XSNPayment</string>
       <key>CFBundleURLSchemes</key>
       <array>
         <string>xsn</string>
@@ -60,7 +60,7 @@
       <key>UTTypeIdentifier</key>
       <string>org.xsn.paymentrequest</string>
       <key>UTTypeDescription</key>
-      <string>Dash payment request</string>
+      <string>XSN payment request</string>
       <key>UTTypeConformsTo</key>
       <array>
         <string>public.data</string>
