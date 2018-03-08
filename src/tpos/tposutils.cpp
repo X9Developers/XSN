@@ -8,6 +8,7 @@
 #include "tpos/merchantnodeman.h"
 #include "tpos/activemerchantnode.h"
 #include <sstream>
+#include <numeric>
 
 static const std::string TPOSEXPORTHEADER("TPOSOWNERINFO");
 static const int TPOSEXPORTHEADERWIDTH = 40;
