@@ -76,13 +76,14 @@ Shut down the daemon and then edit the file.
 
 File is located under same path as [masternode.conf](https://github.com/X9Developers/XSN/blob/master/doc/masternode_conf.md) and wallet.dat. 
 
-Enter rpcuser and rpcpassword with random values, this will grant better security. 
+Fill `rpcuser` and `rpcpassword` with random values, this will grant better security. 
 
 ### Edit the masternodeprivkey
 If you generated a new masternode private key, you will need to update the `masternodeprivkey` value in your remote `xsn.conf` file.
 
 ### Sample of editited file:
 
+```
 rpcuser=XXXXXXXXXXXXX
 rpcpassword=XXXXXXXXXXXXXXXXXXXXXXXXXXXX
 rpcallowip=127.0.0.1
@@ -93,6 +94,7 @@ maxconnections=24
 masternode=1
 masternodeprivkey=XXXXXXXXXXXXXXXXXXXXXXX
 externalip=XXX.XXX.XXX.XXX
+```
 
 XXX.XXX.XXX.XXX - needs to be replaced with static ip address of masternode.
 
