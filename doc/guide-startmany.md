@@ -40,7 +40,7 @@ Create the `masternode.conf` file in the same directory as your `wallet.dat`.
 
 Copy the masternode private key and correspondig collateral output transaction that holds the 15000 XSN.
 
-*Note: The masternode priviate key is **not** the same as a wallet private key. **Never** put your wallet private key in the masternode.conf file. That is almost equivalent to putting your 15000 XSN on the remote server and defeats the purpose of a hot/cold setup.*
+*Note: The masternode private key is **not** the same as a wallet private key. **Never** put your wallet private key in the masternode.conf file. That is almost equivalent to putting your 15000 XSN on the remote server and defeats the purpose of a hot/cold setup.*
 
 ### Get the collateral output
 
