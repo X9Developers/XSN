@@ -14,8 +14,6 @@
 
 Create a new wallet address for each Masternode.
 
-Close your QT Wallet.
-
 ### Send 15000 XSN to New Addresses
 
 Send exactly 15000 XSN to each new address created above.
@@ -29,8 +27,6 @@ Issue the following:
 ```masternode genkey```
 
 *Note: A masternode private key will need to be created for each Masternode you run. You should not use the same masternode private key for multiple Masternodes.*
-
-Close your QT Wallet.
 
 ## <a name="masternodeconf"></a>Create masternode.conf file
 
@@ -67,6 +63,8 @@ Example:
 mn01 127.0.0.1:62583 93HaYBVUCYjEMeeH1Y4sBGLALQZE1Yc1K64xiqgX37tGBDQL8Xg 2bcd3c84c84f87eaa86e4e56834c92927a07f9e18718810b92e0d0324456a67c 0
 mn02 127.0.0.2:62583 93WaAb3htPJEV8E9aQcN23Jt97bPex7YvWfgMDTUdWJvzmrMqey aa9f1034d973377a5e733272c3d0eced1de22555ad45d6b24abadff8087948d4 0
 ```
+
+Close your Qt wallet.
 
 ## Update xsn.conf on server
 
