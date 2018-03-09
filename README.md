@@ -1,6 +1,7 @@
 XSN Core integration/staging repository
 ===============================
 
+UNIX Guide[(https://github.com/X9Developers/XSN/blob/master/doc/build-unix.md)] build from source
 
 XSN Coin Features
 
