@@ -401,11 +401,11 @@ static void SendMoney(const CTxDestination &address, CAmount nValue, bool fSubtr
         if (i == splitCount - 1)
         {
             uint64_t nRemainder = nValue % splitCount;
-            vecSend.push_back({scriptPubKey, nValue / splitCount + nRemainder, fSubtractFeeFromAmount});
+            vecSend.push_back({scriptPubKey, static_cast<CAmount>(nValue / splitCount + nRemainder), fSubtractFeeFromAmount});
         }
         else
         {
-            vecSend.push_back({scriptPubKey, nValue / splitCount, fSubtractFeeFromAmount});
+            vecSend.push_back({scriptPubKey, static_cast<CAmount>(nValue / splitCount), fSubtractFeeFromAmount});
         }
     }
 
