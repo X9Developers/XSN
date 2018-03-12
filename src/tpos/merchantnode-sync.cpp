@@ -127,7 +127,6 @@ void CMerchantnodeSync::ClearFulfilledRequests(CConnman& connman)
     // if(!lockRecv) return;
 
     connman.ForEachNode(CConnman::AllNodes, [](CNode* pnode) {
-        netfulfilledman.RemoveFulfilledRequest(pnode->addr, "spork-sync");
         netfulfilledman.RemoveFulfilledRequest(pnode->addr, "merchantnode-list-sync");
         netfulfilledman.RemoveFulfilledRequest(pnode->addr, "full-mrnsync");
     });
@@ -180,7 +179,7 @@ void CMerchantnodeSync::ProcessTick(CConnman& connman)
         // they are temporary and should be considered unreliable for a sync process.
         // Inbound connection this early is most likely a "merchantnode" connection
         // initiated from another node, so skip it too.
-        if(pnode->fMerchantnode || (fMasterNode && pnode->fInbound)) continue;
+        if(pnode->fMerchantnode || (fMerchantNode && pnode->fInbound)) continue;
 
         // QUICK MODE (REGTEST ONLY!)
 #if 0
@@ -211,16 +210,6 @@ void CMerchantnodeSync::ProcessTick(CConnman& connman)
                 pnode->fDisconnect = true;
                 LogPrintf("CMerchantnodeSync::ProcessTick -- disconnecting from recently synced peer %d\n", pnode->id);
                 continue;
-            }
-
-            // SPORK : ALWAYS ASK FOR SPORKS AS WE SYNC
-
-            if(!netfulfilledman.HasFulfilledRequest(pnode->addr, "spork-sync")) {
-                // always get sporks first, only request once from each peer
-                netfulfilledman.AddFulfilledRequest(pnode->addr, "spork-sync");
-                // get current network sporks
-                connman.PushMessageWithVersion(pnode, INIT_PROTO_VERSION, NetMsgType::GETSPORKS);
-                LogPrintf("CMerchantnodeSync::ProcessTick -- nTick %d nRequestedMerchantnodeAssets %d -- requesting sporks from peer %d\n", nTick, nRequestedMerchantnodeAssets, pnode->id);
             }
 
             // INITIAL TIMEOUT
