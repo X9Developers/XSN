@@ -51,7 +51,7 @@ Description: peer-to-peer network based digital currency - Qt GUI
  and issuing money are carried out collectively by the network. Dash Core
  is the name of the open source software which enables the use of this currency.
  .
- This package provides Dash-Qt, a GUI for Dash based on Qt.
+ This package provides XSN-Qt, a GUI for Dash based on Qt.
 
 Package: xsn-tx
 Architecture: any
