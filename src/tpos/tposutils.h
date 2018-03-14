@@ -12,6 +12,7 @@ class CWallet;
 class CWalletTx;
 class CMutableTransaction;
 class CReserveKey;
+class CValidationState;
 
 struct TPoSContract
 {
@@ -61,7 +62,7 @@ public:
 
     static COutPoint GetContractCollateralOutpoint(const TPoSContract &contract);
     static bool CheckContract(const uint256 &hashContractTx, TPoSContract &contract);
-    static bool IsMerchantPaymentValid(const CBlock &block, int nBlockHeight, CAmount expectedReward, CAmount actualReward);
+    static bool IsMerchantPaymentValid(CValidationState &state, const CBlock &block, int nBlockHeight, CAmount expectedReward, CAmount actualReward);
 
 #endif
 

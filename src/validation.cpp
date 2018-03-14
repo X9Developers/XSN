@@ -2243,10 +2243,8 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
 
     const auto& coinbaseTransaction = (pindex->nHeight > Params().GetConsensus().nLastPoWBlock ? block.vtx[1] : block.vtx[0]);
 
-    if(block.IsTPoSBlock() && !TPoSUtils::IsMerchantPaymentValid(block, pindex->nHeight, expectedReward, pindex->nMint)) {
-        LogPrintf("Failed to validate merchant payment, but it's ok for now\n");
-        return state.DoS(0, error("ConnectBlock(XSN): couldn't validate merchantnode payment"),
-                         REJECT_INVALID, "bad-tpos-payee");
+    if(block.IsTPoSBlock() && !TPoSUtils::IsMerchantPaymentValid(state, block, pindex->nHeight, expectedReward, pindex->nMint)) {
+        return false;
     }
 
     if (!IsBlockPayeeValid(coinbaseTransaction, pindex->nHeight, expectedReward, pindex->nMint)) {

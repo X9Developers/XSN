@@ -7,6 +7,7 @@
 #include "tpos/merchantnode-sync.h"
 #include "tpos/merchantnodeman.h"
 #include "tpos/activemerchantnode.h"
+#include "consensus/validation.h"
 #include <sstream>
 #include <numeric>
 
@@ -210,7 +211,7 @@ bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contr
     return true;
 }
 
-bool TPoSUtils::IsMerchantPaymentValid(const CBlock &block, int nBlockHeight, CAmount expectedReward, CAmount actualReward)
+bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &block, int nBlockHeight, CAmount expectedReward, CAmount actualReward)
 {
     auto contract = TPoSContract::FromTPoSContractTx(block.txTPoSContract);
     CBitcoinAddress merchantAddress = contract.merchantAddress;
@@ -222,10 +223,11 @@ bool TPoSUtils::IsMerchantPaymentValid(const CBlock &block, int nBlockHeight, CA
     {
         CTxDestination dest;
         if(!ExtractDestination(coinstake.vout[1].scriptPubKey, dest))
-            return false;
+            return state.DoS(100, error("IsMerchantPaymentValid -- ERROR: coinstake extract destination failed"), REJECT_INVALID, "bad-merchant-payee");
 
-        return error("IsMerchantPaymentValid -- ERROR: coinstake is invalidm expected: %s, actual %s\n",
-                     contract.tposAddress.ToString().c_str(), CBitcoinAddress(dest).ToString().c_str());
+        // ban him, something is incorrect completely
+        return state.DoS(100, error("IsMerchantPaymentValid -- ERROR: coinstake is invalid expected: %s, actual %s\n",
+                                  contract.tposAddress.ToString().c_str(), CBitcoinAddress(dest).ToString().c_str()), REJECT_INVALID, "bad-merchant-payee");
     }
 
     CAmount merchantPayment = 0;
@@ -236,43 +238,54 @@ bool TPoSUtils::IsMerchantPaymentValid(const CBlock &block, int nBlockHeight, CA
     if(merchantPayment > 0)
     {
         auto maxAllowedValue = (expectedReward / 100) * (100 - contract.stakePercentage);
+        // ban, we know fur sure that merchant tries to get more than he is allowed
         if(merchantPayment > maxAllowedValue)
-            return error("IsMerchantPaymentValid -- ERROR: merchant was paid more than allowed: %s\n", contract.merchantAddress.ToString().c_str());
+            return state.DoS(100, error("IsMerchantPaymentValid -- ERROR: merchant was paid more than allowed: %s\n", contract.merchantAddress.ToString().c_str()),
+                             REJECT_INVALID, "bad-merchant-payee");
     }
     else
     {
         LogPrintf("IsMerchantPaymentValid -- WARNING: merchant wasn't paid, this is weird, but totally acceptable. Shouldn't happen.\n");
     }
 
-    if(!merchantnodeSync.IsSynced()) {
+    if(!merchantnodeSync.IsSynced())
+    {
         //there is no merchant node info to check anything, let's just accept the longest chain
-        if(fDebug) LogPrintf("IsMerchantPaymentValid -- WARNING: Client not synced, skipping block payee checks\n");
+        if(fDebug)
+            LogPrintf("IsMerchantPaymentValid -- WARNING: Client not synced, skipping block payee checks\n");
+
         return true;
     }
 
-    if(!sporkManager.IsSporkActive(SPORK_15_TPOS_ENABLED)) {
-        LogPrintf("IsBlockPayeeValid -- ERROR: Invalid merchantnode payment detected at height %d\n", nBlockHeight);
-        return false;
+    if(!sporkManager.IsSporkActive(SPORK_15_TPOS_ENABLED))
+    {
+        return state.DoS(0, error("IsBlockPayeeValid -- ERROR: Invalid merchantnode payment detected at height %d\n", nBlockHeight),
+                         REJECT_INVALID, "bad-merchant-payee", true);
     }
 
     CKeyID coinstakeKeyID;
     if(!merchantAddress.GetKeyID(coinstakeKeyID))
-        return error("IsMerchantPaymentValid -- ERROR: coin stake was paid to invalid address\n");
+        return state.DoS(0, error("IsMerchantPaymentValid -- ERROR: coin stake was paid to invalid address\n"),
+                         REJECT_INVALID, "bad-merchant-payee", true);
 
     CMerchantnode merchantNode;
     if(!merchantnodeman.Get(coinstakeKeyID, merchantNode))
     {
-        return error("IsMerchantPaymentValid -- ERROR: failed to find merchantnode with address: %s\n", merchantAddress.ToString().c_str());
+        return state.DoS(0, error("IsMerchantPaymentValid -- ERROR: failed to find merchantnode with address: %s\n", merchantAddress.ToString().c_str()),
+                         REJECT_INVALID, "bad-merchant-payee", true);
     }
 
     if(merchantNode.hashTPoSContractTx != block.hashTPoSContractTx)
     {
-        return error("IsMerchantPaymentValid -- ERROR: merchantnode contract is invalid expected: %s, actual %s\n",
-                     block.hashTPoSContractTx.ToString().c_str(), merchantNode.hashTPoSContractTx.ToString().c_str());
+        return state.DoS(100, error("IsMerchantPaymentValid -- ERROR: merchantnode contract is invalid expected: %s, actual %s\n",
+                                  block.hashTPoSContractTx.ToString().c_str(), merchantNode.hashTPoSContractTx.ToString().c_str()),
+                         REJECT_INVALID, "bad-merchant-payee");
     }
 
-    if(!merchantNode.IsValidForPayment()) {
-        return error("IsMerchantPaymentValid -- ERROR: merchantnode with address: %s is not valid for payment\n", merchantAddress.ToString().c_str());
+    if(!merchantNode.IsValidForPayment())
+    {
+        return state.DoS(0, error("IsMerchantPaymentValid -- ERROR: merchantnode with address: %s is not valid for payment\n", merchantAddress.ToString().c_str()),
+                         REJECT_INVALID, "bad-merchant-payee", true);
     }
 
     return true;
