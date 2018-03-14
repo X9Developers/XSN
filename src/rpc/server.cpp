@@ -355,6 +355,7 @@ static const CRPCCommand vRPCCommands[] =
   { "xsn",               "getsuperblockbudget",    &getsuperblockbudget,    true  },
   { "xsn",               "voteraw",                &voteraw,                true  },
   { "xsn",               "mnsync",                 &mnsync,                 true  },
+  { "xsn",               "merchantsync",           &merchantsync,           true  },
   { "xsn",               "spork",                  &spork,                  true  },
   { "xsn",               "getpoolinfo",            &getpoolinfo,            true  },
   { "xsn",               "sentinelping",           &sentinelping,           true  },

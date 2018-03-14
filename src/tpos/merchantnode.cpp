@@ -169,13 +169,6 @@ void CMerchantnode::Check(bool fForce)
             return;
         }
 
-        if(!IsPingedWithin(MERCHANTNODE_MAX_EXPIRATION_SECONDS)) {
-            nActiveState = MERCHANTNODE_SIGNIFICANTLY_EXPIRED;
-            if(nActiveStatePrev != nActiveState) {
-                LogPrint("merchantnode", "CMerchantnode::Check -- Merchantnode %s is in %s state now\n", HexStr(pubKeyMerchantnode.Raw()), GetStateString());
-            }
-        }
-
         if(!IsPingedWithin(MERCHANTNODE_EXPIRATION_SECONDS)) {
             nActiveState = MERCHANTNODE_EXPIRED;
             if(nActiveStatePrev != nActiveState) {
@@ -226,7 +219,6 @@ std::string CMerchantnode::StateToString(int nStateIn)
     case MERCHANTNODE_PRE_ENABLED:            return "PRE_ENABLED";
     case MERCHANTNODE_ENABLED:                return "ENABLED";
     case MERCHANTNODE_EXPIRED:                return "EXPIRED";
-    case MERCHANTNODE_SIGNIFICANTLY_EXPIRED:  return "SIGNIFICATLY_EXPIRED";
     case MERCHANTNODE_UPDATE_REQUIRED:        return "UPDATE_REQUIRED";
     case MERCHANTNODE_WATCHDOG_EXPIRED:       return "WATCHDOG_EXPIRED";
     case MERCHANTNODE_NEW_START_REQUIRED:     return "NEW_START_REQUIRED";
@@ -337,7 +329,7 @@ bool CMerchantnodeBroadcast::SimpleCheck(int& nDos)
     // empty ping or incorrect sigTime/unknown blockhash
     if(lastPing == CMerchantnodePing() || !lastPing.SimpleCheck(nDos)) {
         // one of us is probably forked or smth, just mark it as expired and check the rest of the rules
-        nActiveState = lastPing.IsSignificantlyExpired() ? MERCHANTNODE_SIGNIFICANTLY_EXPIRED : MERCHANTNODE_EXPIRED;
+        nActiveState = MERCHANTNODE_EXPIRED;
     }
 
     if(nProtocolVersion < PROTOCOL_VERSION) {

@@ -279,6 +279,7 @@ extern UniValue getsuperblockbudget(const UniValue& params, bool fHelp);
 extern UniValue voteraw(const UniValue& params, bool fHelp);
 extern UniValue mnsync(const UniValue& params, bool fHelp);
 
+extern UniValue merchantsync(const UniValue& params, bool fHelp);
 extern UniValue merchantnode(const UniValue& params, bool fHelp);
 extern UniValue merchantnodelist(const UniValue& params, bool fHelp);
 extern UniValue merchantsentinelping(const UniValue& params, bool fHelp);

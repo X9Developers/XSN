@@ -18,7 +18,6 @@ static const int MERCHANTNODE_CHECK_SECONDS               = 20;
 static const int MERCHANTNODE_MIN_MNB_SECONDS             = 5 * 60;
 static const int MERCHANTNODE_MIN_MNP_SECONDS             = 10 * 60;
 static const int MERCHANTNODE_EXPIRATION_SECONDS          = 65 * 60;
-static const int MERCHANTNODE_MAX_EXPIRATION_SECONDS      = 25 * 60 * 60;
 static const int MERCHANTNODE_WATCHDOG_MAX_SECONDS        = 120 * 60;
 static const int MERCHANTNODE_NEW_START_REQUIRED_SECONDS  = 180 * 60;
 static const int MERCHANTNODE_POSE_BAN_MAX_SCORE          = 5;
@@ -72,8 +71,6 @@ public:
     }
 
     bool IsExpired() const { return GetAdjustedTime() - sigTime > MERCHANTNODE_NEW_START_REQUIRED_SECONDS; }
-    bool IsSignificantlyExpired() const { return GetAdjustedTime() - sigTime > MERCHANTNODE_MAX_EXPIRATION_SECONDS; }
-
     bool Sign(const CKey& keyMerchantnode, const CPubKey& pubKeyMerchantnode);
     bool CheckSignature(CPubKey& pubKeyMerchantnode, int &nDos);
     bool SimpleCheck(int& nDos);
@@ -137,7 +134,6 @@ public:
         MERCHANTNODE_PRE_ENABLED,
         MERCHANTNODE_ENABLED,
         MERCHANTNODE_EXPIRED,
-        MERCHANTNODE_SIGNIFICANTLY_EXPIRED,
         MERCHANTNODE_UPDATE_REQUIRED,
         MERCHANTNODE_WATCHDOG_EXPIRED,
         MERCHANTNODE_NEW_START_REQUIRED,
@@ -202,7 +198,6 @@ public:
     bool IsUpdateRequired() const { return nActiveState == MERCHANTNODE_UPDATE_REQUIRED; }
     bool IsWatchdogExpired() const { return nActiveState == MERCHANTNODE_WATCHDOG_EXPIRED; }
     bool IsNewStartRequired() const { return nActiveState == MERCHANTNODE_NEW_START_REQUIRED; }
-    bool IsSignificanltyExpired() const { return nActiveState == MERCHANTNODE_SIGNIFICANTLY_EXPIRED; }
 
     static bool IsValidStateForAutoStart(int nActiveStateIn)
     {

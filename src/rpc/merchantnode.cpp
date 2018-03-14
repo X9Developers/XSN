@@ -21,6 +21,45 @@
 #include <iomanip>
 #include <univalue.h>
 
+UniValue merchantsync(const UniValue& params, bool fHelp)
+{
+    if (fHelp || params.size() != 1)
+        throw runtime_error(
+            "merchantsync [status|next|reset]\n"
+            "Returns the sync status, updates to the next step or resets it entirely.\n"
+        );
+
+    std::string strMode = params[0].get_str();
+
+    if(strMode == "status") {
+        UniValue objStatus(UniValue::VOBJ);
+        objStatus.push_back(Pair("AssetID", merchantnodeSync.GetAssetID()));
+        objStatus.push_back(Pair("AssetName", merchantnodeSync.GetAssetName()));
+        objStatus.push_back(Pair("AssetStartTime", merchantnodeSync.GetAssetStartTime()));
+        objStatus.push_back(Pair("Attempt", merchantnodeSync.GetAttempt()));
+        objStatus.push_back(Pair("IsBlockchainSynced", merchantnodeSync.IsBlockchainSynced()));
+        objStatus.push_back(Pair("IsMasternodeListSynced", merchantnodeSync.IsMerchantnodeListSynced()));
+        objStatus.push_back(Pair("IsSynced", merchantnodeSync.IsSynced()));
+        objStatus.push_back(Pair("IsFailed", merchantnodeSync.IsFailed()));
+        return objStatus;
+    }
+
+    if(strMode == "next")
+    {
+        merchantnodeSync.SwitchToNextAsset(*g_connman);
+        return "sync updated to " + merchantnodeSync.GetAssetName();
+    }
+
+    if(strMode == "reset")
+    {
+        merchantnodeSync.Reset();
+        merchantnodeSync.SwitchToNextAsset(*g_connman);
+        return "success";
+    }
+    return "failure";
+}
+
+
 
 UniValue merchantnode(const UniValue& params, bool fHelp)
 {

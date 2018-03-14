@@ -131,7 +131,7 @@ void CMerchantnodeMan::CheckAndRemove(CConnman& connman)
             CMerchantnodeBroadcast mnb = CMerchantnodeBroadcast(it->second);
             uint256 hash = mnb.GetHash();
             // If collateral was spent ...
-            if (it->second.IsSignificanltyExpired()) {
+            if (it->second.IsNewStartRequired()) {
                 LogPrint("merchantnode", "CMerchantnodeMan::CheckAndRemove -- Removing Merchantnode: %s  addr=%s  %i now\n", it->second.GetStateString(), it->second.addr.ToString(), size() - 1);
 
                 // erase all of the broadcasts we've seen from this txin, ...
@@ -143,7 +143,6 @@ void CMerchantnodeMan::CheckAndRemove(CConnman& connman)
             } else {
                 bool fAsk = (nAskForMnbRecovery > 0) &&
                         merchantnodeSync.IsSynced() &&
-                        it->second.IsNewStartRequired() &&
                         !IsMnbRecoveryRequested(hash);
                 if(fAsk) {
                     // this mn is in a non-recoverable state and we haven't asked other nodes yet
@@ -517,7 +516,7 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDa
             UpdateWatchdogVoteTime(mnp.merchantPubKey, mnp.sigTime);
 
         // too late, new MERCHANTNODEANNOUNCE is required
-        if(pmn && pmn->IsNewStartRequired()) return;
+        if(pmn && pmn->IsExpired()) return;
 
         int nDos = 0;
         if(mnp.CheckAndUpdate(pmn, false, nDos, connman)) return;

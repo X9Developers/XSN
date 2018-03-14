@@ -20,7 +20,7 @@ class CMerchantnodeMan
 private:
     static const std::string SERIALIZATION_VERSION_STRING;
 
-    static const int DSEG_UPDATE_SECONDS        = 1 * 60 * 60;
+    static const int DSEG_UPDATE_SECONDS        = 1 * 30 * 60;
 
     static const int LAST_PAID_SCAN_BLOCKS      = 100;
 
@@ -33,7 +33,7 @@ private:
     static const int MNB_RECOVERY_QUORUM_REQUIRED   = 6;
     static const int MNB_RECOVERY_MAX_ASK_ENTRIES   = 10;
     static const int MNB_RECOVERY_WAIT_SECONDS      = 60;
-    static const int MNB_RECOVERY_RETRY_SECONDS     = 3 * 60 * 60;
+    static const int MNB_RECOVERY_RETRY_SECONDS     = 1 * 60 * 60;
 
 
     // critical section to protect the inner data structures
