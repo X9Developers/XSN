@@ -1232,6 +1232,23 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
         pfrom->addrLocal = addrMe;
         pfrom->strSubVer = strSubVer;
         pfrom->cleanSubVer = SanitizeString(strSubVer);
+
+        auto index = pfrom->cleanSubVer.find(':');
+        if(index >= 2 && index != std::string::npos)
+        {
+            // we need this clumsy check to ban nodes that are at version 1.0.0
+            auto version = pfrom->cleanSubVer.substr(index + 1);
+            if(version.find(std::string("1.0.0")) != std::string::npos)
+            {
+                LogPrintf("peer=%d using obsolete version %i; disconnecting\n", pfrom->id, nVersion);
+                connman.PushMessageWithVersion(pfrom, INIT_PROTO_VERSION, NetMsgType::REJECT, strCommand, REJECT_OBSOLETE,
+                                               strprintf("Version must be %d or greater", "1.0.1"));
+                Misbehaving(pfrom->GetId(), 100);
+                pfrom->fDisconnect = true;
+                return false;
+            }
+        }
+
         pfrom->nStartingHeight = nStartingHeight;
         pfrom->fClient = !(nServices & NODE_NETWORK);
         {
