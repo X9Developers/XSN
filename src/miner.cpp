@@ -528,9 +528,9 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
 
                     // check if our merchant node is set, otherwise block won't be accepted.
                     CMerchantnode merchantNode;
-                    merchantnodeman.Get(activeMerchantnode.pubKeyMerchantnode, merchantNode);
+                    bool isValidForPayment = merchantnodeman.Get(activeMerchantnode.pubKeyMerchantnode, merchantNode);
 
-                    bool isValidForPayment = merchantNode.IsValidForPayment();
+                    isValidForPayment &= merchantNode.IsValidForPayment();
                     auto merchantnodePayee = CBitcoinAddress(activeMerchantnode.pubKeyMerchantnode.GetID());
                     bool isValidContract = contract.merchantAddress == merchantnodePayee;
                     if(!isValidForPayment || !isValidContract)
@@ -538,6 +538,7 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
                         LogPrintf("Won't tpos, merchant node valid for payment: %d\n Contract address: %s, merchantnode address: \n", isValidForPayment,
                                   contract.merchantAddress.ToString().c_str(), merchantnodePayee.ToString().c_str());
 
+                        nLastCoinStakeSearchInterval = 0;
                         MilliSleep(10000);
                         continue;
                     }

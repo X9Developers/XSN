@@ -25,6 +25,9 @@
 
 #include "miner.h"
 #include "tpos/merchantnode-sync.h"
+#include "tpos/merchantnodeman.h"
+#include "tpos/merchantnode.h"
+#include "tpos/activemerchantnode.h"
 #include "masternode-sync.h"
 #include "spork.h"
 
@@ -240,7 +243,7 @@ UniValue getstakingstatus(const UniValue& params, bool fHelp)
             "  \"enoughcoins\": true|false,        (boolean) if available coins are greater than reserve balance\n"
             "  \"mnsync\": true|false,             (boolean) if masternode data is synced\n"
             "  \"staking status\": true|false,     (boolean) if the wallet is staking or not\n"
-            "  \"staking tpos txid\" ,            (string) if the wallet is staking or not\n"
+            "  \"staking tpos txid\" ,             (string)  if the wallet is tposing or not\n"
             "}\n"
             "\nExamples:\n" +
             HelpExampleCli("getstakingstatus", "") + HelpExampleRpc("getstakingstatus", ""));
@@ -267,7 +270,46 @@ UniValue getstakingstatus(const UniValue& params, bool fHelp)
     uint256 txId;
     std::tie(isTPoS, txId) = GetTPoSMinningParams();
 
-    obj.push_back(Pair("staking tpos txid", isTPoS ? txId.ToString() : std::string("none")));
+    std::string tposStatus = "none";
+    if(isTPoS)
+    {
+        auto helper = [&txId, &tposStatus] {
+            TPoSContract contract;
+            if(!TPoSUtils::CheckContract(txId, contract))
+            {
+                tposStatus = "Failed to find tpos contract, probably spent";
+                return false;
+            }
+
+            CMerchantnode merchantNode;
+            merchantnodeman.Get(activeMerchantnode.pubKeyMerchantnode, merchantNode);
+
+            if(!merchantnodeman.Get(activeMerchantnode.pubKeyMerchantnode, merchantNode))
+            {
+                tposStatus = "Merchantnode is not available in the list";
+                return false;
+            }
+
+            if(!merchantNode.IsValidForPayment())
+            {
+                tposStatus = "Merchantnode is not valid for payment";
+                return false;
+            }
+
+            auto merchantnodePayee = CBitcoinAddress(activeMerchantnode.pubKeyMerchantnode.GetID());
+
+            if(contract.merchantAddress != merchantnodePayee)
+            {
+                tposStatus = "Merchantnode is not configured for contract: " + txId.ToString();
+            }
+
+            return true;
+        };
+
+        isTPoS = helper();
+    }
+
+    obj.push_back(Pair("staking tpos txid", isTPoS ? txId.ToString() : tposStatus));
 
     return obj;
 }

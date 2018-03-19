@@ -2104,8 +2104,24 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     if (!connman.Start(scheduler, strNodeError, connOptions))
         return InitError(strNodeError);
 
+    auto tposContract = GetArg("-stakeTPoSContract", std::string());
+
+    if(!tposContract.empty())
+    {
+        if(IsHex(tposContract))
+        {
+            uint256 hashContract;
+            hashContract.SetHex(tposContract);
+            SetTPoSMinningParams(true, hashContract);
+        }
+        else
+        {
+            LogPrintf("Stake tpos contract invalid, won't tpos automatically.");
+        }
+    }
+
     // Generate coins in the background
-//    GenerateBitcoins(GetBoolArg("-gen", DEFAULT_GENERATE), GetArg("-genproclimit", DEFAULT_GENERATE_THREADS), chainparams, connman);
+    //GenerateBitcoins(GetBoolArg("-gen", DEFAULT_GENERATE), GetArg("-genproclimit", DEFAULT_GENERATE_THREADS), chainparams, connman);
 
     // ********************************************************* Step 13: finished
 
