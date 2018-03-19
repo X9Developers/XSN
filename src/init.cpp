@@ -2104,7 +2104,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     if (!connman.Start(scheduler, strNodeError, connOptions))
         return InitError(strNodeError);
 
-    auto tposContract = GetArg("-stakeTPoSContract", std::string());
+    auto tposContract = GetArg("-staketposcontract", std::string());
 
     if(!tposContract.empty())
     {
