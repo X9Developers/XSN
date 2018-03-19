@@ -233,6 +233,8 @@ RES_ICONS = \
   qt/res/icons/light/fontsmaller.png \
   qt/res/icons/light/transaction_abandoned.png \
   qt/res/icons/light/network_disabled.png \
+  qt/res/icons/light/staking_active.png \
+  qt/res/icons/light/staking_inactive.png \
   qt/res/icons/dark/address-book.png \
   qt/res/icons/dark/quit.png \
   qt/res/icons/dark/send.png \
@@ -286,7 +288,9 @@ RES_ICONS = \
   qt/res/icons/dark/fontbigger.png \
   qt/res/icons/dark/fontsmaller.png \
   qt/res/icons/dark/transaction_abandoned.png \
-  qt/res/icons/dark/network_disabled.png 
+  qt/res/icons/dark/network_disabled.png  \
+  qt/res/icons/dark/staking_active.png \
+  qt/res/icons/dark/staking_inactive.png
 
 BITCOIN_QT_CPP = \
   qt/bantablemodel.cpp \

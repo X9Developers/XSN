@@ -85,6 +85,7 @@ private:
     WalletFrame *walletFrame;
 
     UnitDisplayStatusBarControl *unitDisplayControl;
+    QLabel* labelStakingIcon;
     QLabel *labelEncryptionIcon;
     QLabel *labelWalletHDStatusIcon;
     QLabel *labelConnectionsIcon;
@@ -203,6 +204,8 @@ public Q_SLOTS:
      @see WalletModel::EncryptionStatus
      */
     void setHDStatus(int hdEnabled);
+
+    void setStakingStatus();
 
     /** Set the encryption status as shown in the UI.
        @param[in] status            current encryption status

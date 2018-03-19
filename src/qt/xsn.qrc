@@ -59,6 +59,8 @@
         <file alias="fontsmaller">res/icons/light/fontsmaller.png</file>
         <file alias="transaction_abandoned">res/icons/light/transaction_abandoned.png</file>
         <file alias="network_disabled">res/icons/light/network_disabled.png</file>
+        <file alias="staking_active">res/icons/light/staking_active.png</file>
+        <file alias="staking_inactive">res/icons/light/staking_inactive.png</file>
     </qresource>
     <qresource prefix="/icons/dark">
         <file alias="address-book">res/icons/dark/address-book.png</file>
@@ -115,6 +117,8 @@
         <file alias="fontsmaller">res/icons/dark/fontsmaller.png</file>
         <file alias="transaction_abandoned">res/icons/dark/transaction_abandoned.png</file>
         <file alias="network_disabled">res/icons/dark/network_disabled.png</file>
+        <file alias="staking_active">res/icons/light/staking_active.png</file>
+        <file alias="staking_inactive">res/icons/light/staking_inactive.png</file>
     </qresource>
     <qresource prefix="/css">
         <file>res/css/dark.css</file>
