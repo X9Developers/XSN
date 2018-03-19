@@ -25,9 +25,9 @@ UniValue merchantsync(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() != 1)
         throw runtime_error(
-            "merchantsync [status|next|reset]\n"
-            "Returns the sync status, updates to the next step or resets it entirely.\n"
-        );
+                "merchantsync [status|next|reset]\n"
+                "Returns the sync status, updates to the next step or resets it entirely.\n"
+                );
 
     std::string strMode = params[0].get_str();
 
@@ -412,7 +412,7 @@ UniValue tposcontract(const UniValue& params, bool fHelp)
         strCommand = params[0].get_str();
     }
 
-    if (fHelp  || (strCommand != "list" && strCommand != "create"))
+    if (fHelp  || (strCommand != "list" && strCommand != "create" && strCommand != "refresh"))
         throw std::runtime_error(
                 "tposcontract \"command\"...\n"
                 "Set of commands to execute merchantnode related actions\n"
@@ -421,6 +421,7 @@ UniValue tposcontract(const UniValue& params, bool fHelp)
                 "\nAvailable commands:\n"
                 "  create           - Create tpos transaction\n"
                 "  list             - Print list of all tpos contracts that you are owner or merchant\n"
+                "  refresh          - Refresh tpos contract for merchant to fetch all coins from blockchain.\n"
                 );
 
     if (strCommand == "list")
@@ -488,6 +489,21 @@ UniValue tposcontract(const UniValue& params, bool fHelp)
         {
             return "Failed to create tpos transaction, reason: " + strError;
         }
+    }
+    else if(strCommand == "refresh")
+    {
+        if(params.size() < 2)
+            throw JSONRPCError(RPC_INVALID_PARAMETER,
+                               "Expected format: tposcontract refres tposcontract_id");
+
+        auto tposContractHashID = ParseHashV(params[1], "tposcontractid");
+
+        auto it = pwalletMain->tposMerchantContracts.find(tposContractHashID);
+        if(it == std::end(pwalletMain->tposMerchantContracts))
+            return "No merchant tpos contract found";
+
+        pwalletMain->ScanForWalletTransactions(chainActive.Genesis(), true);
+        pwalletMain->ReacceptWalletTransactions();
     }
 
     return NullUniValue;
