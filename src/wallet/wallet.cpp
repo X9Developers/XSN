@@ -2053,7 +2053,7 @@ CAmount CWalletTx::GetAvailableCredit(bool fUseCache) const
         return 0;
 
     // Must wait until coinbase is safely deep enough in the chain before valuing it
-    if (GetBlocksToMaturity() > 0)
+    if (IsCoinBase() && GetBlocksToMaturity() > 0)
         return 0;
 
     if (fUseCache && fAvailableCreditCached)

@@ -54,6 +54,7 @@ using namespace std;
 
 uint64_t nLastBlockTx = 0;
 uint64_t nLastBlockSize = 0;
+int64_t nLastCoinStakeSearchInterval = 0;
 
 struct TPoSParams
 {
@@ -144,7 +145,7 @@ CBlockTemplate* CreateNewBlock(CWallet *wallet, const CChainParams& chainparams,
                 fStakeFound = true;
             }
 
-            //            nLastCoinStakeSearchInterval = nSearchTime - nLastCoinStakeSearchTime;
+            nLastCoinStakeSearchInterval = nSearchTime - nLastCoinStakeSearchTime;
             nLastCoinStakeSearchTime = nSearchTime;
         }
 
@@ -509,6 +510,7 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
                         pwallet->IsLocked() || !masternodeSync.IsSynced() || !merchantnodeSync.IsSynced() ||
                         activeMerchantnode.nState != ACTIVE_MERCHANTNODE_STARTED)
                 {
+                    nLastCoinStakeSearchInterval = 0;
                     MilliSleep(5000);
                     continue;
                 }

@@ -24,6 +24,8 @@ static const int DEFAULT_GENERATE_THREADS = 1;
 
 static const bool DEFAULT_PRINTPRIORITY = false;
 
+extern int64_t nLastCoinStakeSearchInterval;
+
 struct CBlockTemplate
 {
     CBlock block;
