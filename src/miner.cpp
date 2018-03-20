@@ -507,8 +507,7 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
             if(fProofOfStake)
             {
                 if (chainActive.Tip()->nHeight < chainparams.GetConsensus().nLastPoWBlock ||
-                        pwallet->IsLocked() || !masternodeSync.IsSynced() || !merchantnodeSync.IsSynced() ||
-                        activeMerchantnode.nState != ACTIVE_MERCHANTNODE_STARTED)
+                        pwallet->IsLocked() || !masternodeSync.IsSynced() || !merchantnodeSync.IsSynced())
                 {
                     nLastCoinStakeSearchInterval = 0;
                     MilliSleep(5000);
