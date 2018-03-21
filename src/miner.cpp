@@ -559,7 +559,7 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
             std::unique_ptr<CBlockTemplate> pblocktemplate(CreateNewBlock(pwallet, chainparams, coinbaseScript->reserveScript, fProofOfStake, contract));
             if (!pblocktemplate.get())
             {
-                LogPrintf("XsnMiner -- Keypool ran out, please call keypoolrefill before restarting the mining thread\n");
+                LogPrintf("XsnMiner -- Failed to find a coinstake\n");
                 MilliSleep(5000);
                 continue;
             }

@@ -3620,7 +3620,10 @@ bool ProcessNewBlock(const CChainParams& chainparams, const CBlock* pblock, bool
 bool TestBlockValidity(CValidationState& state, const CChainParams& chainparams, const CBlock& block, CBlockIndex* pindexPrev, bool fCheckPOW, bool fCheckMerkleRoot)
 {
     AssertLockHeld(cs_main);
-    assert(pindexPrev && pindexPrev == chainActive.Tip());
+    assert(pindexPrev/* && pindexPrev == chainActive.Tip()*/);
+    if(pindexPrev != chainActive.Tip())
+        return error("Tip has changed and doesn't math prev block anymore");
+
     if (fCheckpointsEnabled && !CheckIndexAgainstCheckpoint(pindexPrev, state, chainparams, block.GetHash()))
         return error("%s: CheckIndexAgainstCheckpoint(): %s", __func__, state.GetRejectReason().c_str());
 
