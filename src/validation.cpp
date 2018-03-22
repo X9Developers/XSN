@@ -1261,7 +1261,6 @@ CAmount GetBlockSubsidy(int nPrevHeight, const Consensus::Params& consensusParam
 
     nSubsidy = std::max<CAmount>(nSubsidy, 5) * COIN;
 
-    LogPrintf("height %u reward %d\n", nPrevHeight, nSubsidy);
     CAmount nSuperblockPart = (nPrevHeight > consensusParams.nBudgetPaymentsStartBlock) ? nSubsidy / 10 : 0;
 
     return fSuperblockPartOnly ? nSuperblockPart : nSubsidy - nSuperblockPart;
