@@ -18,7 +18,7 @@ the XSN Core software, see https://xsncoin.io/
 <tr><td>Algo</td><td>X11</td></tr>
 <tr><td>Block Time</td><td>60 Seconds</td></tr>
 <tr><td>Difficulty Retargeting</td><td>40 minutes</td></tr>
-<tr><td>Max Coin Supply (PoS Phase)</td><td>8e+15</td></tr>
+<tr><td>Max Coin Supply (PoS Phase)</td><td>8e+15 XSN</td></tr>
 <tr><td>Premine</td><td>76,500,000 XSN</td></tr>
 </table>
 
