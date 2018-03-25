@@ -49,6 +49,10 @@ core_io.h
 core_memusage.h
 core_read.cpp
 core_write.cpp
+qt/tposaddressestablemodel.cpp
+qt/tposaddressestablemodel.h
+qt/tpospage.cpp
+qt/tpospage.h
 xsn-cli.cpp
 xsn-tx.cpp
 xsnd.cpp
@@ -204,6 +208,7 @@ qt/forms/sendcoinsentry.ui
 qt/forms/signverifymessagedialog.ui
 qt/forms/transactiondescdialog.ui
 qt/forms/transactionsdialog.ui
+qt/forms/tpospage.ui
 qt/guiconstants.h
 qt/guiutil.cpp
 qt/guiutil.h

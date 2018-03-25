@@ -103,52 +103,23 @@
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="merchantTxIdLabel">
-             <property name="toolTip">
-              <string>Merchant public key which is used to identify TPoS service provider.</string>
-             </property>
-             <property name="text">
-              <string>MERCHANT TRANSACTION ID</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-             </property>
-             <property name="buddy">
-              <cstring>merchantPubKey</cstring>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="merchantTxId">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="toolTip">
-              <string>An optional label to associate with the new receiving address.</string>
-             </property>
-            </widget>
-           </item>
-           <item>
             <widget class="QLabel" name="labelLabel">
              <property name="toolTip">
               <string>Merchant public key which is used to identify TPoS service provider.</string>
              </property>
              <property name="text">
-              <string>MERCHANT KEY</string>
+              <string>MERCHANT ADDRESS</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
              </property>
              <property name="buddy">
-              <cstring>merchantPubKey</cstring>
+              <cstring>merchantAddress</cstring>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="merchantPubKey">
+            <widget class="QLineEdit" name="merchantAddress">
              <property name="minimumSize">
               <size>
                <width>0</width>
