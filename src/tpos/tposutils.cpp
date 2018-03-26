@@ -38,7 +38,8 @@ bool TPoSUtils::GetTPoSPayments(const CWallet *wallet,
                                 const CWalletTx &wtx,
                                 CAmount &stakeAmount,
                                 CAmount &commissionAmount,
-                                CBitcoinAddress &tposAddress)
+                                CBitcoinAddress &tposAddress,
+                                CBitcoinAddress &merchantAddress)
 {
     if(!wtx.IsCoinStake())
         return false;
@@ -55,29 +56,27 @@ bool TPoSUtils::GetTPoSPayments(const CWallet *wallet,
     for(auto &&pair : wallet->tposMerchantContracts)
         tposContracts.emplace_back(pair.second);
 
-    for(size_t i = 2; i < std::min<size_t>(4, wtx.vout.size()); ++i)
+    CTxDestination address;
+    auto scriptKernel = wtx.vout.at(1).scriptPubKey;
+    if(ExtractDestination(scriptKernel, address))
     {
-        CTxDestination address;
-        if(ExtractDestination(wtx.vout.at(i).scriptPubKey, address))
+        CBitcoinAddress tmpAddress(address);
+
+        auto it = std::find_if(std::begin(tposContracts), std::end(tposContracts), [tmpAddress](const TPoSContract &entry) {
+            return entry.tposAddress == tmpAddress;
+        });
+
+        if(it != std::end(tposContracts))
         {
 
-            CBitcoinAddress tmpAddress(address);
-
-            auto it = std::find_if(std::begin(tposContracts), std::end(tposContracts), [tmpAddress](const TPoSContract &entry) {
-                return entry.tposAddress == tmpAddress;
+            auto commissionIt = std::find_if(std::begin(wtx.vout), std::end(wtx.vout), [scriptKernel](const CTxOut &txOut) {
+                return txOut.scriptPubKey == scriptKernel;
             });
 
-            if(it == std::end(tposContracts))
-                continue;
-
-            stakeAmount = wtx.vout[i].nValue;
-
-            // at this moment nNet contains net stake reward
-            // commission was sent to merchant address, so it was base of tx
-            commissionAmount = nNet;
-            // stake amount is just what was sent to tpos address
-
+            stakeAmount = nNet;
+            commissionAmount = commissionIt->nValue;
             tposAddress = tmpAddress;
+            merchantAddress = it->second->merchantAddress;
 
             return true;
         }
@@ -95,7 +94,7 @@ bool TPoSUtils::IsTPoSMerchantContract(CWallet *wallet, const CTransaction &tx)
             GetScriptForDestination(activeMerchantnode.pubKeyMerchantnode.GetID());
 
     return contract.IsValid() && (IsMerchantNode ||
-            IsMine(*wallet, contract.merchantAddress.Get()) == ISMINE_SPENDABLE);
+                                  IsMine(*wallet, contract.merchantAddress.Get()) == ISMINE_SPENDABLE);
 }
 
 bool TPoSUtils::IsTPoSOwnerContract(CWallet *wallet, const CTransaction &tx)
@@ -227,13 +226,13 @@ bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &bl
 
         // ban him, something is incorrect completely
         return state.DoS(100, error("IsMerchantPaymentValid -- ERROR: coinstake is invalid expected: %s, actual %s\n",
-                                  contract.tposAddress.ToString().c_str(), CBitcoinAddress(dest).ToString().c_str()), REJECT_INVALID, "bad-merchant-payee");
+                                    contract.tposAddress.ToString().c_str(), CBitcoinAddress(dest).ToString().c_str()), REJECT_INVALID, "bad-merchant-payee");
     }
 
     CAmount merchantPayment = 0;
     merchantPayment = std::accumulate(std::begin(coinstake.vout) + 2, std::end(coinstake.vout), CAmount(0), [scriptMerchantPubKey](CAmount accum, const CTxOut &txOut) {
-        return txOut.scriptPubKey == scriptMerchantPubKey ? accum + txOut.nValue : accum;
-    });
+            return txOut.scriptPubKey == scriptMerchantPubKey ? accum + txOut.nValue : accum;
+});
 
     if(merchantPayment > 0)
     {
@@ -278,7 +277,7 @@ bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &bl
     if(merchantNode.hashTPoSContractTx != block.hashTPoSContractTx)
     {
         return state.DoS(100, error("IsMerchantPaymentValid -- ERROR: merchantnode contract is invalid expected: %s, actual %s\n",
-                                  block.hashTPoSContractTx.ToString().c_str(), merchantNode.hashTPoSContractTx.ToString().c_str()),
+                                    block.hashTPoSContractTx.ToString().c_str(), merchantNode.hashTPoSContractTx.ToString().c_str()),
                          REJECT_INVALID, "bad-merchant-payee");
     }
 
