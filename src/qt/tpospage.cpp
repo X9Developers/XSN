@@ -137,7 +137,7 @@ void TPoSPage::connectSignals()
 {
     connect(ui->stakeButton, &QPushButton::clicked, this, &TPoSPage::onStakeClicked);
     connect(ui->clearButton, &QPushButton::clicked, this, &TPoSPage::onClearClicked);
-    connect(ui->showRequestButton, &QPushButton::clicked, this, &TPoSPage::onShowRequestClicked);
+//    connect(ui->showRequestButton, &QPushButton::clicked, this, &TPoSPage::onShowRequestClicked);
     connect(ui->removeRequestButton, &QPushButton::clicked, this, &TPoSPage::onRedeemClicked);
 }
 
@@ -146,13 +146,31 @@ void TPoSPage::onStakeError()
     //    ui->stakeButton->setEnabled(false);
 }
 
-void TPoSPage::stakeTPoS(TPoSPage::MultisigTuple info)
+void TPoSPage::stakeTPoS()
 {
-    if(!CBitcoinAddress(std::get<1>(info).toStdString()).IsValid())
+    CReserveKey reserveKey(pwalletMain);
+    CBitcoinAddress tposAddress(ui->tposAddress->text().toStdString());
+    CBitcoinAddress merchantAddress(ui->merchantAddress->text().toStdString());
+
+    if(!tposAddress.IsValid())
     {
         QMessageBox::warning(this, "TPoS", "Critical error, TPoS address is empty");
-        error("Multisignature address is empty, aborting");
-        onStakeError();
+        return;
+    }
+    if(!merchantAddress.IsValid())
+    {
+        QMessageBox::warning(this, "TPoS", "Critical error, merchant address is empty");
+        return;
+    }
+
+    std::string strError;
+    if(TPoSUtils::CreateTPoSTransaction(pwalletMain, reserveKey, tposAddress, merchantAddress, ui->merchantCut->value(), strError))
+    {
+
+    }
+    else
+    {
+        QMessageBox::warning(this, "TPoS", QString("Failed to create TPoS transaction: %1").arg(strError.c_str()));
         return;
     }
 }

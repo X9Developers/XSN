@@ -22,10 +22,6 @@ class TPoSPage : public QWidget
 {
     Q_OBJECT
 
-    using Pub3KeyTuple = std::tuple<QString, QString, QString>; // 3 public keys
-    using SignedMessagesTuple = std::tuple<QString, QString>; // two signatures
-    using MultisigTuple = std::tuple<Pub3KeyTuple, QString>; // 3 pubkeys + multisig addr
-    using TPoSTuple = std::tuple<MultisigTuple, SignedMessagesTuple, QString>; // multisig + signatures + txid
 public:
     explicit TPoSPage(QWidget *parent = 0);
     ~TPoSPage();
@@ -47,7 +43,7 @@ private:
     void init();
     void connectSignals();
     void onStakeError();
-    void stakeTPoS(MultisigTuple info);
+    void stakeTPoS();
 
 private:
     Ui::TPoSPage *ui;
