@@ -155,10 +155,8 @@ void TPoSAddressesTableModel::updateAmountColumnTitle()
 
 void TPoSAddressesTableModel::NotifyTransactionChanged(CWallet* wallet, const uint256& hash, ChangeType status)
 {
-    (void)status;
-
+    // this needs work
     return;
-
     auto maybeUpdate = [this](uint256 txid) {
         auto it = tposContracts.find(txid);
         if(it != std::end(tposContracts))
@@ -173,14 +171,7 @@ void TPoSAddressesTableModel::NotifyTransactionChanged(CWallet* wallet, const ui
     if(mi != wallet->mapWallet.end())
     {
         const CWalletTx &wtx = mi->second;
-
-        CAmount stakeAmount = 0;
-        CAmount commissionAmount = 0;
-        CBitcoinAddress tposAddress;
-        if(TPoSUtils::GetTPoSPayments(wallet, wtx, stakeAmount, commissionAmount, tposAddress))
-        {
-            maybeUpdate(wtx.GetHash());
-        }
+        maybeUpdate(wtx.GetHash());
     }
 }
 
@@ -202,59 +193,42 @@ TPoSAddressesTableModel::Entry TPoSAddressesTableModel::GetAmountForAddress(CBit
     // Minimum confirmations
     int nMinDepth = 1;
 
+    // this loop can be optimized
     for (auto &&it : pwalletMain->mapWallet)
     {
         const CWalletTx& wtx = it.second;
-        if (wtx.IsCoinBase() /*|| !IsFinalTx(wtx, )*/)
+        if (wtx.IsCoinBase() || !CheckFinalTx(wtx))
             continue;
 
         for(size_t i = 0; i < wtx.vout.size(); ++i)
         {
             const CTxOut& txout = wtx.vout[i];
-            int tposIndex = -1;
             if (txout.scriptPubKey == scriptPubKey)
             {
                 if (wtx.GetDepthInMainChain() >= nMinDepth && !wallet->IsSpent(it.first, i))
                 {
                     result.totalAmount += txout.nValue;
-                    tposIndex = i;
                 }
             }
+        }
 
-            if(tposIndex > 0 && wtx.IsCoinStake())
+        if(wtx.IsCoinStake())
+        {
+            CAmount stakeAmount = 0;
+            CAmount commissionAmount = 0;
+            CBitcoinAddress tposAddress;
+            CBitcoinAddress merchantAddress;
+            if(TPoSUtils::GetTPoSPayments(wallet, wtx, stakeAmount, commissionAmount, tposAddress, merchantAddress) &&
+                    tposAddress == address)
             {
-                auto stakeAmount = wtx.vout[tposIndex].nValue;
-
-                CAmount nCredit = 0;
-                CAmount nDebit = 0;
-                for(size_t i = 0; i < tposIndex; ++i)
-                {
-                    nCredit += wtx.vout[i].nValue;
-                }
-                for(auto &&txin : wtx.vin)
-                {
-                    CTransaction prevTx;
-                    uint256 prevBlockHash;
-                    if(GetTransaction(txin.prevout.hash, prevTx, Params().GetConsensus(), prevBlockHash))
-                    {
-                        if(txin.prevout.n < prevTx.vout.size())
-                        {
-                            nDebit += prevTx.vout[txin.prevout.n].nValue;
-                        }
-                    }
-                }
-
-                CAmount nNet = nCredit - nDebit;
-
                 // at this moment nNet contains net stake reward
                 // commission was sent to merchant address, so it was base of tx
-                result.commissionAmount += nNet;
+                result.commissionAmount += commissionAmount;
                 // stake amount is just what was sent to tpos address
                 result.stakeAmount += stakeAmount;
             }
         }
     }
-
 
     return result;
 }

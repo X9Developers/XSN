@@ -58,6 +58,7 @@ bool TPoSUtils::GetTPoSPayments(const CWallet *wallet,
 
     CTxDestination address;
     auto scriptKernel = wtx.vout.at(1).scriptPubKey;
+    commissionAmount = stakeAmount = 0;
     if(ExtractDestination(scriptKernel, address))
     {
         CBitcoinAddress tmpAddress(address);
@@ -68,17 +69,20 @@ bool TPoSUtils::GetTPoSPayments(const CWallet *wallet,
 
         if(it != std::end(tposContracts))
         {
-
-            auto commissionIt = std::find_if(std::begin(wtx.vout), std::end(wtx.vout), [scriptKernel](const CTxOut &txOut) {
-                return txOut.scriptPubKey == scriptKernel;
+            auto merchantScript = GetScriptForDestination(it->merchantAddress.Get());
+            auto commissionIt = std::find_if(std::begin(wtx.vout), std::end(wtx.vout), [merchantScript](const CTxOut &txOut) {
+                return txOut.scriptPubKey == merchantScript;
             });
 
-            stakeAmount = nNet;
-            commissionAmount = commissionIt->nValue;
-            tposAddress = tmpAddress;
-            merchantAddress = it->second->merchantAddress;
+            if(commissionIt != wtx.vout.end())
+            {
+                stakeAmount = nNet;
+                commissionAmount = commissionIt->nValue;
+                tposAddress = tmpAddress;
+                merchantAddress = it->merchantAddress;
 
-            return true;
+                return true;
+            }
         }
     }
 
