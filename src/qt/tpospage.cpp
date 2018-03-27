@@ -11,6 +11,7 @@
 #include "guiutil.h"
 #include "script/sign.h"
 #include "guiutil.h"
+#include "net.h"
 
 #include <boost/optional.hpp>
 #include <QPushButton>
@@ -71,7 +72,7 @@ void TPoSPage::refresh()
 
 void TPoSPage::onStakeClicked()
 {
-    //    ui->stakeButton->setEnabled(false);
+    stakeTPoS();
 }
 
 void TPoSPage::onClearClicked()
@@ -137,13 +138,35 @@ void TPoSPage::connectSignals()
 {
     connect(ui->stakeButton, &QPushButton::clicked, this, &TPoSPage::onStakeClicked);
     connect(ui->clearButton, &QPushButton::clicked, this, &TPoSPage::onClearClicked);
-//    connect(ui->showRequestButton, &QPushButton::clicked, this, &TPoSPage::onShowRequestClicked);
+    //    connect(ui->showRequestButton, &QPushButton::clicked, this, &TPoSPage::onShowRequestClicked);
     connect(ui->removeRequestButton, &QPushButton::clicked, this, &TPoSPage::onRedeemClicked);
 }
 
 void TPoSPage::onStakeError()
 {
     //    ui->stakeButton->setEnabled(false);
+}
+
+static QString PrepareQuestionString(const CBitcoinAddress &tposAddress,
+                                     const CBitcoinAddress &merchantAddress,
+                                     int commission)
+{
+    QString questionString = QObject::tr("Are you sure you want to setup tpos contract?");
+    questionString.append("<br /><br />");
+
+    // Show total amount + all alternative units
+    questionString.append(QObject::tr("TPoS Address = <b>%1</b><br />Merchant address = <b>%2</b> <br />Merchant commission = <b>%3</b>")
+                          .arg(QString::fromStdString(tposAddress.ToString()))
+                          .arg(QString::fromStdString(merchantAddress.ToString()))
+                          .arg(commission));
+
+
+    return questionString;
+}
+
+static bool SendRawTransaction(CWalletTx &walletTx, CReserveKey &reserveKey)
+{
+    return pwalletMain->CommitTransaction(walletTx, reserveKey, g_connman.get(), NetMsgType::TX);
 }
 
 void TPoSPage::stakeTPoS()
@@ -164,8 +187,25 @@ void TPoSPage::stakeTPoS()
     }
 
     std::string strError;
-    if(TPoSUtils::CreateTPoSTransaction(pwalletMain, reserveKey, tposAddress, merchantAddress, ui->merchantCut->value(), strError))
+    auto merchantCommission = ui->merchantCut->value();
+    if(auto walletTx = TPoSUtils::CreateTPoSTransaction(pwalletMain, reserveKey, tposAddress, merchantAddress, merchantCommission, strError))
     {
+        // Display message box
+        auto questionString = PrepareQuestionString(tposAddress, merchantAddress, merchantCommission);
+        QMessageBox::StandardButton retval = QMessageBox::question(this, tr("Confirm creating tpos contract"),
+                                                                   questionString,
+                                                                   QMessageBox::Yes | QMessageBox::Cancel,
+                                                                   QMessageBox::Cancel);
+
+        if(retval != QMessageBox::Yes)
+        {
+            return;
+        }
+
+        if(!SendRawTransaction(*walletTx, reserveKey))
+        {
+            QMessageBox::warning(this, "TPoS", "Error: The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.");
+        }
 
     }
     else

@@ -443,6 +443,8 @@ QString TransactionTableModel::formatTxToAddress(const TransactionRecord *wtx, b
     case TransactionRecord::Generated:
     case TransactionRecord::MNReward:
     case TransactionRecord::StakeMint:
+    case TransactionRecord::StakeMintTPoS:
+    case TransactionRecord::StakeMintTPoSCommission:
     case TransactionRecord::PrivateSend:
         return lookupAddress(wtx->address, tooltip) + watchAddress;
     case TransactionRecord::SendToOther:

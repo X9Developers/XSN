@@ -132,7 +132,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="labelLabel_2">
+            <widget class="QLabel" name="tposAddrLabel">
              <property name="toolTip">
               <string>Merchant public key which is used to identify TPoS service provider.</string>
              </property>
@@ -159,45 +159,6 @@
               <string>An optional label to associate with the new receiving address.</string>
              </property>
             </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="amountLabel">
-             <property name="toolTip">
-              <string>Amount of coins that will be sent to TPoS address for staking.</string>
-             </property>
-             <property name="text">
-              <string>AMOUNT</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-             </property>
-             <property name="buddy">
-              <cstring>stakeAmount</cstring>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_7">
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="BitcoinAmountField" name="stakeAmount">
-               <property name="minimumSize">
-                <size>
-                 <width>80</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="toolTip">
-                <string>An optional amount to request. Leave this empty or zero to not request a specific amount.</string>
-               </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-              </widget>
-             </item>
-            </layout>
            </item>
            <item>
             <widget class="QLabel" name="messageLabel">
@@ -425,7 +386,7 @@
            <item>
             <widget class="QPushButton" name="removeRequestButton">
              <property name="enabled">
-              <bool>true</bool>
+              <bool>false</bool>
              </property>
              <property name="toolTip">
               <string>Remove the selected entries from the list</string>
@@ -480,14 +441,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>BitcoinAmountField</class>
-   <extends>QLineEdit</extends>
-   <header>bitcoinamountfield.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>
