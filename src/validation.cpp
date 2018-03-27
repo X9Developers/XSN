@@ -3621,7 +3621,7 @@ bool TestBlockValidity(CValidationState& state, const CChainParams& chainparams,
     AssertLockHeld(cs_main);
     assert(pindexPrev/* && pindexPrev == chainActive.Tip()*/);
     if(pindexPrev != chainActive.Tip())
-        return error("Tip has changed and doesn't math prev block anymore");
+        return error("Tip has changed and does not match prev block");
 
     if (fCheckpointsEnabled && !CheckIndexAgainstCheckpoint(pindexPrev, state, chainparams, block.GetHash()))
         return error("%s: CheckIndexAgainstCheckpoint(): %s", __func__, state.GetRejectReason().c_str());
