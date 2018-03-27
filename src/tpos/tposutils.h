@@ -48,7 +48,7 @@ public:
                                 const CWalletTx& wtx,
                                 CAmount &stakeAmount,
                                 CAmount &commissionAmount,
-                                CBitcoinAddress &tposAddress);
+                                CBitcoinAddress &tposAddress, CBitcoinAddress &merchantAddress);
 
     static bool IsTPoSOwnerContract(CWallet *wallet, const CTransaction &tx);
     static bool IsTPoSMerchantContract(CWallet *wallet, const CTransaction &tx);

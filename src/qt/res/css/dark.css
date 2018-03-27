@@ -1687,7 +1687,7 @@ color:#333;
    border: 1px solid grey;
 }
 
-#TPoSPage #amountLabel,
+#TPoSPage #tposAddrLabel,
 #TPoSPage #messageLabel,
 #TPoSPage #merchantTxIdLabel,
 #TPoSPage #labelLabel {

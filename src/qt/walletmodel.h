@@ -24,6 +24,7 @@ class PlatformStyle;
 class RecentRequestsTableModel;
 class TransactionTableModel;
 class WalletModelTransaction;
+class TPoSAddressesTableModel;
 
 class CCoinControl;
 class CKeyID;
@@ -137,6 +138,7 @@ public:
     AddressTableModel *getAddressTableModel();
     TransactionTableModel *getTransactionTableModel();
     RecentRequestsTableModel *getRecentRequestsTableModel();
+    TPoSAddressesTableModel* getTPoSAddressModel() const;
 
     CAmount getBalance(const CCoinControl *coinControl = NULL) const;
     CAmount getUnconfirmedBalance() const;
@@ -228,6 +230,7 @@ private:
     AddressTableModel *addressTableModel;
     TransactionTableModel *transactionTableModel;
     RecentRequestsTableModel *recentRequestsTableModel;
+    TPoSAddressesTableModel *tposTableModel;
 
     // Cache some values to be able to detect changes
     CAmount cachedBalance;

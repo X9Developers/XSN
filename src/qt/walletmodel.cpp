@@ -21,6 +21,7 @@
 #include "util.h" // for GetBoolArg
 #include "wallet/wallet.h"
 #include "wallet/walletdb.h" // for BackupWallet
+#include "tposaddressestablemodel.h"
 
 #include "instantx.h"
 #include "spork.h"
@@ -56,6 +57,7 @@ WalletModel::WalletModel(const PlatformStyle *platformStyle, CWallet *wallet, Op
     addressTableModel = new AddressTableModel(wallet, this);
     transactionTableModel = new TransactionTableModel(platformStyle, wallet, this);
     recentRequestsTableModel = new RecentRequestsTableModel(wallet, this);
+    tposTableModel = new TPoSAddressesTableModel(wallet, optionsModel, this);
 
     // This timer will be fired repeatedly to update the balance
     pollTimer = new QTimer(this);
@@ -442,6 +444,11 @@ TransactionTableModel *WalletModel::getTransactionTableModel()
 RecentRequestsTableModel *WalletModel::getRecentRequestsTableModel()
 {
     return recentRequestsTableModel;
+}
+
+TPoSAddressesTableModel *WalletModel::getTPoSAddressModel() const
+{
+    return tposTableModel;
 }
 
 WalletModel::EncryptionStatus WalletModel::getEncryptionStatus() const

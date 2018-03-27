@@ -92,14 +92,33 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
             CAmount stakeAmount = 0;
             CAmount commissionAmount = 0;
             CBitcoinAddress tposAddress;
-            bool isTPoSBlock = false;//TPoSUtils::GetTPoSPayments(wallet, wtx, stakeAmount, commissionAmount, tposAddress);
+            CBitcoinAddress merchantAddress;
+            bool isTPoSBlock = TPoSUtils::GetTPoSPayments(wallet, wtx, stakeAmount, commissionAmount, tposAddress, merchantAddress);
             isminetype mine = wallet->IsMine(wtx.vout[1]);
             sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
-            sub.type = isTPoSBlock ? TransactionRecord::StakeMintTPoSCommission :
-                                     TransactionRecord::StakeMint;
 
-            sub.address = CBitcoinAddress(address).ToString();
-            sub.credit = wtx.GetCredit(ISMINE_SPENDABLE) - wtx.GetDebit(ISMINE_SPENDABLE);
+            if(isTPoSBlock)
+            {
+                if(sub.involvesWatchAddress)
+                {
+                    sub.type = TransactionRecord::StakeMintTPoSCommission;
+                    sub.address = merchantAddress.ToString();
+                    sub.credit = commissionAmount;
+                }
+                else
+                {
+                    sub.type = TransactionRecord::StakeMintTPoS;
+                    sub.address = tposAddress.ToString();
+                    sub.credit = stakeAmount;
+                }
+            }
+            else
+            {
+                sub.address = CBitcoinAddress(address).ToString();
+                sub.credit = wtx.GetCredit(ISMINE_SPENDABLE) - wtx.GetDebit(ISMINE_SPENDABLE);
+                sub.type = TransactionRecord::StakeMint;
+            }
+
         }
         parts.append(sub);
     }

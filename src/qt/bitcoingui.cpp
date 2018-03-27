@@ -644,9 +644,9 @@ void BitcoinGUI::createToolBarWidgets(QToolBar *toolbar)
 
     std::tie(label, receiveCoinsAction) = CreateWidgetHelper("receive", tr("Request payments (generates QR codes and xsn: URIs)"));
 
-//    shortcut = CreateShortcut(Qt::Key_5);
+    shortcut = CreateShortcut(Qt::Key_5);
 
-//    std::tie(label, tposTabAction) = CreateWidgetHelper("tpos", tr("Stake coins using trustless staking"));
+    std::tie(label, tposTabAction) = CreateWidgetHelper("tpos", tr("Stake coins using trustless staking"));
 
 //    shortcut = CreateShortcut(Qt::Key_6);
 
@@ -1051,6 +1051,13 @@ void BitcoinGUI::gotoSendCoinsPage(QString addr)
     sendCoinsAction->setChecked(true);
     if (walletFrame) walletFrame->gotoSendCoinsPage(addr);
 }
+
+void BitcoinGUI::gotoTPoSPage()
+{
+    tposTabAction->setChecked(true);
+    if (walletFrame) walletFrame->gotoTPoSPage();
+}
+
 
 void BitcoinGUI::gotoSignMessageTab(QString addr)
 {
