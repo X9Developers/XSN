@@ -7,7 +7,9 @@
 #include <QPointer>
 #include "primitives/transaction.h"
 
+
 class WalletModel;
+class CBitcoinAddress;
 class TPoSAddressesTableModel;
 
 namespace Ui {
@@ -43,7 +45,7 @@ private:
     void init();
     void connectSignals();
     void onStakeError();
-    void stakeTPoS();
+    void sendToTPoSAddress(const CBitcoinAddress &tposAddress);
 
 private:
     Ui::TPoSPage *ui;

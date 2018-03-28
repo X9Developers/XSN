@@ -68,22 +68,7 @@
         <property name="frameShadow">
          <enum>QFrame::Sunken</enum>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_6">
-         <property name="spacing">
-          <number>6</number>
-         </property>
-         <property name="leftMargin">
-          <number>9</number>
-         </property>
-         <property name="topMargin">
-          <number>9</number>
-         </property>
-         <property name="rightMargin">
-          <number>9</number>
-         </property>
-         <property name="bottomMargin">
-          <number>9</number>
-         </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
           <spacer name="horizontalSpacer_5">
            <property name="orientation">
@@ -98,10 +83,7 @@
           </spacer>
          </item>
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout_6">
-           <property name="spacing">
-            <number>6</number>
-           </property>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
            <item>
             <widget class="QLabel" name="labelLabel">
              <property name="toolTip">
@@ -137,7 +119,7 @@
               <string>Merchant public key which is used to identify TPoS service provider.</string>
              </property>
              <property name="text">
-              <string>TPOS ADDRESS</string>
+              <string>AMOUNT</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
@@ -148,17 +130,27 @@
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="tposAddress">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
+            <layout class="QHBoxLayout" name="horizontalLayout_8">
+             <property name="bottomMargin">
+              <number>0</number>
              </property>
-             <property name="toolTip">
-              <string>An optional label to associate with the new receiving address.</string>
-             </property>
-            </widget>
+             <item>
+              <widget class="BitcoinAmountField" name="stakingAmount">
+               <property name="minimumSize">
+                <size>
+                 <width>80</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string>An optional amount to request. Leave this empty or zero to not request a specific amount.</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
            <item>
             <widget class="QLabel" name="messageLabel">
@@ -441,6 +433,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>BitcoinAmountField</class>
+   <extends>QLineEdit</extends>
+   <header>bitcoinamountfield.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
