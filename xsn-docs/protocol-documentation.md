@@ -1,7 +1,7 @@
 Protocol Documentation - 0.12.1
 =====================================
 
-This document describes the protocol extensions for all additional functionality build into the Dash protocol. This doesn't include any of the Bitcoin protocol, which has been left intact in the Dash project. For more information about the core protocol, please see https://en.bitcoin.it/w/index.php?title#Protocol_documentation&action#edit
+This document describes the protocol extensions for all additional functionality build into the XSN protocol. This doesn't include any of the Bitcoin protocol, which has been left intact in the XSN project. For more information about the core protocol, please see https://en.bitcoin.it/w/index.php?title#Protocol_documentation&action#edit
 
 ## Common Structures
 
@@ -242,14 +242,14 @@ Spork
 
 | Field Size | Field Name | Data type | Description |
 | ---------- | ----------- | --------- | -------- |
-| 4 | nSporkID | int | 
-| 8 | nValue | int64_t | 
-| 8 | nTimeSigned | int64_t | 
+| 4 | nSporkID | int |
+| 8 | nValue | int64_t |
+| 8 | nTimeSigned | int64_t |
 | 66* | vchSig | char[] | Unclear if 66 is the correct size, but this is what it appears to be in most cases
 
 #### Defined Sporks (per src/sporks.h)
- 
-| Spork ID | Number | Name | Description | 
+
+| Spork ID | Number | Name | Description |
 | ---------- | ---------- | ----------- | ----------- |
 | 10001 | 2 | INSTANTSEND_ENABLED | Turns on and off InstantSend network wide
 | 10002 | 3 | INSTANTSEND_BLOCK_FILTERING | Turns on and off InstantSend block filtering
@@ -259,7 +259,7 @@ Spork
 | 10009 | 10 | MASTERNODE_PAY_UPDATED_NODES | Only current protocol version masternode's will be paid (not older nodes)
 | 10011 | 12 | RECONSIDER_BLOCKS |
 | 10012 | 13 | OLD_SUPERBLOCK_FLAG |
-| 10013 | 14 | REQUIRE_SENTINEL_FLAG | Only masternode's running sentinel will be paid 
+| 10013 | 14 | REQUIRE_SENTINEL_FLAG | Only masternode's running sentinel will be paid
 
 ## Undocumented messages
 
@@ -346,4 +346,3 @@ Masternode Payment Sync
 | Field Size | Field Name | Data type | Description |
 | ---------- | ----------- | --------- | -------- |
 | 4 | nMnCount | int |
-
