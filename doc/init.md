@@ -68,9 +68,9 @@ can then be controlled by group membership.
 3b) Mac OS X
 
 Binary:              `/usr/local/bin/xsnd`  
-Configuration file:  `~/Library/Application Support/DashCore/xsn.conf`  
-Data directory:      `~/Library/Application Support/DashCore`
-Lock file:           `~/Library/Application Support/DashCore/.lock`
+Configuration file:  `~/Library/Application Support/XSNCore/xsn.conf`  
+Data directory:      `~/Library/Application Support/XSNCore`
+Lock file:           `~/Library/Application Support/XSNCore/.lock`
 
 4. Installing Service Configuration
 -----------------------------------

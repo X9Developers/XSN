@@ -1,11 +1,11 @@
-Dash Core 0.12.1
+XSN Core 0.12.1
 =====================
 
-This is the official reference wallet for Dash digital currency and comprises the backbone of the Dash peer-to-peer network. You can [download Dash Core](https://www.xsn.org/downloads/) or [build it yourself](#building) using the guides below.
+This is the official reference wallet for XSN digital currency and comprises the backbone of the XSN peer-to-peer network. You can [download XSN Core](https://github.com/X9Developers/XSN/releases) or [build it yourself](#building) using the guides below.
 
 Running
 ---------------------
-The following are some helpful notes on how to run Dash on your native platform.
+The following are some helpful notes on how to run XSN on your native platform.
 
 ### Unix
 
@@ -20,18 +20,15 @@ Unpack the files into a directory, and then run xsn-qt.exe.
 
 ### OS X
 
-Drag Dash-Qt to your applications folder, and then run Dash-Qt.
+Drag XSN-Qt to your applications folder, and then run XSN-Qt.
 
 ### Need Help?
 
-* See the [Dash documentation](https://xsnpay.atlassian.net/wiki/display/DOC)
-for help and more information.
-* Ask for help on [#xsnpay](http://webchat.freenode.net?channels=xsnpay) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net?channels=xsnpay).
-* Ask for help on the [DashTalk](https://xsntalk.org/) forums.
+* Ask for help on the [XSN Discord](https://discord.gg/cyF5yCA) forums.
 
 Building
 ---------------------
-The following are developer notes on how to build Dash Core on your native platform. They are not complete guides, but include notes on the necessary libraries, compile flags, etc.
+The following are developer notes on how to build XSN Core on your native platform. They are not complete guides, but include notes on the necessary libraries, compile flags, etc.
 
 - [OS X Build Notes](build-osx.md)
 - [Unix Build Notes](build-unix.md)
@@ -41,7 +38,7 @@ The following are developer notes on how to build Dash Core on your native platf
 
 Development
 ---------------------
-The Dash Core repo's [root README](/README.md) contains relevant information on the development process and automated testing.
+The XSN Core repo's [root README](/README.md) contains relevant information on the development process and automated testing.
 
 - [Developer Notes](developer-notes.md)
 - [Multiwallet Qt Development](multiwallet-qt.md)
@@ -57,8 +54,7 @@ The Dash Core repo's [root README](/README.md) contains relevant information on 
 - [Dnsseed Policy](dnsseed-policy.md)
 
 ### Resources
-* Discuss on the [DashTalk](https://xsntalk.org/) forums, in the Development & Technical Discussion board.
-* Discuss on [#xsnpay](http://webchat.freenode.net/?channels=xsnpay) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net/?channels=xsnpay).
+* Discuss on the [XSN Discord](https://discord.gg/cyF5yCA) , in the Development & Technical Discussion board.
 
 ### Miscellaneous
 - [Assets Attribution](assets-attribution.md)
