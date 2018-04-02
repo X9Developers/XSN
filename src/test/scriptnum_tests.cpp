@@ -148,12 +148,12 @@ static void RunCreate(const int64_t& num)
 {
     CheckCreateInt(num);
     CScriptNum scriptnum(num);
-    if (scriptnum.getvch().size() <= CScriptNum::nDefaultMaxNumSize)
+    //if (scriptnum.getvch().size() <= CScriptNum::nDefaultMaxNumSize)
         CheckCreateVch(num);
-    else
-    {
-        BOOST_CHECK_THROW (CheckCreateVch(num), scriptnum10_error);
-    }
+    // else
+    // {
+    //     BOOST_CHECK_THROW (CheckCreateVch(num), scriptnum10_error);
+    // }
 }
 
 static void RunOperators(const int64_t& num1, const int64_t& num2)

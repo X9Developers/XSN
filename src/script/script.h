@@ -31,6 +31,30 @@ static const int MAX_PUBKEYS_PER_MULTISIG = 20;
 // Maximum script length in bytes
 static const int MAX_SCRIPT_SIZE = 10000;
 
+// Maximum number of values on script interpreter stack
+static const int MAX_STACK_SIZE = 1000;
+
+// Setting nSequence to this value for every input in a transaction
+// disables nLockTime.
+static const uint32_t SEQUENCE_FINAL = 0xffffffff;
+
+// Threshold for inverted nSequence: below this value it is interpreted
+// as a relative lock-time, otherwise ignored.
+//static const uint32_t SEQUENCE_THRESHOLD = 0x80000000;
+
+// If this flag set, CTxIn::nSequence is NOT interpreted as a
+// relative lock-time.
+static const uint32_t SEQUENCE_LOCKTIME_DISABLE_FLAG = 0x80000000;
+
+// If CTxIn::nSequence encodes a relative lock-time and this flag
+// is set, the relative lock-time has units of 512 seconds,
+// otherwise it specifies blocks with a granularity of 1.
+static const uint32_t SEQUENCE_LOCKTIME_TYPE_FLAG = 0x00400000;
+
+// If CTxIn::nSequence encodes a relative lock-time, this mask is
+// applied to extract that lock-time from the sequence field.
+static const uint32_t SEQUENCE_LOCKTIME_MASK = 0x0000ffff;
+
 // Threshold for nLockTime: below this value it is interpreted as block number,
 // otherwise as UNIX timestamp.
 static const unsigned int LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:53:20 1985 UTC

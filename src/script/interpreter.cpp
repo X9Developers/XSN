@@ -12,6 +12,8 @@
 #include "pubkey.h"
 #include "script/script.h"
 #include "uint256.h"
+#include "utilstrencodings.h"
+#include "tinyformat.h"
 
 using namespace std;
 
@@ -50,6 +52,14 @@ bool CastToBool(const valtype& vch)
     return false;
 }
 
+const std::map<unsigned char, std::string> mapSigHashTypes = {
+    {static_cast<unsigned char>(SIGHASH_ALL), std::string("ALL")},
+    {static_cast<unsigned char>(SIGHASH_ALL|SIGHASH_ANYONECANPAY), std::string("ALL|ANYONECANPAY")},
+    {static_cast<unsigned char>(SIGHASH_NONE), std::string("NONE")},
+    {static_cast<unsigned char>(SIGHASH_NONE|SIGHASH_ANYONECANPAY), std::string("NONE|ANYONECANPAY")},
+    {static_cast<unsigned char>(SIGHASH_SINGLE), std::string("SINGLE")},
+    {static_cast<unsigned char>(SIGHASH_SINGLE|SIGHASH_ANYONECANPAY), std::string("SINGLE|ANYONECANPAY")},
+};
 /**
  * Script is a stack machine (like Forth) that evaluates a predicate
  * returning a bool indicating valid or not.  There are no loops.
@@ -90,7 +100,7 @@ bool static IsCompressedOrUncompressedPubKey(const valtype &vchPubKey) {
  * Where R and S are not negative (their first byte has its highest bit not set), and not
  * excessively padded (do not start with a 0 byte, unless an otherwise negative number follows,
  * in which case a single 0 byte is necessary and even required).
- * 
+ *
  * See https://bitcointalk.org/index.php?topic=8392.msg127623#msg127623
  *
  * This function is consensus-critical since BIP66.
@@ -130,7 +140,7 @@ bool static IsValidSignatureEncoding(const std::vector<unsigned char> &sig) {
     // Verify that the length of the signature matches the sum of the length
     // of the elements.
     if ((size_t)(lenR + lenS + 7) != sig.size()) return false;
- 
+
     // Check whether the R element is an integer.
     if (sig[2] != 0x02) return false;
 
@@ -846,7 +856,7 @@ bool EvalScript(vector<vector<unsigned char> >& stack, const CScript& script, un
                     popstack(stack);
                     stack.push_back(vchHash);
                 }
-                break;                                   
+                break;
 
                 case OP_CODESEPARATOR:
                 {
@@ -1302,4 +1312,54 @@ bool VerifyScript(const CScript& scriptSig, const CScript& scriptPubKey, unsigne
     }
 
     return set_success(serror);
+}
+/**
+ * Create the assembly string representation of a CScript object.
+ * @param[in] script    CScript object to convert into the asm string representation.
+ * @param[in] fAttemptSighashDecode    Whether to attempt to decode sighash types on data within the script that matches the format
+ *                                     of a signature. Only pass true for scripts you believe could contain signatures. For example,
+ *                                     pass false, or omit the this argument (defaults to false), for scriptPubKeys.
+ */
+std::string ScriptToAsmStr(const CScript& script, const bool fAttemptSighashDecode)
+{
+    std::string str;
+    opcodetype opcode;
+    std::vector<unsigned char> vch;
+    CScript::const_iterator pc = script.begin();
+    while (pc < script.end()) {
+        if (!str.empty()) {
+            str += " ";
+        }
+        if (!script.GetOp(pc, opcode, vch)) {
+            str += "[error]";
+            return str;
+        }
+        if (0 <= opcode && opcode <= OP_PUSHDATA4) {
+            if (vch.size() <= static_cast<std::vector<unsigned char>::size_type>(4)) {
+                str += strprintf("%d", CScriptNum(vch, false).getint());
+            } else {
+                // the IsUnspendable check makes sure not to try to decode OP_RETURN data that may match the format of a signature
+                if (fAttemptSighashDecode && !script.IsUnspendable()) {
+                    std::string strSigHashDecode;
+                    // goal: only attempt to decode a defined sighash type from data that looks like a signature within a scriptSig.
+                    // this won't decode correctly formatted public keys in Pubkey or Multisig scripts due to
+                    // the restrictions on the pubkey formats (see IsCompressedOrUncompressedPubKey) being incongruous with the
+                    // checks in CheckSignatureEncoding.
+                    if (CheckSignatureEncoding(vch, SCRIPT_VERIFY_STRICTENC, nullptr)) {
+                        const unsigned char chSigHashType = vch.back();
+                        if (mapSigHashTypes.count(chSigHashType)) {
+                            strSigHashDecode = "[" + mapSigHashTypes.find(chSigHashType)->second + "]";
+                            vch.pop_back(); // remove the sighash type byte. it will be replaced by the decode.
+                        }
+                    }
+                    str += HexStr(vch) + strSigHashDecode;
+                } else {
+                    str += HexStr(vch);
+                }
+            }
+        } else {
+            str += GetOpName(opcode);
+        }
+    }
+    return str;
 }
