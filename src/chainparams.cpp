@@ -139,6 +139,7 @@ public:
         consensus.nStakeMinAge = 60 * 60;
         consensus.nStakeMaxAge = 60 * 60 * 24; // one day
         consensus.nCoinbaseMaturity = 20;
+        consensus.nTPoSContractSignatureDeploymentTime = 1522755609;
         consensus.nLastPoWBlock = 75;
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
@@ -279,7 +280,7 @@ public:
         consensus.nStakeMinAge = 60 * 60;
         consensus.nStakeMaxAge = 60 * 60 * 24; // one day
         consensus.nCoinbaseMaturity = 20;
-        consensus.nTPoSContractSignatureDeploymentTime = 1522755609;
+        consensus.nTPoSContractSignatureDeploymentTime = 1522756809;
         consensus.nRuleChangeActivationThreshold = 1512; // 75% for testchains
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
