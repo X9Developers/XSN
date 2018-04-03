@@ -2,9 +2,9 @@
 Description=XSN's distributed currency daemon
 After=network.target
 
-[Service]
-User=xsncore
-Group=xsncore
+#[Service]
+#User=xsncore
+#Group=xsncore
 
 Type=forking
 PIDFile=/var/lib/xsnd/xsnd.pid
