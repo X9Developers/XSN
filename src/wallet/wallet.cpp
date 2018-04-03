@@ -1352,12 +1352,13 @@ bool CWallet::AddToWalletIfTPoSContract(const CTransaction &tx, const CBlock *pb
 
             if(isMerchant || isOwner)
             {
+                auto contract = TPoSContract::FromTPoSContractTx(tx);
+
                 CWalletTx wtx(this, tx);
                 CWalletDB walletDb(strWalletFile);
                 walletDb.WriteTPoSContractTx(wtx.GetHash(), wtx);
                 LoadTPoSContract(wtx);
 
-                auto contract = TPoSContract::FromTPoSContractTx(tx);
 
                 if(isMerchant && !isOwner) {
                     AddWatchOnly(GetScriptForDestination(contract.tposAddress.Get()));
@@ -3474,7 +3475,7 @@ bool CWallet::ConvertList(std::vector<CTxIn> vecTxIn, std::vector<CAmount>& vecA
 }
 
 bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet,
-                                int& nChangePosRet, std::string& strFailReason, const CCoinControl* coinControl, bool sign, AvailableCoinsType nCoinType, bool fUseInstantSend)
+                                int& nChangePosRet, std::string& strFailReason, const CCoinControl* coinControl, bool sign, AvailableCoinsType nCoinType, bool fUseInstantSend, OnTransactionToBeSigned onTxToBeSigned)
 {
     CAmount nFeePay = fUseInstantSend ? CTxLockRequest().GetMinFee() : 0;
 
@@ -3740,6 +3741,9 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
                         i++;
                     }
                 }
+
+                if(onTxToBeSigned)
+                    onTxToBeSigned(txNew);
 
                 // Sign
                 int nIn = 0;
@@ -4693,6 +4697,9 @@ void CWallet::LoadTPoSContract(const CWalletTx &walletTx)
 
     auto contract = TPoSContract::FromTPoSContractTx(walletTx);
     auto txHash = walletTx.GetHash();
+
+    if(contract.vchSignature.empty())
+        return;
 
     if(isMerchant) {
         tposMerchantContracts[txHash] = contract;

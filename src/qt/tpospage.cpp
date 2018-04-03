@@ -209,8 +209,8 @@ void TPoSPage::onStakeClicked()
         CWalletTx wtxContract;
         if(CreateContractTransaction(this, reserveKey, tposAddress, merchantAddress, merchantCommission, wtxContract))
         {
-            sendToTPoSAddress(tposAddress);
             SendRawTransaction(wtxContract, reserveKey);
+            sendToTPoSAddress(tposAddress);
         }
     }
     catch(std::exception &ex)

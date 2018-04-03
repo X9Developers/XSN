@@ -160,7 +160,29 @@ std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
     CAmount nFeeRequired;
     int nChangePos;
 
-    if (!wallet->CreateTransaction(vecSend, wtxNew, reservekey, nFeeRequired, nChangePos, strError))
+    // this delegate will be executed right before signing. This will allow us to tweak transaction and do
+    // some tpos specific thing, like signing contract.
+    auto txModifier = [&strError, &key](CMutableTransaction &tx, std::vector<unsigned char> vchSignature) {
+        auto firstInput = tx.vin.front().prevout;
+
+        auto it = std::find_if(tx.vout.begin(), tx.vout.end(), [](const CTxOut &txOut) {
+            return txOut.scriptPubKey.IsUnspendable();
+        });
+
+        auto vchSignatureCopy = vchSignature;
+        vchSignature.clear();
+        auto hashMessage = SerializeHash(firstInput);
+        if(!key.SignCompact(hashMessage, vchSignature))
+        {
+            strError = "Error: Failed to sign tpos contract";
+        }
+        it->scriptPubKey.FindAndDelete(CScript(vchSignatureCopy));
+        it->scriptPubKey << vchSignature;
+    };
+
+    auto txModifierBinded = std::bind(txModifier, std::placeholders::_1, vchSignature);
+
+    if (!wallet->CreateTransaction(vecSend, wtxNew, reservekey, nFeeRequired, nChangePos, strError, nullptr, true, ALL_COINS, false, txModifierBinded))
     {
         if (TPOS_CONTRACT_COLATERAL + nFeeRequired > wallet->GetBalance())
             strError = strprintf("Error: This transaction requires a transaction fee of at least %s because of its amount, complexity, or use of recently received funds!", FormatMoney(nFeeRequired));
@@ -168,22 +190,10 @@ std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
         return nullptr;
     }
 
-    auto firstInput = wtxNew.vin.front();
-
-    auto it = std::find_if(wtxNew.vout.begin(), wtxNew.vout.end(), [](const CTxOut &txOut) {
-        return txOut.scriptPubKey.IsUnspendable();
-    });
-
-    const_cast<CTxOut&>(*it).scriptPubKey.FindAndDelete(CScript(vchSignature));
-    vchSignature.clear();
-    auto hashMessage = SerializeHash(firstInput);
-    if(!key.SignCompact(hashMessage, vchSignature))
-    {
-        strError = "Error: Failed to sign tpos contract";
+    if(!strError.empty())
         return nullptr;
-    }
 
-    const_cast<CTxOut&>(*it).scriptPubKey << vchSignature;
+
 
     //    std::stringstream stringStream(it->scriptPubKey.ToString());
     //    std::string tokens[5];
@@ -241,7 +251,7 @@ bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contr
     if(fCheckSignature)
     {
         CPubKey recoveredKey;
-        auto hashMessage = SerializeHash(tmpContract.rawTx.vin.front());
+        auto hashMessage = SerializeHash(tmpContract.rawTx.vin.front().prevout);
 
         if(!recoveredKey.RecoverCompact(hashMessage, tmpContract.vchSignature))
             return error("CheckContract() : failed to recover public key from signature");
