@@ -20,7 +20,8 @@ struct TPoSContract
     TPoSContract(CTransaction tx,
                  CBitcoinAddress merchantAddress,
                  CBitcoinAddress tposAddress,
-                 short stakePercentage);
+                 short stakePercentage,
+                 std::vector<unsigned char> vchSignature);
 
     bool IsValid() const;
 
@@ -29,6 +30,7 @@ struct TPoSContract
     CTransaction rawTx;
     CBitcoinAddress merchantAddress;
     CBitcoinAddress tposAddress;
+    std::vector<unsigned char> vchSignature;
     int stakePercentage = 0;
 };
 
@@ -61,7 +63,7 @@ public:
                                                             std::string &strError);
 
     static COutPoint GetContractCollateralOutpoint(const TPoSContract &contract);
-    static bool CheckContract(const uint256 &hashContractTx, TPoSContract &contract);
+    static bool CheckContract(const uint256 &hashContractTx, TPoSContract &contract, bool fCheckSignature);
     static bool IsMerchantPaymentValid(CValidationState &state, const CBlock &block, int nBlockHeight, CAmount expectedReward, CAmount actualReward);
 
 #endif

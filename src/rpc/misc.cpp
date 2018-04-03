@@ -275,7 +275,7 @@ UniValue getstakingstatus(const UniValue& params, bool fHelp)
     {
         auto helper = [&txId, &tposStatus] {
             TPoSContract contract;
-            if(!TPoSUtils::CheckContract(txId, contract))
+            if(!TPoSUtils::CheckContract(txId, contract, true))
             {
                 tposStatus = "Failed to find tpos contract, probably spent";
                 return false;

@@ -117,7 +117,7 @@ std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
                                                             std::string &strError)
 {
     std::unique_ptr<CWalletTx> result(new CWalletTx);
-    auto &wtxNew = *result;
+    CWalletTx &wtxNew = *result;
 
     auto tposAddressAsStr = tposAddress.ToString();
     auto merchantAddressAsStr = merchantAddress.ToString();
@@ -128,28 +128,34 @@ std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
                          << std::vector<unsigned char>(merchantAddressAsStr.begin(), merchantAddressAsStr.end())
                          << (100 - merchantCommission);
 
-    std::stringstream stringStream(metadataScriptPubKey.ToString());
-
-    std::string tokens[4];
-
-    for(auto &token : tokens)
-    {
-        stringStream >> token;
-        //        std::cout << token << " ";
-    }
-
-    //    std::cout << std::endl;
-
-    std::vector<CRecipient> vecSend {
-        { metadataScriptPubKey, 0, false },
-        { GetScriptForDestination(tposAddress.Get()), TPOS_CONTRACT_COLATERAL, false }
-    };
 
     if(wallet->IsLocked())
     {
         strError = "Error: Wallet is locked";
         return nullptr;
     }
+
+    CKey key;
+    CKeyID keyID;
+    if(!tposAddress.GetKeyID(keyID))
+    {
+        strError = "Error: TPoS Address is not P2PKH";
+        return nullptr;
+    }
+    if (!wallet->GetKey(keyID, key))
+    {
+        strError = "Error: Failed to get private key associated with TPoS address";
+        return nullptr;
+    }
+    std::vector<unsigned char> vchSignature;
+    key.SignCompact(SerializeHash(COutPoint()), vchSignature);
+    metadataScriptPubKey << vchSignature;
+
+    std::vector<CRecipient> vecSend {
+        { metadataScriptPubKey, 0, false },
+        { GetScriptForDestination(tposAddress.Get()), TPOS_CONTRACT_COLATERAL, false }
+    };
+
 
     CAmount nFeeRequired;
     int nChangePos;
@@ -161,6 +167,34 @@ std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
         LogPrintf("Error() : %s\n", strError);
         return nullptr;
     }
+
+    auto firstInput = wtxNew.vin.front();
+
+    auto it = std::find_if(wtxNew.vout.begin(), wtxNew.vout.end(), [](const CTxOut &txOut) {
+        return txOut.scriptPubKey.IsUnspendable();
+    });
+
+    const_cast<CTxOut&>(*it).scriptPubKey.FindAndDelete(CScript(vchSignature));
+    vchSignature.clear();
+    auto hashMessage = SerializeHash(firstInput);
+    if(!key.SignCompact(hashMessage, vchSignature))
+    {
+        strError = "Error: Failed to sign tpos contract";
+        return nullptr;
+    }
+
+    const_cast<CTxOut&>(*it).scriptPubKey << vchSignature;
+
+    //    std::stringstream stringStream(it->scriptPubKey.ToString());
+    //    std::string tokens[5];
+
+    //    for(auto &token : tokens)
+    //    {
+    //        stringStream >> token;
+    //        std::cout << token << " ";
+    //    }
+
+    //    std::cout << std::endl;
 
     std::string reason;
     if(!IsStandardTx(wtxNew, reason))
@@ -190,7 +224,7 @@ COutPoint TPoSUtils::GetContractCollateralOutpoint(const TPoSContract &contract)
     return result;
 }
 
-bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contract)
+bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contract, bool fCheckSignature)
 {
     CTransaction tx;
     uint256 hashBlock;
@@ -203,6 +237,24 @@ bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contr
 
     if(!tmpContract.IsValid())
         return error("CheckContract() : invalid transaction for tpos contract");
+
+    if(fCheckSignature)
+    {
+        CPubKey recoveredKey;
+        auto hashMessage = SerializeHash(tmpContract.rawTx.vin.front());
+
+        if(!recoveredKey.RecoverCompact(hashMessage, tmpContract.vchSignature))
+            return error("CheckContract() : failed to recover public key from signature");
+
+        CKeyID keyID;
+        if(!tmpContract.tposAddress.GetKeyID(keyID))
+        {
+            return error("CheckContract() : TPoS address is not P2PKH");
+        }
+
+        if(keyID != recoveredKey.GetID())
+            return error("CheckContract() : TPoS contract signature is invalid");
+    }
 
     auto tposContractOutpoint = TPoSUtils::GetContractCollateralOutpoint(tmpContract);
     Coin coin;
@@ -296,11 +348,12 @@ bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &bl
 
 #endif
 
-TPoSContract::TPoSContract(CTransaction tx, CBitcoinAddress merchantAddress, CBitcoinAddress tposAddress, short stakePercentage)
+TPoSContract::TPoSContract(CTransaction tx, CBitcoinAddress merchantAddress, CBitcoinAddress tposAddress, short stakePercentage, std::vector<unsigned char> vchSignature)
 {
     this->rawTx = tx;
     this->merchantAddress = merchantAddress;
     this->tposAddress = tposAddress;
+    this->vchSignature = vchSignature;
     this->stakePercentage = stakePercentage;
 }
 
@@ -341,8 +394,7 @@ TPoSContract TPoSContract::FromTPoSContractTx(const CTransaction &tx)
                     // Here we can have a chance that it is transaction which is a tpos contract, let's check if it has
                     std::stringstream stringStream(metadataOut.scriptPubKey.ToString());
 
-                    std::string tokens[4];
-
+                    std::string tokens[5];
                     for(auto &token : tokens)
                     {
                         stringStream >> token;
@@ -351,12 +403,13 @@ TPoSContract TPoSContract::FromTPoSContractTx(const CTransaction &tx)
                     CBitcoinAddress tposAddress(ParseAddressFromMetadata(tokens[1]));
                     CBitcoinAddress merchantAddress(ParseAddressFromMetadata(tokens[2]));
                     int commission = std::stoi(tokens[3]);
+                    std::vector<unsigned char> vchSignature = ParseHex(tokens[4]);
                     if(tokens[0] == GetOpName(OP_RETURN) && tposAddress.IsValid() && merchantAddress.IsValid() &&
                             commission > 0 && commission < 100)
                     {
 
                         // if we get to this point, it means that we have found tpos contract that was created for us to act as merchant.
-                        return TPoSContract(tx, merchantAddress, tposAddress, commission);
+                        return TPoSContract(tx, merchantAddress, tposAddress, commission, vchSignature);
                     }
                 }
             }

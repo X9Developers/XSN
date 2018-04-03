@@ -3252,7 +3252,10 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
 
         TPoSContract contract;
         if(block.IsTPoSBlock()) {
-            if(!TPoSUtils::CheckContract(block.hashTPoSContractTx, contract)) {
+            bool fCheckTPoSSignature = block.GetBlockTime() >
+                    Params().GetConsensus().nTPoSContractSignatureDeploymentTime;
+
+            if(!TPoSUtils::CheckContract(block.hashTPoSContractTx, contract, fCheckTPoSSignature)) {
                 state.DoS(100, error("CheckBlock(): check contract failed for tpos block %s\n", hash.ToString().c_str()));
                 return false;
             }
@@ -3629,7 +3632,7 @@ bool TestBlockValidity(CValidationState& state, const CChainParams& chainparams,
     CCoinsViewCache viewNew(pcoinsTip);
     CBlockIndex indexDummy(block);
     indexDummy.pprev = pindexPrev;
-    indexDummy.nHeight = pindexPrev->nHeight + 1;
+    indexDummy.nHeight = pindexPrev->nHeight + 1; 
 
     // NOTE: CheckBlockHeader is called by CheckBlock
     if (!ContextualCheckBlockHeader(block, state, pindexPrev))

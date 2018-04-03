@@ -64,6 +64,7 @@ struct Params {
     int nStakeMinAge;
     int nStakeMaxAge;
     int nCoinbaseMaturity;
+    int nTPoSContractSignatureDeploymentTime;
     /** Block height and hash at which BIP34 becomes active */
     int BIP34Height;
     uint256 BIP34Hash;
