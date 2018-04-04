@@ -3,7 +3,7 @@ Shared Libraries
 
 ## xsnconsensus
 
-The purpose of this library is to make the verification functionality that is critical to Dash's consensus available to other applications, e.g. to language bindings.
+The purpose of this library is to make the verification functionality that is critical to XSN's consensus available to other applications, e.g. to language bindings.
 
 ### API
 
