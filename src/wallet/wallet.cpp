@@ -81,7 +81,24 @@ struct CompareValueOnly
 void CWallet::LoadContractsFromDB()
 {
     for(auto &&contractTx : std::move(tposContractsTxLoadedFromDB))
-        LoadTPoSContract(contractTx);
+    {
+        if(!LoadTPoSContract(contractTx))
+        {
+            // if contract was not added, there is a big chance that it's deprecated, let's cleanup watch only address
+            if(TPoSUtils::IsTPoSMerchantContract(this, contractTx))
+            {
+                auto tposContract = TPoSContract::FromTPoSContractTx(contractTx);
+                if(tposContract)
+                {
+                    auto script = GetScriptForDestination(tposContract.tposAddress.Get());
+                    if(HaveWatchOnly(script))
+                    {
+                        RemoveWatchOnly(script);
+                    }
+                }
+            }
+        }
+    }
 }
 
 std::string COutput::ToString() const
