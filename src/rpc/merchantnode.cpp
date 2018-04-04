@@ -437,6 +437,8 @@ UniValue tposcontract(const UniValue& params, bool fHelp)
             object.push_back(Pair("tposAddress", contract.tposAddress.ToString()));
             object.push_back(Pair("merchantAddress", contract.merchantAddress.ToString()));
             object.push_back(Pair("commission", 100 - contract.stakePercentage)); // show merchant commission
+            if(contract.vchSignature.empty())
+                object.push_back(Pair("deprecated", true));
 
             return object;
         };
