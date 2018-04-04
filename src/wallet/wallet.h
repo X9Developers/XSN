@@ -838,7 +838,7 @@ public:
     void UnlockAllCoins();
     void ListLockedCoins(std::vector<COutPoint>& vOutpts);
 
-    void LoadTPoSContract(const CWalletTx &walletTx);
+    bool LoadTPoSContract(const CWalletTx &walletTx);
     void LoadTPoSContractFromDB(CWalletTx walletTx);
 
     bool RemoveTPoSContract(const uint256 &contractTxId);
