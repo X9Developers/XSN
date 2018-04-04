@@ -88,7 +88,7 @@ void CWallet::LoadContractsFromDB()
             if(TPoSUtils::IsTPoSMerchantContract(this, contractTx))
             {
                 auto tposContract = TPoSContract::FromTPoSContractTx(contractTx);
-                if(tposContract)
+                if(tposContract.IsValid())
                 {
                     auto script = GetScriptForDestination(tposContract.tposAddress.Get());
                     if(HaveWatchOnly(script))
@@ -4717,13 +4717,13 @@ bool CWallet::LoadTPoSContract(const CWalletTx &walletTx)
     bool isOwner = TPoSUtils::IsTPoSOwnerContract(this, walletTx);
 
     if(!isMerchant && !isOwner)
-        return; // shouldn't happen
+        return false; // shouldn't happen
 
     auto contract = TPoSContract::FromTPoSContractTx(walletTx);
     auto txHash = walletTx.GetHash();
 
     if(contract.vchSignature.empty())
-        return;
+        return false;
 
     if(isMerchant) {
         tposMerchantContracts[txHash] = contract;
@@ -4733,6 +4733,8 @@ bool CWallet::LoadTPoSContract(const CWalletTx &walletTx)
         tposOwnerContracts[txHash] = contract;
         LockCoin(TPoSUtils::GetContractCollateralOutpoint(contract));
     }
+
+    return true;
 }
 
 void CWallet::LoadTPoSContractFromDB(CWalletTx walletTx)

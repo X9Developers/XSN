@@ -184,6 +184,27 @@ void TPoSPage::onStakeClicked()
 {
     try
     {
+        auto worker = [this]() {
+            CReserveKey reserveKey(pwalletMain);
+            CBitcoinAddress tposAddress = GetNewAddress();
+            if(!tposAddress.IsValid())
+            {
+                throw std::runtime_error("Critical error, TPoS address is empty");
+            }
+            CBitcoinAddress merchantAddress(ui->merchantAddress->text().toStdString());
+            if(!merchantAddress.IsValid())
+            {
+                throw std::runtime_error("Critical error, merchant address is empty");
+            }
+            auto merchantCommission = ui->merchantCut->value();
+            CWalletTx wtxContract;
+            if(CreateContractTransaction(this, reserveKey, tposAddress, merchantAddress, merchantCommission, wtxContract))
+            {
+                SendRawTransaction(wtxContract, reserveKey);
+                sendToTPoSAddress(tposAddress);
+            }
+        };
+
         if (_walletModel->getEncryptionStatus() == WalletModel::Locked)
         {
             WalletModel::UnlockContext ctx(_walletModel->requestUnlock(false));
@@ -192,25 +213,12 @@ void TPoSPage::onStakeClicked()
                 //unlock was cancelled
                 throw std::runtime_error("Wallet is locked and user declined to unlock. Can't redeem from TPoS address.");
             }
-        }
 
-        CReserveKey reserveKey(pwalletMain);
-        CBitcoinAddress tposAddress = GetNewAddress();
-        if(!tposAddress.IsValid())
-        {
-            throw std::runtime_error("Critical error, TPoS address is empty");
+            worker();
         }
-        CBitcoinAddress merchantAddress(ui->merchantAddress->text().toStdString());
-        if(!merchantAddress.IsValid())
+        else
         {
-            throw std::runtime_error("Critical error, merchant address is empty");
-        }
-        auto merchantCommission = ui->merchantCut->value();
-        CWalletTx wtxContract;
-        if(CreateContractTransaction(this, reserveKey, tposAddress, merchantAddress, merchantCommission, wtxContract))
-        {
-            SendRawTransaction(wtxContract, reserveKey);
-            sendToTPoSAddress(tposAddress);
+            worker();
         }
     }
     catch(std::exception &ex)
