@@ -139,7 +139,7 @@ public:
         consensus.nStakeMinAge = 60 * 60;
         consensus.nStakeMaxAge = 60 * 60 * 24; // one day
         consensus.nCoinbaseMaturity = 20;
-        consensus.nTPoSContractSignatureDeploymentTime = 1554283809;
+        consensus.nTPoSContractSignatureDeploymentTime = 1523127600;
         consensus.nLastPoWBlock = 75;
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
