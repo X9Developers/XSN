@@ -1355,14 +1355,21 @@ bool CWallet::AddToWalletIfTPoSContract(const CTransaction &tx, const CBlock *pb
                 auto contract = TPoSContract::FromTPoSContractTx(tx);
 
                 CWalletTx wtx(this, tx);
-                CWalletDB walletDb(strWalletFile);
-                walletDb.WriteTPoSContractTx(wtx.GetHash(), wtx);
-                LoadTPoSContract(wtx);
+                if(LoadTPoSContract(wtx))
+                {
+                    CWalletDB walletDb(strWalletFile);
+                    walletDb.WriteTPoSContractTx(wtx.GetHash(), wtx);
 
 
-                if(isMerchant && !isOwner) {
-                    AddWatchOnly(GetScriptForDestination(contract.tposAddress.Get()));
+                    if(isMerchant && !isOwner) {
+                        AddWatchOnly(GetScriptForDestination(contract.tposAddress.Get()));
+                    }
                 }
+                else
+                {
+                    return false;
+                }
+
 
                 return true;
             }
@@ -4687,7 +4694,7 @@ void CWallet::ListLockedCoins(std::vector<COutPoint>& vOutpts)
     }
 }
 
-void CWallet::LoadTPoSContract(const CWalletTx &walletTx)
+bool CWallet::LoadTPoSContract(const CWalletTx &walletTx)
 {
     bool isMerchant = TPoSUtils::IsTPoSMerchantContract(this, walletTx);
     bool isOwner = TPoSUtils::IsTPoSOwnerContract(this, walletTx);

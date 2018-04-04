@@ -63,7 +63,7 @@ public:
                                                             std::string &strError);
 
     static COutPoint GetContractCollateralOutpoint(const TPoSContract &contract);
-    static bool CheckContract(const uint256 &hashContractTx, TPoSContract &contract, bool fCheckSignature);
+    static bool CheckContract(const uint256 &hashContractTx, TPoSContract &contract, bool fCheckSignature, bool fCheckContractOutpoint);
     static bool IsMerchantPaymentValid(CValidationState &state, const CBlock &block, int nBlockHeight, CAmount expectedReward, CAmount actualReward);
 
 #endif

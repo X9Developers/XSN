@@ -234,7 +234,7 @@ COutPoint TPoSUtils::GetContractCollateralOutpoint(const TPoSContract &contract)
     return result;
 }
 
-bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contract, bool fCheckSignature)
+bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contract, bool fCheckSignature, bool fCheckContractOutpoint)
 {
     CTransaction tx;
     uint256 hashBlock;
@@ -266,10 +266,13 @@ bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contr
             return error("CheckContract() : TPoS contract signature is invalid");
     }
 
-    auto tposContractOutpoint = TPoSUtils::GetContractCollateralOutpoint(tmpContract);
-    Coin coin;
-    if(!pcoinsTip->GetCoin(tposContractOutpoint, coin) || coin.IsSpent())
-        return error("CheckContract() : tpos contract invalid, collateral is spent");
+    if(fCheckContractOutpoint)
+    {
+        auto tposContractOutpoint = TPoSUtils::GetContractCollateralOutpoint(tmpContract);
+        Coin coin;
+        if(!pcoinsTip->GetCoin(tposContractOutpoint, coin) || coin.IsSpent())
+            return error("CheckContract() : tpos contract invalid, collateral is spent");
+    }
 
     contract = tmpContract;
 
