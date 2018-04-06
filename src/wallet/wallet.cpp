@@ -3938,27 +3938,28 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
     StakeCoinsSet setStakeCoins;
     static int nLastStakeSetUpdate = 0;
 
-    //    if (GetTime() - nLastStakeSetUpdate > nStakeSetUpdateTime) {
-    //        setStakeCoins.clear();
-
-
-    CScript scriptPubKey;
-
     bool fIsTPoS = tposContract.IsValid();
 
-    if(fIsTPoS)
-    {
-        scriptPubKey = GetScriptForDestination(tposContract.tposAddress.Get());
-        if(fDebug)
-            LogPrintf("CreateCoinStake() : finding tpos, contract tposAddress: %s\n", tposContract.tposAddress.ToString().c_str());
-    }
+    if (GetTime() - nLastStakeSetUpdate > nStakeSetUpdateTime) {
+        setStakeCoins.clear();
 
-    if (!SelectStakeCoins(setStakeCoins, nBalance /*- nReserveBalance*/, scriptPubKey)) {
-        return error("Failed to select coins for staking");
-    }
 
-    nLastStakeSetUpdate = GetTime();
-    //    }
+        CScript scriptPubKey;
+
+
+        if(fIsTPoS)
+        {
+            scriptPubKey = GetScriptForDestination(tposContract.tposAddress.Get());
+            if(fDebug)
+                LogPrintf("CreateCoinStake() : finding tpos, contract tposAddress: %s\n", tposContract.tposAddress.ToString().c_str());
+        }
+
+        if (!SelectStakeCoins(setStakeCoins, nBalance /*- nReserveBalance*/, scriptPubKey)) {
+            return error("Failed to select coins for staking");
+        }
+
+        nLastStakeSetUpdate = GetTime();
+    }
 
     if (setStakeCoins.empty())
         return error("CreateCoinStake() : No Coins to stake");
