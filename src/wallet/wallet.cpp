@@ -339,7 +339,7 @@ void CWallet::FillCoinStakePayments(CMutableTransaction &transaction,
 
     {
         CTxOut &lastTx = transaction.vout.back();
-        if(lastTx.nValue > nStakeSplitThreshold * COIN)
+        if(lastTx.nValue / 2 > nStakeSplitThreshold * COIN)
         {
             lastTx.nValue /= 2;
             transaction.vout.emplace_back(lastTx.nValue, lastTx.scriptPubKey);
