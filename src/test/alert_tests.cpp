@@ -211,8 +211,9 @@ BOOST_AUTO_TEST_CASE(AlertNotify)
     BOOST_FOREACH(CAlert alert, alerts)
         alert.ProcessAlert(alertKey, false);
 
+    std::cout << temp << std::endl;
     std::vector<std::string> r = read_lines(temp);
-    BOOST_CHECK_EQUAL(r.size(), 4u);
+    BOOST_REQUIRE_EQUAL(r.size(), 4u);
 
 // Windows built-in echo semantics are different than posixy shells. Quotes and
 // whitespace are printed literally.
