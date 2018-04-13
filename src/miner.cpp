@@ -595,7 +595,7 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
                 SetThreadPriority(THREAD_PRIORITY_NORMAL);
                 bool ret = ProcessBlockFound(pblock, chainparams);
                 SetThreadPriority(THREAD_PRIORITY_LOWEST);
-
+                MilliSleep(10000);
                 continue;
             }
 
