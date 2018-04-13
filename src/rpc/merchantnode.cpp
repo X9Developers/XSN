@@ -199,6 +199,12 @@ UniValue merchantnode(const UniValue& params, bool fHelp)
 
     if(strCommand == "list-mine")
     {
+        UniValue newParams(UniValue::VARR);
+        // forward params but skip "list-mine"
+        for (unsigned int i = 1; i < params.size(); i++) {
+            newParams.push_back(params[i]);
+        }
+
         std::set<CService> myMerchantNodesIps;
         for(auto &&mne : merchantnodeConfig.getEntries())
         {
@@ -208,7 +214,7 @@ UniValue merchantnode(const UniValue& params, bool fHelp)
             myMerchantNodesIps.insert(service);
         }
 
-        return  ListOfMerchantNodes(params, myMerchantNodesIps, true);
+        return  ListOfMerchantNodes(newParams, myMerchantNodesIps, true);
     }
 
     if (strCommand == "list-conf")
