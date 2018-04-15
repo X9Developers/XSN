@@ -51,7 +51,7 @@ env:
     - HOST=x86_64-apple-darwin11 PPA="ppa:bitcoin/bitcoin" PACKAGES="cmake imagemagick libcap-dev librsvg2-bin libz-dev libbz2-dev libtiff-tools python-dev" BITCOIN_CONFIG="--enable-gui --enable-reduce-exports" OSX_SDK=10.9 GOAL="deploy"
 
 before_install:
-    - git clone https://github.com/X9Developers/XSN
+    - git clone https://github.com/dashpay/dash_hash
     - travis_retry sudo apt-get install python-dev
     - travis_retry sudo add-apt-repository ppa:ubuntu-wine/ppa -y
     - export PATH=$(echo $PATH | tr ':' "\n" | sed '/\/opt\/python/d' | tr "\n" ":" | sed "s|::|:|g")
@@ -61,7 +61,7 @@ install:
     - if [ -n "$DPKG_ADD_ARCH" ]; then sudo dpkg --add-architecture "$DPKG_ADD_ARCH" ; fi
     - if [ -n "$PACKAGES" ]; then travis_retry sudo apt-get update; fi
     - if [ -n "$PACKAGES" ]; then travis_retry sudo apt-get install --no-install-recommends --no-upgrade -qq $PACKAGES; fi
-    - cd XSN && python setup.py install --user && cd ..
+    - cd dash_hash && python setup.py install --user && cd ..
 before_script:
     - unset CC; unset CXX
     - unset DISPLAY
