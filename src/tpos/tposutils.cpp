@@ -217,6 +217,49 @@ std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
     return result;
 }
 
+std::unique_ptr<CWalletTx> TPoSUtils::CreateCancelContractTransaction(CWallet *wallet, CReserveKey &reserveKey, const TPoSContract &contract, string &strError)
+{
+    std::unique_ptr<CWalletTx> result(new CWalletTx);
+    CWalletTx &wtxNew = *result;
+
+    if(wallet->IsLocked())
+    {
+        strError = "Error: Wallet is locked";
+        return nullptr;
+    }
+
+    COutPoint prevOutpoint = GetContractCollateralOutpoint(contract);
+    if(prevOutpoint.IsNull())
+    {
+        strError = "Error: Contract collateral is invalid";
+        return nullptr;
+    }
+
+    Coin coin;
+    if(!pcoinsTip->GetCoin(prevOutpoint, coin) || coin.IsSpent())
+    {
+        strError = "Error: Collateral is already spent";
+        return nullptr;
+    }
+
+    auto &prevOutput = contract.rawTx.vout.at(prevOutpoint.n);
+
+    CAmount nFeeRet;
+    int nChangePosRet;
+    CCoinControl coinControl;
+    coinControl.fUsePrivateSend = false;
+    coinControl.Select(prevOutpoint);
+    if(!wallet->CreateTransaction({ { prevOutput.scriptPubKey, prevOutput.nValue, true } }, wtxNew,
+                              reserveKey, nFeeRet, nChangePosRet,
+                              strError, &coinControl, true, ONLY_MERCHANTNODE_COLLATERAL))
+    {
+        LogPrintf("Error() : %s\n", strError.c_str());
+        return nullptr;
+    }
+
+    return result;
+}
+
 COutPoint TPoSUtils::GetContractCollateralOutpoint(const TPoSContract &contract)
 {
     COutPoint result;
