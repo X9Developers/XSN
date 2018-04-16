@@ -83,7 +83,7 @@ static bool CreateCancelContractTransaction(QWidget *widget,
                                             CWalletTx &wtxCancelContractTx)
 {
     std::string strError;
-    auto questionString = QString("Are you sure you want to cancel contract with address: %1").arg(contract.tposAddress.ToString().c_str());
+    auto questionString = QString("Are you sure you want to cancel contract with address: <b>%1</b>").arg(contract.tposAddress.ToString().c_str());
     // Display message box
     QMessageBox::StandardButton retval = QMessageBox::question(widget, QObject::tr("Confirm canceling tpos contract"),
                                                                questionString,
