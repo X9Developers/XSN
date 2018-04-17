@@ -260,10 +260,11 @@ UniValue getstakingstatus(const UniValue& params, bool fHelp)
     obj.push_back(Pair("merchantsync", merchantnodeSync.IsSynced()));
 
     bool nStaking = false;
-    if (mapHashedBlocks.count(chainActive.Tip()->nHeight))
+
+    if (nLastCoinStakeSearchInterval > 0)
         nStaking = true;
-    else if (mapHashedBlocks.count(chainActive.Tip()->nHeight - 1) && nLastCoinStakeSearchInterval)
-        nStaking = true;
+
+
     obj.push_back(Pair("staking status", nStaking));
 
     bool isTPoS = false;

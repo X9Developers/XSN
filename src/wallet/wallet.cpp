@@ -339,7 +339,7 @@ void CWallet::FillCoinStakePayments(CMutableTransaction &transaction,
 
     {
         CTxOut &lastTx = transaction.vout.back();
-        if(lastTx.nValue > nStakeSplitThreshold * COIN)
+        if(lastTx.nValue / 2 > nStakeSplitThreshold * COIN)
         {
             lastTx.nValue /= 2;
             transaction.vout.emplace_back(lastTx.nValue, lastTx.scriptPubKey);
@@ -862,7 +862,6 @@ void CWallet::AddToSpends(const COutPoint& outpoint, const uint256& wtxid)
     range = mapTxSpends.equal_range(outpoint);
     SyncMetaData(range);
 }
-
 
 void CWallet::AddToSpends(const uint256& wtxid)
 {
@@ -1412,6 +1411,9 @@ void CWallet::SyncTransaction(const CTransaction& tx, const CBlock* pblock)
     {
         if (mapWallet.count(txin.prevout.hash))
             mapWallet[txin.prevout.hash].MarkDirty();
+
+        if(mapWallet.count(txin.prevout.hash))
+            RemoveTPoSContract(txin.prevout.hash);
     }
 
     fAnonymizableTallyCached = false;
@@ -3938,27 +3940,28 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
     StakeCoinsSet setStakeCoins;
     static int nLastStakeSetUpdate = 0;
 
-    //    if (GetTime() - nLastStakeSetUpdate > nStakeSetUpdateTime) {
-    //        setStakeCoins.clear();
-
-
-    CScript scriptPubKey;
-
     bool fIsTPoS = tposContract.IsValid();
 
-    if(fIsTPoS)
-    {
-        scriptPubKey = GetScriptForDestination(tposContract.tposAddress.Get());
-        if(fDebug)
-            LogPrintf("CreateCoinStake() : finding tpos, contract tposAddress: %s\n", tposContract.tposAddress.ToString().c_str());
-    }
+    if (GetTime() - nLastStakeSetUpdate > nStakeSetUpdateTime) {
+        setStakeCoins.clear();
 
-    if (!SelectStakeCoins(setStakeCoins, nBalance /*- nReserveBalance*/, scriptPubKey)) {
-        return error("Failed to select coins for staking");
-    }
 
-    nLastStakeSetUpdate = GetTime();
-    //    }
+        CScript scriptPubKey;
+
+
+        if(fIsTPoS)
+        {
+            scriptPubKey = GetScriptForDestination(tposContract.tposAddress.Get());
+            if(fDebug)
+                LogPrintf("CreateCoinStake() : finding tpos, contract tposAddress: %s\n", tposContract.tposAddress.ToString().c_str());
+        }
+
+        if (!SelectStakeCoins(setStakeCoins, nBalance /*- nReserveBalance*/, scriptPubKey)) {
+            return error("Failed to select coins for staking");
+        }
+
+        nLastStakeSetUpdate = GetTime();
+    }
 
     if (setStakeCoins.empty())
         return error("CreateCoinStake() : No Coins to stake");
