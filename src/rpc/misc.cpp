@@ -260,10 +260,11 @@ UniValue getstakingstatus(const UniValue& params, bool fHelp)
     obj.push_back(Pair("merchantsync", merchantnodeSync.IsSynced()));
 
     bool nStaking = false;
-    if (mapHashedBlocks.count(chainActive.Tip()->nHeight))
+
+    if (nLastCoinStakeSearchInterval > 0)
         nStaking = true;
-    else if (mapHashedBlocks.count(chainActive.Tip()->nHeight - 1) && nLastCoinStakeSearchInterval)
-        nStaking = true;
+
+
     obj.push_back(Pair("staking status", nStaking));
 
     bool isTPoS = false;
@@ -275,7 +276,7 @@ UniValue getstakingstatus(const UniValue& params, bool fHelp)
     {
         auto helper = [&txId, &tposStatus] {
             TPoSContract contract;
-            if(!TPoSUtils::CheckContract(txId, contract))
+            if(!TPoSUtils::CheckContract(txId, contract, true, true))
             {
                 tposStatus = "Failed to find tpos contract, probably spent";
                 return false;

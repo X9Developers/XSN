@@ -548,8 +548,8 @@ border: 1px solid #d7d7d7;
 QDialog .QTabWidget QTabBar::tab {
 background-color:#f2f0f0;
 color:#333;
-padding-left:10px;
-padding-right:10px;
+/*padding-left:10px;
+padding-right:10px;*/
 padding-top:5px;
 padding-bottom:5px;
 border-top: 1px solid #d7d7d7;

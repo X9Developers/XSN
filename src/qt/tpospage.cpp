@@ -33,9 +33,9 @@ enum Values {
 };
 }
 
-static QString PrepareQuestionString(const CBitcoinAddress &tposAddress,
-                                     const CBitcoinAddress &merchantAddress,
-                                     int commission)
+static QString PrepareCreateContractQuestionString(const CBitcoinAddress &tposAddress,
+                                                   const CBitcoinAddress &merchantAddress,
+                                                   int commission)
 {
     QString questionString = QObject::tr("Are you sure you want to setup tpos contract?");
     questionString.append("<br /><br />");
@@ -58,7 +58,7 @@ static bool CreateContractTransaction(QWidget *widget,
                                       CWalletTx &wtxContract)
 {
     std::string strError;
-    auto questionString = PrepareQuestionString(tposAddress, merchantAddress, merchantCommission);
+    auto questionString = PrepareCreateContractQuestionString(tposAddress, merchantAddress, merchantCommission);
     // Display message box
     QMessageBox::StandardButton retval = QMessageBox::question(widget, QObject::tr("Confirm creating tpos contract"),
                                                                questionString,
@@ -71,6 +71,32 @@ static bool CreateContractTransaction(QWidget *widget,
     if(auto walletTx = TPoSUtils::CreateTPoSTransaction(pwalletMain, reserveKey, tposAddress, merchantAddress, merchantCommission, strError))
     {
         wtxContract = *walletTx;
+        return true;
+    }
+
+    throw std::runtime_error(QString("Failed to create tpos transaction: %1").arg(QString::fromStdString(strError)).toStdString());
+}
+
+static bool CreateCancelContractTransaction(QWidget *widget,
+                                            CReserveKey &reserveKey,
+                                            const TPoSContract &contract,
+                                            CWalletTx &wtxCancelContractTx)
+{
+    std::string strError;
+    auto questionString = QString("Are you sure you want to cancel contract with address: <b>%1</b>").arg(contract.tposAddress.ToString().c_str());
+    // Display message box
+    QMessageBox::StandardButton retval = QMessageBox::question(widget, QObject::tr("Confirm canceling tpos contract"),
+                                                               questionString,
+                                                               QMessageBox::Yes | QMessageBox::Cancel,
+                                                               QMessageBox::Cancel);
+    if(retval != QMessageBox::Yes)
+    {
+        return false;
+    }
+
+    if(auto walletTx = TPoSUtils::CreateCancelContractTransaction(pwalletMain, reserveKey, contract, strError))
+    {
+        wtxCancelContractTx = *walletTx;
         return true;
     }
 
@@ -184,6 +210,27 @@ void TPoSPage::onStakeClicked()
 {
     try
     {
+        auto worker = [this]() {
+            CReserveKey reserveKey(pwalletMain);
+            CBitcoinAddress tposAddress = GetNewAddress();
+            if(!tposAddress.IsValid())
+            {
+                throw std::runtime_error("Critical error, TPoS address is empty");
+            }
+            CBitcoinAddress merchantAddress(ui->merchantAddress->text().toStdString());
+            if(!merchantAddress.IsValid())
+            {
+                throw std::runtime_error("Critical error, merchant address is empty");
+            }
+            auto merchantCommission = ui->merchantCut->value();
+            CWalletTx wtxContract;
+            if(CreateContractTransaction(this, reserveKey, tposAddress, merchantAddress, merchantCommission, wtxContract))
+            {
+                SendRawTransaction(wtxContract, reserveKey);
+                sendToTPoSAddress(tposAddress);
+            }
+        };
+
         if (_walletModel->getEncryptionStatus() == WalletModel::Locked)
         {
             WalletModel::UnlockContext ctx(_walletModel->requestUnlock(false));
@@ -192,25 +239,12 @@ void TPoSPage::onStakeClicked()
                 //unlock was cancelled
                 throw std::runtime_error("Wallet is locked and user declined to unlock. Can't redeem from TPoS address.");
             }
-        }
 
-        CReserveKey reserveKey(pwalletMain);
-        CBitcoinAddress tposAddress = GetNewAddress();
-        if(!tposAddress.IsValid())
-        {
-            throw std::runtime_error("Critical error, TPoS address is empty");
+            worker();
         }
-        CBitcoinAddress merchantAddress(ui->merchantAddress->text().toStdString());
-        if(!merchantAddress.IsValid())
+        else
         {
-            throw std::runtime_error("Critical error, merchant address is empty");
-        }
-        auto merchantCommission = ui->merchantCut->value();
-        CWalletTx wtxContract;
-        if(CreateContractTransaction(this, reserveKey, tposAddress, merchantAddress, merchantCommission, wtxContract))
-        {
-            sendToTPoSAddress(tposAddress);
-            SendRawTransaction(wtxContract, reserveKey);
+            worker();
         }
     }
     catch(std::exception &ex)
@@ -224,31 +258,50 @@ void TPoSPage::onClearClicked()
 
 }
 
-void TPoSPage::onRedeemClicked()
+void TPoSPage::onCancelClicked()
 {
     auto selectedIndexes = ui->stakingAddressesView->selectionModel()->selectedRows();
 
-    if (_walletModel->getEncryptionStatus() == WalletModel::Locked)
-    {
-        WalletModel::UnlockContext ctx(_walletModel->requestUnlock(false));
-        if (!ctx.isValid())
-        {
-            //unlock was cancelled
-            QMessageBox::warning(this, tr("TPoS"),
-                                 tr("Wallet is locked and user declined to unlock. Can't redeem from TPoS address."),
-                                 QMessageBox::Ok, QMessageBox::Ok);
-            if (fDebug)
-                LogPrintf("Wallet is locked and user declined to unlock. Can't redeem from TPoS address.\n");
+    if(selectedIndexes.empty())
+        return;
 
-            return;
+    auto worker = [this, &selectedIndexes] {
+        CReserveKey reserveKey(pwalletMain);
+        auto contract = _addressesTableModel->contractByIndex(selectedIndexes.first().row());
+        CWalletTx wtxNew;
+        if(CreateCancelContractTransaction(this, reserveKey, contract, wtxNew))
+        {
+            SendRawTransaction(wtxNew, reserveKey);
+        }
+    };
+
+    try
+    {
+        if (_walletModel->getEncryptionStatus() == WalletModel::Locked)
+        {
+            WalletModel::UnlockContext ctx(_walletModel->requestUnlock(false));
+            if (!ctx.isValid())
+            {
+                //unlock was cancelled
+                QMessageBox::warning(this, tr("TPoS"),
+                                     tr("Wallet is locked and user declined to unlock. Can't redeem from TPoS address."),
+                                     QMessageBox::Ok, QMessageBox::Ok);
+                if (fDebug)
+                    LogPrintf("Wallet is locked and user declined to unlock. Can't redeem from TPoS address.\n");
+
+                return;
+            }
+            worker();
+        }
+        else
+        {
+            worker();
         }
     }
-
-    if(!selectedIndexes.empty())
+    catch(std::exception &ex)
     {
-
+        QMessageBox::warning(this, "TPoS", ex.what());
     }
-
 }
 
 void TPoSPage::onThemeChanged()
@@ -283,7 +336,7 @@ void TPoSPage::connectSignals()
     connect(ui->stakeButton, &QPushButton::clicked, this, &TPoSPage::onStakeClicked);
     connect(ui->clearButton, &QPushButton::clicked, this, &TPoSPage::onClearClicked);
     //    connect(ui->showRequestButton, &QPushButton::clicked, this, &TPoSPage::onShowRequestClicked);
-    connect(ui->removeRequestButton, &QPushButton::clicked, this, &TPoSPage::onRedeemClicked);
+    connect(ui->cancelButton, &QPushButton::clicked, this, &TPoSPage::onCancelClicked);
 }
 
 void TPoSPage::onStakeError()

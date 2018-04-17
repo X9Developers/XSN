@@ -82,7 +82,8 @@ libconftest.dylib*
 *.qm
 Makefile
 xsn-qt
-Dash-Qt.app
+XSN-Qt.app
+*.user
 
 # Unit-tests
 Makefile.test

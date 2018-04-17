@@ -81,7 +81,24 @@ struct CompareValueOnly
 void CWallet::LoadContractsFromDB()
 {
     for(auto &&contractTx : std::move(tposContractsTxLoadedFromDB))
-        LoadTPoSContract(contractTx);
+    {
+        if(!LoadTPoSContract(contractTx))
+        {
+            // if contract was not added, there is a big chance that it's deprecated, let's cleanup watch only address
+            if(TPoSUtils::IsTPoSMerchantContract(this, contractTx))
+            {
+                auto tposContract = TPoSContract::FromTPoSContractTx(contractTx);
+                if(tposContract.IsValid())
+                {
+                    auto script = GetScriptForDestination(tposContract.tposAddress.Get());
+                    if(HaveWatchOnly(script))
+                    {
+                        RemoveWatchOnly(script);
+                    }
+                }
+            }
+        }
+    }
 }
 
 std::string COutput::ToString() const
@@ -322,7 +339,7 @@ void CWallet::FillCoinStakePayments(CMutableTransaction &transaction,
 
     {
         CTxOut &lastTx = transaction.vout.back();
-        if(lastTx.nValue > nStakeSplitThreshold * COIN)
+        if(lastTx.nValue / 2 > nStakeSplitThreshold * COIN)
         {
             lastTx.nValue /= 2;
             transaction.vout.emplace_back(lastTx.nValue, lastTx.scriptPubKey);
@@ -846,7 +863,6 @@ void CWallet::AddToSpends(const COutPoint& outpoint, const uint256& wtxid)
     SyncMetaData(range);
 }
 
-
 void CWallet::AddToSpends(const uint256& wtxid)
 {
     assert(mapWallet.count(wtxid));
@@ -1352,16 +1368,24 @@ bool CWallet::AddToWalletIfTPoSContract(const CTransaction &tx, const CBlock *pb
 
             if(isMerchant || isOwner)
             {
-                CWalletTx wtx(this, tx);
-                CWalletDB walletDb(strWalletFile);
-                walletDb.WriteTPoSContractTx(wtx.GetHash(), wtx);
-                LoadTPoSContract(wtx);
-
                 auto contract = TPoSContract::FromTPoSContractTx(tx);
 
-                if(isMerchant && !isOwner) {
-                    AddWatchOnly(GetScriptForDestination(contract.tposAddress.Get()));
+                CWalletTx wtx(this, tx);
+                if(LoadTPoSContract(wtx))
+                {
+                    CWalletDB walletDb(strWalletFile);
+                    walletDb.WriteTPoSContractTx(wtx.GetHash(), wtx);
+
+
+                    if(isMerchant && !isOwner) {
+                        AddWatchOnly(GetScriptForDestination(contract.tposAddress.Get()));
+                    }
                 }
+                else
+                {
+                    return false;
+                }
+
 
                 return true;
             }
@@ -1387,6 +1411,9 @@ void CWallet::SyncTransaction(const CTransaction& tx, const CBlock* pblock)
     {
         if (mapWallet.count(txin.prevout.hash))
             mapWallet[txin.prevout.hash].MarkDirty();
+
+        if(mapWallet.count(txin.prevout.hash))
+            RemoveTPoSContract(txin.prevout.hash);
     }
 
     fAnonymizableTallyCached = false;
@@ -3474,7 +3501,7 @@ bool CWallet::ConvertList(std::vector<CTxIn> vecTxIn, std::vector<CAmount>& vecA
 }
 
 bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet,
-                                int& nChangePosRet, std::string& strFailReason, const CCoinControl* coinControl, bool sign, AvailableCoinsType nCoinType, bool fUseInstantSend)
+                                int& nChangePosRet, std::string& strFailReason, const CCoinControl* coinControl, bool sign, AvailableCoinsType nCoinType, bool fUseInstantSend, OnTransactionToBeSigned onTxToBeSigned)
 {
     CAmount nFeePay = fUseInstantSend ? CTxLockRequest().GetMinFee() : 0;
 
@@ -3741,6 +3768,9 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
                     }
                 }
 
+                if(onTxToBeSigned)
+                    onTxToBeSigned(txNew);
+
                 // Sign
                 int nIn = 0;
                 CTransaction txNewConst(txNew);
@@ -3910,27 +3940,28 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
     StakeCoinsSet setStakeCoins;
     static int nLastStakeSetUpdate = 0;
 
-    //    if (GetTime() - nLastStakeSetUpdate > nStakeSetUpdateTime) {
-    //        setStakeCoins.clear();
-
-
-    CScript scriptPubKey;
-
     bool fIsTPoS = tposContract.IsValid();
 
-    if(fIsTPoS)
-    {
-        scriptPubKey = GetScriptForDestination(tposContract.tposAddress.Get());
-        if(fDebug)
-            LogPrintf("CreateCoinStake() : finding tpos, contract tposAddress: %s\n", tposContract.tposAddress.ToString().c_str());
-    }
+    if (GetTime() - nLastStakeSetUpdate > nStakeSetUpdateTime) {
+        setStakeCoins.clear();
 
-    if (!SelectStakeCoins(setStakeCoins, nBalance /*- nReserveBalance*/, scriptPubKey)) {
-        return error("Failed to select coins for staking");
-    }
 
-    nLastStakeSetUpdate = GetTime();
-    //    }
+        CScript scriptPubKey;
+
+
+        if(fIsTPoS)
+        {
+            scriptPubKey = GetScriptForDestination(tposContract.tposAddress.Get());
+            if(fDebug)
+                LogPrintf("CreateCoinStake() : finding tpos, contract tposAddress: %s\n", tposContract.tposAddress.ToString().c_str());
+        }
+
+        if (!SelectStakeCoins(setStakeCoins, nBalance /*- nReserveBalance*/, scriptPubKey)) {
+            return error("Failed to select coins for staking");
+        }
+
+        nLastStakeSetUpdate = GetTime();
+    }
 
     if (setStakeCoins.empty())
         return error("CreateCoinStake() : No Coins to stake");
@@ -4683,16 +4714,19 @@ void CWallet::ListLockedCoins(std::vector<COutPoint>& vOutpts)
     }
 }
 
-void CWallet::LoadTPoSContract(const CWalletTx &walletTx)
+bool CWallet::LoadTPoSContract(const CWalletTx &walletTx)
 {
     bool isMerchant = TPoSUtils::IsTPoSMerchantContract(this, walletTx);
     bool isOwner = TPoSUtils::IsTPoSOwnerContract(this, walletTx);
 
     if(!isMerchant && !isOwner)
-        return; // shouldn't happen
+        return false; // shouldn't happen
 
     auto contract = TPoSContract::FromTPoSContractTx(walletTx);
     auto txHash = walletTx.GetHash();
+
+    if(contract.vchSignature.empty())
+        return false;
 
     if(isMerchant) {
         tposMerchantContracts[txHash] = contract;
@@ -4702,6 +4736,8 @@ void CWallet::LoadTPoSContract(const CWalletTx &walletTx)
         tposOwnerContracts[txHash] = contract;
         LockCoin(TPoSUtils::GetContractCollateralOutpoint(contract));
     }
+
+    return true;
 }
 
 void CWallet::LoadTPoSContractFromDB(CWalletTx walletTx)

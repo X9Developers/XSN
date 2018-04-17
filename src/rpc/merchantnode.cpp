@@ -60,6 +60,89 @@ UniValue merchantsync(const UniValue& params, bool fHelp)
 }
 
 
+UniValue ListOfMerchantNodes(const UniValue& params, std::set<CService> myMerchantNodesIps, bool showOnlyMine)
+{
+    std::string strMode = "status";
+    std::string strFilter = "";
+
+    if (params.size() >= 1) strMode = params[0].get_str();
+    if (params.size() == 2) strFilter = params[1].get_str();
+
+    UniValue obj(UniValue::VOBJ);
+
+    auto mapMerchantnodes = merchantnodeman.GetFullMerchantnodeMap();
+    for (auto& mnpair : mapMerchantnodes) {
+
+        if(showOnlyMine && myMerchantNodesIps.count(mnpair.second.addr) == 0) {
+            continue;
+        }
+
+        CMerchantnode mn = mnpair.second;
+        std::string strOutpoint = HexStr(mnpair.first.Raw());
+        if (strMode == "activeseconds") {
+            if (strFilter !="" && strOutpoint.find(strFilter) == std::string::npos) continue;
+            obj.push_back(Pair(strOutpoint, (int64_t)(mn.lastPing.sigTime - mn.sigTime)));
+        } else if (strMode == "addr") {
+            std::string strAddress = mn.addr.ToString();
+            if (strFilter !="" && strAddress.find(strFilter) == std::string::npos &&
+                    strOutpoint.find(strFilter) == std::string::npos) continue;
+            obj.push_back(Pair(strOutpoint, strAddress));
+        } else if (strMode == "full") {
+            std::ostringstream streamFull;
+            streamFull << std::setw(18) <<
+                          mn.GetStatus() << " " <<
+                          mn.nProtocolVersion << " " <<
+                          CBitcoinAddress(mn.pubKeyMerchantnode.GetID()).ToString() << " " <<
+                          mn.hashTPoSContractTx.ToString() << " " <<
+                          (int64_t)mn.lastPing.sigTime << " " << std::setw(8) <<
+                          (int64_t)(mn.lastPing.sigTime - mn.sigTime) << " " << std::setw(10) <<
+                          mn.addr.ToString();
+            std::string strFull = streamFull.str();
+            if (strFilter !="" && strFull.find(strFilter) == std::string::npos &&
+                    strOutpoint.find(strFilter) == std::string::npos) continue;
+            obj.push_back(Pair(strOutpoint, strFull));
+        } else if (strMode == "info") {
+            std::ostringstream streamInfo;
+            streamInfo << std::setw(18) <<
+                          mn.GetStatus() << " " <<
+                          mn.nProtocolVersion << " " <<
+                          CBitcoinAddress(mn.pubKeyMerchantnode.GetID()).ToString() << " " <<
+                          (int64_t)mn.lastPing.sigTime << " " << std::setw(8) <<
+                          (int64_t)(mn.lastPing.sigTime - mn.sigTime) << " " <<
+                          SafeIntVersionToString(mn.lastPing.nSentinelVersion) << " "  <<
+                          (mn.lastPing.fSentinelIsCurrent ? "current" : "expired") << " " <<
+                          mn.addr.ToString();
+            std::string strInfo = streamInfo.str();
+            if (strFilter !="" && strInfo.find(strFilter) == std::string::npos &&
+                    strOutpoint.find(strFilter) == std::string::npos) continue;
+            obj.push_back(Pair(strOutpoint, strInfo));
+        } else if (strMode == "lastseen") {
+            if (strFilter !="" && strOutpoint.find(strFilter) == std::string::npos) continue;
+            obj.push_back(Pair(strOutpoint, (int64_t)mn.lastPing.sigTime));
+        } else if (strMode == "payee") {
+            CBitcoinAddress address(mn.pubKeyMerchantnode.GetID());
+            std::string strPayee = address.ToString();
+            if (strFilter !="" && strPayee.find(strFilter) == std::string::npos &&
+                    strOutpoint.find(strFilter) == std::string::npos) continue;
+            obj.push_back(Pair(strOutpoint, strPayee));
+        } else if (strMode == "protocol") {
+            if (strFilter !="" && strFilter != strprintf("%d", mn.nProtocolVersion) &&
+                    strOutpoint.find(strFilter) == std::string::npos) continue;
+            obj.push_back(Pair(strOutpoint, (int64_t)mn.nProtocolVersion));
+        } else if (strMode == "pubkey") {
+            if (strFilter !="" && strOutpoint.find(strFilter) == std::string::npos) continue;
+            obj.push_back(Pair(strOutpoint, HexStr(mn.pubKeyMerchantnode)));
+        } else if (strMode == "status") {
+            std::string strStatus = mn.GetStatus();
+            if (strFilter !="" && strStatus.find(strFilter) == std::string::npos &&
+                    strOutpoint.find(strFilter) == std::string::npos) continue;
+            obj.push_back(Pair(strOutpoint, strStatus));
+        }
+    }
+
+    return obj;
+}
+
 
 UniValue merchantnode(const UniValue& params, bool fHelp)
 {
@@ -79,7 +162,7 @@ UniValue merchantnode(const UniValue& params, bool fHelp)
                 strCommand != "start-alias" && strCommand != "start-all" && strCommand != "start-missing" &&
                 strCommand != "start-disabled" && strCommand != "outputs" &&
             #endif // ENABLE_WALLET
-                strCommand != "list" && strCommand != "list-conf" && strCommand != "count" &&
+                strCommand != "list" && strCommand != "list-conf" && strCommand != "list-mine" && strCommand != "count" &&
                 strCommand != "debug" && strCommand != "current" && strCommand != "winner" && strCommand != "winners" && strCommand != "genkey" &&
                 strCommand != "connect" && strCommand != "status"))
         throw std::runtime_error(
@@ -99,6 +182,7 @@ UniValue merchantnode(const UniValue& params, bool fHelp)
                 "  status       - Print merchantnode status information\n"
                 "  list         - Print list of all known merchantnodes (see merchantnodelist for more info)\n"
                 "  list-conf    - Print merchantnode.conf in JSON format\n"
+                "  list-mine    - Print own nodes"
                 "  winner       - Print info on next merchantnode winner to vote for\n"
                 "  winners      - Print list of merchantnode winners\n"
                 );
@@ -111,6 +195,26 @@ UniValue merchantnode(const UniValue& params, bool fHelp)
             newParams.push_back(params[i]);
         }
         return merchantnodelist(newParams, fHelp);
+    }
+
+    if(strCommand == "list-mine")
+    {
+        UniValue newParams(UniValue::VARR);
+        // forward params but skip "list-mine"
+        for (unsigned int i = 1; i < params.size(); i++) {
+            newParams.push_back(params[i]);
+        }
+
+        std::set<CService> myMerchantNodesIps;
+        for(auto &&mne : merchantnodeConfig.getEntries())
+        {
+            CService service;
+            Lookup(mne.getIp().c_str(), service, 0, false);
+
+            myMerchantNodesIps.insert(service);
+        }
+
+        return  ListOfMerchantNodes(newParams, myMerchantNodesIps, true);
     }
 
     if (strCommand == "list-conf")
@@ -299,72 +403,8 @@ UniValue merchantnodelist(const UniValue& params, bool fHelp)
         }
     }
 
-    UniValue obj(UniValue::VOBJ);
-    auto mapMerchantnodes = merchantnodeman.GetFullMerchantnodeMap();
-    for (auto& mnpair : mapMerchantnodes) {
-        CMerchantnode mn = mnpair.second;
-        std::string strOutpoint = HexStr(mnpair.first.Raw());
-        if (strMode == "activeseconds") {
-            if (strFilter !="" && strOutpoint.find(strFilter) == std::string::npos) continue;
-            obj.push_back(Pair(strOutpoint, (int64_t)(mn.lastPing.sigTime - mn.sigTime)));
-        } else if (strMode == "addr") {
-            std::string strAddress = mn.addr.ToString();
-            if (strFilter !="" && strAddress.find(strFilter) == std::string::npos &&
-                    strOutpoint.find(strFilter) == std::string::npos) continue;
-            obj.push_back(Pair(strOutpoint, strAddress));
-        } else if (strMode == "full") {
-            std::ostringstream streamFull;
-            streamFull << std::setw(18) <<
-                          mn.GetStatus() << " " <<
-                          mn.nProtocolVersion << " " <<
-                          CBitcoinAddress(mn.pubKeyMerchantnode.GetID()).ToString() << " " <<
-                          mn.hashTPoSContractTx.ToString() << " " <<
-                          (int64_t)mn.lastPing.sigTime << " " << std::setw(8) <<
-                          (int64_t)(mn.lastPing.sigTime - mn.sigTime) << " " << std::setw(10) <<
-                          mn.addr.ToString();
-            std::string strFull = streamFull.str();
-            if (strFilter !="" && strFull.find(strFilter) == std::string::npos &&
-                    strOutpoint.find(strFilter) == std::string::npos) continue;
-            obj.push_back(Pair(strOutpoint, strFull));
-        } else if (strMode == "info") {
-            std::ostringstream streamInfo;
-            streamInfo << std::setw(18) <<
-                          mn.GetStatus() << " " <<
-                          mn.nProtocolVersion << " " <<
-                          CBitcoinAddress(mn.pubKeyMerchantnode.GetID()).ToString() << " " <<
-                          (int64_t)mn.lastPing.sigTime << " " << std::setw(8) <<
-                          (int64_t)(mn.lastPing.sigTime - mn.sigTime) << " " <<
-                          SafeIntVersionToString(mn.lastPing.nSentinelVersion) << " "  <<
-                          (mn.lastPing.fSentinelIsCurrent ? "current" : "expired") << " " <<
-                          mn.addr.ToString();
-            std::string strInfo = streamInfo.str();
-            if (strFilter !="" && strInfo.find(strFilter) == std::string::npos &&
-                    strOutpoint.find(strFilter) == std::string::npos) continue;
-            obj.push_back(Pair(strOutpoint, strInfo));
-        } else if (strMode == "lastseen") {
-            if (strFilter !="" && strOutpoint.find(strFilter) == std::string::npos) continue;
-            obj.push_back(Pair(strOutpoint, (int64_t)mn.lastPing.sigTime));
-        } else if (strMode == "payee") {
-            CBitcoinAddress address(mn.pubKeyMerchantnode.GetID());
-            std::string strPayee = address.ToString();
-            if (strFilter !="" && strPayee.find(strFilter) == std::string::npos &&
-                    strOutpoint.find(strFilter) == std::string::npos) continue;
-            obj.push_back(Pair(strOutpoint, strPayee));
-        } else if (strMode == "protocol") {
-            if (strFilter !="" && strFilter != strprintf("%d", mn.nProtocolVersion) &&
-                    strOutpoint.find(strFilter) == std::string::npos) continue;
-            obj.push_back(Pair(strOutpoint, (int64_t)mn.nProtocolVersion));
-        } else if (strMode == "pubkey") {
-            if (strFilter !="" && strOutpoint.find(strFilter) == std::string::npos) continue;
-            obj.push_back(Pair(strOutpoint, HexStr(mn.pubKeyMerchantnode)));
-        } else if (strMode == "status") {
-            std::string strStatus = mn.GetStatus();
-            if (strFilter !="" && strStatus.find(strFilter) == std::string::npos &&
-                    strOutpoint.find(strFilter) == std::string::npos) continue;
-            obj.push_back(Pair(strOutpoint, strStatus));
-        }
-    }
-    return obj;
+    std::set<CService> myMerchantNodesIps;
+    return  ListOfMerchantNodes(params, myMerchantNodesIps, false);
 }
 
 bool DecodeHexVecMnb(std::vector<CMerchantnodeBroadcast>& vecMnb, std::string strHexMnb) {
@@ -437,6 +477,8 @@ UniValue tposcontract(const UniValue& params, bool fHelp)
             object.push_back(Pair("tposAddress", contract.tposAddress.ToString()));
             object.push_back(Pair("merchantAddress", contract.merchantAddress.ToString()));
             object.push_back(Pair("commission", 100 - contract.stakePercentage)); // show merchant commission
+            if(contract.vchSignature.empty())
+                object.push_back(Pair("deprecated", true));
 
             return object;
         };

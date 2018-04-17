@@ -36,14 +36,14 @@ Instructions: Homebrew
 
 NOTE: Building with Qt4 is still supported, however, doing so could result in a broken UI. Therefore, building with Qt5 is recommended. Be aware that Qt5 5.7+ requires C++11 compiler support.
 
-### Building Dash Core
+### Building XSN Core
 
 1. Clone the GitHub tree to get the source code and go into the directory.
 
         git clone https://github.com/xsnpay/xsn.git
         cd xsn
 
-2.  Build Dash Core:
+2.  Build XSN Core:
     This will configure and build the headless xsn binaries as well as the gui (if Qt is found).
     You can disable the gui build by passing `--without-gui` to configure.
 
@@ -79,9 +79,9 @@ Creating a release build
 ------------------------
 You can ignore this section if you are building `xsnd` for your own use.
 
-xsnd/xsn-cli binaries are not included in the Dash-Qt.app bundle.
+xsnd/xsn-cli binaries are not included in the XSN-Qt.app bundle.
 
-If you are building `xsnd` or `Dash Core` for others, your build machine should be set up
+If you are building `xsnd` or `XSN Core` for others, your build machine should be set up
 as follows for maximum compatibility:
 
 All dependencies should be compiled with these flags:
@@ -90,7 +90,7 @@ All dependencies should be compiled with these flags:
  -arch x86_64
  -isysroot $(xcode-select --print-path)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk
 
-Once dependencies are compiled, see [doc/release-process.md](release-process.md) for how the Dash Core
+Once dependencies are compiled, see [doc/release-process.md](release-process.md) for how the XSN Core
 bundle is packaged and signed to create the .dmg disk image that is distributed.
 
 Running
@@ -102,14 +102,14 @@ directory. We have to first create the RPC configuration file, though.
 Run `./xsnd` to get the filename where it should be put, or just try these
 commands:
 
-    echo -e "rpcuser=xsnrpc\nrpcpassword=$(xxd -l 16 -p /dev/urandom)" > "/Users/${USER}/Library/Application Support/DashCore/xsn.conf"
-    chmod 600 "/Users/${USER}/Library/Application Support/DashCore/xsn.conf"
+    echo -e "rpcuser=xsnrpc\nrpcpassword=$(xxd -l 16 -p /dev/urandom)" > "/Users/${USER}/Library/Application Support/XSNCore/xsn.conf"
+    chmod 600 "/Users/${USER}/Library/Application Support/XSNCore/xsn.conf"
 
 The next time you run it, it will start downloading the blockchain, but it won't
 output anything while it's doing this. This process may take several hours;
 you can monitor its process by looking at the debug.log file, like this:
 
-    tail -f $HOME/Library/Application\ Support/DashCore/debug.log
+    tail -f $HOME/Library/Application\ Support/XSNCore/debug.log
 
 Other commands:
 -------

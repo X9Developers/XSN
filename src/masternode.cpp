@@ -243,6 +243,11 @@ void CMasternode::Check(bool fForce)
     }
 }
 
+bool CMasternode::IsEnabled() const
+{
+    return nActiveState == MASTERNODE_ENABLED || IsWatchdogExpired();
+}
+
 bool CMasternode::IsInputAssociatedWithPubkey() const
 {
     CScript payee;

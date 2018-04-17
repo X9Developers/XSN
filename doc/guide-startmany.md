@@ -106,7 +106,7 @@ You can confirm that remote server is on the correct block by issuing
 
 ```xsn-cli getinfo```
 
-and comparing with the official explorer at https://explorer.xsn.org/chain/Dash
+and comparing with the official explorer at https://explorer.xsn.org/chain/XSN
 
 ### Local
 

@@ -32,10 +32,10 @@ Package: xsnd
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: peer-to-peer network based digital currency - daemon
- Dash is an experimental new digital currency that enables anonymous, instant
- payments to anyone, anywhere in the world. Dash uses peer-to-peer
+ XSN is an experimental new digital currency that enables anonymous, instant
+ payments to anyone, anywhere in the world. XSN uses peer-to-peer
  technology to operate with no central authority: managing transactions
- and issuing money are carried out collectively by the network. Dash Core
+ and issuing money are carried out collectively by the network. XSN Core
  is the name of the open source software which enables the use of this currency.
  .
  This package provides the daemon, xsnd, and the CLI tool
@@ -45,22 +45,22 @@ Package: xsn-qt
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: peer-to-peer network based digital currency - Qt GUI
- Dash is an experimental new digital currency that enables anonymous, instant
- payments to anyone, anywhere in the world. Dash uses peer-to-peer
+ XSN is an experimental new digital currency that enables anonymous, instant
+ payments to anyone, anywhere in the world. XSN uses peer-to-peer
  technology to operate with no central authority: managing transactions
- and issuing money are carried out collectively by the network. Dash Core
+ and issuing money are carried out collectively by the network. XSN Core
  is the name of the open source software which enables the use of this currency.
  .
- This package provides XSN-Qt, a GUI for Dash based on Qt.
+ This package provides XSN-Qt, a GUI for XSN based on Qt.
 
 Package: xsn-tx
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: peer-to-peer digital currency - standalone transaction tool
- Dash is an experimental new digital currency that enables anonymous, instant
- payments to anyone, anywhere in the world. Dash uses peer-to-peer
+ XSN is an experimental new digital currency that enables anonymous, instant
+ payments to anyone, anywhere in the world. XSN uses peer-to-peer
  technology to operate with no central authority: managing transactions
- and issuing money are carried out collectively by the network. Dash Core
+ and issuing money are carried out collectively by the network. XSN Core
  is the name of the open source software which enables the use of this currency.
  .
  This package provides xsn-tx, a command-line transaction creation

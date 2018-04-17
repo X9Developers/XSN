@@ -37,7 +37,7 @@ protected:
 private Q_SLOTS:
     void onStakeClicked();
     void onClearClicked();
-    void onRedeemClicked();
+    void onCancelClicked();
     void onThemeChanged();
     void onShowRequestClicked();
 
