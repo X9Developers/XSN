@@ -863,7 +863,6 @@ void CWallet::AddToSpends(const COutPoint& outpoint, const uint256& wtxid)
     SyncMetaData(range);
 }
 
-
 void CWallet::AddToSpends(const uint256& wtxid)
 {
     assert(mapWallet.count(wtxid));
@@ -1412,6 +1411,9 @@ void CWallet::SyncTransaction(const CTransaction& tx, const CBlock* pblock)
     {
         if (mapWallet.count(txin.prevout.hash))
             mapWallet[txin.prevout.hash].MarkDirty();
+
+        if(mapWallet.count(txin.prevout.hash))
+            RemoveTPoSContract(txin.prevout.hash);
     }
 
     fAnonymizableTallyCached = false;

@@ -100,7 +100,7 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "signrawtransaction", 1 },
     { "signrawtransaction", 2 },
     { "sendrawtransaction", 1 },
-    { "sendrawtransaction", 2 },    
+    { "sendrawtransaction", 2 },
     { "fundrawtransaction", 1 },
     { "gettxout", 1 },
     { "gettxout", 2 },
@@ -129,6 +129,7 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "voteraw", 1 },
     { "voteraw", 5 },
     { "getblockhashes", 0 },
+    { "setstakesplitthreshold", 0},
     { "getblockhashes", 1 },
     { "getspentinfo", 0},
     { "getaddresstxids", 0},
@@ -154,7 +155,7 @@ public:
 CRPCConvertTable::CRPCConvertTable()
 {
     const unsigned int n_elem =
-        (sizeof(vRPCConvertParams) / sizeof(vRPCConvertParams[0]));
+            (sizeof(vRPCConvertParams) / sizeof(vRPCConvertParams[0]));
 
     for (unsigned int i = 0; i < n_elem; i++) {
         members.insert(std::make_pair(vRPCConvertParams[i].methodName,
@@ -171,7 +172,7 @@ UniValue ParseNonRFCJSONValue(const std::string& strVal)
 {
     UniValue jVal;
     if (!jVal.read(std::string("[")+strVal+std::string("]")) ||
-        !jVal.isArray() || jVal.size()!=1)
+            !jVal.isArray() || jVal.size()!=1)
         throw runtime_error(string("Error parsing JSON:")+strVal);
     return jVal[0];
 }
