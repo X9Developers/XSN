@@ -674,6 +674,8 @@ private:
                                const CScript &kernelScript,
                                const COutPoint &stakePrevout, CAmount blockReward) const;
 
+    bool IsTPoSContractSpent(COutPoint outpoint) const;
+
 public:
     /*
      * Main wallet lock.

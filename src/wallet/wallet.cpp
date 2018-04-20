@@ -354,6 +354,22 @@ void CWallet::FillCoinStakePayments(CMutableTransaction &transaction,
     }
 }
 
+bool CWallet::IsTPoSContractSpent(COutPoint outpoint) const
+{
+    TPoSContract contract;
+    for(const auto &container : {tposOwnerContracts, tposMerchantContracts})
+    {
+        auto it = container.find(outpoint.hash);
+        if(it != std::end(container))
+        {
+            contract = it->second;
+            break;
+        }
+    }
+
+    return contract.IsValid() && TPoSUtils::GetContractCollateralOutpoint(contract) == outpoint;
+}
+
 bool CWallet::GetPubKey(const CKeyID &address, CPubKey& vchPubKeyOut) const
 {
     LOCK(cs_wallet);
@@ -1412,7 +1428,7 @@ void CWallet::SyncTransaction(const CTransaction& tx, const CBlock* pblock)
         if (mapWallet.count(txin.prevout.hash))
             mapWallet[txin.prevout.hash].MarkDirty();
 
-        if(mapWallet.count(txin.prevout.hash))
+        if(mapWallet.count(txin.prevout.hash) && IsTPoSContractSpent(txin.prevout))
             RemoveTPoSContract(txin.prevout.hash);
     }
 
@@ -3937,7 +3953,7 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
     //        return false;
 
     // presstab HyperStake - Initialize as static and don't update the set on every run of CreateCoinStake() in order to lighten resource use
-    StakeCoinsSet setStakeCoins;
+    static StakeCoinsSet setStakeCoins;
     static int nLastStakeSetUpdate = 0;
 
     bool fIsTPoS = tposContract.IsValid();
@@ -3945,10 +3961,7 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
     if (GetTime() - nLastStakeSetUpdate > nStakeSetUpdateTime) {
         setStakeCoins.clear();
 
-
         CScript scriptPubKey;
-
-
         if(fIsTPoS)
         {
             scriptPubKey = GetScriptForDestination(tposContract.tposAddress.Get());
