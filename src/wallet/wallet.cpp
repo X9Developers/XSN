@@ -3953,7 +3953,7 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
     //        return false;
 
     // presstab HyperStake - Initialize as static and don't update the set on every run of CreateCoinStake() in order to lighten resource use
-    StakeCoinsSet setStakeCoins;
+    static StakeCoinsSet setStakeCoins;
     static int nLastStakeSetUpdate = 0;
 
     bool fIsTPoS = tposContract.IsValid();
@@ -3961,10 +3961,7 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
     if (GetTime() - nLastStakeSetUpdate > nStakeSetUpdateTime) {
         setStakeCoins.clear();
 
-
         CScript scriptPubKey;
-
-
         if(fIsTPoS)
         {
             scriptPubKey = GetScriptForDestination(tposContract.tposAddress.Get());
