@@ -60,7 +60,7 @@ TestingSetup::TestingSetup(const std::string& chainName) : BasicTestingSetup(cha
         bitdb.MakeMock();
 #endif
         ClearDatadirCache();
-        fPrintToConsole = true;
+//        fPrintToConsole = true;
         pathTemp = GetTempPath() / strprintf("test_xsn_%lu_%i", (unsigned long)GetTime(), (int)(GetRand(100000)));
         boost::filesystem::create_directories(pathTemp);
         mapArgs["-datadir"] = pathTemp.string();
@@ -124,7 +124,7 @@ CBlock
 TestChain100Setup::CreateAndProcessBlock(const std::vector<CMutableTransaction>& txns, const CScript& scriptPubKey)
 {
     const CChainParams& chainparams = Params();
-    CBlockTemplate *pblocktemplate = CreateNewBlock(nullptr, chainparams, scriptPubKey, false, {});
+    std::unique_ptr<CBlockTemplate> pblocktemplate = CreateNewBlock(nullptr, chainparams, scriptPubKey, false, {});
     CBlock& block = pblocktemplate->block;
 
     // Replace mempool-selected txns with just coinbase plus passed-in txns:
@@ -140,7 +140,6 @@ TestChain100Setup::CreateAndProcessBlock(const std::vector<CMutableTransaction>&
     ProcessNewBlock(chainparams, &block, true, NULL, NULL);
 
     CBlock result = block;
-    delete pblocktemplate;
     return result;
 }
 

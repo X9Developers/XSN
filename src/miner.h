@@ -9,6 +9,7 @@
 #include "primitives/block.h"
 
 #include <stdint.h>
+#include <memory>
 
 class CBlockIndex;
 class CChainParams;
@@ -37,10 +38,10 @@ struct CBlockTemplate
 void GenerateBitcoins(bool fGenerate, int nThreads, const CChainParams& chainparams, CConnman& connman);
 void ThreadStakeMinter(const CChainParams& chainparams, CConnman& connman, CWallet *pwallet);
 /** Generate a new block, without valid proof-of-work */
-CBlockTemplate* CreateNewBlock(CWallet *wallet, const CChainParams& chainparams,
-                               const CScript& scriptPubKeyIn,
-                               bool fProofOfStake,
-                               const TPoSContract &tposContract);
+std::unique_ptr<CBlockTemplate> CreateNewBlock(CWallet *wallet, const CChainParams& chainparams,
+                                               const CScript& scriptPubKeyIn,
+                                               bool fProofOfStake,
+                                               const TPoSContract &tposContract);
 /** Modify the extranonce in a block */
 void IncrementExtraNonce(CBlock* pblock, const CBlockIndex* pindexPrev, unsigned int& nExtraNonce);
 int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev);

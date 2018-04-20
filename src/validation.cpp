@@ -309,6 +309,7 @@ static std::pair<int, int64_t> CalculateSequenceLocks(const CTransaction &tx, in
             // block prior.
             nMinTime = std::max(nMinTime, nCoinTime + (int64_t)((txin.nSequence & CTxIn::SEQUENCE_LOCKTIME_MASK) << CTxIn::SEQUENCE_LOCKTIME_GRANULARITY) - 1);
         } else {
+            std::cout << "BLABLA: " << nCoinHeight << " " << nMinHeight << std::endl;
             nMinHeight = std::max(nMinHeight, nCoinHeight + (int)(txin.nSequence & CTxIn::SEQUENCE_LOCKTIME_MASK) - 1);
         }
     }
@@ -390,6 +391,7 @@ bool CheckSequenceLocks(const CTransaction &tx, int flags, LockPoints* lp, bool 
             }
         }
         lockPair = CalculateSequenceLocks(tx, flags, &prevheights, index);
+        std::cout << lockPair.first << " " << lockPair.second << " " << index.pprev->GetMedianTimePast() << std::endl;
         if (lp) {
             lp->height = lockPair.first;
             lp->time = lockPair.second;
