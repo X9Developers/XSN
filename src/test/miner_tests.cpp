@@ -29,34 +29,25 @@ struct {
     unsigned char extranonce;
     unsigned int nonce;
 } blockinfo[] = {
-    {0, 0x009c5477}, {0, 0x00a94582}, {0, 0x00af3d7f}, {0, 0x00d0b721},
-    {0, 0x00d53e10}, {0, 0x00f52f0f}, {0, 0x00fb5876}, {0, 0x0117fb12},
-    {0, 0x011f930b}, {0, 0x013365d2}, {0, 0x0151737e}, {0, 0x0152cdd0},
-    {0, 0x01758d20}, {0, 0x0178d509}, {0, 0x0192103c}, {0, 0x01a3f1b8},
-    {0, 0x01abc9c7}, {0, 0x01d2f50c}, {0, 0x01eebad1}, {0, 0x01ef3419},
-    {0, 0x01f3f154}, {0, 0x01fa6245}, {0, 0x0224e780}, {0, 0x02281625},
-    {0, 0x023a4d10}, {0, 0x0251d3cf}, {0, 0x02555277}, {0, 0x02648a41},
-    {0, 0x0280795e}, {0, 0x02a3a585}, {0, 0x02ade34a}, {0, 0x02b02b02},
-    {0, 0x02c9dc32}, {0, 0x02da9867}, {0, 0x02e4126e}, {0, 0x02e738c7},
-    {0, 0x02f5c6a9}, {0, 0x0307bb0f}, {0, 0x0328ea58}, {0, 0x034fe819},
-    {0, 0x036c6fcb}, {0, 0x039b8e11}, {0, 0x039fec90}, {0, 0x03a268ff},
-    {0, 0x03d37583}, {0, 0x03d6a9a7}, {0, 0x03e7a013}, {0, 0x03f01ebe},
-    {0, 0x0437104d}, {0, 0x043d0af7}, {0, 0x043d824d}, {0, 0x043f50fc},
-    {0, 0x044def8c}, {0, 0x0452309a}, {0, 0x04538bd3}, {0, 0x0459286b},
-    {0, 0x045bc734}, {0, 0x045c878a}, {0, 0x0485d3ba}, {0, 0x048a64e5},
-    {0, 0x048d6ae1}, {0, 0x048dcfec}, {0, 0x049d2c79}, {0, 0x04ade791},
-    {0, 0x04b75856}, {0, 0x04c1f89e}, {0, 0x04c2f731}, {0, 0x04ca0376},
-    {0, 0x04ca102a}, {0, 0x04cbdfe5}, {0, 0x04cbe35a}, {0, 0x04ccfa95},
-    {0, 0x04dcd6e4}, {0, 0x05066d8b}, {0, 0x05150274}, {0, 0x051dcfa0},
-    {0, 0x052a4c40}, {0, 0x05310c4e}, {0, 0x05452f69}, {0, 0x05517592},
-    {0, 0x05543eb8}, {0, 0x05549dc7}, {0, 0x05732695}, {0, 0x057b00d3},
-    {0, 0x0584760d}, {0, 0x059ca419}, {0, 0x05b23b58}, {0, 0x05c69745},
-    {0, 0x05e31a12}, {0, 0x05e932d5}, {0, 0x05ef8400}, {0, 0x05f0bdf6},
-    {0, 0x05f93997}, {0, 0x05ff2978}, {0, 0x06030233}, {0, 0x0627d615},
-    {0, 0x0644a441}, {0, 0x06518661}, {0, 0x06805ef2}, {0, 0x068c43dd},
-    {0, 0x069cca16}, {0, 0x06acbf10}, {0, 0x06c2d607}, {0, 0x06d9ea08},
-    {0, 0x0700d639}, {0, 0x07083d86}, {0, 0x071cc39d}, {0, 0x072c3cb8},
-    {0, 0x07665a0f}, {0, 0x07741214},
+    {0, 0x0002b9d1}, {0, 0x003bb189}, {0, 0x0057fce4}, {0, 0x005e9636},
+    {0, 0x006eaf2d}, {0, 0x009c1a16}, {0, 0x00ab681b}, {0, 0x00bc00b0},
+    {0, 0x00bcdc6b}, {0, 0x00dc4931}, {0, 0x00dd6f22}, {0, 0x00f09490},
+    {0, 0x00f25bf7}, {0, 0x00f38d7a}, {0, 0x00f7460a}, {0, 0x00fe00bf},
+    {0, 0x00ffdecd}, {0, 0x0115f733}, {0, 0x011fa7c2}, {0, 0x01422b35},
+    {0, 0x015e5c1e}, {0, 0x016b6b0d}, {0, 0x017520b4}, {0, 0x01b1628a},
+    {0, 0x0002b9d1}, {0, 0x003bb189}, {0, 0x0057fce4}, {0, 0x005e9636},
+    {0, 0x006eaf2d}, {0, 0x009c1a16}, {0, 0x00ab681b}, {0, 0x00bc00b0},
+    {0, 0x00bcdc6b}, {0, 0x00dc4931}, {0, 0x00dd6f22}, {0, 0x00f09490},
+    {0, 0x00f25bf7}, {0, 0x00f38d7a}, {0, 0x00f7460a}, {0, 0x00fe00bf},
+    {0, 0x00ffdecd}, {0, 0x0115f733}, {0, 0x011fa7c2}, {0, 0x01422b35},
+    {0, 0x015e5c1e}, {0, 0x016b6b0d}, {0, 0x017520b4}, {0, 0x01b1628a},
+    {0, 0x0002b9d1}, {0, 0x003bb189}, {0, 0x0057fce4}, {0, 0x005e9636},
+    {0, 0x006eaf2d}, {0, 0x009c1a16}, {0, 0x00ab681b}, {0, 0x00bc00b0},
+    {0, 0x00bcdc6b}, {0, 0x00dc4931}, {0, 0x00dd6f22}, {0, 0x00f09490},
+    {0, 0x00f25bf7}, {0, 0x00f38d7a}, {0, 0x00f7460a}, {0, 0x00fe00bf},
+    {0, 0x00ffdecd}, {0, 0x0115f733}, {0, 0x011fa7c2}, {0, 0x01422b35},
+    {0, 0x015e5c1e}, {0, 0x016b6b0d}, {0, 0x017520b4}, {0, 0x01a0e1df},
+//    {0, 0x01b2e856}, {0, 0x01e815fe}, {0, 0x0207df9e}, {0, 0x02207521},
 };
 
 CBlockIndex CreateBlockIndex(int nHeight)
@@ -103,6 +94,7 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     for (unsigned int i = 0; i < sizeof(blockinfo)/sizeof(*blockinfo); ++i)
     {
         CBlock *pblock = &pblocktemplate->block; // pointer for convenience
+        pblock->nBits = GetNextWorkRequired(chainActive.Tip(), pblock, chainparams.GetConsensus());
         pblock->nVersion = 1;
         pblock->nTime = chainActive.Tip()->GetMedianTimePast()+1;
         CMutableTransaction txCoinbase(pblock->vtx[0]);
@@ -122,6 +114,8 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
         pblock->hashPrevBlock = pblock->GetHash();
     }
     delete pblocktemplate;
+
+    std::cout << std::endl;
 
     // Just to make sure we can still make simple blocks
     BOOST_CHECK(pblocktemplate = CreateNewBlock(nullptr, chainparams, scriptPubKey, false, {}));
@@ -144,7 +138,15 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
         mempool.addUnchecked(hash, entry.Fee(1000000).Time(GetTime()).SpendsCoinbase(spendsCoinbase).FromTx(tx));
         tx.vin[0].prevout.hash = hash;
     }
-    BOOST_CHECK_THROW(CreateNewBlock(nullptr, chainparams, scriptPubKey, false, {}), std::runtime_error);
+
+    auto CreateBlockValidity = [&chainparams](CBlockTemplate *blockTemplate) {
+        CValidationState state;
+        if (!TestBlockValidity(state, chainparams, blockTemplate->block, chainActive.Tip(), false, false)) {
+            throw std::runtime_error(strprintf("%s: TestBlockValidity failed: %s", __func__, FormatStateMessage(state)));
+        }
+    };
+
+    BOOST_CHECK_THROW(CreateBlockValidity(CreateNewBlock(nullptr, chainparams, scriptPubKey, false, {})), std::runtime_error);
     mempool.clear();
 
     tx.vin[0].prevout.hash = txFirst[0]->GetHash();
@@ -183,10 +185,11 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     delete pblocktemplate;
     mempool.clear();
 
+
     // orphan in mempool, template creation fails
     hash = tx.GetHash();
     mempool.addUnchecked(hash, entry.Fee(1000000).Time(GetTime()).FromTx(tx));
-    BOOST_CHECK_THROW(CreateNewBlock(nullptr, chainparams, scriptPubKey, false, {}), std::runtime_error);
+    BOOST_CHECK_THROW(CreateBlockValidity(CreateNewBlock(nullptr, chainparams, scriptPubKey, false, {})), std::runtime_error);
     mempool.clear();
 
     // child with higher priority than parent
@@ -215,7 +218,7 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     hash = tx.GetHash();
     // give it a fee so it'll get mined
     mempool.addUnchecked(hash, entry.Fee(100000).Time(GetTime()).SpendsCoinbase(false).FromTx(tx));
-    BOOST_CHECK_THROW(CreateNewBlock(nullptr, chainparams, scriptPubKey, false, {}), std::runtime_error);
+    BOOST_CHECK_THROW(CreateBlockValidity(CreateNewBlock(nullptr, chainparams, scriptPubKey, false, {})), std::runtime_error);
     mempool.clear();
 
     // invalid (pre-p2sh) txn in mempool, template creation fails
@@ -232,7 +235,7 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     tx.vout[0].nValue -= 1000000;
     hash = tx.GetHash();
     mempool.addUnchecked(hash, entry.Fee(1000000).Time(GetTime()).SpendsCoinbase(false).FromTx(tx));
-    BOOST_CHECK_THROW(CreateNewBlock(nullptr, chainparams, scriptPubKey, false, {}), std::runtime_error);
+    BOOST_CHECK_THROW(CreateBlockValidity(CreateNewBlock(nullptr, chainparams, scriptPubKey, false, {})), std::runtime_error);
     mempool.clear();
 
     // double spend txn pair in mempool, template creation fails
@@ -245,7 +248,7 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     tx.vout[0].scriptPubKey = CScript() << OP_2;
     hash = tx.GetHash();
     mempool.addUnchecked(hash, entry.Fee(1000000000L).Time(GetTime()).SpendsCoinbase(true).FromTx(tx));
-    BOOST_CHECK_THROW(CreateNewBlock(nullptr, chainparams, scriptPubKey, false, {}), std::runtime_error);
+    BOOST_CHECK_THROW(CreateBlockValidity(CreateNewBlock(nullptr, chainparams, scriptPubKey, false, {})), std::runtime_error);
     mempool.clear();
 
     // subsidy changing
@@ -322,7 +325,6 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
 
     for (int i = 0; i < CBlockIndex::nMedianTimeSpan; i++)
     {
-        std::cout << chainActive.Tip() << " " << chainActive.Tip()->GetAncestor(chainActive.Tip()->nHeight - i) << std::endl;
         chainActive.Tip()->GetAncestor(chainActive.Tip()->nHeight - i)->nTime += 512; //Trick the MedianTimePast
     }
 

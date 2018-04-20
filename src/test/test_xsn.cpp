@@ -60,6 +60,7 @@ TestingSetup::TestingSetup(const std::string& chainName) : BasicTestingSetup(cha
         bitdb.MakeMock();
 #endif
         ClearDatadirCache();
+        fPrintToConsole = true;
         pathTemp = GetTempPath() / strprintf("test_xsn_%lu_%i", (unsigned long)GetTime(), (int)(GetRand(100000)));
         boost::filesystem::create_directories(pathTemp);
         mapArgs["-datadir"] = pathTemp.string();
