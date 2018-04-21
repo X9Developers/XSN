@@ -245,8 +245,6 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     BOOST_CHECK_THROW(CreateBlockValidity(CreateNewBlock(nullptr, chainparams, scriptPubKey, false, {})), std::runtime_error);
     mempool.clear();
 
-    std::cout << "NEW TESTS" << std::endl;
-
     // subsidy changing
     // int nHeight = chainActive.Height();
     // // Create an actual 209999-long block chain (without valid blocks).
