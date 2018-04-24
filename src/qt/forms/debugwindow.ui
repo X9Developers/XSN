@@ -1738,7 +1738,7 @@
         </rect>
        </property>
        <property name="text">
-        <string>Flush the mncache.dat file </string>
+        <string>-clearmncache: Flush the mncache.dat file </string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
