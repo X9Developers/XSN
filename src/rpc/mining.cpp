@@ -192,7 +192,6 @@ UniValue generate(const UniValue& params, bool fHelp)
 
 UniValue setgenerate(const UniValue& params, bool fHelp)
 {
-
     if (fHelp || params.size() < 1 || params.size() > 4)
         throw runtime_error(
                 "setgenerate generate ( genproclimit )\n"
@@ -213,6 +212,8 @@ UniValue setgenerate(const UniValue& params, bool fHelp)
                 + HelpExampleRpc("setgenerate", "true, 1")
                 );
 
+    std::string operationResponse;
+    std::string tposTxIdString;
 
     if (Params().MineBlocksOnDemand())
         throw JSONRPCError(RPC_METHOD_NOT_FOUND, "Use the generate method instead of setgenerate on this network");
@@ -239,18 +240,28 @@ UniValue setgenerate(const UniValue& params, bool fHelp)
                 if(tposTxId.IsNull())
                     throw JSONRPCError(RPC_INTERNAL_ERROR, "Parsing error, one of txids is incorrect");
 
+                tposTxIdString =  tposTxId.ToString();
+
                 SetTPoSMinningParams(true, tposTxId);
             }
         }
     }
 
-
     mapArgs["-gen"] = (fGenerate ? "1" : "0");
     mapArgs ["-genproclimit"] = itostr(nGenProcLimit);
     GenerateBitcoins(fGenerate, nGenProcLimit, Params(), *g_connman);
 
-    return UniValue(UniValue::VNUM, "Successful");
-    //return NullUniValue;
+    if(fGenerate)
+        operationResponse = std::string("Generation was turn on");
+    else
+        operationResponse = std::string("Generation was turn off ");
+
+
+    if(fGenerate && !tposTxIdString.empty())
+        operationResponse = std::string("Tpos ").append(tposTxIdString);
+
+
+    return operationResponse;
 }
 
 UniValue getmininginfo(const UniValue& params, bool fHelp)
