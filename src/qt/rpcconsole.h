@@ -93,6 +93,7 @@ public Q_SLOTS:
     void walletZaptxes2();
     void walletUpgrade();
     void walletReindex();
+    void walletClearMNCache();
     
     /** Append the message to the message widget */
     void message(int category, const QString &message, bool html = false);
