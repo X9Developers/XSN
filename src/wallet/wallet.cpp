@@ -3957,7 +3957,6 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
     static int nLastStakeSetUpdate = 0;
 
     bool fIsTPoS = tposContract.IsValid();
-
     if (GetTime() - nLastStakeSetUpdate > nStakeSetUpdateTime) {
         setStakeCoins.clear();
 

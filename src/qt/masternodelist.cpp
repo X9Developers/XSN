@@ -14,6 +14,33 @@
 
 #include <QTimer>
 #include <QMessageBox>
+#include <QTableWidgetItem>
+
+class SortableWidgetItem : public QTableWidgetItem
+{
+public:
+    SortableWidgetItem(const int64_t duration) :
+        QTableWidgetItem(QString::fromStdString((DurationToDHMS(duration))), QTableWidgetItem::UserType + 1)
+    {
+        _duration = duration;
+    }
+
+    virtual bool operator<(const QTableWidgetItem &other) const override
+    {
+        std::cout << "asdsadsa" << std::endl;
+        if(other.type() == QTableWidgetItem::UserType + 1)
+        {
+            return _duration < static_cast<const SortableWidgetItem &>(other)._duration;
+        }
+
+        return QTableWidgetItem::operator <(other);
+    }
+
+private:
+    int64_t _duration = 0;
+
+
+};
 
 int GetOffsetFromUtc()
 {
@@ -203,7 +230,8 @@ void MasternodeList::updateMyMasternodeInfo(QString strAlias, QString strAddr, c
     QTableWidgetItem *addrItem = new QTableWidgetItem(fFound ? QString::fromStdString(infoMn.addr.ToString()) : strAddr);
     QTableWidgetItem *protocolItem = new QTableWidgetItem(QString::number(fFound ? infoMn.nProtocolVersion : -1));
     QTableWidgetItem *statusItem = new QTableWidgetItem(QString::fromStdString(fFound ? CMasternode::StateToString(infoMn.nActiveState) : "MISSING"));
-    QTableWidgetItem *activeSecondsItem = new QTableWidgetItem(QString::fromStdString(DurationToDHMS(fFound ? (infoMn.nTimeLastPing - infoMn.sigTime) : 0)));
+    SortableWidgetItem *activeSecondsItem = new SortableWidgetItem(fFound ? (infoMn.nTimeLastPing - infoMn.sigTime) : 0);
+    //QTableWidgetItem *activeSecondsItem = new QTableWidgetItem(QString::fromStdString(DurationToDHMS(fFound ? (infoMn.nTimeLastPing - infoMn.sigTime) : 0)));
     QTableWidgetItem *lastSeenItem = new QTableWidgetItem(QString::fromStdString(DateTimeStrFormat("%Y-%m-%d %H:%M",
                                                                                                    fFound ? infoMn.nTimeLastPing + GetOffsetFromUtc() : 0)));
     QTableWidgetItem *pubkeyItem = new QTableWidgetItem(QString::fromStdString(fFound ? CBitcoinAddress(infoMn.pubKeyCollateralAddress.GetID()).ToString() : ""));
@@ -260,8 +288,8 @@ void MasternodeList::updateNodeList()
     // to prevent high cpu usage update only once in MASTERNODELIST_UPDATE_SECONDS seconds
     // or MASTERNODELIST_FILTER_COOLDOWN_SECONDS seconds after filter was last changed
     int64_t nSecondsToWait = fFilterUpdated
-                            ? nTimeFilterUpdated - GetTime() + MASTERNODELIST_FILTER_COOLDOWN_SECONDS
-                            : nTimeListUpdated - GetTime() + MASTERNODELIST_UPDATE_SECONDS;
+            ? nTimeFilterUpdated - GetTime() + MASTERNODELIST_FILTER_COOLDOWN_SECONDS
+            : nTimeListUpdated - GetTime() + MASTERNODELIST_UPDATE_SECONDS;
 
     if(fFilterUpdated) ui->countLabel->setText(QString::fromStdString(strprintf("Please wait... %d", nSecondsToWait)));
     if(nSecondsToWait > 0) return;
@@ -285,18 +313,18 @@ void MasternodeList::updateNodeList()
         QTableWidgetItem *addressItem = new QTableWidgetItem(QString::fromStdString(mn.addr.ToString()));
         QTableWidgetItem *protocolItem = new QTableWidgetItem(QString::number(mn.nProtocolVersion));
         QTableWidgetItem *statusItem = new QTableWidgetItem(QString::fromStdString(mn.GetStatus()));
-        QTableWidgetItem *activeSecondsItem = new QTableWidgetItem(QString::fromStdString(DurationToDHMS(mn.lastPing.sigTime - mn.sigTime)));
+        SortableWidgetItem *activeSecondsItem = new SortableWidgetItem(mn.lastPing.sigTime - mn.sigTime);
         QTableWidgetItem *lastSeenItem = new QTableWidgetItem(QString::fromStdString(DateTimeStrFormat("%Y-%m-%d %H:%M", mn.lastPing.sigTime + offsetFromUtc)));
         QTableWidgetItem *pubkeyItem = new QTableWidgetItem(QString::fromStdString(CBitcoinAddress(mn.pubKeyCollateralAddress.GetID()).ToString()));
 
         if (strCurrentFilter != "")
         {
             strToFilter =   addressItem->text() + " " +
-                            protocolItem->text() + " " +
-                            statusItem->text() + " " +
-                            activeSecondsItem->text() + " " +
-                            lastSeenItem->text() + " " +
-                            pubkeyItem->text();
+                    protocolItem->text() + " " +
+                    statusItem->text() + " " +
+                    activeSecondsItem->text() + " " +
+                    lastSeenItem->text() + " " +
+                    pubkeyItem->text();
             if (!strToFilter.contains(strCurrentFilter)) continue;
         }
 
@@ -339,9 +367,9 @@ void MasternodeList::on_startButton_clicked()
 
     // Display message box
     QMessageBox::StandardButton retval = QMessageBox::question(this, tr("Confirm masternode start"),
-        tr("Are you sure you want to start masternode %1?").arg(QString::fromStdString(strAlias)),
-        QMessageBox::Yes | QMessageBox::Cancel,
-        QMessageBox::Cancel);
+                                                               tr("Are you sure you want to start masternode %1?").arg(QString::fromStdString(strAlias)),
+                                                               QMessageBox::Yes | QMessageBox::Cancel,
+                                                               QMessageBox::Cancel);
 
     if(retval != QMessageBox::Yes) return;
 
@@ -363,9 +391,9 @@ void MasternodeList::on_startAllButton_clicked()
 {
     // Display message box
     QMessageBox::StandardButton retval = QMessageBox::question(this, tr("Confirm all masternodes start"),
-        tr("Are you sure you want to start ALL masternodes?"),
-        QMessageBox::Yes | QMessageBox::Cancel,
-        QMessageBox::Cancel);
+                                                               tr("Are you sure you want to start ALL masternodes?"),
+                                                               QMessageBox::Yes | QMessageBox::Cancel,
+                                                               QMessageBox::Cancel);
 
     if(retval != QMessageBox::Yes) return;
 
@@ -388,16 +416,16 @@ void MasternodeList::on_startMissingButton_clicked()
 
     if(!masternodeSync.IsMasternodeListSynced()) {
         QMessageBox::critical(this, tr("Command is not available right now"),
-            tr("You can't use this command until masternode list is synced"));
+                              tr("You can't use this command until masternode list is synced"));
         return;
     }
 
     // Display message box
     QMessageBox::StandardButton retval = QMessageBox::question(this,
-        tr("Confirm missing masternodes start"),
-        tr("Are you sure you want to start MISSING masternodes?"),
-        QMessageBox::Yes | QMessageBox::Cancel,
-        QMessageBox::Cancel);
+                                                               tr("Confirm missing masternodes start"),
+                                                               tr("Are you sure you want to start MISSING masternodes?"),
+                                                               QMessageBox::Yes | QMessageBox::Cancel,
+                                                               QMessageBox::Cancel);
 
     if(retval != QMessageBox::Yes) return;
 
