@@ -192,6 +192,7 @@ UniValue generate(const UniValue& params, bool fHelp)
 
 UniValue setgenerate(const UniValue& params, bool fHelp)
 {
+
     if (fHelp || params.size() < 1 || params.size() > 4)
         throw runtime_error(
                 "setgenerate generate ( genproclimit )\n"
@@ -211,6 +212,7 @@ UniValue setgenerate(const UniValue& params, bool fHelp)
                 "\nUsing json rpc\n"
                 + HelpExampleRpc("setgenerate", "true, 1")
                 );
+
 
     if (Params().MineBlocksOnDemand())
         throw JSONRPCError(RPC_METHOD_NOT_FOUND, "Use the generate method instead of setgenerate on this network");
@@ -247,7 +249,8 @@ UniValue setgenerate(const UniValue& params, bool fHelp)
     mapArgs ["-genproclimit"] = itostr(nGenProcLimit);
     GenerateBitcoins(fGenerate, nGenProcLimit, Params(), *g_connman);
 
-    return NullUniValue;
+    return UniValue(UniValue::VNUM, "Successful");
+    //return NullUniValue;
 }
 
 UniValue getmininginfo(const UniValue& params, bool fHelp)
@@ -521,15 +524,15 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
     // when enforcement is on we need information about a masternode payee or otherwise our block is going to be orphaned by the network
     CScript payee;
     if (sporkManager.IsSporkActive(SPORK_8_MASTERNODE_PAYMENT_ENFORCEMENT)
-        && !masternodeSync.IsWinnersListSynced()
-        && !mnpayments.GetBlockPayee(chainActive.Height() + 1, payee))
-            throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Xsn Core is downloading masternode winners...");
+            && !masternodeSync.IsWinnersListSynced()
+            && !mnpayments.GetBlockPayee(chainActive.Height() + 1, payee))
+        throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Xsn Core is downloading masternode winners...");
 
     // next bock is a superblock and we need governance info to correctly construct it
     if (sporkManager.IsSporkActive(SPORK_9_SUPERBLOCKS_ENABLED)
-        && !masternodeSync.IsSynced()
-        && CSuperblock::IsValidBlockHeight(chainActive.Height() + 1))
-            throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Xsn Core is syncing with network...");
+            && !masternodeSync.IsSynced()
+            && CSuperblock::IsValidBlockHeight(chainActive.Height() + 1))
+        throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Xsn Core is syncing with network...");
 
     static unsigned int nTransactionsUpdatedLast;
 
