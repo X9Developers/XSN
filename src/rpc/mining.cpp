@@ -230,6 +230,7 @@ UniValue setgenerate(const UniValue& params, bool fHelp)
         {
             if(params[2].get_str() == "false") {
                 SetTPoSMinningParams(false, uint256());
+                return std::string("Minting stopped");
             }
             else if (params.size() > 3 && params[2].get_str() == "true") {
                 uint256 tposTxId = ParseHashV(params[3], "parameter 4");
@@ -238,16 +239,16 @@ UniValue setgenerate(const UniValue& params, bool fHelp)
                     throw JSONRPCError(RPC_INTERNAL_ERROR, "Parsing error, one of txids is incorrect");
 
                 SetTPoSMinningParams(true, tposTxId);
+                return std::string("Minting started, tpos contract: ") + tposTxId.ToString();
             }
         }
     }
-
 
     mapArgs["-gen"] = (fGenerate ? "1" : "0");
     mapArgs ["-genproclimit"] = itostr(nGenProcLimit);
     GenerateBitcoins(fGenerate, nGenProcLimit, Params(), *g_connman);
 
-    return NullUniValue;
+    return fGenerate ? std::string("Mining started") : std::string("Mining stopped");
 }
 
 UniValue getmininginfo(const UniValue& params, bool fHelp)
@@ -521,15 +522,15 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
     // when enforcement is on we need information about a masternode payee or otherwise our block is going to be orphaned by the network
     CScript payee;
     if (sporkManager.IsSporkActive(SPORK_8_MASTERNODE_PAYMENT_ENFORCEMENT)
-        && !masternodeSync.IsWinnersListSynced()
-        && !mnpayments.GetBlockPayee(chainActive.Height() + 1, payee))
-            throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Xsn Core is downloading masternode winners...");
+            && !masternodeSync.IsWinnersListSynced()
+            && !mnpayments.GetBlockPayee(chainActive.Height() + 1, payee))
+        throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Xsn Core is downloading masternode winners...");
 
     // next bock is a superblock and we need governance info to correctly construct it
     if (sporkManager.IsSporkActive(SPORK_9_SUPERBLOCKS_ENABLED)
-        && !masternodeSync.IsSynced()
-        && CSuperblock::IsValidBlockHeight(chainActive.Height() + 1))
-            throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Xsn Core is syncing with network...");
+            && !masternodeSync.IsSynced()
+            && CSuperblock::IsValidBlockHeight(chainActive.Height() + 1))
+        throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Xsn Core is syncing with network...");
 
     static unsigned int nTransactionsUpdatedLast;
 
