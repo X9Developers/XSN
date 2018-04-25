@@ -93,12 +93,10 @@ int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParam
     return nNewTime - nOldTime;
 }
 
-CBlockTemplate* CreateNewBlock(CWallet *wallet, const CChainParams& chainparams, const CScript& scriptPubKeyIn, bool fProofOfStake, const TPoSContract &tposContract)
+std::unique_ptr<CBlockTemplate> CreateNewBlock(CWallet *wallet, const CChainParams& chainparams, const CScript& scriptPubKeyIn, bool fProofOfStake, const TPoSContract &tposContract)
 {
     // Create new block
     std::unique_ptr<CBlockTemplate> pblocktemplate(new CBlockTemplate());
-    if(!pblocktemplate.get())
-        return nullptr;
 
     CBlock *pblock = &pblocktemplate->block; // pointer for convenience
 
@@ -382,7 +380,7 @@ CBlockTemplate* CreateNewBlock(CWallet *wallet, const CChainParams& chainparams,
         pblocktemplate->vTxSigOps[0] = GetLegacySigOpCount(pblock->vtx[0]);
     }
 
-    return pblocktemplate.release();
+    return pblocktemplate;
 }
 
 void IncrementExtraNonce(CBlock* pblock, const CBlockIndex* pindexPrev, unsigned int& nExtraNonce)
