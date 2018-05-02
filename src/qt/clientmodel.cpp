@@ -95,14 +95,14 @@ QString ClientModel::getMasternodeCountString() const
 
 QString ClientModel::getMerchantnodeCountString() const
 {
-    // return tr("Total: %1 (PS compatible: %2 / Enabled: %3) (IPv4: %4, IPv6: %5, TOR: %6)").arg(QString::number((int)mnodeman.size()))
+    // return tr("Total: %1 (PS compatible: %2 / Enabled: %3) (IPv4: %4, IPv6: %5, TOR: %6)").arg(QString::number((int)merchantnodeman.size()))
     return tr("Total: %1 (PS compatible: %2 / Enabled: %3)")
             .arg(QString::number((int)merchantnodeman.size()))
             .arg(QString::number((int)merchantnodeman.CountEnabled(MIN_PRIVATESEND_PEER_PROTO_VERSION)))
             .arg(QString::number((int)merchantnodeman.CountEnabled()));
-            // .arg(QString::number((int)mnodeman.CountByIP(NET_IPV4)))
-            // .arg(QString::number((int)mnodeman.CountByIP(NET_IPV6)))
-    // .arg(QString::number((int)mnodeman.CountByIP(NET_TOR)));
+            // .arg(QString::number((int)merchantnodeman.CountByIP(NET_IPV4)))
+            // .arg(QString::number((int)merchantnodeman.CountByIP(NET_IPV6)))
+    // .arg(QString::number((int)merchantnodeman.CountByIP(NET_TOR)));
 }
 
 int ClientModel::getNumBlocks() const
