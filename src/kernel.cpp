@@ -489,7 +489,7 @@ bool CheckKernelScript(CScript scriptVin, CScript scriptVout)
 }
 
 // Check kernel hash target and coinstake signature
-bool CheckProofOfStake(CWallet *wallet, const CBlock &block, uint256& hashProofOfStake)
+bool CheckProofOfStake(const CBlock &block, uint256& hashProofOfStake)
 {
     const CTransaction tx = block.vtx[1];
     if (!tx.IsCoinStake())
