@@ -385,6 +385,9 @@ void RPCConsole::setClientModel(ClientModel *model)
         setMasternodeCount(model->getMasternodeCountString());
         connect(model, SIGNAL(strMasternodesChanged(QString)), this, SLOT(setMasternodeCount(QString)));
 
+        setMerchantnodeCount(model->getMerchantnodeCountString());
+        connect(model, SIGNAL(strMerchantnodesChanged(QString)), this, SLOT(setMerchantnodeCount(QString)));
+
         updateTrafficStats(model->getTotalBytesRecv(), model->getTotalBytesSent());
         connect(model, SIGNAL(bytesChanged(quint64,quint64)), this, SLOT(updateTrafficStats(quint64, quint64)));
 
@@ -716,6 +719,11 @@ void RPCConsole::setNumBlocks(int count, const QDateTime& blockDate, double nVer
 void RPCConsole::setMasternodeCount(const QString &strMasternodes)
 {
     ui->masternodeCount->setText(strMasternodes);
+}
+
+void RPCConsole::setMerchantnodeCount(const QString &strMerchantnodes)
+{
+    ui->merchantnodeCount->setText(strMerchantnodes);
 }
 
 void RPCConsole::setMempoolSize(long numberOfTxs, size_t dynUsage)

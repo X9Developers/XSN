@@ -20,6 +20,7 @@
 #include "util.h"
 
 #include "masternodeman.h"
+#include "tpos/merchantnodeman.h"
 #include "masternode-sync.h"
 #include "privatesend.h"
 
@@ -39,6 +40,7 @@ ClientModel::ClientModel(OptionsModel *optionsModel, QObject *parent) :
     optionsModel(optionsModel),
     peerTableModel(0),
     cachedMasternodeCountString(""),
+    cachedMerchantnodeCountString(""),
     banTableModel(0),
     pollTimer(0)
 {
@@ -88,7 +90,19 @@ QString ClientModel::getMasternodeCountString() const
             .arg(QString::number((int)mnodeman.CountEnabled()));
             // .arg(QString::number((int)mnodeman.CountByIP(NET_IPV4)))
             // .arg(QString::number((int)mnodeman.CountByIP(NET_IPV6)))
-            // .arg(QString::number((int)mnodeman.CountByIP(NET_TOR)));
+    // .arg(QString::number((int)mnodeman.CountByIP(NET_TOR)));
+}
+
+QString ClientModel::getMerchantnodeCountString() const
+{
+    // return tr("Total: %1 (PS compatible: %2 / Enabled: %3) (IPv4: %4, IPv6: %5, TOR: %6)").arg(QString::number((int)merchantnodeman.size()))
+    return tr("Total: %1 (PS compatible: %2 / Enabled: %3)")
+            .arg(QString::number((int)merchantnodeman.size()))
+            .arg(QString::number((int)merchantnodeman.CountEnabled(MIN_PRIVATESEND_PEER_PROTO_VERSION)))
+            .arg(QString::number((int)merchantnodeman.CountEnabled()));
+            // .arg(QString::number((int)merchantnodeman.CountByIP(NET_IPV4)))
+            // .arg(QString::number((int)merchantnodeman.CountByIP(NET_IPV6)))
+    // .arg(QString::number((int)merchantnodeman.CountByIP(NET_TOR)));
 }
 
 int ClientModel::getNumBlocks() const
@@ -179,6 +193,7 @@ void ClientModel::updateTimer()
 void ClientModel::updateMnTimer()
 {
     QString newMasternodeCountString = getMasternodeCountString();
+    QString newMerchantnodeCountString = getMerchantnodeCountString();
 
     if (cachedMasternodeCountString != newMasternodeCountString)
     {
@@ -186,6 +201,14 @@ void ClientModel::updateMnTimer()
 
         Q_EMIT strMasternodesChanged(cachedMasternodeCountString);
     }
+
+    if (cachedMerchantnodeCountString != newMerchantnodeCountString)
+    {
+        cachedMerchantnodeCountString = newMerchantnodeCountString;
+
+        Q_EMIT strMerchantnodesChanged(cachedMerchantnodeCountString);
+    }
+
 }
 
 void ClientModel::updateNumConnections(int numConnections)
