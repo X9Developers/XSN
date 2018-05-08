@@ -33,10 +33,7 @@ the XSN Core software, see https://xsncoin.io/
 <tr><td>Phase 4</td><td>149601-192800</td><td>35 XSN</td><td>90% (31.5 XSN)</td><td>10% (3.5 XSN)</td></tr>
 <tr><td>Phase 5</td><td>192801-236000</td><td>30 XSN</td><td>90% (27 XSN)</td><td>10% (3 XSN)</td></tr>
 <tr><td>Phase 6</td><td>236001-279200</td><td>25 XSN</td><td>90% (22.5 XSN)</td><td>10% (2.5 XSN)</td></tr>
-<tr><td>Phase 7</td><td>279201-322400</td><td>20 XSN</td><td>90% (18 XSN)</td><td>10% (2 XSN)</td></tr>
-<tr><td>Phase 8</td><td>322401-365600</td><td>15 XSN</td><td>90% (13.5 XSN)</td><td>10% (1.5 XSN)</td></tr>
-<tr><td>Phase 9</td><td>365601-408800</td><td>10 XSN</td><td>90% (9 XSN)</td><td>10% (1 XSN)</td></tr>
-<tr><td>Phase X</td><td>408801-Infinite</td><td>5 XSN</td><td>90% (4.5 XSN)</td><td>10% (0.5 XSN)</td></tr>
+<tr><td>Phase 7</td><td>279201-Infinite</td><td>20 XSN</td><td>90% (18 XSN)</td><td>10% (2 XSN)</td></tr>
 </table>
 
 
