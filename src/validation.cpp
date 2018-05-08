@@ -1254,12 +1254,12 @@ CAmount GetBlockSubsidy(int nPrevHeight, const Consensus::Params& consensusParam
 
     for (int i = consensusParams.nSubsidyHalvingInterval + consensusParams.nFirstBlocksEmpty; i <= nPrevHeight; i += consensusParams.nSubsidyHalvingInterval) {
         nSubsidy -= 5;
-        if(nSubsidy <= 5) {
+        if(nSubsidy <= 20) {
             break;
         }
     }
 
-    nSubsidy = std::max<CAmount>(nSubsidy, 5) * COIN;
+    nSubsidy = std::max<CAmount>(nSubsidy, 20) * COIN;
 
     CAmount nSuperblockPart = (nPrevHeight > consensusParams.nBudgetPaymentsStartBlock) ? nSubsidy / 10 : 0;
 
