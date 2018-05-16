@@ -1,0 +1,12 @@
+.
+consensus
+interfaces
+policy
+primitives
+qt
+qt/test
+rpc
+script
+test
+wallet
+wallet/test

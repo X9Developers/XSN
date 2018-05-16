@@ -7,6 +7,7 @@
 #include <coins.h>
 #include <consensus/validation.h>
 #include <core_io.h>
+#include <index/txindex.h>
 #include <init.h>
 #include <keystore.h>
 #include <validation.h>
@@ -18,7 +19,6 @@
 #include <policy/rbf.h>
 #include <primitives/transaction.h>
 #include <rpc/rawtransaction.h>
-#include <rpc/safemode.h>
 #include <rpc/server.h>
 #include <script/script.h>
 #include <script/script_error.h>
@@ -37,7 +37,7 @@
 #include <univalue.h>
 
 
-void TxToJSON(const CTransaction& tx, const uint256 hashBlock, UniValue& entry)
+static void TxToJSON(const CTransaction& tx, const uint256 hashBlock, UniValue& entry)
 {
     // Call into TxToUniv() in bitcoin-common to decode the transaction hex.
     //
@@ -47,6 +47,8 @@ void TxToJSON(const CTransaction& tx, const uint256 hashBlock, UniValue& entry)
     TxToUniv(tx, uint256(), entry, true, RPCSerializationFlags());
 
     if (!hashBlock.IsNull()) {
+        LOCK(cs_main);
+
         entry.pushKV("blockhash", hashBlock.GetHex());
         CBlockIndex* pindex = LookupBlockIndex(hashBlock);
         if (pindex) {
@@ -61,7 +63,7 @@ void TxToJSON(const CTransaction& tx, const uint256 hashBlock, UniValue& entry)
     }
 }
 
-UniValue getrawtransaction(const JSONRPCRequest& request)
+static UniValue getrawtransaction(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 3)
         throw std::runtime_error(
@@ -141,8 +143,6 @@ UniValue getrawtransaction(const JSONRPCRequest& request)
             + HelpExampleCli("getrawtransaction", "\"mytxid\" true \"myblockhash\"")
         );
 
-    LOCK(cs_main);
-
     bool in_active_chain = true;
     uint256 hash = ParseHashV(request.params[0], "parameter 1");
     CBlockIndex* blockindex = nullptr;
@@ -159,12 +159,19 @@ UniValue getrawtransaction(const JSONRPCRequest& request)
     }
 
     if (!request.params[2].isNull()) {
+        LOCK(cs_main);
+
         uint256 blockhash = ParseHashV(request.params[2], "parameter 3");
         blockindex = LookupBlockIndex(blockhash);
         if (!blockindex) {
             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Block hash not found");
         }
         in_active_chain = chainActive.Contains(blockindex);
+    }
+
+    bool f_txindex_ready = false;
+    if (g_txindex && !blockindex) {
+        f_txindex_ready = g_txindex->BlockUntilSyncedToCurrentChain();
     }
 
     CTransactionRef tx;
@@ -176,10 +183,12 @@ UniValue getrawtransaction(const JSONRPCRequest& request)
                 throw JSONRPCError(RPC_MISC_ERROR, "Block not available");
             }
             errmsg = "No such transaction found in the provided block";
+        } else if (!g_txindex) {
+            errmsg = "No such mempool transaction. Use -txindex to enable blockchain transaction queries";
+        } else if (!f_txindex_ready) {
+            errmsg = "No such mempool transaction. Blockchain transactions are still in the process of being indexed";
         } else {
-            errmsg = fTxIndex
-              ? "No such mempool or blockchain transaction"
-              : "No such mempool transaction. Use -txindex to enable blockchain transaction queries";
+            errmsg = "No such mempool or blockchain transaction";
         }
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, errmsg + ". Use gettransaction for wallet transactions.");
     }
@@ -194,7 +203,7 @@ UniValue getrawtransaction(const JSONRPCRequest& request)
     return result;
 }
 
-UniValue gettxoutproof(const JSONRPCRequest& request)
+static UniValue gettxoutproof(const JSONRPCRequest& request)
 {
     if (request.fHelp || (request.params.size() != 1 && request.params.size() != 2))
         throw std::runtime_error(
@@ -229,19 +238,18 @@ UniValue gettxoutproof(const JSONRPCRequest& request)
        oneTxid = hash;
     }
 
-    LOCK(cs_main);
-
     CBlockIndex* pblockindex = nullptr;
-
     uint256 hashBlock;
-    if (!request.params[1].isNull())
-    {
+    if (!request.params[1].isNull()) {
+        LOCK(cs_main);
         hashBlock = uint256S(request.params[1].get_str());
         pblockindex = LookupBlockIndex(hashBlock);
         if (!pblockindex) {
             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Block not found");
         }
     } else {
+        LOCK(cs_main);
+
         // Loop through txids and try to find which block they're in. Exit loop once a block is found.
         for (const auto& tx : setTxids) {
             const Coin& coin = AccessByTxid(*pcoinsTip, tx);
@@ -251,6 +259,14 @@ UniValue gettxoutproof(const JSONRPCRequest& request)
             }
         }
     }
+
+
+    // Allow txindex to catch up if we need to query it and before we acquire cs_main.
+    if (g_txindex && !pblockindex) {
+        g_txindex->BlockUntilSyncedToCurrentChain();
+    }
+
+    LOCK(cs_main);
 
     if (pblockindex == nullptr)
     {
@@ -281,7 +297,7 @@ UniValue gettxoutproof(const JSONRPCRequest& request)
     return strHex;
 }
 
-UniValue verifytxoutproof(const JSONRPCRequest& request)
+static UniValue verifytxoutproof(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
         throw std::runtime_error(
@@ -317,7 +333,7 @@ UniValue verifytxoutproof(const JSONRPCRequest& request)
     return res;
 }
 
-UniValue createrawtransaction(const JSONRPCRequest& request)
+static UniValue createrawtransaction(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 4) {
         throw std::runtime_error(
@@ -477,7 +493,7 @@ UniValue createrawtransaction(const JSONRPCRequest& request)
     return EncodeHexTx(rawTx);
 }
 
-UniValue decoderawtransaction(const JSONRPCRequest& request)
+static UniValue decoderawtransaction(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
         throw std::runtime_error(
@@ -553,7 +569,7 @@ UniValue decoderawtransaction(const JSONRPCRequest& request)
     return result;
 }
 
-UniValue decodescript(const JSONRPCRequest& request)
+static UniValue decodescript(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
         throw std::runtime_error(
@@ -597,6 +613,38 @@ UniValue decodescript(const JSONRPCRequest& request)
         // P2SH cannot be wrapped in a P2SH. If this script is already a P2SH,
         // don't return the address for a P2SH of the P2SH.
         r.pushKV("p2sh", EncodeDestination(CScriptID(script)));
+        // P2SH and witness programs cannot be wrapped in P2WSH, if this script
+        // is a witness program, don't return addresses for a segwit programs.
+        if (type.get_str() == "pubkey" || type.get_str() == "pubkeyhash" || type.get_str() == "multisig" || type.get_str() == "nonstandard") {
+            txnouttype which_type;
+            std::vector<std::vector<unsigned char>> solutions_data;
+            Solver(script, which_type, solutions_data);
+            // Uncompressed pubkeys cannot be used with segwit checksigs.
+            // If the script contains an uncompressed pubkey, skip encoding of a segwit program.
+            if ((which_type == TX_PUBKEY) || (which_type == TX_MULTISIG)) {
+                for (const auto& solution : solutions_data) {
+                    if ((solution.size() != 1) && !CPubKey(solution).IsCompressed()) {
+                        return r;
+                    }
+                }
+            }
+            UniValue sr(UniValue::VOBJ);
+            CScript segwitScr;
+            if (which_type == TX_PUBKEY) {
+                segwitScr = GetScriptForDestination(WitnessV0KeyHash(Hash160(solutions_data[0].begin(), solutions_data[0].end())));
+            } else if (which_type == TX_PUBKEYHASH) {
+                segwitScr = GetScriptForDestination(WitnessV0KeyHash(solutions_data[0]));
+            } else {
+                // Scripts that are not fit for P2WPKH are encoded as P2WSH.
+                // Newer segwit program versions should be considered when then become available.
+                uint256 scriptHash;
+                CSHA256().Write(script.data(), script.size()).Finalize(scriptHash.begin());
+                segwitScr = GetScriptForDestination(WitnessV0ScriptHash(scriptHash));
+            }
+            ScriptPubKeyToUniv(segwitScr, sr, true);
+            sr.pushKV("p2sh-segwit", EncodeDestination(CScriptID(segwitScr)));
+            r.pushKV("segwit", sr);
+        }
     }
 
     return r;
@@ -619,7 +667,7 @@ static void TxInErrorToJSON(const CTxIn& txin, UniValue& vErrorsRet, const std::
     vErrorsRet.push_back(entry);
 }
 
-UniValue combinerawtransaction(const JSONRPCRequest& request)
+static UniValue combinerawtransaction(const JSONRPCRequest& request)
 {
 
     if (request.fHelp || request.params.size() != 1)
@@ -858,7 +906,7 @@ UniValue SignTransaction(CMutableTransaction& mtx, const UniValue& prevTxsUnival
     return result;
 }
 
-UniValue signrawtransactionwithkey(const JSONRPCRequest& request)
+static UniValue signrawtransactionwithkey(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 4)
         throw std::runtime_error(
@@ -1036,7 +1084,7 @@ UniValue signrawtransaction(const JSONRPCRequest& request)
     }
 }
 
-UniValue sendrawtransaction(const JSONRPCRequest& request)
+static UniValue sendrawtransaction(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
         throw std::runtime_error(
@@ -1058,8 +1106,6 @@ UniValue sendrawtransaction(const JSONRPCRequest& request)
             "\nAs a json rpc call\n"
             + HelpExampleRpc("sendrawtransaction", "\"signedhex\"")
         );
-
-    ObserveSafeMode();
 
     std::promise<void> promise;
 
@@ -1133,7 +1179,7 @@ UniValue sendrawtransaction(const JSONRPCRequest& request)
     return hashTx.GetHex();
 }
 
-UniValue testmempoolaccept(const JSONRPCRequest& request)
+static UniValue testmempoolaccept(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2) {
         throw std::runtime_error(
@@ -1167,8 +1213,6 @@ UniValue testmempoolaccept(const JSONRPCRequest& request)
             // clang-format on
             );
     }
-
-    ObserveSafeMode();
 
     RPCTypeCheck(request.params, {UniValue::VARR, UniValue::VBOOL});
     if (request.params[0].get_array().size() != 1) {

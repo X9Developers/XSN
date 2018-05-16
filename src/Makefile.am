@@ -81,6 +81,7 @@ BITCOIN_CORE_H = \
   base58.h \
   bech32.h \
   bloom.h \
+  blocksigner.h \
   blockencodings.h \
   chain.h \
   chainparams.h \
@@ -103,6 +104,7 @@ BITCOIN_CORE_H = \
   fs.h \
   httprpc.h \
   httpserver.h \
+  index/txindex.h \
   indirectmap.h \
   init.h \
   interfaces/handler.h \
@@ -111,8 +113,10 @@ BITCOIN_CORE_H = \
   key.h \
   key_io.h \
   keystore.h \
+  kernel.h \
   dbwrapper.h \
   limitedmap.h \
+  logging.h \
   memusage.h \
   merkleblock.h \
   miner.h \
@@ -157,6 +161,8 @@ BITCOIN_CORE_H = \
   timedata.h \
   torcontrol.h \
   txdb.h \
+  tpos/tposutils.h \
+  tpos/activemerchantnode.h \
   txmempool.h \
   ui_interface.h \
   undo.h \
@@ -197,13 +203,16 @@ libbitcoin_server_a_SOURCES = \
   addrdb.cpp \
   addrman.cpp \
   bloom.cpp \
+  blocksigner.cpp \
   blockencodings.cpp \
   chain.cpp \
   checkpoints.cpp \
   consensus/tx_verify.cpp \
   httprpc.cpp \
   httpserver.cpp \
+  index/txindex.cpp \
   init.cpp \
+  kernel.cpp \
   dbwrapper.cpp \
   merkleblock.cpp \
   miner.cpp \
@@ -220,13 +229,14 @@ libbitcoin_server_a_SOURCES = \
   rpc/misc.cpp \
   rpc/net.cpp \
   rpc/rawtransaction.cpp \
-  rpc/safemode.cpp \
   rpc/server.cpp \
   script/sigcache.cpp \
   timedata.cpp \
   torcontrol.cpp \
   txdb.cpp \
   txmempool.cpp \
+  tpos/tposutils.cpp \
+  tpos/activemerchantnode.cpp \
   ui_interface.cpp \
   validation.cpp \
   validationinterface.cpp \
@@ -263,8 +273,8 @@ libbitcoin_wallet_a_SOURCES = \
   $(BITCOIN_CORE_H)
 
 # crypto primitives library
-crypto_libbitcoin_crypto_a_CPPFLAGS = $(AM_CPPFLAGS)
-crypto_libbitcoin_crypto_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+crypto_libbitcoin_crypto_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_CONFIG_INCLUDES) $(PIC_FLAGS)
+crypto_libbitcoin_crypto_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS) $(PIC_FLAGS)
 crypto_libbitcoin_crypto_a_SOURCES = \
   crypto/aes.cpp \
   crypto/aes.h \
@@ -283,6 +293,32 @@ crypto_libbitcoin_crypto_a_SOURCES = \
   crypto/sha256.h \
   crypto/sha512.cpp \
   crypto/sha512.h
+
+# x11
+crypto_libbitcoin_crypto_a_SOURCES += \
+  crypto/blake.c \
+  crypto/bmw.c \
+  crypto/cubehash.c \
+  crypto/echo.c \
+  crypto/groestl.c \
+  crypto/jh.c \
+  crypto/keccak.c \
+  crypto/luffa.c \
+  crypto/shavite.c \
+  crypto/simd.c \
+  crypto/skein.c \
+  crypto/sph_blake.h \
+  crypto/sph_bmw.h \
+  crypto/sph_cubehash.h \
+  crypto/sph_echo.h \
+  crypto/sph_groestl.h \
+  crypto/sph_jh.h \
+  crypto/sph_keccak.h \
+  crypto/sph_luffa.h \
+  crypto/sph_shavite.h \
+  crypto/sph_simd.h \
+  crypto/sph_skein.h \
+  crypto/sph_types.h
 
 if USE_ASM
 crypto_libbitcoin_crypto_a_SOURCES += crypto/sha256_sse4.cpp
@@ -364,6 +400,7 @@ libbitcoin_util_a_SOURCES = \
   fs.cpp \
   interfaces/handler.cpp \
   interfaces/node.cpp \
+  logging.cpp \
   random.cpp \
   rpc/protocol.cpp \
   rpc/util.cpp \

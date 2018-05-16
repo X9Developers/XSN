@@ -60,7 +60,7 @@ class NodeImpl : public Node
     void initLogging() override { InitLogging(); }
     void initParameterInteraction() override { InitParameterInteraction(); }
     std::string getWarnings(const std::string& type) override { return GetWarnings(type); }
-    uint32_t getLogCategories() override { return ::logCategories; }
+    uint32_t getLogCategories() override { return g_logger->GetCategoryMask(); }
     bool baseInitialize() override
     {
         return AppInitBasicSetup() && AppInitParameterInteraction() && AppInitSanityChecks() &&
@@ -191,20 +191,6 @@ class NodeImpl : public Node
         }
     }
     bool getNetworkActive() override { return g_connman && g_connman->GetNetworkActive(); }
-    unsigned int getTxConfirmTarget() override { CHECK_WALLET(return ::nTxConfirmTarget); }
-    CAmount getRequiredFee(unsigned int tx_bytes) override { CHECK_WALLET(return GetRequiredFee(tx_bytes)); }
-    CAmount getMinimumFee(unsigned int tx_bytes,
-        const CCoinControl& coin_control,
-        int* returned_target,
-        FeeReason* reason) override
-    {
-        FeeCalculation fee_calc;
-        CAmount result;
-        CHECK_WALLET(result = GetMinimumFee(tx_bytes, coin_control, ::mempool, ::feeEstimator, &fee_calc));
-        if (returned_target) *returned_target = fee_calc.returnedTarget;
-        if (reason) *reason = fee_calc.reason;
-        return result;
-    }
     CAmount getMaxTxFee() override { return ::maxTxFee; }
     CFeeRate estimateSmartFee(int num_blocks, bool conservative, int* returned_target = nullptr) override
     {
@@ -216,9 +202,6 @@ class NodeImpl : public Node
         return result;
     }
     CFeeRate getDustRelayFee() override { return ::dustRelayFee; }
-    CFeeRate getFallbackFee() override { CHECK_WALLET(return CWallet::fallbackFee); }
-    CFeeRate getPayTxFee() override { CHECK_WALLET(return ::payTxFee); }
-    void setPayTxFee(CFeeRate rate) override { CHECK_WALLET(::payTxFee = rate); }
     UniValue executeRpc(const std::string& command, const UniValue& params, const std::string& uri) override
     {
         JSONRPCRequest req;
@@ -239,7 +222,7 @@ class NodeImpl : public Node
     {
 #ifdef ENABLE_WALLET
         std::vector<std::unique_ptr<Wallet>> wallets;
-        for (CWalletRef wallet : ::vpwallets) {
+        for (CWallet* wallet : GetWallets()) {
             wallets.emplace_back(MakeWallet(*wallet));
         }
         return wallets;

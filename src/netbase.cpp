@@ -289,7 +289,7 @@ struct ProxyCredentials
 };
 
 /** Convert SOCKS5 reply to an error message */
-std::string Socks5ErrorString(uint8_t err)
+static std::string Socks5ErrorString(uint8_t err)
 {
     switch(err) {
         case SOCKS5Reply::GENFAILURE:
@@ -513,11 +513,7 @@ bool ConnectSocketDirectly(const CService &addrConnect, const SOCKET& hSocket, i
                 return false;
             }
             socklen_t nRetSize = sizeof(nRet);
-#ifdef WIN32
-            if (getsockopt(hSocket, SOL_SOCKET, SO_ERROR, (char*)(&nRet), &nRetSize) == SOCKET_ERROR)
-#else
-            if (getsockopt(hSocket, SOL_SOCKET, SO_ERROR, &nRet, &nRetSize) == SOCKET_ERROR)
-#endif
+            if (getsockopt(hSocket, SOL_SOCKET, SO_ERROR, (sockopt_arg_type)&nRet, &nRetSize) == SOCKET_ERROR)
             {
                 LogPrintf("getsockopt() for %s failed: %s\n", addrConnect.ToString(), NetworkErrorString(WSAGetLastError()));
                 return false;

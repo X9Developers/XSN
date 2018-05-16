@@ -47,7 +47,6 @@ BasicTestingSetup::BasicTestingSetup(const std::string& chainName)
         SetupNetworking();
         InitSignatureCache();
         InitScriptExecutionCache();
-        fPrintToDebugLog = false; // don't want to write to debug.log file
         fCheckBlockIndex = true;
         SelectParams(chainName);
         noui_connect();
@@ -85,7 +84,7 @@ TestingSetup::TestingSetup(const std::string& chainName) : BasicTestingSetup(cha
         {
             CValidationState state;
             if (!ActivateBestChain(state, chainparams)) {
-                throw std::runtime_error("ActivateBestChain failed.");
+                throw std::runtime_error(strprintf("ActivateBestChain failed. (%s)", FormatStateMessage(state)));
             }
         }
         nScriptCheckThreads = 3;

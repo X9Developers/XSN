@@ -26,11 +26,9 @@ class Coin;
 class RPCTimerInterface;
 class UniValue;
 class proxyType;
-enum class FeeReason;
 struct CNodeStateStats;
 
 namespace interfaces {
-
 class Handler;
 class Wallet;
 
@@ -152,18 +150,6 @@ public:
     //! Get network active.
     virtual bool getNetworkActive() = 0;
 
-    //! Get tx confirm target.
-    virtual unsigned int getTxConfirmTarget() = 0;
-
-    //! Get required fee.
-    virtual CAmount getRequiredFee(unsigned int tx_bytes) = 0;
-
-    //! Get minimum fee.
-    virtual CAmount getMinimumFee(unsigned int tx_bytes,
-        const CCoinControl& coin_control,
-        int* returned_target,
-        FeeReason* reason) = 0;
-
     //! Get max tx fee.
     virtual CAmount getMaxTxFee() = 0;
 
@@ -172,15 +158,6 @@ public:
 
     //! Get dust relay fee.
     virtual CFeeRate getDustRelayFee() = 0;
-
-    //! Get fallback fee.
-    virtual CFeeRate getFallbackFee() = 0;
-
-    //! Get pay tx fee.
-    virtual CFeeRate getPayTxFee() = 0;
-
-    //! Set pay tx fee.
-    virtual void setPayTxFee(CFeeRate rate) = 0;
 
     //! Execute rpc command.
     virtual UniValue executeRpc(const std::string& command, const UniValue& params, const std::string& uri) = 0;

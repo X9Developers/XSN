@@ -16,6 +16,7 @@
 
 #include <assert.h>
 #include <stdint.h>
+#include <bitset>
 
 #include <unordered_map>
 
@@ -34,32 +35,52 @@ public:
 
     //! whether containing transaction was a coinbase
     unsigned int fCoinBase : 1;
+    //! whether containing transaction was a coinstake
+    unsigned int fCoinStake : 1;
 
     //! at which height this containing transaction was included in the active block chain
-    uint32_t nHeight : 31;
+    uint32_t nHeight : 30;
 
     //! construct a Coin from a CTxOut and height/coinbase information.
-    Coin(CTxOut&& outIn, int nHeightIn, bool fCoinBaseIn) : out(std::move(outIn)), fCoinBase(fCoinBaseIn), nHeight(nHeightIn) {}
-    Coin(const CTxOut& outIn, int nHeightIn, bool fCoinBaseIn) : out(outIn), fCoinBase(fCoinBaseIn),nHeight(nHeightIn) {}
+    Coin(CTxOut&& outIn, int nHeightIn, bool fCoinBaseIn, bool fCoinStakeIn) :
+        out(std::move(outIn)),
+        fCoinBase(fCoinBaseIn),
+        fCoinStake(fCoinStakeIn),
+        nHeight(nHeightIn)
+    { }
+
+    Coin(const CTxOut& outIn, int nHeightIn, bool fCoinBaseIn, bool fCoinStakeIn) :
+        out(outIn),
+        fCoinBase(fCoinBaseIn),
+        fCoinStake(fCoinStakeIn),
+        nHeight(nHeightIn)
+    { }
 
     void Clear() {
         out.SetNull();
         fCoinBase = false;
+        fCoinStake = false;
         nHeight = 0;
     }
 
     //! empty constructor
-    Coin() : fCoinBase(false), nHeight(0) { }
+    Coin() : fCoinBase(false), fCoinStake(false), nHeight(0) { }
 
     bool IsCoinBase() const {
         return fCoinBase;
     }
 
+    bool IsCoinStake() const {
+        return fCoinStake;
+    }
+
     template<typename Stream>
     void Serialize(Stream &s) const {
         assert(!IsSpent());
-        uint32_t code = nHeight * 2 + fCoinBase;
-        ::Serialize(s, VARINT(code));
+        std::bitset<32> code(nHeight);
+        code[30] = fCoinStake;
+        code[31] = fCoinBase;
+        ::Serialize(s, VARINT(code.to_ulong()));
         ::Serialize(s, CTxOutCompressor(REF(out)));
     }
 
@@ -67,8 +88,12 @@ public:
     void Unserialize(Stream &s) {
         uint32_t code = 0;
         ::Unserialize(s, VARINT(code));
-        nHeight = code >> 1;
-        fCoinBase = code & 1;
+        std::bitset<32> bitset(code);
+        fCoinBase = bitset[31];
+        fCoinStake = bitset[30];
+        bitset.reset(30);
+        bitset.reset(31);
+        nHeight = bitset.to_ulong();
         ::Unserialize(s, CTxOutCompressor(out));
     }
 

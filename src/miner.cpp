@@ -25,6 +25,7 @@
 #include <util.h>
 #include <utilmoneystr.h>
 #include <validationinterface.h>
+#include <wallet/wallet.h>
 
 #include <algorithm>
 #include <queue>
@@ -81,7 +82,11 @@ static BlockAssembler::Options DefaultOptions(const CChainParams& params)
     return options;
 }
 
-BlockAssembler::BlockAssembler(const CChainParams& params) : BlockAssembler(params, DefaultOptions(params)) {}
+BlockAssembler::BlockAssembler(const CChainParams& params) :
+    BlockAssembler(params, DefaultOptions(params))
+{
+    nLastCoinStakeSearchInterval = GetAdjustedTime();
+}
 
 void BlockAssembler::resetBlock()
 {
@@ -98,6 +103,11 @@ void BlockAssembler::resetBlock()
 }
 
 std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& scriptPubKeyIn, bool fMineWitnessTx)
+{
+    return CreateNewBlock(nullptr, scriptPubKeyIn, false, {}, fMineWitnessTx);
+}
+
+std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(CWallet *wallet, const CScript &scriptPubKeyIn, bool fProofOfStake, const TPoSContract &tposContract, bool fMineWitnessTx)
 {
     int64_t nTimeStart = GetTimeMicros();
 
@@ -129,8 +139,8 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     const int64_t nMedianTimePast = pindexPrev->GetMedianTimePast();
 
     nLockTimeCutoff = (STANDARD_LOCKTIME_VERIFY_FLAGS & LOCKTIME_MEDIAN_TIME_PAST)
-                       ? nMedianTimePast
-                       : pblock->GetBlockTime();
+            ? nMedianTimePast
+            : pblock->GetBlockTime();
 
     // Decide whether to include witness transactions
     // This is only needed in case the witness softfork activation is reverted
@@ -155,7 +165,44 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     coinbaseTx.vin[0].prevout.SetNull();
     coinbaseTx.vout.resize(1);
     coinbaseTx.vout[0].scriptPubKey = scriptPubKeyIn;
-    coinbaseTx.vout[0].nValue = nFees + GetBlockSubsidy(nHeight, chainparams.GetConsensus());
+    CAmount blockReward = GetBlockSubsidy(pindexPrev->nHeight, Params().GetConsensus());
+    if(fProofOfStake)
+    {
+        assert(wallet);
+        boost::this_thread::interruption_point();
+        pblock->nBits = GetNextWorkRequired(pindexPrev, pblock, chainparams.GetConsensus());
+        CMutableTransaction coinstakeTx;
+        int64_t nSearchTime = pblock->nTime; // search to current time
+        bool fStakeFound = false;
+        if (nSearchTime >= nLastCoinStakeSearchTime) {
+            unsigned int nTxNewTime = 0;
+            if (wallet->CreateCoinStake(pblock->nBits, blockReward,
+                                        coinstakeTx, nTxNewTime,
+                                        tposContract))
+            {
+                pblock->nTime = nTxNewTime;
+                coinbaseTx.vout[0].SetEmpty();
+                pblock->vtx.emplace_back(MakeTransactionRef(coinstakeTx));
+
+                if(tposContract.IsValid())
+                {
+                    pblock->hashTPoSContractTx = tposContract.rawTx->GetHash();
+                }
+
+                fStakeFound = true;
+            }
+
+            nLastCoinStakeSearchInterval = nSearchTime - nLastCoinStakeSearchTime;
+            nLastCoinStakeSearchTime = nSearchTime;
+        }
+
+        if (!fStakeFound)
+            return nullptr;
+    }
+    else
+    {
+        coinbaseTx.vout[0].nValue = nFees + blockReward;
+    }
     coinbaseTx.vin[0].scriptSig = CScript() << nHeight << OP_0;
     pblock->vtx[0] = MakeTransactionRef(std::move(coinbaseTx));
     pblocktemplate->vchCoinbaseCommitment = GenerateCoinbaseCommitment(*pblock, pindexPrev, chainparams.GetConsensus());
@@ -165,7 +212,8 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
 
     // Fill in header
     pblock->hashPrevBlock  = pindexPrev->GetBlockHash();
-    UpdateTime(pblock, chainparams.GetConsensus(), pindexPrev);
+    if(!fProofOfStake)
+        UpdateTime(pblock, chainparams.GetConsensus(), pindexPrev);
     pblock->nBits          = GetNextWorkRequired(pindexPrev, pblock, chainparams.GetConsensus());
     pblock->nNonce         = 0;
     pblocktemplate->vTxSigOpsCost[0] = WITNESS_SCALE_FACTOR * GetLegacySigOpCount(*pblock->vtx[0]);
@@ -239,7 +287,7 @@ void BlockAssembler::AddToBlock(CTxMemPool::txiter iter)
 }
 
 int BlockAssembler::UpdatePackagesForAdded(const CTxMemPool::setEntries& alreadyAdded,
-        indexed_modified_transaction_set &mapModifiedTx)
+                                           indexed_modified_transaction_set &mapModifiedTx)
 {
     int nDescendantsUpdated = 0;
     for (const CTxMemPool::txiter it : alreadyAdded) {
