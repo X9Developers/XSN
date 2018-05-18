@@ -238,6 +238,9 @@ extern const char *GETBLOCKTXN;
  * @since protocol version 70014 as described by BIP 152
  */
 extern const char *BLOCKTXN;
+
+extern const char *SPORK;
+extern const char *GETSPORKS;
 };
 
 /* Get a vector of all valid message types (see above) */
@@ -363,6 +366,7 @@ public:
 /** getdata message type flags */
 const uint32_t MSG_WITNESS_FLAG = 1 << 30;
 const uint32_t MSG_TYPE_MASK    = 0xffffffff >> 2;
+const uint32_t MSG_XSN_OFFSET = 1000;
 
 /** getdata / inv message types.
  * These numbers are defined by the protocol. When adding a new value, be sure
@@ -376,6 +380,9 @@ enum GetDataMsg
     // The following can only occur in getdata. Invs always use TX or BLOCK.
     MSG_FILTERED_BLOCK = 3,  //!< Defined in BIP37
     MSG_CMPCT_BLOCK = 4,     //!< Defined in BIP152
+    MSG_TXLOCK_REQUEST = MSG_XSN_OFFSET,
+    MSG_TXLOCK_VOTE,
+    MSG_SPORK,
     MSG_WITNESS_BLOCK = MSG_BLOCK | MSG_WITNESS_FLAG, //!< Defined in BIP144
     MSG_WITNESS_TX = MSG_TX | MSG_WITNESS_FLAG,       //!< Defined in BIP144
     MSG_FILTERED_WITNESS_BLOCK = MSG_FILTERED_BLOCK | MSG_WITNESS_FLAG,

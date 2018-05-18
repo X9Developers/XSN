@@ -8,6 +8,7 @@
 #include <tpos/merchantnodeman.h>
 #include <tpos/activemerchantnode.h>
 #include <consensus/validation.h>
+#include <spork.h>
 #include <sstream>
 #include <numeric>
 
@@ -380,13 +381,11 @@ bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &bl
     }
 #endif
 
-#if 0
-    if(!sporkManager.IsSporkActive(SPORK_15_TPOS_ENABLED))
+    if(!sporkManager.IsSporkActive(Spork::SPORK_15_TPOS_ENABLED))
     {
         return state.DoS(0, error("IsBlockPayeeValid -- ERROR: Invalid merchantnode payment detected at height %d\n", nBlockHeight),
                          REJECT_INVALID, "bad-merchant-payee", true);
     }
-#endif
 
     CKeyID coinstakeKeyID;
     if(!merchantAddress.GetKeyID(coinstakeKeyID))

@@ -117,11 +117,13 @@ BITCOIN_CORE_H = \
   dbwrapper.h \
   limitedmap.h \
   logging.h \
+  messagesigner.h \
   memusage.h \
   merkleblock.h \
   miner.h \
   net.h \
   net_processing.h \
+  net_processing_xsn.h \
   netaddress.h \
   netbase.h \
   netmessagemaker.h \
@@ -144,6 +146,7 @@ BITCOIN_CORE_H = \
   rpc/rawtransaction.h \
   rpc/register.h \
   rpc/util.h \
+  rpc/xsnmisc.h \
   scheduler.h \
   script/ismine.h \
   script/sigcache.h \
@@ -156,6 +159,7 @@ BITCOIN_CORE_H = \
   support/events.h \
   support/lockedpool.h \
   sync.h \
+  spork.h \
   threadsafety.h \
   threadinterrupt.h \
   timedata.h \
@@ -215,9 +219,11 @@ libbitcoin_server_a_SOURCES = \
   kernel.cpp \
   dbwrapper.cpp \
   merkleblock.cpp \
+  messagesigner.cpp \
   miner.cpp \
   net.cpp \
   net_processing.cpp \
+  net_processing_xsn.cpp \
   noui.cpp \
   policy/fees.cpp \
   policy/policy.cpp \
@@ -230,7 +236,9 @@ libbitcoin_server_a_SOURCES = \
   rpc/net.cpp \
   rpc/rawtransaction.cpp \
   rpc/server.cpp \
+  rpc/xsnmisc.cpp \
   script/sigcache.cpp \
+  spork.cpp \
   timedata.cpp \
   torcontrol.cpp \
   txdb.cpp \

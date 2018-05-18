@@ -55,6 +55,7 @@ namespace BCLog {
         LEVELDB      = (1 << 20),
         KERNEL       = (1 << 21),
         MERCHANTNODE = (1 << 22),
+        SPORK        = (1 << 23),
         ALL          = ~(uint32_t)0,
     };
 

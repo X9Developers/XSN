@@ -161,6 +161,8 @@ public:
         fRequireStandard = true;
         fMineBlocksOnDemand = false;
 
+        strSporkPubKey = "030a2b7fdf1f123f3686ebc00f1226a20275bc785570ef069e2c2d81b61d616e91";
+
         checkpointData = {
             {
                 { 0, uint256S("0x00000c822abdbb23e28f79a49d29b41429737c6c7e15df40d1b1f1b35907ae34")},

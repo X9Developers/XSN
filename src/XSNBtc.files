@@ -76,12 +76,18 @@ limitedmap.h
 memusage.h
 merkleblock.cpp
 merkleblock.h
+messagesigner.cpp
+messagesigner.cpp
+messagesigner.h
+messagesigner.h
 miner.cpp
 miner.h
 net.cpp
 net.h
 net_processing.cpp
 net_processing.h
+net_processing_xsn.cpp
+net_processing_xsn.h
 netaddress.cpp
 netaddress.h
 netbase.cpp
@@ -248,6 +254,7 @@ rpc/server.cpp
 rpc/server.h
 rpc/util.cpp
 rpc/util.h
+rpc/xsnmisc.cpp
 scheduler.cpp
 scheduler.h
 script/bitcoinconsensus.cpp
@@ -268,6 +275,8 @@ script/standard.cpp
 script/standard.h
 serialize.h
 span.h
+spork.cpp
+spork.h
 streams.h
 support/allocators/secure.h
 support/allocators/zeroafterfree.h
