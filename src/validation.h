@@ -395,6 +395,7 @@ public:
 /** Initializes the script-execution cache */
 void InitScriptExecutionCache();
 
+void ReprocessBlocks(int nBlocks);
 
 /** Functions for disk access for blocks */
 bool ReadBlockFromDisk(CBlock& block, const CDiskBlockPos& pos, const Consensus::Params& consensusParams);
