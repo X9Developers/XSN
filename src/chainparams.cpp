@@ -247,10 +247,10 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
-        vSeeds.emplace_back("testnet-seed.bitcoin.jonasschnelli.ch");
-        vSeeds.emplace_back("seed.tbtc.petertodd.org");
-        vSeeds.emplace_back("seed.testnet.bitcoin.sprovoost.nl");
-        vSeeds.emplace_back("testnet-seed.bluematt.me"); // Just a static list of stable node(s), only supports x9
+        //vSeeds.emplace_back("testnet-seed.bitcoin.jonasschnelli.ch");
+        //vSeeds.emplace_back("seed.tbtc.petertodd.org");
+        //vSeeds.emplace_back("seed.testnet.bitcoin.sprovoost.nl");
+        //vSeeds.emplace_back("testnet-seed.bluematt.me"); // Just a static list of stable node(s), only supports x9
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,140);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,19);
@@ -261,6 +261,7 @@ public:
         bech32_hrp = "tb";
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
+	vFixedSeeds.clear();
 
         fDefaultConsistencyChecks = false;
         fRequireStandard = false;
