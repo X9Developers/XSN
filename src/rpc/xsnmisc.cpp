@@ -16,21 +16,15 @@
 #include <utilstrencodings.h>
 #include <spork.h>
 #include <netmessagemaker.h>
-
+#ifdef ENABLE_WALLET
+#include <wallet/rpcwallet.h>
+#endif
 
 /*
     Used for updating/reading spork settings on the network
 */
 static UniValue spork(const JSONRPCRequest& request)
 {
-    if(request.params.size() == 0) {
-        g_connman->ForEachNode([](CNode *node) {
-            const CNetMsgMaker msgMaker(node->GetSendVersion());
-            g_connman->PushMessage(node, msgMaker.Make(NetMsgType::GETSPORKS));
-        });
-        return "Asked";
-    }
-
     if(request.params.size() == 1 && request.params[0].get_str() == "show"){
         UniValue ret(UniValue::VOBJ);
         for(int nSporkID = Spork::SPORK_START; nSporkID < Spork::SPORK_END; nSporkID++){
@@ -46,10 +40,9 @@ static UniValue spork(const JSONRPCRequest& request)
         }
         return ret;
     }
-#if 0
 #ifdef ENABLE_WALLET
-    else if (params.size() == 2){
-        int nSporkID = sporkManager.GetSporkIDByName(params[0].get_str());
+    else if (request.params.size() == 2) {
+        int nSporkID = sporkManager.GetSporkIDByName(request.params[0].get_str());
         if(nSporkID == -1){
             return "Invalid spork name";
         }
@@ -58,10 +51,10 @@ static UniValue spork(const JSONRPCRequest& request)
             throw JSONRPCError(RPC_CLIENT_P2P_DISABLED, "Error: Peer-to-peer functionality missing or disabled");
 
         // SPORK VALUE
-        int64_t nValue = params[1].get_int64();
+        int64_t nValue = request.params[1].get_int64();
 
         //broadcast new spork
-        if(sporkManager.UpdateSpork(nSporkID, nValue, *g_connman)){
+        if(sporkManager.UpdateSpork(nSporkID, nValue, g_connman.get())) {
             sporkManager.ExecuteSpork(nSporkID, nValue);
             return "success";
         } else {
@@ -69,18 +62,17 @@ static UniValue spork(const JSONRPCRequest& request)
         }
 
     }
-
-    throw runtime_error(
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    throw std::runtime_error(
                 "spork <name> [<value>]\n"
                 "<name> is the corresponding spork name, or 'show' to show all current spork settings, active to show which sporks are active\n"
                 "<value> is a epoch datetime to enable or disable spork\n"
-                + HelpRequiringPassphrase());
+                + HelpRequiringPassphrase(pwallet));
 #else // ENABLE_WALLET
-    throw runtime_error(
+    throw std::runtime_error(
                 "spork <name>\n"
                 "<name> is the corresponding spork name, or 'show' to show all current spork settings, active to show which sporks are active\n");
 #endif // ENABLE_WALLET
-#endif
 
 }
 

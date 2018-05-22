@@ -105,6 +105,7 @@ public:
 
     void ProcessSpork(CNode* pfrom, const std::string &strCommand, CDataStream& vRecv, CConnman *connman);
     bool UpdateSpork(int nSporkID, int64_t nValue, CConnman *connman);
+    void ExecuteSpork(int nSporkID, int nValue);
 
     bool IsSporkActive(int nSporkID);
     int64_t GetSporkValue(int nSporkID);
@@ -112,9 +113,6 @@ public:
     std::string GetSporkNameByID(int nSporkID);
 
     bool SetPrivKey(std::string strPrivKey);
-
-private:
-    void ExecuteSpork(int nSporkID, int nValue);
 };
 
 #endif

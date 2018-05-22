@@ -70,7 +70,7 @@ void CSporkManager::ProcessSpork(CNode* pfrom, const std::string& strCommand, CD
 
         mapSporks[hash] = spork;
         mapSporksActive[spork.nSporkID] = spork;
-//        spork.Relay(connman);
+        spork.Relay(connman);
 
         //does a task if needed
         ExecuteSpork(spork.nSporkID, spork.nValue);
