@@ -201,7 +201,7 @@ public:
         consensus.nPowTargetSpacing = 1 * 60; // XSN: 1 minutes
         consensus.nPosTargetSpacing = 1 * 60; // PoSW: 1 minutes
         consensus.nPosTargetTimespan = 60 * 40;
-        consensus.fPowAllowMinDifficultyBlocks = true;
+        consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
         consensus.nPowKGWHeight = 4001; // nPowKGWHeight >= nPowDGWHeight means "no KGW"
         consensus.nPowDGWHeight = 4001;

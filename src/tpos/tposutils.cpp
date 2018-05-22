@@ -335,6 +335,8 @@ bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contr
 
 bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &block, int nBlockHeight, CAmount expectedReward, CAmount actualReward)
 {
+#if 0
+
     auto contract = TPoSContract::FromTPoSContractTx(block.txTPoSContract);
     CBitcoinAddress merchantAddress = contract.merchantAddress;
     CScript scriptMerchantPubKey = GetScriptForDestination(merchantAddress.Get());
@@ -355,7 +357,7 @@ bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &bl
     CAmount merchantPayment = 0;
     merchantPayment = std::accumulate(std::begin(coinstake->vout) + 2, std::end(coinstake->vout), CAmount(0), [scriptMerchantPubKey](CAmount accum, const CTxOut &txOut) {
             return txOut.scriptPubKey == scriptMerchantPubKey ? accum + txOut.nValue : accum;
-});
+    });
 
     if(merchantPayment > 0)
     {
@@ -412,6 +414,7 @@ bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &bl
         return state.DoS(0, error("IsMerchantPaymentValid -- ERROR: merchantnode with address: %s is not valid for payment\n", merchantAddress.ToString().c_str()),
                          REJECT_INVALID, "bad-merchant-payee", true);
     }
+#endif
 #endif
 
     return true;
