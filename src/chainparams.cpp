@@ -192,10 +192,10 @@ public:
     CTestNetParams() {
         strNetworkID = "test";
         consensus.nSubsidyHalvingInterval = 200;
-        consensus.BIP34Height = 21111;
+        consensus.BIP34Height = 0;
         consensus.BIP34Hash = uint256S("0x0000000023b3a96d3484e5abb3755c413e7d41500f8e2a5c3f0dd01299cd8ef8");
-        consensus.BIP65Height = 581885; // 00000000007f6655f22f98e72ed80d8b06dc761d5da09df0fa1dc4be4f861eb6
-        consensus.BIP66Height = 330776; // 000000002104c8c45e99a8853285a3b592602a3ccde2b832481da85e9e4ba182
+        consensus.BIP65Height = 0; // 00000000007f6655f22f98e72ed80d8b06dc761d5da09df0fa1dc4be4f861eb6
+        consensus.BIP66Height = 0; // 000000002104c8c45e99a8853285a3b592602a3ccde2b832481da85e9e4ba182
         consensus.powLimit = uint256S("00000fffff000000000000000000000000000000000000000000000000000000");
         consensus.nPowTargetTimespan = 24 * 60 * 60; // XSN: 1 day
         consensus.nPowTargetSpacing = 1 * 60; // XSN: 1 minutes
@@ -230,7 +230,7 @@ public:
         consensus.nMinimumChainWork = uint256S("0x0");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x0000000002e9e7b00e1f6dc5123a04aad68dd0f0968d8c7aa45f6640795c37b1"); //1135275
+        consensus.defaultAssumeValid = uint256S("0x0000000004f5aef732d572ff514af99a995702c92e4452c7af10858231668b1f"); //1135275
 
         pchMessageStart[0] = 0xce;
         pchMessageStart[1] = 0xe2;
@@ -247,10 +247,10 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
-        //vSeeds.emplace_back("testnet-seed.bitcoin.jonasschnelli.ch");
-        //vSeeds.emplace_back("seed.tbtc.petertodd.org");
-        //vSeeds.emplace_back("seed.testnet.bitcoin.sprovoost.nl");
-        //vSeeds.emplace_back("testnet-seed.bluematt.me"); // Just a static list of stable node(s), only supports x9
+//        vSeeds.emplace_back("testnet-seed.bitcoin.jonasschnelli.ch");
+//        vSeeds.emplace_back("seed.tbtc.petertodd.org");
+//        vSeeds.emplace_back("seed.testnet.bitcoin.sprovoost.nl");
+//        vSeeds.emplace_back("testnet-seed.bluematt.me"); // Just a static list of stable node(s), only supports x9
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,140);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,19);
@@ -267,6 +267,7 @@ public:
         fRequireStandard = false;
         fMineBlocksOnDemand = false;
 
+        strSporkPubKey = "02a80a535f8adae9b557d5b1cf1e088333efdfd51c5e1af7f913483197e66433ab";
 
         checkpointData = {
             {

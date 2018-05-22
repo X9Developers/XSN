@@ -933,6 +933,67 @@ static UniValue estimaterawfee(const JSONRPCRequest& request)
     return result;
 }
 
+static UniValue setgenerate(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() < 1 || request.params.size() > 4)
+        throw std::runtime_error(
+                "setgenerate generate ( genproclimit )\n"
+                "\nSet 'generate' true or false to turn generation on or off.\n"
+                "Generation is limited to 'genproclimit' processors, -1 is unlimited.\n"
+                "See the getgenerate call for the current setting.\n"
+                "\nArguments:\n"
+                "1. generate         (boolean, required) Set to true to turn on generation, false to turn off.\n"
+                "2. genproclimit     (numeric, optional) Set the processor limit for when generation is on. Can be -1 for unlimited.\n"
+                "\nExamples:\n"
+                "\nSet the generation on with a limit of one processor\n"
+                + HelpExampleCli("setgenerate", "true 1") +
+                "\nCheck the setting\n"
+                + HelpExampleCli("getgenerate", "") +
+                "\nTurn off generation\n"
+                + HelpExampleCli("setgenerate", "false") +
+                "\nUsing json rpc\n"
+                + HelpExampleRpc("setgenerate", "true, 1")
+                );
+
+    if (Params().MineBlocksOnDemand())
+        throw JSONRPCError(RPC_METHOD_NOT_FOUND, "Use the generate method instead of setgenerate on this network");
+
+
+    const auto& params = request.params;
+    bool fGenerate = true;
+    if (params.size() > 0)
+        fGenerate = params[0].get_bool();
+
+    int nGenProcLimit = 1;
+    if (params.size() > 1)
+    {
+        nGenProcLimit = params[1].get_int();
+        if (nGenProcLimit == 0)
+            fGenerate = false;
+
+        if(params.size() > 2)
+        {
+            if(params[2].get_str() == "false") {
+                SetTPoSMinningParams(false, uint256());
+                return std::string("Minting stopped");
+            }
+            else if (params.size() > 3 && params[2].get_str() == "true") {
+                uint256 tposTxId = ParseHashV(params[3], "parameter 4");
+
+                if(tposTxId.IsNull())
+                    throw JSONRPCError(RPC_INTERNAL_ERROR, "Parsing error, one of txids is incorrect");
+
+                SetTPoSMinningParams(true, tposTxId);
+                return std::string("Minting started, tpos contract: ") + tposTxId.ToString();
+            }
+        }
+    }
+
+    GenerateBitcoins(fGenerate, nGenProcLimit, Params(), g_connman.get());
+
+    return fGenerate ? std::string("Mining started") : std::string("Mining stopped");
+}
+
 static const CRPCCommand commands[] =
 { //  category              name                      actor (function)         argNames
   //  --------------------- ------------------------  -----------------------  ----------

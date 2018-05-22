@@ -98,6 +98,7 @@ void CreatePidFile(const fs::path &path, pid_t pid);
 fs::path GetSpecialFolderPath(int nFolder, bool fCreate = true);
 #endif
 void runCommand(const std::string& strCommand);
+void SetThreadPriority(int nPriority);
 
 /**
  * Most paths passed as configuration arguments are treated as relative to

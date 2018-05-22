@@ -26,10 +26,12 @@
 #include <utilmoneystr.h>
 #include <validationinterface.h>
 #include <wallet/wallet.h>
+#include <blocksigner.h>
 
 #include <algorithm>
 #include <queue>
 #include <utility>
+#include <boost/thread.hpp>
 
 // Unconfirmed transactions in the memory pool often depend on other
 // transactions in the memory pool. When we select transactions from the
@@ -38,6 +40,19 @@
 
 uint64_t nLastBlockTx = 0;
 uint64_t nLastBlockWeight = 0;
+int64_t nLastCoinStakeSearchInterval = 0;
+
+struct TPoSParams
+{
+    bool fUseTPoS;
+    uint256 hashTPoSContractTxId;
+} tposParams = {
+    false,
+    uint256()
+};
+
+static CCriticalSection csTPoSParams;
+
 
 int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev)
 {
@@ -479,7 +494,7 @@ void BlockAssembler::addPackageTxs(int &nPackagesSelected, int &nDescendantsUpda
     }
 }
 
-void IncrementExtraNonce(CBlock* pblock, const CBlockIndex* pindexPrev, unsigned int& nExtraNonce)
+void IncrementExtraNonce(CBlock *pblock, const CBlockIndex* pindexPrev, unsigned int& nExtraNonce)
 {
     // Update nExtraNonce
     static uint256 hashPrevBlock;
@@ -496,4 +511,285 @@ void IncrementExtraNonce(CBlock* pblock, const CBlockIndex* pindexPrev, unsigned
 
     pblock->vtx[0] = MakeTransactionRef(std::move(txCoinbase));
     pblock->hashMerkleRoot = BlockMerkleRoot(*pblock);
+}
+
+static bool ProcessBlockFound(const std::shared_ptr<const CBlock> &pblock, const CChainParams& chainparams)
+{
+    LogPrintf("%s\n", pblock->ToString());
+    LogPrintf("generated %s\n", FormatMoney(pblock->vtx[0]->vout[0].nValue));
+
+    // Found a solution
+    {
+        LOCK(cs_main);
+        if (pblock->hashPrevBlock != chainActive.Tip()->GetBlockHash())
+            return error("ProcessBlockFound -- generated block is stale");
+    }
+
+    // Inform about the new block
+    // GetMainSignals().BlockFound(pblock->GetHash());
+
+    // Process this block the same as if we had received it from another node
+    if (!ProcessNewBlock(chainparams, pblock, true, nullptr))
+        return error("ProcessBlockFound -- ProcessNewBlock() failed, block not accepted");
+
+    return true;
+}
+
+// ***TODO*** that part changed in bitcoin, we are using a mix with old one here for now
+void static BitcoinMiner(const CChainParams& chainparams, CConnman* connman,
+                         CWallet* pwallet, bool fProofOfStake)
+{
+    LogPrintf("XsnMiner -- started\n");
+    SetThreadPriority(THREAD_PRIORITY_LOWEST);
+    RenameThread("xsn-miner");
+
+    unsigned int nExtraNonce = 0;
+
+    std::shared_ptr<CReserveScript> coinbaseScript;
+    pwallet->GetScriptForMining(coinbaseScript);
+
+    while (true) {
+        try {
+
+            MilliSleep(1000);
+
+            // Throw an error if no script was provided.  This can happen
+            // due to some internal error but also if the keypool is empty.
+            // In the latter case, already the pointer is NULL.
+            if (!coinbaseScript || coinbaseScript->reserveScript.empty())
+                throw std::runtime_error("No coinbase script available (mining requires a wallet)");
+
+            do {
+                bool fvNodesEmpty = connman->GetNodeCount(CConnman::CONNECTIONS_ALL) == 0;
+                if (!fvNodesEmpty && !IsInitialBlockDownload() /*&& masternodeSync.IsSynced()*/)
+                    break;
+                MilliSleep(1000);
+            } while (true);
+
+            bool isTPoS = false;
+            uint256 hashTPoSContractTxId;
+            TPoSContract contract;
+
+            if(fProofOfStake)
+            {
+                if (chainActive.Tip()->nHeight < chainparams.GetConsensus().nLastPoWBlock ||
+                        pwallet->IsLocked() /*|| !masternodeSync.IsSynced() || !merchantnodeSync.IsSynced()*/)
+                {
+                    nLastCoinStakeSearchInterval = 0;
+                    MilliSleep(5000);
+                    continue;
+                }
+
+                LOCK(csTPoSParams);
+
+                isTPoS = tposParams.fUseTPoS;
+                hashTPoSContractTxId = tposParams.hashTPoSContractTxId;
+
+#if 0
+                if(isTPoS)
+                {
+                    auto it = pwallet->tposMerchantContracts.find(hashTPoSContractTxId);
+                    if(it != std::end(pwallet->tposMerchantContracts))
+                        contract = it->second;
+
+                    // check if our merchant node is set, otherwise block won't be accepted.
+                    CMerchantnode merchantNode;
+                    bool isValidForPayment = merchantnodeman.Get(activeMerchantnode.pubKeyMerchantnode, merchantNode);
+
+                    isValidForPayment &= merchantNode.IsValidForPayment();
+                    auto merchantnodePayee = CBitcoinAddress(activeMerchantnode.pubKeyMerchantnode.GetID());
+                    bool isValidContract = contract.merchantAddress == merchantnodePayee;
+                    if(!isValidForPayment || !isValidContract)
+                    {
+                        LogPrintf("Won't tpos, merchant node valid for payment: %d\n Contract address: %s, merchantnode address: \n", isValidForPayment,
+                                  contract.merchantAddress.ToString().c_str(), merchantnodePayee.ToString().c_str());
+
+                        nLastCoinStakeSearchInterval = 0;
+                        MilliSleep(10000);
+                        continue;
+                    }
+                }
+#endif
+            }
+
+            if(!fProofOfStake && chainActive.Tip()->nHeight >= chainparams.GetConsensus().nLastPoWBlock)
+            {
+                return;
+            }
+
+            //
+            // Create new block
+            //
+            unsigned int nTransactionsUpdatedLast = mempool.GetTransactionsUpdated();
+            CBlockIndex* pindexPrev = chainActive.Tip();
+            if(!pindexPrev) break;
+
+            BlockAssembler assemlber(chainparams);
+            auto pblocktemplate = assemlber.CreateNewBlock(pwallet, coinbaseScript->reserveScript, fProofOfStake, contract, false);
+            if (!pblocktemplate.get())
+            {
+                LogPrintf("XsnMiner -- Failed to find a coinstake\n");
+                MilliSleep(5000);
+                continue;
+            }
+            auto pblock = std::make_shared<CBlock>(pblocktemplate->block);
+            IncrementExtraNonce(pblock.get(), pindexPrev, nExtraNonce);
+
+            LogPrintf("XsnMiner -- Running miner with %u transactions in block (%u bytes)\n", pblock->vtx.size(),
+                      ::GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION));
+
+            //Sign block
+            if (fProofOfStake)
+            {
+                LogPrintf("CPUMiner : proof-of-stake block found %s \n", pblock->GetHash().ToString().c_str());
+
+                CBlockSigner signer(*pblock, pwallet, contract);
+
+                if (!signer.SignBlock()) {
+                    LogPrintf("BitcoinMiner(): Signing new block failed \n");
+                    throw std::runtime_error(strprintf("%s: SignBlock failed", __func__));
+                }
+
+                LogPrintf("CPUMiner : proof-of-stake block was signed %s \n", pblock->GetHash().ToString().c_str());
+            }
+
+            // check if block is valid
+            CValidationState state;
+            if (!TestBlockValidity(state, chainparams, *pblock, pindexPrev, false, false)) {
+                throw std::runtime_error(strprintf("%s: TestBlockValidity failed: %s", __func__, FormatStateMessage(state)));
+            }
+
+            // process proof of stake block
+            if(fProofOfStake) {
+                SetThreadPriority(THREAD_PRIORITY_NORMAL);
+                bool ret = ProcessBlockFound(pblock, chainparams);
+                SetThreadPriority(THREAD_PRIORITY_LOWEST);
+                MilliSleep(10000);
+                continue;
+            }
+
+            //
+            // Search
+            //
+            int64_t nStart = GetTime();
+            arith_uint256 hashTarget = arith_uint256().SetCompact(pblock->nBits);
+            while (true)
+            {
+                unsigned int nHashesDone = 0;
+
+                uint256 hash;
+                while (true)
+                {
+                    hash = pblock->GetHash();
+                    if (UintToArith256(hash) <= hashTarget)
+                    {
+                        // Found a solution
+                        SetThreadPriority(THREAD_PRIORITY_NORMAL);
+                        LogPrintf("XsnMiner:\n  proof-of-work found\n  hash: %s\n  target: %s\n", hash.GetHex(), hashTarget.GetHex());
+                        ProcessBlockFound(pblock, chainparams);
+                        SetThreadPriority(THREAD_PRIORITY_LOWEST);
+                        coinbaseScript->KeepScript();
+
+                        // In regression test mode, stop mining after a block is found. This
+                        // allows developers to controllably generate a block on demand.
+                        if (chainparams.MineBlocksOnDemand())
+                            throw boost::thread_interrupted();
+
+                        break;
+                    }
+                    pblock->nNonce += 1;
+                    nHashesDone += 1;
+                    if ((pblock->nNonce & 0xFF) == 0)
+                        break;
+                }
+
+                // Check for stop or if block needs to be rebuilt
+                boost::this_thread::interruption_point();
+                // Regtest mode doesn't require peers
+                if (connman->GetNodeCount(CConnman::CONNECTIONS_ALL) == 0)
+                    break;
+                if (pblock->nNonce >= 0xffff0000)
+                    break;
+                if (mempool.GetTransactionsUpdated() != nTransactionsUpdatedLast && GetTime() - nStart > 60)
+                    break;
+                if (pindexPrev != chainActive.Tip())
+                    break;
+
+                // Update nTime every few seconds
+                if (UpdateTime(pblock.get(), chainparams.GetConsensus(), pindexPrev) < 0)
+                    break; // Recreate the block if the clock has run backwards,
+                // so that we can use the correct time.
+                if (chainparams.GetConsensus().fPowAllowMinDifficultyBlocks)
+                {
+                    // Changing pblock->nTime can change work required on testnet:
+                    hashTarget.SetCompact(pblock->nBits);
+                }
+
+            }
+        }
+        catch (const boost::thread_interrupted&)
+        {
+            LogPrintf("XsnMiner -- terminated\n");
+            throw;
+        }
+        catch (const std::runtime_error &e)
+        {
+            LogPrintf("XsnMiner -- runtime error: %s\n", e.what());
+            //            return;
+        }
+    }
+}
+
+void GenerateBitcoins(bool fGenerate,
+                      int nThreads,
+                      const CChainParams& chainparams,
+                      CConnman *connman)
+{
+    static boost::thread_group* minerThreads = NULL;
+
+    if (nThreads < 0)
+        nThreads = GetNumCores();
+
+    if (minerThreads != NULL)
+    {
+        minerThreads->interrupt_all();
+        delete minerThreads;
+        minerThreads = NULL;
+    }
+
+    if (nThreads == 0 || !fGenerate)
+        return;
+
+    minerThreads = new boost::thread_group();
+    for (int i = 0; i < nThreads; i++)
+        minerThreads->create_thread(boost::bind(&BitcoinMiner, boost::cref(chainparams), boost::ref(connman), nullptr, false));
+}
+
+void ThreadStakeMinter(const CChainParams &chainparams, CConnman *connman, CWallet *pwallet)
+{
+    boost::this_thread::interruption_point();
+    LogPrintf("ThreadStakeMinter started\n");
+    try {
+        BitcoinMiner(chainparams, connman, pwallet, true);
+        boost::this_thread::interruption_point();
+    } catch (std::exception& e) {
+        LogPrintf("ThreadStakeMinter() exception %s\n", e.what());
+    } catch (...) {
+        LogPrintf("ThreadStakeMinter() error \n");
+    }
+    LogPrintf("ThreadStakeMinter exiting,\n");
+
+}
+
+void SetTPoSMinningParams(bool fUseTPoS, uint256 hashTPoSContractTxId)
+{
+    LOCK(csTPoSParams);
+    tposParams.fUseTPoS = fUseTPoS;
+    tposParams.hashTPoSContractTxId = hashTPoSContractTxId;
+}
+
+std::tuple<bool, uint256> GetTPoSMinningParams()
+{
+    LOCK(csTPoSParams);
+    return std::make_tuple(tposParams.fUseTPoS, tposParams.hashTPoSContractTxId);
 }

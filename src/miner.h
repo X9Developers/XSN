@@ -19,10 +19,12 @@ class CChainParams;
 class CWallet;
 class CScript;
 class TPoSContract;
+class CConnman;
 
 namespace Consensus { struct Params; };
 
 static const bool DEFAULT_PRINTPRIORITY = false;
+extern int64_t nLastCoinStakeSearchInterval;
 
 struct CBlockTemplate
 {
@@ -204,7 +206,14 @@ private:
 };
 
 /** Modify the extranonce in a block */
-void IncrementExtraNonce(CBlock* pblock, const CBlockIndex* pindexPrev, unsigned int& nExtraNonce);
+void IncrementExtraNonce(CBlock *pblock, const CBlockIndex* pindexPrev, unsigned int& nExtraNonce);
 int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev);
+
+/** Run the miner threads */
+void GenerateBitcoins(bool fGenerate, int nThreads, const CChainParams& chainparams, CConnman* connman);
+void ThreadStakeMinter(const CChainParams& chainparams, CConnman* connman, CWallet *pwallet);
+
+void SetTPoSMinningParams(bool fUseTPoS, uint256 hashTPoSContractTxId);
+std::tuple<bool, uint256> GetTPoSMinningParams();
 
 #endif // BITCOIN_MINER_H
