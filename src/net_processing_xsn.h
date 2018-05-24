@@ -1,7 +1,7 @@
 #ifndef NET_PROCESSING_XSN_H
 #define NET_PROCESSING_XSN_H
 
-#include "chainparams.h"
+#include <chainparams.h>
 
 class CNode;
 class CInv;

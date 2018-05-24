@@ -2,13 +2,13 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "activemerchantnode.h"
+#include <tpos/activemerchantnode.h>
 #include <base58.h>
 #include <init.h>
 #include <netbase.h>
-#include <merchantnode.h>
-#include <merchantnodeman.h>
-#include <merchantnode-sync.h>
+#include <tpos/merchantnode.h>
+#include <tpos/merchantnodeman.h>
+#include <tpos/merchantnode-sync.h>
 #include <messagesigner.h>
 #include <script/standard.h>
 #include <util.h>

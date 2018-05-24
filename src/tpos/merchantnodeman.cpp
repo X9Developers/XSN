@@ -2,17 +2,18 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "activemerchantnode.h"
-#include "addrman.h"
-#include "merchantnode-sync.h"
-#include "merchantnodeman.h"
-#include "merchantnode.h"
-#include "netfulfilledman.h"
-#include "net_processing.h"
-#include "script/standard.h"
-#include "messagesigner.h"
-#include "util.h"
-#include "init.h"
+#include <tpos/activemerchantnode.h>
+#include <addrman.h>
+#include <tpos/merchantnode-sync.h>
+#include <tpos/merchantnodeman.h>
+#include <tpos/merchantnode.h>
+#include <netfulfilledman.h>
+#include <net_processing.h>
+#include <script/standard.h>
+#include <messagesigner.h>
+#include <utilstrencodings.h>
+#include <util.h>
+#include <init.h>
 
 /** Merchantnode manager */
 CMerchantnodeMan merchantnodeman;
@@ -51,7 +52,7 @@ bool CMerchantnodeMan::Add(CMerchantnode &mn)
 
     if (Has(mn.pubKeyMerchantnode)) return false;
 
-    LogPrint("merchantnode", "CMerchantnodeMan::Add -- Adding new Merchantnode: addr=%s, %i now\n", mn.addr.ToString(), size() + 1);
+    LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::Add -- Adding new Merchantnode: addr=%s, %i now\n", mn.addr.ToString(), size() + 1);
     mapMerchantnodes[mn.pubKeyMerchantnode] = mn;
 
     return true;
@@ -72,14 +73,14 @@ void CMerchantnodeMan::AskForMN(CNode* pnode, const CPubKey &pubKeyMerchantnode,
                 return;
             }
             // we asked this node for this outpoint but it's ok to ask again already
-            LogPrintf("CMerchantnodeMan::AskForMN -- Asking same peer %s for missing merchantnode entry again: %s\n", pnode->addr.ToString(), HexStr(pubKeyMerchantnode.Raw()));
+            LogPrintf("CMerchantnodeMan::AskForMN -- Asking same peer %s for missing merchantnode entry again: %s\n", pnode->addr.ToString(), pubKeyMerchantnode.GetID().ToString());
         } else {
             // we already asked for this outpoint but not this node
-            LogPrintf("CMerchantnodeMan::AskForMN -- Asking new peer %s for missing merchantnode entry: %s\n", pnode->addr.ToString(), HexStr(pubKeyMerchantnode.Raw()));
+            LogPrintf("CMerchantnodeMan::AskForMN -- Asking new peer %s for missing merchantnode entry: %s\n", pnode->addr.ToString(), pubKeyMerchantnode.GetID().ToString());
         }
     } else {
         // we never asked any node for this outpoint
-        LogPrintf("CMerchantnodeMan::AskForMN -- Asking peer %s for missing merchantnode entry for the first time: %s\n", pnode->addr.ToString(), HexStr(pubKeyMerchantnode.Raw()));
+        LogPrintf("CMerchantnodeMan::AskForMN -- Asking peer %s for missing merchantnode entry for the first time: %s\n", pnode->addr.ToString(), pubKeyMerchantnode.GetID().ToString());
     }
     mWeAskedForMerchantnodeListEntry[pubKeyMerchantnode][pnode->addr] = GetTime() + DSEG_UPDATE_SECONDS;
 
@@ -102,7 +103,7 @@ void CMerchantnodeMan::Check()
 {
     LOCK(cs);
 
-    LogPrint("merchantnode", "CMerchantnodeMan::Check -- nLastWatchdogVoteTime=%d, IsWatchdogActive()=%d\n", nLastWatchdogVoteTime, IsWatchdogActive());
+    LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::Check -- nLastWatchdogVoteTime=%d, IsWatchdogActive()=%d\n", nLastWatchdogVoteTime, IsWatchdogActive());
 
     for (auto& mnpair : mapMerchantnodes) {
         mnpair.second.Check();
@@ -132,7 +133,7 @@ void CMerchantnodeMan::CheckAndRemove(CConnman& connman)
             uint256 hash = mnb.GetHash();
             // If collateral was spent ...
             if (it->second.IsNewStartRequired()) {
-                LogPrint("merchantnode", "CMerchantnodeMan::CheckAndRemove -- Removing Merchantnode: %s  addr=%s  %i now\n", it->second.GetStateString(), it->second.addr.ToString(), size() - 1);
+                LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckAndRemove -- Removing Merchantnode: %s  addr=%s  %i now\n", it->second.GetStateString(), it->second.addr.ToString(), size() - 1);
 
                 // erase all of the broadcasts we've seen from this txin, ...
                 mapSeenMerchantnodeBroadcast.erase(hash);
@@ -155,20 +156,20 @@ void CMerchantnodeMan::CheckAndRemove(CConnman& connman)
         }
 
         // proces replies for MERCHANTNODE_NEW_START_REQUIRED merchantnodes
-        LogPrint("merchantnode", "CMerchantnodeMan::CheckAndRemove -- mMnbRecoveryGoodReplies size=%d\n", (int)mMnbRecoveryGoodReplies.size());
+        LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckAndRemove -- mMnbRecoveryGoodReplies size=%d\n", (int)mMnbRecoveryGoodReplies.size());
         std::map<uint256, std::vector<CMerchantnodeBroadcast> >::iterator itMnbReplies = mMnbRecoveryGoodReplies.begin();
         while(itMnbReplies != mMnbRecoveryGoodReplies.end()){
             if(mMnbRecoveryRequests[itMnbReplies->first].first < GetTime()) {
                 // all nodes we asked should have replied now
                 if(itMnbReplies->second.size() >= MNB_RECOVERY_QUORUM_REQUIRED) {
                     // majority of nodes we asked agrees that this mn doesn't require new mnb, reprocess one of new mnbs
-                    LogPrint("merchantnode", "CMerchantnodeMan::CheckAndRemove -- reprocessing mnb, merchantnode=%s\n", HexStr(itMnbReplies->second[0].pubKeyMerchantnode.Raw()));
+                    LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckAndRemove -- reprocessing mnb, merchantnode=%s\n", itMnbReplies->second[0].pubKeyMerchantnode.);
                     // mapSeenMerchantnodeBroadcast.erase(itMnbReplies->first);
                     int nDos;
                     itMnbReplies->second[0].fRecovery = true;
                     CheckMnbAndUpdateMerchantnodeList(NULL, itMnbReplies->second[0], nDos, connman);
                 }
-                LogPrint("merchantnode", "CMerchantnodeMan::CheckAndRemove -- removing mnb recovery reply, merchantnode=%s, size=%d\n", HexStr(itMnbReplies->second[0].pubKeyMerchantnode.Raw()), (int)itMnbReplies->second.size());
+                LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckAndRemove -- removing mnb recovery reply, merchantnode=%s, size=%d\n", HexStr(itMnbReplies->second[0].pubKeyMerchantnode.Raw()), (int)itMnbReplies->second.size());
                 mMnbRecoveryGoodReplies.erase(itMnbReplies++);
             } else {
                 ++itMnbReplies;
@@ -243,7 +244,7 @@ void CMerchantnodeMan::CheckAndRemove(CConnman& connman)
         std::map<uint256, CMerchantnodePing>::iterator it4 = mapSeenMerchantnodePing.begin();
         while(it4 != mapSeenMerchantnodePing.end()){
             if((*it4).second.IsExpired()) {
-                LogPrint("merchantnode", "CMerchantnodeMan::CheckAndRemove -- Removing expired Merchantnode ping: hash=%s\n", (*it4).second.GetHash().ToString());
+                LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckAndRemove -- Removing expired Merchantnode ping: hash=%s\n", (*it4).second.GetHash().ToString());
                 mapSeenMerchantnodePing.erase(it4++);
             } else {
                 ++it4;
@@ -254,7 +255,7 @@ void CMerchantnodeMan::CheckAndRemove(CConnman& connman)
         std::map<uint256, CMerchantnodeVerification>::iterator itv2 = mapSeenMerchantnodeVerification.begin();
         while(itv2 != mapSeenMerchantnodeVerification.end()){
             if((*itv2).second.nBlockHeight < nCachedBlockHeight - MAX_POSE_BLOCKS){
-                LogPrint("merchantnode", "CMerchantnodeMan::CheckAndRemove -- Removing expired Merchantnode verification: hash=%s\n", (*itv2).first.ToString());
+                LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckAndRemove -- Removing expired Merchantnode verification: hash=%s\n", (*itv2).first.ToString());
                 mapSeenMerchantnodeVerification.erase(itv2++);
             } else {
                 ++itv2;
@@ -341,7 +342,7 @@ void CMerchantnodeMan::DsegUpdate(CNode* pnode, CConnman& connman)
     int64_t askAgain = GetTime() + DSEG_UPDATE_SECONDS;
     mWeAskedForMerchantnodeList[pnode->addr] = askAgain;
 
-    LogPrint("merchantnode", "CMerchantnodeMan::DsegUpdate -- asked %s for the list\n", pnode->addr.ToString());
+    LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::DsegUpdate -- asked %s for the list\n", pnode->addr.ToString());
 }
 
 CMerchantnode* CMerchantnodeMan::Find(const CPubKey &pubKeyMerchantnode)
@@ -474,7 +475,7 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDa
 
         if(!merchantnodeSync.IsBlockchainSynced()) return;
 
-        LogPrint("merchantnode", "MERCHANTNODEANNOUNCE -- Merchantnode announce, merchantnode=%s\n", HexStr(mnb.pubKeyMerchantnode.Raw()));
+        LogPrint(BCLog::MERCHANTNODE, "MERCHANTNODEANNOUNCE -- Merchantnode announce, merchantnode=%s\n", HexStr(mnb.pubKeyMerchantnode.Raw()));
 
         int nDos = 0;
 
@@ -496,7 +497,7 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDa
 
         if(!merchantnodeSync.IsBlockchainSynced()) return;
 
-        LogPrint("merchantnode", "MERCHANTNODEPING -- Merchantnode ping, merchantnode=%s\n", HexStr(mnp.merchantPubKey.Raw()));
+        LogPrint(BCLog::MERCHANTNODE, "MERCHANTNODEPING -- Merchantnode ping, merchantnode=%s\n", HexStr(mnp.merchantPubKey.Raw()));
 
         // Need LOCK2 here to ensure consistent locking order because the CheckAndUpdate call below locks cs_main
         LOCK2(cs_main, cs);
@@ -504,7 +505,7 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDa
         if(mapSeenMerchantnodePing.count(nHash)) return; //seen
         mapSeenMerchantnodePing.insert(std::make_pair(nHash, mnp));
 
-        LogPrint("merchantnode", "MERCHANTNODEPING -- Merchantnode ping, merchantnode=%s new\n", HexStr(mnp.merchantPubKey.Raw()));
+        LogPrint(BCLog::MERCHANTNODE, "MERCHANTNODEPING -- Merchantnode ping, merchantnode=%s new\n", HexStr(mnp.merchantPubKey.Raw()));
 
         // see if we have this Merchantnode
         CMerchantnode* pmn = Find(mnp.merchantPubKey);
@@ -542,7 +543,7 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDa
         CPubKey pubKeyMerchantnode;
         vRecv >> pubKeyMerchantnode;
 
-        LogPrint("merchantnode", "MERCHANTNODESEG -- Merchantnode list, merchantnode=%s\n", HexStr(pubKeyMerchantnode.Raw()));
+        LogPrint(BCLog::MERCHANTNODE, "MERCHANTNODESEG -- Merchantnode list, merchantnode=%s\n", HexStr(pubKeyMerchantnode.Raw()));
 
         LOCK(cs);
 
@@ -570,7 +571,7 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDa
             if (mnpair.second.IsUpdateRequired()) continue; // do not send outdated merchantnodes
 
             CMerchantnodeBroadcast mnb = CMerchantnodeBroadcast(mnpair.second);
-            LogPrint("merchantnode", "MERCHANTNODESEG -- Sending Merchantnode entry: merchantnode=%s  addr=%s\n", HexStr(mnb.pubKeyMerchantnode.Raw()), mnb.addr.ToString());
+            LogPrint(BCLog::MERCHANTNODE, "MERCHANTNODESEG -- Sending Merchantnode entry: merchantnode=%s  addr=%s\n", HexStr(mnb.pubKeyMerchantnode.Raw()), mnb.addr.ToString());
             CMerchantnodePing mnp = mnpair.second.lastPing;
             uint256 hashMNB = mnb.GetHash();
             uint256 hashMNP = mnp.GetHash();
@@ -593,7 +594,7 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDa
             return;
         }
         // smth weird happen - someone asked us for vin we have no idea about?
-        LogPrint("merchantnode", "MERCHANTNODESEG -- No invs sent to peer %d\n", pfrom->id);
+        LogPrint(BCLog::MERCHANTNODE, "MERCHANTNODESEG -- No invs sent to peer %d\n", pfrom->id);
 
     } else if (strCommand == NetMsgType::MERCHANTNODEVERIFY) { // Merchantnode Verify
 
@@ -638,13 +639,13 @@ void CMerchantnodeMan::DoFullVerificationStep(CConnman& connman)
     std::vector<std::pair<int, CMerchantnode> >::iterator it = vecMerchantnodeRanks.begin();
     while(it != vecMerchantnodeRanks.end()) {
         if(it->first > MAX_POSE_RANK) {
-            LogPrint("merchantnode", "CMerchantnodeMan::DoFullVerificationStep -- Must be in top %d to send verify request\n",
+            LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::DoFullVerificationStep -- Must be in top %d to send verify request\n",
                      (int)MAX_POSE_RANK);
             return;
         }
         if(it->second.vin.prevout == activeMerchantnode.outpoint) {
             nMyRank = it->first;
-            LogPrint("merchantnode", "CMerchantnodeMan::DoFullVerificationStep -- Found self at rank %d/%d, verifying up to %d merchantnodes\n",
+            LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::DoFullVerificationStep -- Found self at rank %d/%d, verifying up to %d merchantnodes\n",
                      nMyRank, nRanksTotal, (int)MAX_POSE_CONNECTIONS);
             break;
         }
@@ -669,7 +670,7 @@ void CMerchantnodeMan::DoFullVerificationStep(CConnman& connman)
     it = vecMerchantnodeRanks.begin() + nOffset;
     while(it != vecMerchantnodeRanks.end()) {
         if(it->second.IsPoSeVerified() || it->second.IsPoSeBanned()) {
-            LogPrint("merchantnode", "CMerchantnodeMan::DoFullVerificationStep -- Already %s%s%s merchantnode %s address %s, skipping...\n",
+            LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::DoFullVerificationStep -- Already %s%s%s merchantnode %s address %s, skipping...\n",
                      it->second.IsPoSeVerified() ? "verified" : "",
                      it->second.IsPoSeVerified() && it->second.IsPoSeBanned() ? " and " : "",
                      it->second.IsPoSeBanned() ? "banned" : "",
@@ -679,7 +680,7 @@ void CMerchantnodeMan::DoFullVerificationStep(CConnman& connman)
             it += MAX_POSE_CONNECTIONS;
             continue;
         }
-        LogPrint("merchantnode", "CMerchantnodeMan::DoFullVerificationStep -- Verifying merchantnode %s rank %d/%d address %s\n",
+        LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::DoFullVerificationStep -- Verifying merchantnode %s rank %d/%d address %s\n",
                  it->second.vin.prevout.ToStringShort(), it->first, nRanksTotal, it->second.addr.ToString());
         if(SendVerifyRequest(CAddress(it->second.addr, NODE_NETWORK), vSortedByAddr, connman)) {
             nCount++;
@@ -691,7 +692,7 @@ void CMerchantnodeMan::DoFullVerificationStep(CConnman& connman)
     }
 
 
-    LogPrint("merchantnode", "CMerchantnodeMan::DoFullVerificationStep -- Sent verification requests to %d merchantnodes\n", nCount);
+    LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::DoFullVerificationStep -- Sent verification requests to %d merchantnodes\n", nCount);
 #endif
 }
 
@@ -719,7 +720,7 @@ void CMerchantnodeMan::CheckSameAddr()
 
         sort(vSortedByAddr.begin(), vSortedByAddr.end(), CompareByAddr());
 
-        BOOST_FOREACH(CMerchantnode* pmn, vSortedByAddr) {
+        for(CMerchantnode* pmn : vSortedByAddr) {
             // check only (pre)enabled merchantnodes
             if(!pmn->IsEnabled() && !pmn->IsPreEnabled()) continue;
             // initial step
@@ -757,7 +758,7 @@ bool CMerchantnodeMan::SendVerifyRequest(const CAddress& addr, const std::vector
 {
     if(netfulfilledman.HasFulfilledRequest(addr, strprintf("%s", NetMsgType::MERCHANTNODEVERIFY)+"-request")) {
         // we already asked for verification, not a good idea to do this too often, skip it
-        LogPrint("merchantnode", "CMerchantnodeMan::SendVerifyRequest -- too many requests, skipping... addr=%s\n", addr.ToString());
+        LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::SendVerifyRequest -- too many requests, skipping... addr=%s\n", addr.ToString());
         return false;
     }
 
@@ -917,7 +918,7 @@ void CMerchantnodeMan::ProcessVerifyReply(CNode* pnode, CMerchantnodeVerificatio
         // increase ban score for everyone else
         BOOST_FOREACH(CMerchantnode* pmn, vpMerchantnodesToBan) {
             pmn->IncreasePoSeBanScore();
-            LogPrint("merchantnode", "CMerchantnodeMan::ProcessVerifyReply -- increased PoSe ban score for %s addr %s, new score %d\n",
+            LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::ProcessVerifyReply -- increased PoSe ban score for %s addr %s, new score %d\n",
                      HexStr(prealMerchantnode->pubKeyMerchantnode.Raw()), pnode->addr.ToString(), pmn->nPoSeBanScore);
         }
         if(!vpMerchantnodesToBan.empty())
@@ -938,13 +939,13 @@ void CMerchantnodeMan::ProcessVerifyBroadcast(CNode* pnode, const CMerchantnodeV
 
     // we don't care about history
     if(mnv.nBlockHeight < nCachedBlockHeight - MAX_POSE_BLOCKS) {
-        LogPrint("merchantnode", "CMerchantnodeMan::ProcessVerifyBroadcast -- Outdated: current block %d, verification block %d, peer=%d\n",
+        LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::ProcessVerifyBroadcast -- Outdated: current block %d, verification block %d, peer=%d\n",
                  nCachedBlockHeight, mnv.nBlockHeight, pnode->id);
         return;
     }
 
     if(mnv.pubKeyMerchantnode1 == mnv.pubKeyMerchantnode2) {
-        LogPrint("merchantnode", "CMerchantnodeMan::ProcessVerifyBroadcast -- ERROR: same vins %s, peer=%d\n",
+        LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::ProcessVerifyBroadcast -- ERROR: same vins %s, peer=%d\n",
                  HexStr(mnv.pubKeyMerchantnode1.Raw()), pnode->id);
         // that was NOT a good idea to cheat and verify itself,
         // ban the node we received such message from
@@ -963,14 +964,14 @@ void CMerchantnodeMan::ProcessVerifyBroadcast(CNode* pnode, const CMerchantnodeV
 
 #if 0
     if (!GetMerchantnodeRank(mnv.vin2.prevout, nRank, mnv.nBlockHeight, MIN_POSE_PROTO_VERSION)) {
-        LogPrint("merchantnode", "CMerchantnodeMan::ProcessVerifyBroadcast -- Can't calculate rank for merchantnode %s\n",
+        LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::ProcessVerifyBroadcast -- Can't calculate rank for merchantnode %s\n",
                  mnv.vin2.prevout.ToStringShort());
         return;
     }
 #endif
 
     if(nRank > MAX_POSE_RANK) {
-        LogPrint("merchantnode", "CMerchantnodeMan::ProcessVerifyBroadcast -- Merchantnode %s is not in top %d, current rank %d, peer=%d\n",
+        LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::ProcessVerifyBroadcast -- Merchantnode %s is not in top %d, current rank %d, peer=%d\n",
                  HexStr(mnv.pubKeyMerchantnode2.Raw()), (int)MAX_POSE_RANK, nRank, pnode->id);
         return;
     }
@@ -1023,7 +1024,7 @@ void CMerchantnodeMan::ProcessVerifyBroadcast(CNode* pnode, const CMerchantnodeV
             if(mnpair.second.addr != mnv.addr || mnpair.first == mnv.pubKeyMerchantnode1) continue;
             mnpair.second.IncreasePoSeBanScore();
             nCount++;
-            LogPrint("merchantnode", "CMerchantnodeMan::ProcessVerifyBroadcast -- increased PoSe ban score for %s addr %s, new score %d\n",
+            LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::ProcessVerifyBroadcast -- increased PoSe ban score for %s addr %s, new score %d\n",
                      HexStr(mnpair.first.Raw()), mnpair.second.addr.ToString(), mnpair.second.nPoSeBanScore);
         }
         if(nCount)
@@ -1076,22 +1077,22 @@ bool CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList(CNode* pfrom, CMerchant
     {
         LOCK(cs);
         nDos = 0;
-        LogPrint("merchantnode", "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- merchantnode=%s\n", HexStr(mnb.pubKeyMerchantnode.Raw()));
+        LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- merchantnode=%s\n", HexStr(mnb.pubKeyMerchantnode.Raw()));
 
         uint256 hash = mnb.GetHash();
         if(mapSeenMerchantnodeBroadcast.count(hash) && !mnb.fRecovery) { //seen
-            LogPrint("merchantnode", "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- merchantnode=%s seen\n", HexStr(mnb.pubKeyMerchantnode.Raw()));
+            LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- merchantnode=%s seen\n", HexStr(mnb.pubKeyMerchantnode.Raw()));
             // less then 2 pings left before this MN goes into non-recoverable state, bump sync timeout
             if(GetTime() - mapSeenMerchantnodeBroadcast[hash].first > MERCHANTNODE_NEW_START_REQUIRED_SECONDS - MERCHANTNODE_MIN_MNP_SECONDS * 2) {
-                LogPrint("merchantnode", "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- merchantnode=%s seen update\n", HexStr(mnb.pubKeyMerchantnode.Raw()));
+                LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- merchantnode=%s seen update\n", HexStr(mnb.pubKeyMerchantnode.Raw()));
                 mapSeenMerchantnodeBroadcast[hash].first = GetTime();
                 merchantnodeSync.BumpAssetLastTime("CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList - seen");
             }
             // did we ask this node for it?
             if(pfrom && IsMnbRecoveryRequested(hash) && GetTime() < mMnbRecoveryRequests[hash].first) {
-                LogPrint("merchantnode", "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- mnb=%s seen request\n", hash.ToString());
+                LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- mnb=%s seen request\n", hash.ToString());
                 if(mMnbRecoveryRequests[hash].second.count(pfrom->addr)) {
-                    LogPrint("merchantnode", "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- mnb=%s seen request, addr=%s\n", hash.ToString(), pfrom->addr.ToString());
+                    LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- mnb=%s seen request, addr=%s\n", hash.ToString(), pfrom->addr.ToString());
                     // do not allow node to send same mnb multiple times in recovery mode
                     mMnbRecoveryRequests[hash].second.erase(pfrom->addr);
                     // does it have newer lastPing?
@@ -1099,10 +1100,10 @@ bool CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList(CNode* pfrom, CMerchant
                         // simulate Check
                         CMerchantnode mnTemp = CMerchantnode(mnb);
                         mnTemp.Check();
-                        LogPrint("merchantnode", "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- mnb=%s seen request, addr=%s, better lastPing: %d min ago, projected mn state: %s\n", hash.ToString(), pfrom->addr.ToString(), (GetAdjustedTime() - mnb.lastPing.sigTime)/60, mnTemp.GetStateString());
+                        LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- mnb=%s seen request, addr=%s, better lastPing: %d min ago, projected mn state: %s\n", hash.ToString(), pfrom->addr.ToString(), (GetAdjustedTime() - mnb.lastPing.sigTime)/60, mnTemp.GetStateString());
                         if(mnTemp.IsValidStateForAutoStart(mnTemp.nActiveState)) {
                             // this node thinks it's a good one
-                            LogPrint("merchantnode", "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- merchantnode=%s seen good\n", HexStr(mnb.pubKeyMerchantnode.Raw()));
+                            LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- merchantnode=%s seen good\n", HexStr(mnb.pubKeyMerchantnode.Raw()));
                             mMnbRecoveryGoodReplies[hash].push_back(mnb);
                         }
                     }
@@ -1112,10 +1113,10 @@ bool CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList(CNode* pfrom, CMerchant
         }
         mapSeenMerchantnodeBroadcast.insert(std::make_pair(hash, std::make_pair(GetTime(), mnb)));
 
-        LogPrint("merchantnode", "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- merchantnode=%s new\n", HexStr(mnb.pubKeyMerchantnode.Raw()));
+        LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- merchantnode=%s new\n", HexStr(mnb.pubKeyMerchantnode.Raw()));
 
         if(!mnb.SimpleCheck(nDos)) {
-            LogPrint("merchantnode", "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- SimpleCheck() failed, merchantnode=%s\n", HexStr(mnb.pubKeyMerchantnode.Raw()));
+            LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- SimpleCheck() failed, merchantnode=%s\n", HexStr(mnb.pubKeyMerchantnode.Raw()));
             return false;
         }
 
@@ -1124,7 +1125,7 @@ bool CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList(CNode* pfrom, CMerchant
         if(pmn) {
             CMerchantnodeBroadcast mnbOld = mapSeenMerchantnodeBroadcast[CMerchantnodeBroadcast(*pmn).GetHash()].second;
             if(!mnb.Update(pmn, nDos, connman)) {
-                LogPrint("merchantnode", "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- Update() failed, merchantnode=%s\n", HexStr(mnb.pubKeyMerchantnode.Raw()));
+                LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- Update() failed, merchantnode=%s\n", HexStr(mnb.pubKeyMerchantnode.Raw()));
                 return false;
             }
             if(hash != mnbOld.GetHash()) {
@@ -1224,7 +1225,7 @@ void CMerchantnodeMan::SetMerchantnodeLastPing(const CPubKey &pubKeyMerchantnode
 void CMerchantnodeMan::UpdatedBlockTip(const CBlockIndex *pindex)
 {
     nCachedBlockHeight = pindex->nHeight;
-    LogPrint("merchantnode", "CMerchantnodeMan::UpdatedBlockTip -- nCachedBlockHeight=%d\n", nCachedBlockHeight);
+    LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::UpdatedBlockTip -- nCachedBlockHeight=%d\n", nCachedBlockHeight);
 
     CheckSameAddr();
 }

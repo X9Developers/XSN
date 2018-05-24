@@ -1,8 +1,8 @@
 
-#include "netbase.h"
-#include "merchantnodeconfig.h"
-#include "util.h"
-#include "chainparams.h"
+#include <netbase.h>
+#include <tpos/merchantnodeconfig.h>
+#include <util.h>
+#include <chainparams.h>
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>

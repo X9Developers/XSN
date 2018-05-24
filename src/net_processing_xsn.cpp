@@ -1,4 +1,4 @@
-#include "net_processing_xsn.h"
+#include <net_processing_xsn.h>
 
 #include <spork.h>
 #include <netmessagemaker.h>

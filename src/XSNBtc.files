@@ -92,6 +92,8 @@ netaddress.cpp
 netaddress.h
 netbase.cpp
 netbase.h
+netfulfilledman.cpp
+netfulfilledman.h
 netmessagemaker.h
 noui.cpp
 noui.h

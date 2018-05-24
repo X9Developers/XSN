@@ -5,9 +5,9 @@
 #ifndef SPORK_H
 #define SPORK_H
 
-#include "hash.h"
-#include "net.h"
-#include "utilstrencodings.h"
+#include <hash.h>
+#include <net.h>
+#include <utilstrencodings.h>
 
 class CSporkMessage;
 class CSporkManager;

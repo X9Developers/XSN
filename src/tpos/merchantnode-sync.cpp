@@ -2,17 +2,19 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "activemerchantnode.h"
-#include "checkpoints.h"
-#include "governance.h"
-#include "validation.h"
-#include "merchantnode-sync.h"
-#include "merchantnode.h"
-#include "merchantnodeman.h"
-#include "netfulfilledman.h"
-#include "spork.h"
-#include "ui_interface.h"
-#include "util.h"
+#include <tpos/activemerchantnode.h>
+#include <checkpoints.h>
+#if 0
+#include <governance.h>
+#endif
+#include <validation.h>
+#include <tpos/merchantnode-sync.h>
+#include <tpos/merchantnode.h>
+#include <tpos/merchantnodeman.h>
+#include <netfulfilledman.h>
+#include <spork.h>
+#include <ui_interface.h>
+#include <util.h>
 
 class CMerchantnodeSync;
 CMerchantnodeSync merchantnodeSync;
@@ -36,7 +38,7 @@ void CMerchantnodeSync::BumpAssetLastTime(std::string strFuncName)
 {
     if(IsSynced() || IsFailed()) return;
     nTimeLastBumped = GetTime();
-    LogPrint("mnsync", "CMerchantnodeSync::BumpAssetLastTime -- %s\n", strFuncName);
+    LogPrint(BCLog::MNSYNC, "CMerchantnodeSync::BumpAssetLastTime -- %s\n", strFuncName);
 }
 
 std::string CMerchantnodeSync::GetAssetName()
@@ -268,7 +270,7 @@ void CMerchantnodeSync::ProcessTick(CConnman& connman)
 
 void CMerchantnodeSync::AcceptedBlockHeader(const CBlockIndex *pindexNew)
 {
-    LogPrint("mnsync", "CMerchantnodeSync::AcceptedBlockHeader -- pindexNew->nHeight: %d\n", pindexNew->nHeight);
+    LogPrint(BCLog::MNSYNC, "CMerchantnodeSync::AcceptedBlockHeader -- pindexNew->nHeight: %d\n", pindexNew->nHeight);
 
     if (!IsBlockchainSynced()) {
         // Postpone timeout each time new block header arrives while we are still syncing blockchain
@@ -278,7 +280,7 @@ void CMerchantnodeSync::AcceptedBlockHeader(const CBlockIndex *pindexNew)
 
 void CMerchantnodeSync::NotifyHeaderTip(const CBlockIndex *pindexNew, bool fInitialDownload, CConnman& connman)
 {
-    LogPrint("mnsync", "CMerchantnodeSync::NotifyHeaderTip -- pindexNew->nHeight: %d fInitialDownload=%d\n", pindexNew->nHeight, fInitialDownload);
+    LogPrint(BCLog::MNSYNC, "CMerchantnodeSync::NotifyHeaderTip -- pindexNew->nHeight: %d fInitialDownload=%d\n", pindexNew->nHeight, fInitialDownload);
 
     if (IsFailed() || IsSynced() || !pindexBestHeader)
         return;
@@ -291,7 +293,7 @@ void CMerchantnodeSync::NotifyHeaderTip(const CBlockIndex *pindexNew, bool fInit
 
 void CMerchantnodeSync::UpdatedBlockTip(const CBlockIndex *pindexNew, bool fInitialDownload, CConnman& connman)
 {
-    LogPrint("mnsync", "CMerchantnodeSync::UpdatedBlockTip -- pindexNew->nHeight: %d fInitialDownload=%d\n", pindexNew->nHeight, fInitialDownload);
+    LogPrint(BCLog::MNSYNC, "CMerchantnodeSync::UpdatedBlockTip -- pindexNew->nHeight: %d fInitialDownload=%d\n", pindexNew->nHeight, fInitialDownload);
 
     if (IsFailed() || IsSynced() || !pindexBestHeader)
         return;
@@ -326,7 +328,7 @@ void CMerchantnodeSync::UpdatedBlockTip(const CBlockIndex *pindexNew, bool fInit
 
     fReachedBestHeader = fReachedBestHeaderNew;
 
-    LogPrint("mnsync", "CMerchantnodeSync::UpdatedBlockTip -- pindexNew->nHeight: %d pindexBestHeader->nHeight: %d fInitialDownload=%d fReachedBestHeader=%d\n",
+    LogPrint(BCLog::MNSYNC, "CMerchantnodeSync::UpdatedBlockTip -- pindexNew->nHeight: %d pindexBestHeader->nHeight: %d fInitialDownload=%d fReachedBestHeader=%d\n",
                 pindexNew->nHeight, pindexBestHeader->nHeight, fInitialDownload, fReachedBestHeader);
 
     if (!IsBlockchainSynced() && fReachedBestHeader) {

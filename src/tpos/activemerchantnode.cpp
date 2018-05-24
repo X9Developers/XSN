@@ -2,10 +2,10 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "activemerchantnode.h"
-#include "merchantnode.h"
-#include "merchantnode-sync.h"
-#include "merchantnodeman.h"
+#include <tpos/activemerchantnode.h>
+#include <tpos/merchantnode.h>
+#include <tpos/merchantnode-sync.h>
+#include <tpos/merchantnodeman.h>
 #include <protocol.h>
 #include <utilstrencodings.h>
 
@@ -85,7 +85,6 @@ std::string CActiveMerchantnode::GetTypeString() const
 
 bool CActiveMerchantnode::SendMerchantnodePing(CConnman& connman)
 {
-#if 0
     if(!fPingerEnabled) {
         LogPrint(BCLog::MERCHANTNODE, "CActiveMerchantnode::SendMerchantnodePing -- %s: masternode ping service is disabled, skipping...\n", GetStateString());
         return false;
@@ -117,7 +116,6 @@ bool CActiveMerchantnode::SendMerchantnodePing(CConnman& connman)
 
     LogPrintf("%s -- Relaying ping, collateral=%s\n", __func__, HexStr(pubKeyMerchantnode.GetID().ToString()));
     mnp.Relay(connman);
-#endif
 
     return true;
 }

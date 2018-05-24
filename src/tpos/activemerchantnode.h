@@ -5,10 +5,10 @@
 #ifndef ACTIVEMERCHANTNODE_H
 #define ACTIVEMERCHANTNODE_H
 
-#include "chainparams.h"
-#include "key.h"
-#include "net.h"
-#include "primitives/transaction.h"
+#include <chainparams.h>
+#include <key.h>
+#include <net.h>
+#include <primitives/transaction.h>
 
 class CActiveMerchantnode;
 

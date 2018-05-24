@@ -4,10 +4,8 @@
 #ifndef MERCHANTNODE_SYNC_H
 #define MERCHANTNODE_SYNC_H
 
-#include "chain.h"
-#include "net.h"
-
-#include <univalue.h>
+#include <chain.h>
+#include <net.h>
 
 class CMerchantnodeSync;
 

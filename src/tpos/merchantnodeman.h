@@ -5,7 +5,7 @@
 #ifndef MERCHANTNODEMAN_H
 #define MERCHANTNODEMAN_H
 
-#include "merchantnode.h"
+#include <tpos/merchantnode.h>
 #include <sync.h>
 
 using namespace std;
