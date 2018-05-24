@@ -2,23 +2,23 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "base58.h"
-#include "hash.h"
-#include "validation.h" // For strMessageMagic
-#include "messagesigner.h"
-#include "tinyformat.h"
-#include "utilstrencodings.h"
+#include <messagesigner.h>
+#include <base58.h>
+#include <hash.h>
+#include <validation.h> // For strMessageMagic
+#include <tinyformat.h>
+#include <utilstrencodings.h>
+#include <key_io.h>
 
 bool CMessageSigner::GetKeysFromSecret(const std::string strSecret, CKey& keyRet, CPubKey& pubkeyRet)
-{
-#if 0
-    CBitcoinSecret vchSecret;
+{   
+    CKey decodedKey = DecodeSecret(strSecret);
 
-    if(!vchSecret.SetString(strSecret)) return false;
+    if(!decodedKey.IsValid())
+        return false;
 
-    keyRet = vchSecret.GetKey();
-    pubkeyRet = keyRet.GetPubKey();
-#endif
+    keyRet = decodedKey;
+    pubkeyRet = decodedKey.GetPubKey();
 
     return true;
 }
