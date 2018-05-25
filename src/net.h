@@ -182,6 +182,7 @@ public:
                                bool manual_connection = false);
 
     CNode *OpenMasternodeConnection(const CAddress &addrConnect);
+    CNode *OpenMerchantnodeConnection(const CAddress &addrConnect);
 
     bool CheckIncomingNonce(uint64_t nonce);
 

@@ -239,8 +239,34 @@ extern const char *GETBLOCKTXN;
  */
 extern const char *BLOCKTXN;
 
+/*! XSN STUFF */
+extern const char *TXLOCKREQUEST;
+extern const char *TXLOCKVOTE;
 extern const char *SPORK;
 extern const char *GETSPORKS;
+extern const char *MASTERNODEPAYMENTVOTE;
+extern const char *MASTERNODEPAYMENTSYNC;
+extern const char *MNANNOUNCE;
+extern const char *MNPING;
+extern const char *DSACCEPT;
+extern const char *DSVIN;
+extern const char *DSFINALTX;
+extern const char *DSSIGNFINALTX;
+extern const char *DSCOMPLETE;
+extern const char *DSSTATUSUPDATE;
+extern const char *DSTX;
+extern const char *DSQUEUE;
+extern const char *DSEG;
+extern const char *MERCHANTNODESEG;
+extern const char *SYNCSTATUSCOUNT;
+extern const char *MERCHANTSYNCSTATUSCOUNT;
+extern const char *MNGOVERNANCESYNC;
+extern const char *MNGOVERNANCEOBJECT;
+extern const char *MNGOVERNANCEOBJECTVOTE;
+extern const char *MNVERIFY;
+extern const char *MERCHANTNODEVERIFY;
+extern const char *MERCHANTNODEANNOUNCE;
+extern const char *MERCHANTNODEPING;
 };
 
 /* Get a vector of all valid message types (see above) */
@@ -383,6 +409,17 @@ enum GetDataMsg
     MSG_TXLOCK_REQUEST = MSG_XSN_OFFSET,
     MSG_TXLOCK_VOTE,
     MSG_SPORK,
+    MSG_MASTERNODE_PAYMENT_VOTE,
+    MSG_MASTERNODE_PAYMENT_BLOCK, // reusing, was MSG_MASTERNODE_SCANNING_ERROR previousely, was NOT used in 12.0
+    MSG_MASTERNODE_ANNOUNCE,
+    MSG_MASTERNODE_PING,
+    MSG_DSTX,
+    MSG_GOVERNANCE_OBJECT,
+    MSG_GOVERNANCE_OBJECT_VOTE,
+    MSG_MASTERNODE_VERIFY,
+    MSG_MERCHANTNODE_VERIFY,
+    MSG_MERCHANTNODE_ANNOUNCE,
+    MSG_MERCHANTNODE_PING,
     MSG_WITNESS_BLOCK = MSG_BLOCK | MSG_WITNESS_FLAG, //!< Defined in BIP144
     MSG_WITNESS_TX = MSG_TX | MSG_WITNESS_FLAG,       //!< Defined in BIP144
     MSG_FILTERED_WITNESS_BLOCK = MSG_FILTERED_BLOCK | MSG_WITNESS_FLAG,

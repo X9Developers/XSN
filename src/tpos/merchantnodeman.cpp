@@ -14,11 +14,22 @@
 #include <utilstrencodings.h>
 #include <util.h>
 #include <init.h>
+#include <netmessagemaker.h>
 
 /** Merchantnode manager */
 CMerchantnodeMan merchantnodeman;
 
 const std::string CMerchantnodeMan::SERIALIZATION_VERSION_STRING = "CMerchantnodeMan-Version-7";
+
+static bool GetBlockHash(uint256 &hash, int nBlockHeight)
+{
+    if(auto index = chainActive[nBlockHeight])
+    {
+        hash = index->GetBlockHash();
+        return true;
+    }
+    return false;
+}
 
 struct CompareByAddr
 
@@ -84,7 +95,7 @@ void CMerchantnodeMan::AskForMN(CNode* pnode, const CPubKey &pubKeyMerchantnode,
     }
     mWeAskedForMerchantnodeListEntry[pubKeyMerchantnode][pnode->addr] = GetTime() + DSEG_UPDATE_SECONDS;
 
-    connman.PushMessage(pnode, NetMsgType::MERCHANTNODESEG, pubKeyMerchantnode);
+    connman.PushMessage(pnode, CNetMsgMaker(pnode->GetSendVersion()).Make(NetMsgType::MERCHANTNODESEG, pubKeyMerchantnode));
 }
 
 bool CMerchantnodeMan::PoSeBan(const CPubKey &pubKeyMerchantnode)
@@ -338,7 +349,7 @@ void CMerchantnodeMan::DsegUpdate(CNode* pnode, CConnman& connman)
         }
     }
 
-    connman.PushMessage(pnode, NetMsgType::MERCHANTNODESEG, CPubKey());
+    connman.PushMessage(pnode, CNetMsgMaker(pnode->GetSendVersion()).Make(NetMsgType::MERCHANTNODESEG, CPubKey()));
     int64_t askAgain = GetTime() + DSEG_UPDATE_SECONDS;
     mWeAskedForMerchantnodeList[pnode->addr] = askAgain;
 
@@ -590,7 +601,8 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDa
         }
 
         if(!pubKeyMerchantnode.IsValid()) {
-            connman.PushMessage(pfrom, NetMsgType::MERCHANTSYNCSTATUSCOUNT, MERCHANTNODE_SYNC_LIST, nInvCount);
+            connman.PushMessage(pfrom, CNetMsgMaker(pfrom->GetSendVersion()).Make(
+                                    NetMsgType::MERCHANTSYNCSTATUSCOUNT, MERCHANTNODE_SYNC_LIST, nInvCount));
             LogPrintf("MERCHANTNODESEG -- Sent %d Merchantnode invs to peer %d\n", nInvCount, pfrom->GetId());
             return;
         }
@@ -764,8 +776,8 @@ bool CMerchantnodeMan::SendVerifyRequest(const CAddress& addr, const std::vector
         return false;
     }
 
-    CNode* pnode = connman.ConnectNode(addr, NULL, true);
-    if(pnode == NULL) {
+    CNode* pnode = connman.OpenMerchantnodeConnection(addr);
+    if(!pnode) {
         LogPrintf("CMerchantnodeMan::SendVerifyRequest -- can't connect to node to verify it, addr=%s\n", addr.ToString());
         return false;
     }
@@ -775,7 +787,7 @@ bool CMerchantnodeMan::SendVerifyRequest(const CAddress& addr, const std::vector
     CMerchantnodeVerification mnv(addr, GetRandInt(999999), nCachedBlockHeight - 1);
     mWeAskedForVerification[addr] = mnv;
     LogPrintf("CMerchantnodeMan::SendVerifyRequest -- verifying node using nonce %d addr=%s\n", mnv.nonce, addr.ToString());
-    connman.PushMessage(pnode, NetMsgType::MERCHANTNODEVERIFY, mnv);
+    connman.PushMessage(pnode, CNetMsgMaker(pnode->GetSendVersion()).Make(NetMsgType::MERCHANTNODEVERIFY, mnv));
 
     return true;
 }
@@ -850,13 +862,11 @@ void CMerchantnodeMan::ProcessVerifyReply(CNode* pnode, CMerchantnodeVerificatio
 
 
     uint256 blockHash;
-    if(chainActive[mnv.nBlockHeight] == nullptr) {
+    if(!GetBlockHash(blockHash, mnv.nBlockHeight)) {
         // this shouldn't happen...
         LogPrintf("MerchantnodeMan::ProcessVerifyReply -- can't get block hash for unknown block height %d, peer=%d\n", mnv.nBlockHeight, pnode->GetId());
         return;
     }
-
-    blockHash = chainActive[mnv.nBlockHeight]->GetBlockHash();
 
     // we already verified this address, why node is spamming?
     if(netfulfilledman.HasFulfilledRequest(pnode->addr, strprintf("%s", NetMsgType::MERCHANTNODEVERIFY)+"-done")) {

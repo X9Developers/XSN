@@ -43,8 +43,34 @@ const char *GETBLOCKTXN="getblocktxn";
 const char *BLOCKTXN="blocktxn";
 
 // XSN message types
+const char *TXLOCKREQUEST="ix";
+const char *TXLOCKVOTE="txlvote";
 const char *SPORK="spork";
 const char *GETSPORKS="getsporks";
+const char *MASTERNODEPAYMENTVOTE="mnw";
+const char *MASTERNODEPAYMENTBLOCK="mnwb";
+const char *MASTERNODEPAYMENTSYNC="mnget";
+const char *MNANNOUNCE="mnb";
+const char *MNPING="mnp";
+const char *DSACCEPT="dsa";
+const char *DSVIN="dsi";
+const char *DSFINALTX="dsf";
+const char *DSSIGNFINALTX="dss";
+const char *DSCOMPLETE="dsc";
+const char *DSSTATUSUPDATE="dssu";
+const char *DSTX="dstx";
+const char *DSQUEUE="dsq";
+const char *DSEG="dseg";
+const char *SYNCSTATUSCOUNT="ssc";
+const char *MNGOVERNANCESYNC="govsync";
+const char *MNGOVERNANCEOBJECT="govobj";
+const char *MNGOVERNANCEOBJECTVOTE="govobjvote";
+const char *MNVERIFY="mnv";
+const char *MERCHANTNODEVERIFY="mrnv";
+const char *MERCHANTNODEANNOUNCE="mrnan";
+const char *MERCHANTNODEPING="mrnp";
+const char *MERCHANTNODESEG="mrnseg";
+const char *MERCHANTSYNCSTATUSCOUNT="mrnssc";
 } // namespace NetMsgType
 
 /** All known message types. Keep this in the same order as the list of
@@ -77,8 +103,33 @@ const static std::string allNetMessageTypes[] = {
     NetMsgType::CMPCTBLOCK,
     NetMsgType::GETBLOCKTXN,
     NetMsgType::BLOCKTXN,
+    NetMsgType::TXLOCKREQUEST,
+    NetMsgType::TXLOCKVOTE,
     NetMsgType::SPORK,
-    NetMsgType::GETSPORKS
+    NetMsgType::GETSPORKS,
+    NetMsgType::MASTERNODEPAYMENTVOTE,
+    NetMsgType::MASTERNODEPAYMENTSYNC,
+    NetMsgType::MNANNOUNCE,
+    NetMsgType::MNPING,
+    NetMsgType::DSACCEPT,
+    NetMsgType::DSVIN,
+    NetMsgType::DSFINALTX,
+    NetMsgType::DSSIGNFINALTX,
+    NetMsgType::DSCOMPLETE,
+    NetMsgType::DSSTATUSUPDATE,
+    NetMsgType::DSTX,
+    NetMsgType::DSQUEUE,
+    NetMsgType::DSEG,
+    NetMsgType::MERCHANTNODESEG,
+    NetMsgType::SYNCSTATUSCOUNT,
+    NetMsgType::MERCHANTSYNCSTATUSCOUNT,
+    NetMsgType::MNGOVERNANCESYNC,
+    NetMsgType::MNGOVERNANCEOBJECT,
+    NetMsgType::MNGOVERNANCEOBJECTVOTE,
+    NetMsgType::MNVERIFY,
+    NetMsgType::MERCHANTNODEVERIFY,
+    NetMsgType::MERCHANTNODEANNOUNCE,
+    NetMsgType::MERCHANTNODEPING
 };
 const static std::vector<std::string> allNetMessageTypesVec(allNetMessageTypes, allNetMessageTypes+ARRAYLEN(allNetMessageTypes));
 

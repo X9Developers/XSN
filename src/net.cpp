@@ -1180,6 +1180,13 @@ void CConnman::ThreadSocketHandler()
 
                     // hold in disconnected pool until all refs are released
                     pnode->Release();
+
+                    if (pnode->fMasternode)
+                        pnode->Release();
+
+                    if (pnode->fMerchantnode)
+                        pnode->Release();
+
                     vNodesDisconnected.push_back(pnode);
                 }
             }
@@ -1983,8 +1990,20 @@ void CConnman::OpenNetworkConnection(const CAddress& addrConnect, bool fCountFai
 CNode *CConnman::OpenMasternodeConnection(const CAddress &addrConnect)
 {
     auto pNode = OpenNetworkConnectionImpl(addrConnect, false);
+    if(!pNode->fMasternode)
+        pNode->AddRef();
+
     pNode->fMasternode = true;
-    pNode->AddRef();
+    return pNode;
+}
+
+CNode *CConnman::OpenMerchantnodeConnection(const CAddress &addrConnect)
+{
+    auto pNode = OpenNetworkConnectionImpl(addrConnect, false);
+    if(!pNode->fMerchantnode)
+        pNode->AddRef();
+
+    pNode->fMerchantnode = true;
     return pNode;
 }
 
