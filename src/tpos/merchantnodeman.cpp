@@ -847,12 +847,16 @@ void CMerchantnodeMan::ProcessVerifyReply(CNode* pnode, CMerchantnodeVerificatio
         return;
     }
 
+
+
     uint256 blockHash;
-    if(!GetBlockHash(blockHash, mnv.nBlockHeight)) {
+    if(chainActive[mnv.nBlockHeight] == nullptr) {
         // this shouldn't happen...
         LogPrintf("MerchantnodeMan::ProcessVerifyReply -- can't get block hash for unknown block height %d, peer=%d\n", mnv.nBlockHeight, pnode->GetId());
         return;
     }
+
+    blockHash = chainActive[mnv.nBlockHeight]->GetBlockHash();
 
     // we already verified this address, why node is spamming?
     if(netfulfilledman.HasFulfilledRequest(pnode->addr, strprintf("%s", NetMsgType::MERCHANTNODEVERIFY)+"-done")) {

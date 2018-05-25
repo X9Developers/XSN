@@ -173,7 +173,16 @@ public:
     void Interrupt();
     bool GetNetworkActive() const { return fNetworkActive; };
     void SetNetworkActive(bool active);
-    void OpenNetworkConnection(const CAddress& addrConnect, bool fCountFailure, CSemaphoreGrant *grantOutbound = nullptr, const char *strDest = nullptr, bool fOneShot = false, bool fFeeler = false, bool manual_connection = false);
+    void OpenNetworkConnection(const CAddress& addrConnect,
+                               bool fCountFailure,
+                               CSemaphoreGrant *grantOutbound = nullptr,
+                               const char *strDest = nullptr,
+                               bool fOneShot = false,
+                               bool fFeeler = false,
+                               bool manual_connection = false);
+
+    CNode *OpenMasternodeConnection(const CAddress &addrConnect);
+
     bool CheckIncomingNonce(uint64_t nonce);
 
     bool ForNode(NodeId id, std::function<bool(CNode* pnode)> func);
@@ -310,6 +319,9 @@ public:
     unsigned int GetReceiveFloodSize() const;
 
     void WakeMessageHandler();
+
+    std::vector<CNode*> CopyNodeVector();
+    void ReleaseNodeVector(const std::vector<CNode*>& vecNodes);
 private:
     struct ListenSocket {
         SOCKET socket;
@@ -317,7 +329,13 @@ private:
 
         ListenSocket(SOCKET socket_, bool whitelisted_) : socket(socket_), whitelisted(whitelisted_) {}
     };
-
+    CNode *OpenNetworkConnectionImpl(const CAddress& addrConnect,
+                                     bool fCountFailure,
+                                     CSemaphoreGrant *grantOutbound = nullptr,
+                                     const char *strDest = nullptr,
+                                     bool fOneShot = false,
+                                     bool fFeeler = false,
+                                     bool manual_connection = false);
     bool BindListenPort(const CService &bindAddr, std::string& strError, bool fWhitelisted = false);
     bool Bind(const CService &addr, unsigned int flags);
     bool InitBinds(const std::vector<CService>& binds, const std::vector<CService>& whiteBinds);
@@ -658,7 +676,12 @@ public:
     //    unless it loads a bloom filter.
     bool fRelayTxes; //protected by cs_filter
     bool fSentAddr;
+    // If 'true' this node will be disconnected on CMasternodeMan::ProcessMasternodeConnections()
+    bool fMasternode;
+    bool fMerchantnode;
     CSemaphoreGrant grantOutbound;
+    CSemaphoreGrant grantMasternodeOutbound;
+    CSemaphoreGrant grantMerchantnodeOutbound;
     CCriticalSection cs_filter;
     std::unique_ptr<CBloomFilter> pfilter;
     std::atomic<int> nRefCount;

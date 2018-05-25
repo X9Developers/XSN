@@ -1977,41 +1977,15 @@ void CConnman::ThreadOpenAddedConnections()
 // if successful, this moves the passed grant to the constructed node
 void CConnman::OpenNetworkConnection(const CAddress& addrConnect, bool fCountFailure, CSemaphoreGrant *grantOutbound, const char *pszDest, bool fOneShot, bool fFeeler, bool manual_connection)
 {
-    //
-    // Initiate outbound network connection
-    //
-    if (interruptNet) {
-        return;
-    }
-    if (!fNetworkActive) {
-        return;
-    }
-    if (!pszDest) {
-        if (IsLocal(addrConnect) ||
-            FindNode(static_cast<CNetAddr>(addrConnect)) || IsBanned(addrConnect) ||
-            FindNode(addrConnect.ToStringIPPort()))
-            return;
-    } else if (FindNode(std::string(pszDest)))
-        return;
+    OpenNetworkConnectionImpl(addrConnect, fCountFailure, grantOutbound, pszDest, fOneShot, fFeeler, manual_connection);
+}
 
-    CNode* pnode = ConnectNode(addrConnect, pszDest, fCountFailure, manual_connection);
-
-    if (!pnode)
-        return;
-    if (grantOutbound)
-        grantOutbound->MoveTo(pnode->grantOutbound);
-    if (fOneShot)
-        pnode->fOneShot = true;
-    if (fFeeler)
-        pnode->fFeeler = true;
-    if (manual_connection)
-        pnode->m_manual_connection = true;
-
-    m_msgproc->InitializeNode(pnode);
-    {
-        LOCK(cs_vNodes);
-        vNodes.push_back(pnode);
-    }
+CNode *CConnman::OpenMasternodeConnection(const CAddress &addrConnect)
+{
+    auto pNode = OpenNetworkConnectionImpl(addrConnect, false);
+    pNode->fMasternode = true;
+    pNode->AddRef();
+    return pNode;
 }
 
 void CConnman::ThreadMessageHandler()
@@ -2879,3 +2853,70 @@ uint64_t CConnman::CalculateKeyedNetGroup(const CAddress& ad) const
 
     return GetDeterministicRandomizer(RANDOMIZER_ID_NETGROUP).Write(vchNetGroup.data(), vchNetGroup.size()).Finalize();
 }
+
+std::vector<CNode*> CConnman::CopyNodeVector()
+{
+    std::vector<CNode*> vecNodesCopy;
+    LOCK(cs_vNodes);
+    for(size_t i = 0; i < vNodes.size(); ++i) {
+        CNode* pnode = vNodes[i];
+        pnode->AddRef();
+        vecNodesCopy.push_back(pnode);
+    }
+    return vecNodesCopy;
+}
+
+void CConnman::ReleaseNodeVector(const std::vector<CNode*>& vecNodes)
+{
+    LOCK(cs_vNodes);
+    for(size_t i = 0; i < vecNodes.size(); ++i) {
+        CNode* pnode = vecNodes[i];
+        pnode->Release();
+    }
+}
+
+CNode *CConnman::OpenNetworkConnectionImpl(const CAddress &addrConnect, bool fCountFailure, CSemaphoreGrant *grantOutbound, const char *pszDest, bool fOneShot, bool fFeeler, bool manual_connection)
+{
+    //
+    // Initiate outbound network connection
+    //
+    if (interruptNet) {
+        return nullptr;
+    }
+    if (!fNetworkActive) {
+        return nullptr;
+    }
+    if (!pszDest) {
+        if (IsLocal(addrConnect) || IsBanned(addrConnect))
+            return nullptr;
+
+        if(auto node = FindNode(static_cast<CNetAddr>(addrConnect)))
+            return node;
+        if(auto node = FindNode(addrConnect.ToStringIPPort()))
+            return node;
+    } else if (auto node = FindNode(std::string(pszDest)))
+        return node;
+
+
+    CNode* pnode = ConnectNode(addrConnect, pszDest, fCountFailure, manual_connection);
+
+    if (!pnode)
+        return nullptr;
+    if (grantOutbound)
+        grantOutbound->MoveTo(pnode->grantOutbound);
+    if (fOneShot)
+        pnode->fOneShot = true;
+    if (fFeeler)
+        pnode->fFeeler = true;
+    if (manual_connection)
+        pnode->m_manual_connection = true;
+
+    m_msgproc->InitializeNode(pnode);
+    {
+        LOCK(cs_vNodes);
+        vNodes.push_back(pnode);
+    }
+
+    return pnode;
+}
+
