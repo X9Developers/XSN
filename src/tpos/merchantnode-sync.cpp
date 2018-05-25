@@ -83,7 +83,7 @@ void CMerchantnodeSync::SwitchToNextAsset(CConnman& connman)
             // TRY_LOCK(cs_vNodes, lockRecv);
             // if(lockRecv) { ... }
 
-            connman.ForEachNode(CConnman::AllNodes, [](CNode* pnode) {
+            connman.ForEachNode([](CNode* pnode) {
                 netfulfilledman.AddFulfilledRequest(pnode->addr, "full-mrnsync");
             });
             LogPrintf("CMerchantnodeSync::SwitchToNextAsset -- Sync has finished\n");
@@ -118,7 +118,7 @@ void CMerchantnodeSync::ProcessMessage(CNode* pfrom, std::string& strCommand, CD
         int nCount;
         vRecv >> nItemID >> nCount;
 
-        LogPrintf("MERCHANTSYNCSTATUSCOUNT -- got inventory count: nItemID=%d  nCount=%d  peer=%d\n", nItemID, nCount, pfrom->id);
+        LogPrintf("MERCHANTSYNCSTATUSCOUNT -- got inventory count: nItemID=%d  nCount=%d  peer=%d\n", nItemID, nCount, pfrom->GetId());
     }
 }
 
@@ -128,7 +128,7 @@ void CMerchantnodeSync::ClearFulfilledRequests(CConnman& connman)
     // TRY_LOCK(cs_vNodes, lockRecv);
     // if(!lockRecv) return;
 
-    connman.ForEachNode(CConnman::AllNodes, [](CNode* pnode) {
+    connman.ForEachNode([](CNode* pnode) {
         netfulfilledman.RemoveFulfilledRequest(pnode->addr, "merchantnode-list-sync");
         netfulfilledman.RemoveFulfilledRequest(pnode->addr, "full-mrnsync");
     });
@@ -210,7 +210,7 @@ void CMerchantnodeSync::ProcessTick(CConnman& connman)
                 // We already fully synced from this node recently,
                 // disconnect to free this connection slot for another peer.
                 pnode->fDisconnect = true;
-                LogPrintf("CMerchantnodeSync::ProcessTick -- disconnecting from recently synced peer %d\n", pnode->id);
+                LogPrintf("CMerchantnodeSync::ProcessTick -- disconnecting from recently synced peer %d\n", pnode->GetId());
                 continue;
             }
 
