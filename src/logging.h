@@ -58,6 +58,7 @@ namespace BCLog {
         SPORK        = (1 << 23),
         MNSYNC       = (1 << 24),
         MASTERNODE   = (1 << 25),
+        GOBJECT      = (1 << 26),
         ALL          = ~(uint32_t)0,
     };
 
