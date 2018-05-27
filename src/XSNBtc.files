@@ -1,3 +1,5 @@
+activemasternode.cpp
+activemasternode.h
 addrdb.cpp
 addrdb.h
 addrman.cpp
@@ -73,6 +75,16 @@ key_io.h
 keystore.cpp
 keystore.h
 limitedmap.h
+masternode-payments.cpp
+masternode-payments.h
+masternode-sync.cpp
+masternode-sync.h
+masternode.cpp
+masternode.h
+masternodeconfig.cpp
+masternodeconfig.h
+masternodeman.cpp
+masternodeman.h
 memusage.h
 merkleblock.cpp
 merkleblock.h

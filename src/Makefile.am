@@ -76,6 +76,7 @@ endif
 .PHONY: FORCE check-symbols check-security
 # bitcoin core #
 BITCOIN_CORE_H = \
+  activemasternode.h \
   addrdb.h \
   addrman.h \
   base58.h \
@@ -117,6 +118,11 @@ BITCOIN_CORE_H = \
   dbwrapper.h \
   limitedmap.h \
   logging.h \
+  masternode.h \
+  masternode-payments.h \
+  masternode-sync.h \
+  masternodeman.h \
+  masternodeconfig.h \
   messagesigner.h \
   memusage.h \
   merkleblock.h \
@@ -208,6 +214,7 @@ libbitcoin_util_a-clientversion.$(OBJEXT): obj/build.h
 libbitcoin_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
 libbitcoin_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_server_a_SOURCES = \
+  activemasternode.cpp \
   addrdb.cpp \
   addrman.cpp \
   bloom.cpp \
@@ -222,6 +229,11 @@ libbitcoin_server_a_SOURCES = \
   init.cpp \
   kernel.cpp \
   dbwrapper.cpp \
+  masternode.cpp \
+  masternode-payments.cpp \
+  masternode-sync.cpp \
+  masternodeconfig.cpp \
+  masternodeman.cpp \
   merkleblock.cpp \
   messagesigner.cpp \
   miner.cpp \
