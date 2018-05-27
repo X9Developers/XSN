@@ -59,6 +59,7 @@ namespace BCLog {
         MNSYNC       = (1 << 24),
         MASTERNODE   = (1 << 25),
         GOBJECT      = (1 << 26),
+        MNPAYMENTS   = (1 << 27),
         ALL          = ~(uint32_t)0,
     };
 
