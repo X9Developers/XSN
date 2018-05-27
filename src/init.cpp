@@ -1320,6 +1320,7 @@ bool AppInitPrivateSend()
     CPrivateSend::InitStandardDenominations();
 #endif
 
+    return true;
 }
 
 bool AppInitMain()

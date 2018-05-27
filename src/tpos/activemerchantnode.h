@@ -38,7 +38,7 @@ private:
     bool fPingerEnabled;
 
     /// Ping Merchantnode
-    bool SendMerchantnodePing(CConnman& connman);
+    bool SendMerchantnodePing(CConnman &connman);
 
     //  sentinel ping data
     int64_t nSentinelPingTime;
@@ -66,7 +66,7 @@ public:
     {}
 
     /// Manage state of active Merchantnode
-    void ManageState(CConnman& connman);
+    void ManageState(CConnman &connman);
 
     std::string GetStateString() const;
     std::string GetStatus() const;

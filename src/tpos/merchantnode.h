@@ -360,13 +360,7 @@ public:
         return ss.GetHash();
     }
 
-    void Relay() const
-    {
-#if 0
-        CInv inv(MSG_MERCHANTNODE_VERIFY, GetHash());
-        g_connman->RelayInv(inv);
-#endif
-    }
+    void Relay() const;
 };
 
 #endif
