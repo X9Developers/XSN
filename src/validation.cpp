@@ -1158,6 +1158,21 @@ CAmount GetBlockSubsidy(int nPrevHeight, const Consensus::Params& consensusParam
     return fSuperblockPartOnly ? nSuperblockPart : nSubsidy - nSuperblockPart;
 }
 
+CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
+{
+    (void)nHeight;
+#if 0
+    int treasuryPercent = 10;
+    CAmount moneySupply = chainActive.Tip()->nMoneySupply;
+    int nMasternodeCount = mnodeman.size();
+    int64_t mNodeCoins = nMasternodeCount * 15000 * COIN;
+    CAmount ret = blockValue * ((moneySupply - mNodeCoins) / moneySupply) * ((100 - treasuryPercent)/100);
+#endif
+
+    // half of the block for now
+    return blockValue / 2;
+}
+
 bool IsInitialBlockDownload()
 {
     // Once this function has returned false, it must remain false.

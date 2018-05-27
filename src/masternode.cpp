@@ -146,7 +146,7 @@ void CMasternode::Check(bool fForce)
         CollateralStatus err = CheckCollateral(vin.prevout);
         if (err == COLLATERAL_UTXO_NOT_FOUND) {
             nActiveState = MASTERNODE_OUTPOINT_SPENT;
-            LogPrint(BCLog::MASTERNODE, "CMasternode::Check -- Failed to find Masternode UTXO, masternode=%s\n", vin.prevout.ToShort());
+            LogPrint(BCLog::MASTERNODE, "CMasternode::Check -- Failed to find Masternode UTXO, masternode=%s\n", vin.prevout.ToString());
             return;
         }
 
@@ -266,10 +266,10 @@ bool CMasternode::IsInputAssociatedWithPubkey() const
     CScript payee;
     payee = GetScriptForDestination(pubKeyCollateralAddress.GetID());
 
-    CTransaction tx;
+    CTransactionRef tx;
     uint256 hash;
     if(GetTransaction(vin.prevout.hash, tx, Params().GetConsensus(), hash, true)) {
-        for(const CTxOut &out : tx.vout)
+        for(const CTxOut &out : tx->vout)
             if(out.nValue == 15000 * COIN && out.scriptPubKey == payee) return true;
     }
 
@@ -346,7 +346,7 @@ void CMasternode::UpdateLastPaid(const CBlockIndex *pindex, int nMaxBlocksToScan
 
             CAmount nMasternodePayment = GetMasternodePayment(BlockReading->nHeight, BlockReading->nMint);
 
-            for(const CTxOut &txout : coinbaseTransaction.vout)
+            for(const CTxOut &txout : coinbaseTransaction->vout)
                 if(mnpayee == txout.scriptPubKey && nMasternodePayment == txout.nValue) {
                     nBlockLastPaid = BlockReading->nHeight;
                     nTimeLastPaid = BlockReading->nTime;
@@ -393,7 +393,7 @@ bool CMasternodeBroadcast::Create(std::string strService, std::string strKeyMast
     CService service;
     if (!Lookup(strService.c_str(), service, 0, false))
         return Log(strprintf("Invalid address %s for masternode.", strService));
-    int mainnetDefaultPort = Params(CBaseChainParams::MAIN).GetDefaultPort();
+    int mainnetDefaultPort = CreateChainParams(CBaseChainParams::MAIN)->GetDefaultPort();
     if (Params().NetworkIDString() == CBaseChainParams::MAIN) {
         if (service.GetPort() != mainnetDefaultPort)
             return Log(strprintf("Invalid port %u for masternode %s, only %d is supported on mainnet.", service.GetPort(), strService, mainnetDefaultPort));
@@ -490,7 +490,7 @@ bool CMasternodeBroadcast::SimpleCheck(int& nDos)
         return false;
     }
 
-    int mainnetDefaultPort = Params(CBaseChainParams::MAIN).GetDefaultPort();
+    int mainnetDefaultPort = CreateChainParams(CBaseChainParams::MAIN)->GetDefaultPort();
     if(Params().NetworkIDString() == CBaseChainParams::MAIN) {
         if(addr.GetPort() != mainnetDefaultPort) return false;
     } else if(addr.GetPort() == mainnetDefaultPort) return false;
@@ -608,7 +608,7 @@ bool CMasternodeBroadcast::CheckOutpoint(int& nDos)
     // verify that sig time is legit in past
     // should be at least not earlier than block when 1000 XSN tx got nMasternodeMinimumConfirmations
     uint256 hashBlock = uint256();
-    CTransaction tx2;
+    CTransactionRef tx2;
     GetTransaction(vin.prevout.hash, tx2, Params().GetConsensus(), hashBlock, true);
     {
         LOCK(cs_main);
@@ -634,7 +634,7 @@ bool CMasternodeBroadcast::Sign(const CKey& keyCollateralAddress)
 
     sigTime = GetAdjustedTime();
 
-    strMessage = addr.ToString(false) + boost::lexical_cast<std::string>(sigTime) +
+    strMessage = addr.ToString() + boost::lexical_cast<std::string>(sigTime) +
                     pubKeyCollateralAddress.GetID().ToString() + pubKeyMasternode.GetID().ToString() +
                     boost::lexical_cast<std::string>(nProtocolVersion);
 
@@ -657,7 +657,7 @@ bool CMasternodeBroadcast::CheckSignature(int& nDos)
     std::string strError = "";
     nDos = 0;
 
-    strMessage = addr.ToString(false) + boost::lexical_cast<std::string>(sigTime) +
+    strMessage = addr.ToString() + boost::lexical_cast<std::string>(sigTime) +
                     pubKeyCollateralAddress.GetID().ToString() + pubKeyMasternode.GetID().ToString() +
                     boost::lexical_cast<std::string>(nProtocolVersion);
 
@@ -681,7 +681,10 @@ void CMasternodeBroadcast::Relay(CConnman& connman)
     }
 
     CInv inv(MSG_MASTERNODE_ANNOUNCE, GetHash());
-    connman.RelayInv(inv);
+    connman.ForEachNode([&inv](CNode* pnode)
+    {
+        pnode->PushInventory(inv);
+    });
 }
 
 CMasternodePing::CMasternodePing(const COutPoint& outpoint)
@@ -846,7 +849,10 @@ void CMasternodePing::Relay(CConnman& connman)
     }
 
     CInv inv(MSG_MASTERNODE_PING, GetHash());
-    connman.RelayInv(inv);
+    connman.ForEachNode([&inv](CNode* pnode)
+    {
+        pnode->PushInventory(inv);
+    });
 }
 
 void CMasternode::AddGovernanceVote(uint256 nGovernanceObjectHash)
@@ -897,5 +903,8 @@ void CMasternode::FlagGovernanceItemsAsDirty()
 void CMasternodeVerification::Relay() const
 {
     CInv inv(MSG_MASTERNODE_VERIFY, GetHash());
-    g_connman->RelayInv(inv);
+    g_connman->ForEachNode([&inv](CNode* pnode)
+    {
+        pnode->PushInventory(inv);
+    });
 }

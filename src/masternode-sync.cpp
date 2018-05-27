@@ -97,7 +97,7 @@ void CMasternodeSync::SwitchToNextAsset(CConnman& connman)
             // TRY_LOCK(cs_vNodes, lockRecv);
             // if(lockRecv) { ... }
 
-            connman.ForEachNode(CConnman::AllNodes, [](CNode* pnode) {
+            connman.ForEachNode([](CNode* pnode) {
                 netfulfilledman.AddFulfilledRequest(pnode->addr, "full-sync");
             });
             LogPrintf("CMasternodeSync::SwitchToNextAsset -- Sync has finished\n");
@@ -144,7 +144,7 @@ void CMasternodeSync::ClearFulfilledRequests(CConnman& connman)
     // TRY_LOCK(cs_vNodes, lockRecv);
     // if(!lockRecv) return;
 
-    connman.ForEachNode(CConnman::AllNodes, [](CNode* pnode) {
+    connman.ForEachNode([](CNode* pnode) {
         netfulfilledman.RemoveFulfilledRequest(pnode->addr, "spork-sync");
         netfulfilledman.RemoveFulfilledRequest(pnode->addr, "masternode-list-sync");
         netfulfilledman.RemoveFulfilledRequest(pnode->addr, "masternode-payment-sync");

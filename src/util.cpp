@@ -692,6 +692,24 @@ fs::path GetConfigFile(const std::string& confPath)
     return AbsPathForConfigVal(fs::path(confPath), false);
 }
 
+fs::path GetMasternodeConfigFile()
+{
+    boost::filesystem::path pathConfigFile(gArgs.GetArg("-mnconf", "masternode.conf"));
+    if (!pathConfigFile.is_complete())
+        return fs::absolute(pathConfigFile, GetDataDir());
+
+    return pathConfigFile;
+}
+
+fs::path GetMerchantnodeConfigFile()
+{
+    boost::filesystem::path pathConfigFile(gArgs.GetArg("-merchantnodeconf", "merchantnode.conf"));
+    if (!pathConfigFile.is_complete())
+        return fs::absolute(pathConfigFile, GetDataDir());
+
+    return pathConfigFile;
+}
+
 void ArgsManager::ReadConfigStream(std::istream& stream)
 {
     LOCK(cs_args);
