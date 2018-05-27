@@ -163,7 +163,9 @@ void CMerchantnodeSync::ProcessTick(CConnman& connman)
     // gradually request the rest of the votes after sync finished
     if(IsSynced()) {
         std::vector<CNode*> vNodesCopy = connman.CopyNodeVector();
+#if 0
         governance.RequestGovernanceObjectVotes(vNodesCopy, connman);
+#endif
         connman.ReleaseNodeVector(vNodesCopy);
         return;
     }

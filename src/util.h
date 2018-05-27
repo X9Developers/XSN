@@ -37,6 +37,10 @@
 // Application startup time (used for uptime calculation)
 int64_t GetStartupTime();
 
+extern bool fMasterNode;
+extern bool fMerchantNode;
+extern bool fLiteMode;
+
 /** Signals for translation. */
 class CTranslationInterface
 {
@@ -46,6 +50,7 @@ public:
 };
 
 extern CTranslationInterface translationInterface;
+
 
 extern const char * const BITCOIN_CONF_FILENAME;
 extern const char * const BITCOIN_PID_FILENAME;

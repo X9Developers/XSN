@@ -85,6 +85,11 @@ const int64_t nStartupTime = GetTime();
 const char * const BITCOIN_CONF_FILENAME = "bitcoin.conf";
 const char * const BITCOIN_PID_FILENAME = "bitcoind.pid";
 
+//XSN only features
+bool fMasterNode = false;
+bool fLiteMode = false;
+bool fMerchantNode = false;
+
 ArgsManager gArgs;
 
 CTranslationInterface translationInterface;

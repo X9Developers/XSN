@@ -12,8 +12,6 @@
 // Keep track of the active Merchantnode
 CActiveMerchantnode activeMerchantnode;
 
-static bool fMerchantNode = false; // TODO: TEMP
-
 void CActiveMerchantnode::ManageState(CConnman& connman)
 {
     LogPrint(BCLog::MERCHANTNODE, "CActiveMerchantnode::ManageState -- Start\n");

@@ -47,6 +47,8 @@
 #include <walletinitinterface.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <messagesigner.h>
+#include <tpos/activemerchantnode.h>
 
 #ifndef WIN32
 #include <signal.h>
@@ -1220,6 +1222,106 @@ bool AppInitLockDataDirectory()
     return true;
 }
 
+bool AppInitPrivateSend()
+{
+    fMasterNode = gArgs.GetBoolArg("-masternode", false);
+    fMerchantNode = gArgs.GetBoolArg("-merchantnode", false);
+    // TODO: masternode should have no wallet
+
+#if 0
+    if((fMasterNode || masternodeConfig.getCount() > 0) && fTxIndex == false) {
+        return InitError("Enabling Masternode support requires turning on transaction indexing."
+                         "Please add txindex=1 to your configuration and start with -reindex");
+    }
+#endif
+
+#if 0
+    if(fMasterNode) {
+        LogPrintf("MASTERNODE:\n");
+
+        std::string strMasterNodePrivKey = GetArg("-masternodeprivkey", "");
+        if(!strMasterNodePrivKey.empty()) {
+            if(!CMessageSigner::GetKeysFromSecret(strMasterNodePrivKey, activeMasternode.keyMasternode, activeMasternode.pubKeyMasternode))
+                return InitError(_("Invalid masternodeprivkey. Please see documenation."));
+
+            LogPrintf("  pubKeyMasternode: %s\n", CBitcoinAddress(activeMasternode.pubKeyMasternode.GetID()).ToString());
+        } else {
+            return InitError(_("You must specify a masternodeprivkey in the configuration. Please see documentation for help."));
+        }
+    }
+#endif
+
+    if(fMerchantNode) {
+        LogPrintf("MERCHANTNODE:\n");
+
+        std::string strMerchantNodePrivKey = gArgs.GetArg("-merchantnodeprivkey", "");
+        if(!strMerchantNodePrivKey.empty()) {
+            if(!CMessageSigner::GetKeysFromSecret(strMerchantNodePrivKey, activeMerchantnode.keyMerchantnode, activeMerchantnode.pubKeyMerchantnode))
+                return InitError(_("Invalid merchantnodeprivkey. Please see documenation."));
+
+            LogPrintf("  pubKeyMerchantnode: %s\n", activeMerchantnode.pubKeyMerchantnode.GetID().ToString());
+        } else {
+            return InitError(_("You must specify a merchantnodeprivkey in the configuration. Please see documentation for help."));
+        }
+    }
+
+#if 0
+#ifdef ENABLE_WALLET
+    LogPrintf("Using masternode config file %s\n", GetMasternodeConfigFile().string());
+
+    if(GetBoolArg("-mnconflock", true) && pwalletMain && (masternodeConfig.getCount() > 0)) {
+        LOCK(pwalletMain->cs_wallet);
+        LogPrintf("Locking Masternodes:\n");
+        uint256 mnTxHash;
+        int outputIndex;
+        for(CMasternodeConfig::CMasternodeEntry mne : masternodeConfig.getEntries()) {
+            mnTxHash.SetHex(mne.getTxHash());
+            outputIndex = boost::lexical_cast<unsigned int>(mne.getOutputIndex());
+            COutPoint outpoint = COutPoint(mnTxHash, outputIndex);
+            // don't lock non-spendable outpoint (i.e. it's already spent or it's not from this wallet at all)
+            if(pwalletMain->IsMine(CTxIn(outpoint)) != ISMINE_SPENDABLE) {
+                LogPrintf("  %s %s - IS NOT SPENDABLE, was not locked\n", mne.getTxHash(), mne.getOutputIndex());
+                continue;
+            }
+            pwalletMain->LockCoin(outpoint);
+            LogPrintf("  %s %s - locked successfully\n", mne.getTxHash(), mne.getOutputIndex());
+        }
+    }
+
+    privateSendClient.nLiquidityProvider = std::min(std::max((int)GetArg("-liquidityprovider", DEFAULT_PRIVATESEND_LIQUIDITY), 0), 100);
+    if(privateSendClient.nLiquidityProvider) {
+        // special case for liquidity providers only, normal clients should use default value
+        privateSendClient.SetMinBlocksToWait(privateSendClient.nLiquidityProvider * 15);
+    }
+
+    privateSendClient.fEnablePrivateSend = GetBoolArg("-enableprivatesend", false);
+    privateSendClient.fPrivateSendMultiSession = GetBoolArg("-privatesendmultisession", DEFAULT_PRIVATESEND_MULTISESSION);
+    privateSendClient.nPrivateSendRounds = std::min(std::max((int)GetArg("-privatesendrounds", DEFAULT_PRIVATESEND_ROUNDS), 2), privateSendClient.nLiquidityProvider ? 99999 : 16);
+    privateSendClient.nPrivateSendAmount = std::min(std::max((int)GetArg("-privatesendamount", DEFAULT_PRIVATESEND_AMOUNT), 2), 999999);
+#endif // ENABLE_WALLET
+
+    fEnableInstantSend = GetBoolArg("-enableinstantsend", 1);
+    nInstantSendDepth = GetArg("-instantsenddepth", DEFAULT_INSTANTSEND_DEPTH);
+    nInstantSendDepth = std::min(std::max(nInstantSendDepth, 0), 60);
+
+    //lite mode disables all Masternode and Darksend related functionality
+    fLiteMode = GetBoolArg("-litemode", false);
+    if(fMasterNode && fLiteMode){
+        return InitError("You can not start a masternode in litemode");
+    }
+
+    LogPrintf("fLiteMode %d\n", fLiteMode);
+    LogPrintf("nInstantSendDepth %d\n", nInstantSendDepth);
+#ifdef ENABLE_WALLET
+    LogPrintf("PrivateSend rounds %d\n", privateSendClient.nPrivateSendRounds);
+    LogPrintf("PrivateSend amount %d\n", privateSendClient.nPrivateSendAmount);
+#endif // ENABLE_WALLET
+
+    CPrivateSend::InitStandardDenominations();
+#endif
+
+}
+
 bool AppInitMain()
 {
     const CChainParams& chainparams = Params();
@@ -1677,6 +1779,10 @@ bool AppInitMain()
     if (ShutdownRequested()) {
         return false;
     }
+
+    // ********************************************************* Step 11a: setup PrivateSend
+
+    AppInitPrivateSend();
 
     // ********************************************************* Step 12: start node
 
