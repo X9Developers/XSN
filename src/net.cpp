@@ -1989,7 +1989,7 @@ void CConnman::OpenNetworkConnection(const CAddress& addrConnect, bool fCountFai
 
 CNode *CConnman::OpenMasternodeConnection(const CAddress &addrConnect)
 {
-    auto pNode = OpenNetworkConnectionImpl(addrConnect, false);
+    auto pNode = OpenNetworkConnectionImpl(addrConnect, true);
     if(!pNode->fMasternode)
         pNode->AddRef();
 
@@ -1999,7 +1999,7 @@ CNode *CConnman::OpenMasternodeConnection(const CAddress &addrConnect)
 
 CNode *CConnman::OpenMerchantnodeConnection(const CAddress &addrConnect)
 {
-    auto pNode = OpenNetworkConnectionImpl(addrConnect, false);
+    auto pNode = OpenNetworkConnectionImpl(addrConnect, true);
     if(!pNode->fMerchantnode)
         pNode->AddRef();
 

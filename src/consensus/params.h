@@ -82,6 +82,7 @@ struct Params {
     uint256 nMinimumChainWork;
     uint256 defaultAssumeValid;
     int nMerchantnodeMinimumConfirmations;
+    int nMasternodeMinimumConfirmations;
     int nStakeMinAge;
     int nStakeMaxAge;
     int nCoinbaseMaturity;

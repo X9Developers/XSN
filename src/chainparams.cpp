@@ -86,6 +86,7 @@ public:
         consensus.nPosTargetSpacing = 1 * 60; // XSN: 1 minutes
         consensus.nPosTargetTimespan = 60 * 40;
         consensus.nMerchantnodeMinimumConfirmations = 1;
+        consensus.nMasternodeMinimumConfirmations = 15;
         consensus.nStakeMinAge = 60 * 60;
         consensus.nStakeMaxAge = 60 * 60 * 24; // one day
         consensus.nCoinbaseMaturity = 20;
@@ -203,6 +204,8 @@ public:
         consensus.nPosTargetSpacing = 1 * 60; // PoSW: 1 minutes
         consensus.nPosTargetTimespan = 60 * 40;
         consensus.fPowAllowMinDifficultyBlocks = false;
+        consensus.nMasternodeMinimumConfirmations = 1;
+        consensus.nMerchantnodeMinimumConfirmations = 1;
         consensus.fPowNoRetargeting = false;
         consensus.nPowKGWHeight = 4001; // nPowKGWHeight >= nPowDGWHeight means "no KGW"
         consensus.nPowDGWHeight = 4001;
