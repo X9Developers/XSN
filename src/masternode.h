@@ -12,6 +12,7 @@
 class CMasternode;
 class CMasternodeBroadcast;
 class CConnman;
+class CWallet;
 
 static const int MASTERNODE_CHECK_SECONDS               =   5;
 static const int MASTERNODE_MIN_MNB_SECONDS             =   5 * 60;
@@ -313,7 +314,7 @@ public:
     ADD_SERIALIZE_METHODS;
 
     template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
+    inline void SerializationOp(Stream& s, Operation ser_action) {
         READWRITE(vin);
         READWRITE(addr);
         READWRITE(pubKeyCollateralAddress);
@@ -335,7 +336,7 @@ public:
 
     /// Create Masternode broadcast, needs to be relayed manually after that
     static bool Create(const COutPoint& outpoint, const CService& service, const CKey& keyCollateralAddressNew, const CPubKey& pubKeyCollateralAddressNew, const CKey& keyMasternodeNew, const CPubKey& pubKeyMasternodeNew, std::string &strErrorRet, CMasternodeBroadcast &mnbRet);
-    static bool Create(std::string strService, std::string strKey, std::string strTxHash, std::string strOutputIndex, std::string& strErrorRet, CMasternodeBroadcast &mnbRet, bool fOffline = false);
+    static bool Create(CWallet *wallet, std::string strService, std::string strKey, std::string strTxHash, std::string strOutputIndex, std::string& strErrorRet, CMasternodeBroadcast &mnbRet, bool fOffline = false);
 
     bool SimpleCheck(int& nDos);
     bool Update(CMasternode* pmn, int& nDos, CConnman& connman);

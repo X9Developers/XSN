@@ -13,6 +13,9 @@
 #include <netfulfilledman.h>
 #include <spork.h>
 #include <util.h>
+#include <netmessagemaker.h>
+#include <script/standard.h>
+#include <key_io.h>
 
 #include <boost/lexical_cast.hpp>
 
@@ -22,6 +25,16 @@ CMasternodePayments mnpayments;
 CCriticalSection cs_vecPayees;
 CCriticalSection cs_mapMasternodeBlocks;
 CCriticalSection cs_mapMasternodePaymentVotes;
+
+static bool GetBlockHash(uint256 &hash, int nBlockHeight)
+{
+    if(auto index = chainActive[nBlockHeight])
+    {
+        hash = index->GetBlockHash();
+        return true;
+    }
+    return false;
+}
 
 /**
 * IsBlockValueValid
@@ -76,6 +89,7 @@ bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount expectedRe
 
     // superblocks started
 
+#if 0
     CAmount nSuperblockMaxValue =  expectedReward + CSuperblock::GetPaymentsLimit(nBlockHeight);
     bool isSuperblockMaxValueMet = (actualReward <= nSuperblockMaxValue);
 
@@ -128,6 +142,7 @@ bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount expectedRe
                                     nBlockHeight, actualReward, expectedReward);
         }
     }
+#endif
 
     // it MUST be a regular block
     return isBlockRewardValueMet;
@@ -299,9 +314,8 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int nBlockH
 
     CTxDestination address1;
     ExtractDestination(payee, address1);
-    CBitcoinAddress address2(address1);
 
-    LogPrintf("CMasternodePayments::FillBlockPayee -- Masternode payment %lld to %s\n", masternodePayment, address2.ToString());
+    LogPrintf("CMasternodePayments::FillBlockPayee -- Masternode payment %lld to %s\n", masternodePayment, EncodeDestination(address1));
 }
 
 int CMasternodePayments::GetMinMasternodePaymentsProto() {
@@ -410,10 +424,9 @@ void CMasternodePayments::ProcessMessage(CNode* pfrom, std::string& strCommand, 
 
         CTxDestination address1;
         ExtractDestination(vote.payee, address1);
-        CBitcoinAddress address2(address1);
 
         LogPrint(BCLog::MNPAYMENTS, "MASTERNODEPAYMENTVOTE -- vote: address=%s, nBlockHeight=%d, nHeight=%d, prevout=%s, hash=%s new\n",
-                 address2.ToString(), vote.nBlockHeight, nCachedBlockHeight, vote.vinMasternode.prevout.ToString(), nHash.ToString());
+                 EncodeDestination(address1), vote.nBlockHeight, nCachedBlockHeight, vote.vinMasternode.prevout.ToString(), nHash.ToString());
 
         if(AddPaymentVote(vote)){
             vote.Relay(connman);
@@ -580,12 +593,11 @@ bool CMasternodeBlockPayees::IsTransactionValid(const CTransaction& txNew) const
 
             CTxDestination address1;
             ExtractDestination(payee.GetPayee(), address1);
-            CBitcoinAddress address2(address1);
 
             if(strPayeesPossible == "") {
-                strPayeesPossible = address2.ToString();
+                strPayeesPossible = EncodeDestination(address1);
             } else {
-                strPayeesPossible += "," + address2.ToString();
+                strPayeesPossible += "," + EncodeDestination(address1);
             }
         }
     }
@@ -604,12 +616,11 @@ std::string CMasternodeBlockPayees::GetRequiredPaymentsString() const
     {
         CTxDestination address1;
         ExtractDestination(payee.GetPayee(), address1);
-        CBitcoinAddress address2(address1);
 
         if (strRequiredPayments != "Unknown") {
-            strRequiredPayments += ", " + address2.ToString() + ":" + boost::lexical_cast<std::string>(payee.GetVoteCount());
+            strRequiredPayments += ", " + EncodeDestination(address1) + ":" + boost::lexical_cast<std::string>(payee.GetVoteCount());
         } else {
-            strRequiredPayments = address2.ToString() + ":" + boost::lexical_cast<std::string>(payee.GetVoteCount());
+            strRequiredPayments = EncodeDestination(address1) + ":" + boost::lexical_cast<std::string>(payee.GetVoteCount());
         }
     }
 
@@ -764,9 +775,8 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight, CConnman& connman)
 
     CTxDestination address1;
     ExtractDestination(payee, address1);
-    CBitcoinAddress address2(address1);
 
-    LogPrintf("CMasternodePayments::ProcessBlock -- vote: payee=%s, nBlockHeight=%d\n", address2.ToString(), nBlockHeight);
+    LogPrintf("CMasternodePayments::ProcessBlock -- vote: payee=%s, nBlockHeight=%d\n", EncodeDestination(address1), nBlockHeight);
 
     // SIGN MESSAGE TO NETWORK WITH OUR MASTERNODE KEYS
 
@@ -832,10 +842,9 @@ void CMasternodePayments::CheckPreviousBlockVotes(int nPrevBlockHeight)
 
         CTxDestination address1;
         ExtractDestination(payee, address1);
-        CBitcoinAddress address2(address1);
 
         debugStr += strprintf("CMasternodePayments::CheckPreviousBlockVotes --   %s - voted for %s\n",
-                              mn.second.vin.prevout.ToString(), address2.ToString());
+                              mn.second.vin.prevout.ToString(), EncodeDestination(address1));
     }
     debugStr += "CMasternodePayments::CheckPreviousBlockVotes -- Masternodes which missed a vote in the past:\n";
     for (auto it : mapMasternodesDidNotVote) {
@@ -918,7 +927,7 @@ void CMasternodePayments::Sync(CNode* pnode, CConnman& connman)
     }
 
     LogPrintf("CMasternodePayments::Sync -- Sent %d votes to peer %d\n", nInvCount, pnode->GetId());
-    connman.PushMessage(pnode, NetMsgType::SYNCSTATUSCOUNT, MASTERNODE_SYNC_MNW, nInvCount);
+    connman.PushMessage(pnode, CNetMsgMaker(pnode->GetSendVersion()).Make(NetMsgType::SYNCSTATUSCOUNT, MASTERNODE_SYNC_MNW, nInvCount));
 }
 
 // Request low data/unknown payment blocks in batches directly from some node instead of/after preliminary Sync.
@@ -940,7 +949,7 @@ void CMasternodePayments::RequestLowDataPaymentBlocks(CNode* pnode, CConnman& co
             // We should not violate GETDATA rules
             if(vToFetch.size() == MAX_INV_SZ) {
                 LogPrintf("CMasternodePayments::SyncLowDataPaymentBlocks -- asking peer %d for %d blocks\n", pnode->GetId(), MAX_INV_SZ);
-                connman.PushMessage(pnode, NetMsgType::GETDATA, vToFetch);
+                connman.PushMessage(pnode, CNetMsgMaker(pnode->GetSendVersion()).Make(NetMsgType::GETDATA, vToFetch));
                 // Start filling new batch
                 vToFetch.clear();
             }
@@ -973,10 +982,9 @@ void CMasternodePayments::RequestLowDataPaymentBlocks(CNode* pnode, CConnman& co
         for(const CMasternodePayee& payee : it->second.vecPayees) {
             CTxDestination address1;
             ExtractDestination(payee.GetPayee(), address1);
-            CBitcoinAddress address2(address1);
-            printf("payee %s votes %d\n", address2.ToString().c_str(), payee.GetVoteCount());
+            LogPrint(BCLog::MNPAYMENTS, "payee %s votes %d\n", EncodeDestination(address1), payee.GetVoteCount());
         }
-        printf("block %d votes total %d\n", it->first, nTotalVotes);
+        LogPrint(BCLog::MNPAYMENTS, "block %d votes total %d\n", it->first, nTotalVotes);
         // END DEBUG
         // Low data block found, let's try to sync it
         uint256 hash;
@@ -986,7 +994,7 @@ void CMasternodePayments::RequestLowDataPaymentBlocks(CNode* pnode, CConnman& co
         // We should not violate GETDATA rules
         if(vToFetch.size() == MAX_INV_SZ) {
             LogPrintf("CMasternodePayments::SyncLowDataPaymentBlocks -- asking peer %d for %d payment blocks\n", pnode->GetId(), MAX_INV_SZ);
-            connman.PushMessage(pnode, NetMsgType::GETDATA, vToFetch);
+            connman.PushMessage(pnode, CNetMsgMaker(pnode->GetSendVersion()).Make(NetMsgType::GETDATA, vToFetch));
             // Start filling new batch
             vToFetch.clear();
         }
@@ -995,7 +1003,7 @@ void CMasternodePayments::RequestLowDataPaymentBlocks(CNode* pnode, CConnman& co
     // Ask for the rest of it
     if(!vToFetch.empty()) {
         LogPrintf("CMasternodePayments::SyncLowDataPaymentBlocks -- asking peer %d for %d payment blocks\n", pnode->GetId(), vToFetch.size());
-        connman.PushMessage(pnode, NetMsgType::GETDATA, vToFetch);
+        connman.PushMessage(pnode, CNetMsgMaker(pnode->GetSendVersion()).Make(NetMsgType::GETDATA, vToFetch));
     }
 }
 

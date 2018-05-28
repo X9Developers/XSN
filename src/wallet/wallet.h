@@ -769,6 +769,8 @@ private:
 
     bool IsTPoSContractSpent(COutPoint outpoint) const;
 
+    bool GetOutpointAndKeysFromOutput(const COutput& out, COutPoint& outpointRet, CPubKey& pubKeyRet, CKey& keyRet);
+
 public:
     /*
      * Main wallet lock.
@@ -791,6 +793,8 @@ public:
      */
     bool SelectCoins(const std::vector<COutput>& vAvailableCoins, const CAmount& nTargetValue, std::set<CInputCoin>& setCoinsRet, CAmount& nValueRet,
                     const CCoinControl& coin_control, CoinSelectionParams& coin_selection_params, bool& bnb_used) const;
+
+    bool GetMasternodeOutpointAndKeys(COutPoint& outpointRet, CPubKey& pubKeyRet, CKey& keyRet, std::string strTxHash, std::string strOutputIndex);
 
     /** Get a name for this wallet for logging/debugging purposes.
      */
