@@ -75,3 +75,8 @@ std::string GetWarnings(const std::string& strFor)
     assert(!"GetWarnings(): invalid parameter");
     return "error";
 }
+
+bool GetfLargeWorkInvalidChainFound()
+{
+    return fLargeWorkInvalidChainFound;
+}

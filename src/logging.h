@@ -60,6 +60,7 @@ namespace BCLog {
         MASTERNODE   = (1 << 25),
         GOBJECT      = (1 << 26),
         MNPAYMENTS   = (1 << 27),
+        INSTANTSEND  = (1 << 28),
         ALL          = ~(uint32_t)0,
     };
 
