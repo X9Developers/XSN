@@ -4,9 +4,7 @@
 
 #include <activemasternode.h>
 #include <checkpoints.h>
-#if 0
-#include <governance.h>
-#endif
+#include <governance/governance.h>
 #include <validation.h>
 #include <masternode.h>
 #include <masternode-payments.h>
