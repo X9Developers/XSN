@@ -20,7 +20,7 @@ CGovernanceObjectVoteFile::CGovernanceObjectVoteFile(const CGovernanceObjectVote
 
 void CGovernanceObjectVoteFile::AddVote(const CGovernanceVote& vote)
 {
-    listVotes.push_front(vote);
+    listVotes.insert(std::begin(listVotes), 1, vote);
     mapVoteIndex[vote.GetHash()] = listVotes.begin();
     ++nMemoryVotes;
 }

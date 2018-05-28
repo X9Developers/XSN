@@ -565,6 +565,7 @@ bool CGovernanceObject::IsCollateralValid(std::string& strError, bool& fMissingC
 
     // GET CONFIRMATIONS FOR TRANSACTION
 
+#if 0
     AssertLockHeld(cs_main);
     int nConfirmationsIn = instantsend.GetConfirmations(nCollateralHash);
     if (nBlockHash != uint256()) {
@@ -576,6 +577,7 @@ bool CGovernanceObject::IsCollateralValid(std::string& strError, bool& fMissingC
             }
         }
     }
+
 
     if(nConfirmationsIn < GOVERNANCE_FEE_CONFIRMATIONS) {
         strError = strprintf("Collateral requires at least %d confirmations to be relayed throughout the network (it has only %d)", GOVERNANCE_FEE_CONFIRMATIONS, nConfirmationsIn);
@@ -589,6 +591,8 @@ bool CGovernanceObject::IsCollateralValid(std::string& strError, bool& fMissingC
 
         return false;
     }
+
+#endif
 
     strError = "valid";
     return true;
