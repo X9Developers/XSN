@@ -187,6 +187,7 @@ public:
     bool CheckIncomingNonce(uint64_t nonce);
 
     bool ForNode(NodeId id, std::function<bool(CNode* pnode)> func);
+    bool ForNode(CService addr, std::function<bool(CNode* pnode)> func);
 
     void PushMessage(CNode* pnode, CSerializedNetMsg&& msg);
 
@@ -323,6 +324,7 @@ public:
 
     std::vector<CNode*> CopyNodeVector();
     void ReleaseNodeVector(const std::vector<CNode*>& vecNodes);
+    void RelayTransaction(const CTransaction& tx);
 private:
     struct ListenSocket {
         SOCKET socket;

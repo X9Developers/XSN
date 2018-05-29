@@ -16,8 +16,20 @@
 #include <txmempool.h>
 #include <util.h>
 #include <utilmoneystr.h>
+#include <netmessagemaker.h>
 
+#include <boost/range/adaptors.hpp>
 #include <boost/lexical_cast.hpp>
+
+static bool GetUTXOCoin(const COutPoint& outpoint, Coin& coin)
+{
+    LOCK(cs_main);
+    if (!pcoinsTip->GetCoin(outpoint, coin))
+        return false;
+    if (coin.IsSpent())
+        return false;
+    return true;
+}
 
 bool CDarkSendEntry::AddScriptSig(const CTxIn& txin)
 {
@@ -65,9 +77,9 @@ bool CDarksendQueue::CheckSignature(const CPubKey& pubKeyMasternode)
 bool CDarksendQueue::Relay(CConnman& connman)
 {
     std::vector<CNode*> vNodesCopy = connman.CopyNodeVector();
-    BOOST_FOREACH(CNode* pnode, vNodesCopy)
+    for(CNode* pnode : vNodesCopy)
         if(pnode->nVersion >= MIN_PRIVATESEND_PEER_PROTO_VERSION)
-            connman.PushMessage(pnode, NetMsgType::DSQUEUE, (*this));
+            connman.PushMessage(pnode, CNetMsgMaker(pnode->GetSendVersion()).Make(NetMsgType::DSQUEUE, (*this)));
 
     connman.ReleaseNodeVector(vNodesCopy);
     return true;
@@ -127,7 +139,7 @@ void CPrivateSendBase::CheckQueue()
     std::vector<CDarksendQueue>::iterator it = vecDarksendQueue.begin();
     while(it != vecDarksendQueue.end()) {
         if((*it).IsExpired()) {
-            LogPrint("privatesend", "CPrivateSendBase::%s -- Removing expired queue (%s)\n", __func__, (*it).ToString());
+            LogPrint(BCLog::PRIVATESEND, "CPrivateSendBase::%s -- Removing expired queue (%s)\n", __func__, (*it).ToString());
             it = vecDarksendQueue.erase(it);
         } else ++it;
     }
@@ -176,27 +188,27 @@ void CPrivateSend::InitStandardDenominations()
 }
 
 // check to make sure the collateral provided by the client is valid
-bool CPrivateSend::IsCollateralValid(const CTransaction& txCollateral)
+bool CPrivateSend::IsCollateralValid(const CTransactionRef& txCollateral)
 {
-    if(txCollateral.vout.empty()) return false;
-    if(txCollateral.nLockTime != 0) return false;
+    if(txCollateral->vout.empty()) return false;
+    if(txCollateral->nLockTime != 0) return false;
 
     CAmount nValueIn = 0;
     CAmount nValueOut = 0;
 
-    BOOST_FOREACH(const CTxOut txout, txCollateral.vout) {
+    for(const CTxOut txout : txCollateral->vout) {
         nValueOut += txout.nValue;
 
         if(!txout.scriptPubKey.IsPayToPublicKeyHash()) {
-            LogPrintf ("CPrivateSend::IsCollateralValid -- Invalid Script, txCollateral=%s", txCollateral.ToString());
+            LogPrintf ("CPrivateSend::IsCollateralValid -- Invalid Script, txCollateral=%s", txCollateral->ToString());
             return false;
         }
     }
 
-    BOOST_FOREACH(const CTxIn txin, txCollateral.vin) {
+    for(const CTxIn txin : txCollateral->vin) {
         Coin coin;
         if(!GetUTXOCoin(txin.prevout, coin)) {
-            LogPrint("privatesend", "CPrivateSend::IsCollateralValid -- Unknown inputs in collateral transaction, txCollateral=%s", txCollateral.ToString());
+            LogPrint(BCLog::PRIVATESEND, "CPrivateSend::IsCollateralValid -- Unknown inputs in collateral transaction, txCollateral=%s", txCollateral->ToString());
             return false;
         }
         nValueIn += coin.out.nValue;
@@ -204,17 +216,17 @@ bool CPrivateSend::IsCollateralValid(const CTransaction& txCollateral)
 
     //collateral transactions are required to pay out a small fee to the miners
     if(nValueIn - nValueOut < GetCollateralAmount()) {
-        LogPrint("privatesend", "CPrivateSend::IsCollateralValid -- did not include enough fees in transaction: fees: %d, txCollateral=%s", nValueOut - nValueIn, txCollateral.ToString());
+        LogPrint(BCLog::PRIVATESEND, "CPrivateSend::IsCollateralValid -- did not include enough fees in transaction: fees: %d, txCollateral=%s", nValueOut - nValueIn, txCollateral->ToString());
         return false;
     }
 
-    LogPrint("privatesend", "CPrivateSend::IsCollateralValid -- %s", txCollateral.ToString());
+    LogPrint(BCLog::PRIVATESEND, "CPrivateSend::IsCollateralValid -- %s", txCollateral->ToString());
 
     {
         LOCK(cs_main);
         CValidationState validationState;
-        if(!AcceptToMemoryPool(mempool, validationState, txCollateral, false, NULL, false, true, true)) {
-            LogPrint("privatesend", "CPrivateSend::IsCollateralValid -- didn't pass AcceptToMemoryPool()\n");
+        if(!AcceptToMemoryPool(mempool, validationState, txCollateral, nullptr, nullptr, false, true, true)) {
+            LogPrint(BCLog::PRIVATESEND, "CPrivateSend::IsCollateralValid -- didn't pass AcceptToMemoryPool()\n");
             return false;
         }
     }
@@ -276,13 +288,13 @@ int CPrivateSend::GetDenominations(const std::vector<CTxOut>& vecTxOut, bool fSi
     std::vector<std::pair<CAmount, int> > vecDenomUsed;
 
     // make a list of denominations, with zero uses
-    BOOST_FOREACH(CAmount nDenomValue, vecStandardDenominations)
+    for(CAmount nDenomValue : vecStandardDenominations)
         vecDenomUsed.push_back(std::make_pair(nDenomValue, 0));
 
     // look for denominations and update uses to 1
-    BOOST_FOREACH(CTxOut txout, vecTxOut) {
+    for(CTxOut txout : vecTxOut) {
         bool found = false;
-        BOOST_FOREACH (PAIRTYPE(CAmount, int)& s, vecDenomUsed) {
+        for(auto&& s : vecDenomUsed) {
             if(txout.nValue == s.first) {
                 s.second = 1;
                 found = true;
@@ -294,7 +306,7 @@ int CPrivateSend::GetDenominations(const std::vector<CTxOut>& vecTxOut, bool fSi
     int nDenom = 0;
     int c = 0;
     // if the denomination is used, shift the bit on
-    BOOST_FOREACH (PAIRTYPE(CAmount, int)& s, vecDenomUsed) {
+    for (auto&& s : vecDenomUsed) {
         int bit = (fSingleRandomDenom ? GetRandInt(2) : 1) & s.second;
         nDenom |= bit << c++;
         if(fSingleRandomDenom && bit) break; // use just one random denomination
@@ -331,7 +343,7 @@ int CPrivateSend::GetDenominationsByAmounts(const std::vector<CAmount>& vecAmoun
     CScript scriptTmp = CScript();
     std::vector<CTxOut> vecTxOut;
 
-    BOOST_REVERSE_FOREACH(CAmount nAmount, vecAmount) {
+    for(CAmount nAmount : boost::adaptors::reverse(vecAmount)) {
         CTxOut txout(nAmount, scriptTmp);
         vecTxOut.push_back(txout);
     }
@@ -400,7 +412,7 @@ void CPrivateSend::CheckDSTXes(int nHeight)
             ++it;
         }
     }
-    LogPrint("privatesend", "CPrivateSend::CheckDSTXes -- mapDSTX.size()=%llu\n", mapDSTX.size());
+    LogPrint(BCLog::PRIVATESEND, "CPrivateSend::CheckDSTXes -- mapDSTX.size()=%llu\n", mapDSTX.size());
 }
 
 void CPrivateSend::UpdatedBlockTip(const CBlockIndex *pindex)
@@ -426,13 +438,13 @@ void CPrivateSend::SyncTransaction(const CTransaction& tx, const CBlock* pblock)
         BlockMap::iterator mi = mapBlockIndex.find(blockHash);
         if(mi == mapBlockIndex.end() || !mi->second) {
             // shouldn't happen
-            LogPrint("privatesend", "CPrivateSendClient::SyncTransaction -- Failed to find block %s\n", blockHash.ToString());
+            LogPrint(BCLog::PRIVATESEND, "CPrivateSendClient::SyncTransaction -- Failed to find block %s\n", blockHash.ToString());
             return;
         }
         pblockindex = mi->second;
     }
     mapDSTX[txHash].SetConfirmedHeight(pblockindex ? pblockindex->nHeight : -1);
-    LogPrint("privatesend", "CPrivateSendClient::SyncTransaction -- txid=%s\n", txHash.ToString());
+    LogPrint(BCLog::PRIVATESEND, "CPrivateSendClient::SyncTransaction -- txid=%s\n", txHash.ToString());
 }
 
 //TODO: Rename/move to core

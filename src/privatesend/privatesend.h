@@ -104,18 +104,18 @@ class CDarkSendEntry
 public:
     std::vector<CTxDSIn> vecTxDSIn;
     std::vector<CTxOut> vecTxOut;
-    CTransaction txCollateral;
+    CTransactionRef txCollateral;
     // memory only
     CService addr;
 
     CDarkSendEntry() :
         vecTxDSIn(std::vector<CTxDSIn>()),
         vecTxOut(std::vector<CTxOut>()),
-        txCollateral(CTransaction()),
+        txCollateral(MakeTransactionRef()),
         addr(CService())
         {}
 
-    CDarkSendEntry(const std::vector<CTxDSIn>& vecTxDSIn, const std::vector<CTxOut>& vecTxOut, const CTransaction& txCollateral) :
+    CDarkSendEntry(const std::vector<CTxDSIn>& vecTxDSIn, const std::vector<CTxOut>& vecTxOut, const CTransactionRef& txCollateral) :
         vecTxDSIn(vecTxDSIn),
         vecTxOut(vecTxOut),
         txCollateral(txCollateral),
@@ -343,7 +343,7 @@ public:
     static CAmount GetMaxPoolAmount() { return vecStandardDenominations.empty() ? 0 : PRIVATESEND_ENTRY_MAX_SIZE * vecStandardDenominations.front(); }
 
     /// If the collateral is valid given by a client
-    static bool IsCollateralValid(const CTransaction& txCollateral);
+    static bool IsCollateralValid(const CTransactionRef &txCollateral);
     static CAmount GetCollateralAmount() { return COLLATERAL; }
     static CAmount GetMaxCollateralAmount() { return COLLATERAL*4; }
 

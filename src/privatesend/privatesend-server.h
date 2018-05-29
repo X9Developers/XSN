@@ -20,7 +20,7 @@ class CPrivateSendServer : public CPrivateSendBase
 private:
     // Mixing uses collateral transactions to trust parties entering the pool
     // to behave honestly. If they don't it takes their money.
-    std::vector<CTransaction> vecSessionCollaterals;
+    std::vector<CTransactionRef> vecSessionCollaterals;
 
     bool fUnitTest;
 
@@ -41,9 +41,9 @@ private:
     void CommitFinalTransaction(CConnman& connman);
 
     /// Is this nDenom and txCollateral acceptable?
-    bool IsAcceptableDenomAndCollateral(int nDenom, CTransaction txCollateral, PoolMessage &nMessageIDRet);
-    bool CreateNewSession(int nDenom, CTransaction txCollateral, PoolMessage &nMessageIDRet, CConnman& connman);
-    bool AddUserToExistingSession(int nDenom, CTransaction txCollateral, PoolMessage &nMessageIDRet);
+    bool IsAcceptableDenomAndCollateral(int nDenom, const CTransactionRef &txCollateral, PoolMessage &nMessageIDRet);
+    bool CreateNewSession(int nDenom, CTransactionRef txCollateral, PoolMessage &nMessageIDRet, CConnman& connman);
+    bool AddUserToExistingSession(int nDenom, CTransactionRef txCollateral, PoolMessage &nMessageIDRet);
     /// Do we have enough users to take entries?
     bool IsSessionReady() { return (int)vecSessionCollaterals.size() >= CPrivateSend::GetMaxPoolTransactions(); }
 
