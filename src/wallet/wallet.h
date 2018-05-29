@@ -707,7 +707,6 @@ private:
     // Stake Settings
     unsigned int nHashDrift = 45;
     unsigned int nHashInterval = 22;
-    uint64_t nStakeSplitThreshold = 2000;
     int nStakeSetUpdateTime = 300; // 5 mins
 
     mutable bool fAnonymizableTallyCached;
@@ -853,6 +852,7 @@ public:
         encrypted_batch = nullptr;
     }
 
+    uint64_t nStakeSplitThreshold = 2000;
     std::map<uint256, TPoSContract> tposOwnerContracts;
     std::map<uint256, TPoSContract> tposMerchantContracts;
     std::map<uint256, CWalletTx> mapWallet;
