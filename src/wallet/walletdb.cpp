@@ -317,6 +317,22 @@ ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue,
 
             pwallet->LoadToWallet(wtx);
         }
+        else if (strType == "tpsctx")
+        {
+            uint256 hash;
+            ssKey >> hash;
+            CWalletTx wtx(nullptr, MakeTransactionRef());
+            ssValue >> wtx;
+
+            CValidationState state;
+            if (!(CheckTransaction(wtx, state) && (wtx.GetHash() == hash) && state.IsValid()))
+            {
+                return false;
+            }
+
+            pwallet->LoadTPoSContractFromDB(wtx);
+
+        }
         else if (strType == "acentry")
         {
             std::string strAccount;
@@ -503,6 +519,10 @@ ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue,
         else if (strType == "orderposnext")
         {
             ssValue >> pwallet->nOrderPosNext;
+        }
+        else if (strType == "stakeSplitThreshold") //presstab HyperStake
+        {
+            ssValue >> pwallet->nStakeSplitThreshold;
         }
         else if (strType == "destdata")
         {
