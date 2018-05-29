@@ -193,6 +193,10 @@ public:
 
     bool WriteOrderPosNext(int64_t nOrderPosNext);
 
+    bool WriteStakeSplitThreshold(uint64_t nStakeSplitThreshold);
+    bool WriteTPoSContractTx(uint256 hash, const CWalletTx& wtx);
+    bool EraseTPoSContractTx(uint256 hash);
+
     bool ReadPool(int64_t nPool, CKeyPool& keypool);
     bool WritePool(int64_t nPool, const CKeyPool& keypool);
     bool ErasePool(int64_t nPool);

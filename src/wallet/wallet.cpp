@@ -147,6 +147,30 @@ public:
     void operator()(const X &none) {}
 };
 
+void CWallet::LoadContractsFromDB()
+{
+    for(auto &&contractTx : std::move(tposContractsTxLoadedFromDB))
+    {
+        if(!LoadTPoSContract(contractTx))
+        {
+            // if contract was not added, there is a big chance that it's deprecated, let's cleanup watch only address
+            if(TPoSUtils::IsTPoSMerchantContract(this, contractTx.tx))
+            {
+                auto tposContract = TPoSContract::FromTPoSContractTx(contractTx.tx);
+                if(tposContract.IsValid())
+                {
+                    auto script = GetScriptForDestination(tposContract.tposAddress.Get());
+                    if(HaveWatchOnly(script))
+                    {
+                        RemoveWatchOnly(script);
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 const CWalletTx* CWallet::GetWalletTx(const uint256& hash) const
 {
     LOCK(cs_wallet);
@@ -1448,8 +1472,65 @@ void CWallet::MarkConflicted(const uint256& hashBlock, const uint256& hashTx)
     }
 }
 
+bool CWallet::AddToWalletIfTPoSContract(const CTransactionRef &tx)
+{
+    AssertLockHeld(cs_wallet);
+
+    if(TPoSUtils::IsTPoSContract(tx))
+    {
+        // TODO: FIND CORRECT CONDITIONS TO erase contract
+        //        if(!mempool.exists(tx.GetHash()))
+        //        {
+        //            std::cout << "Tx doesn't exist in mempool\n");
+        //            if(tposOwnerContracts.count(tx.GetHash()))
+        //                tposOwnerContracts.erase(tx.GetHash());
+
+        //            if(tposMerchantContracts.count(tx.GetHash()))
+        //                tposMerchantContracts.erase(tx.GetHash());
+
+        //            CWalletDB walletDb(strWalletFile);
+        //            walletDb.EraseTPoSContractTx(tx.GetHash());
+
+        //            return true;
+        //        }
+        //        else
+        {
+            bool isMerchant = TPoSUtils::IsTPoSMerchantContract(this, tx);
+            bool isOwner = TPoSUtils::IsTPoSOwnerContract(this, tx);
+
+            if(isMerchant || isOwner)
+            {
+                auto contract = TPoSContract::FromTPoSContractTx(tx);
+
+                CWalletTx wtx(this, tx);
+                if(LoadTPoSContract(wtx))
+                {
+                    WalletBatch walletDb(*database);
+                    walletDb.WriteTPoSContractTx(wtx.GetHash(), wtx);
+
+
+                    if(isMerchant && !isOwner) {
+                        AddWatchOnly(GetScriptForDestination(contract.tposAddress.Get()));
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+
+
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 void CWallet::SyncTransaction(const CTransactionRef& ptx, const CBlockIndex *pindex, int posInBlock) {
     const CTransaction& tx = *ptx;
+
+    AddToWalletIfTPoSContract(ptx);
 
     if (!AddToWalletIfInvolvingMe(ptx, pindex, posInBlock, true))
         return; // Not one of ours
@@ -4395,6 +4476,53 @@ void CWallet::ListLockedCoins(std::vector<COutPoint>& vOutpts) const
     }
 }
 
+bool CWallet::LoadTPoSContract(const CWalletTx &walletTx)
+{
+    bool isMerchant = TPoSUtils::IsTPoSMerchantContract(this, walletTx.tx);
+    bool isOwner = TPoSUtils::IsTPoSOwnerContract(this, walletTx.tx);
+
+    if(!isMerchant && !isOwner)
+        return false; // shouldn't happen
+
+    auto contract = TPoSContract::FromTPoSContractTx(walletTx.tx);
+    auto txHash = walletTx.GetHash();
+
+    if(contract.vchSignature.empty())
+        return false;
+
+    if(isMerchant) {
+        tposMerchantContracts[txHash] = contract;
+    }
+    else {
+        // we need to lock this coin, because it can be spend
+        tposOwnerContracts[txHash] = contract;
+        LockCoin(TPoSUtils::GetContractCollateralOutpoint(contract));
+    }
+
+    return true;
+}
+
+void CWallet::LoadTPoSContractFromDB(CWalletTx walletTx)
+{
+    tposContractsTxLoadedFromDB.emplace_back(walletTx);
+}
+
+bool CWallet::RemoveTPoSContract(const uint256 &contractTxId)
+{
+    AssertLockHeld(cs_wallet);
+
+    if (!WalletBatch(*database).EraseTPoSContractTx(contractTxId))
+        return false;
+
+    if(tposMerchantContracts.count(contractTxId))
+        tposMerchantContracts.erase(contractTxId);
+
+    if(tposOwnerContracts.count(contractTxId))
+        tposOwnerContracts.erase(contractTxId);
+
+    return true;
+}
+
 /** @} */ // end of Actions
 
 void CWallet::GetKeyBirthTimes(std::map<CTxDestination, int64_t> &mapKeyBirth) const {
@@ -4837,9 +4965,8 @@ std::atomic<bool> CWallet::fFlushScheduled(false);
 
 void CWallet::postInitProcess(CScheduler& scheduler)
 {
-#if 0
     LoadContractsFromDB();
-#endif
+
     // Add wallet transactions that aren't already in a block to mempool
     // Do this here as mempool requires genesis block to be loaded
     ReacceptWalletTransactions();

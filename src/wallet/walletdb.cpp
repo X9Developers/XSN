@@ -130,6 +130,21 @@ bool WalletBatch::WriteOrderPosNext(int64_t nOrderPosNext)
     return WriteIC(std::string("orderposnext"), nOrderPosNext);
 }
 
+bool WalletBatch::WriteStakeSplitThreshold(uint64_t nStakeSplitThreshold)
+{
+    return WriteIC(std::string("stakeSplitThreshold"), nStakeSplitThreshold);
+}
+
+bool WalletBatch::WriteTPoSContractTx(uint256 hash, const CWalletTx &wtx)
+{
+    return WriteIC(std::make_pair(std::string("tpsctx"), hash), wtx);
+}
+
+bool WalletBatch::EraseTPoSContractTx(uint256 hash)
+{
+    return EraseIC(std::make_pair(std::string("tpsctx"), hash));
+}
+
 bool WalletBatch::ReadPool(int64_t nPool, CKeyPool& keypool)
 {
     return m_batch.Read(std::make_pair(std::string("pool"), nPool), keypool);

@@ -34,6 +34,7 @@
 #include <rpc/blockchain.h>
 #include <script/standard.h>
 #include <script/sigcache.h>
+#include <script/ismine.h>
 #include <scheduler.h>
 #include <timedata.h>
 #include <txdb.h>
@@ -49,6 +50,10 @@
 #include <stdio.h>
 #include <messagesigner.h>
 #include <tpos/activemerchantnode.h>
+#include <masternodeconfig.h>
+#include <activemasternode.h>
+#include <instantx.h>
+#include <wallet/wallet.h>
 
 #ifndef WIN32
 #include <signal.h>
@@ -60,6 +65,7 @@
 #include <boost/bind.hpp>
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <boost/thread.hpp>
+#include <boost/lexical_cast.hpp>
 #include <openssl/crypto.h>
 
 #if ENABLE_ZMQ
@@ -1228,28 +1234,24 @@ bool AppInitPrivateSend()
     fMerchantNode = gArgs.GetBoolArg("-merchantnode", false);
     // TODO: masternode should have no wallet
 
-#if 0
     if((fMasterNode || masternodeConfig.getCount() > 0) && fTxIndex == false) {
         return InitError("Enabling Masternode support requires turning on transaction indexing."
                          "Please add txindex=1 to your configuration and start with -reindex");
     }
-#endif
 
-#if 0
     if(fMasterNode) {
         LogPrintf("MASTERNODE:\n");
 
-        std::string strMasterNodePrivKey = GetArg("-masternodeprivkey", "");
+        std::string strMasterNodePrivKey = gArgs.GetArg("-masternodeprivkey", "");
         if(!strMasterNodePrivKey.empty()) {
             if(!CMessageSigner::GetKeysFromSecret(strMasterNodePrivKey, activeMasternode.keyMasternode, activeMasternode.pubKeyMasternode))
                 return InitError(_("Invalid masternodeprivkey. Please see documenation."));
 
-            LogPrintf("  pubKeyMasternode: %s\n", CBitcoinAddress(activeMasternode.pubKeyMasternode.GetID()).ToString());
+            LogPrintf("  pubKeyMasternode: %s\n", activeMasternode.pubKeyMasternode.GetID().ToString());
         } else {
             return InitError(_("You must specify a masternodeprivkey in the configuration. Please see documentation for help."));
         }
     }
-#endif
 
     if(fMerchantNode) {
         LogPrintf("MERCHANTNODE:\n");
@@ -1265,11 +1267,12 @@ bool AppInitPrivateSend()
         }
     }
 
-#if 0
 #ifdef ENABLE_WALLET
     LogPrintf("Using masternode config file %s\n", GetMasternodeConfigFile().string());
 
-    if(GetBoolArg("-mnconflock", true) && pwalletMain && (masternodeConfig.getCount() > 0)) {
+    auto pwalletMain = GetWallets().at(1);
+
+    if(gArgs.GetBoolArg("-mnconflock", true) && pwalletMain && (masternodeConfig.getCount() > 0)) {
         LOCK(pwalletMain->cs_wallet);
         LogPrintf("Locking Masternodes:\n");
         uint256 mnTxHash;
@@ -1288,6 +1291,7 @@ bool AppInitPrivateSend()
         }
     }
 
+#if 0
     privateSendClient.nLiquidityProvider = std::min(std::max((int)GetArg("-liquidityprovider", DEFAULT_PRIVATESEND_LIQUIDITY), 0), 100);
     if(privateSendClient.nLiquidityProvider) {
         // special case for liquidity providers only, normal clients should use default value
@@ -1299,19 +1303,21 @@ bool AppInitPrivateSend()
     privateSendClient.nPrivateSendRounds = std::min(std::max((int)GetArg("-privatesendrounds", DEFAULT_PRIVATESEND_ROUNDS), 2), privateSendClient.nLiquidityProvider ? 99999 : 16);
     privateSendClient.nPrivateSendAmount = std::min(std::max((int)GetArg("-privatesendamount", DEFAULT_PRIVATESEND_AMOUNT), 2), 999999);
 #endif // ENABLE_WALLET
+#endif
 
-    fEnableInstantSend = GetBoolArg("-enableinstantsend", 1);
-    nInstantSendDepth = GetArg("-instantsenddepth", DEFAULT_INSTANTSEND_DEPTH);
+    fEnableInstantSend = gArgs.GetBoolArg("-enableinstantsend", 1);
+    nInstantSendDepth = gArgs.GetArg("-instantsenddepth", DEFAULT_INSTANTSEND_DEPTH);
     nInstantSendDepth = std::min(std::max(nInstantSendDepth, 0), 60);
 
     //lite mode disables all Masternode and Darksend related functionality
-    fLiteMode = GetBoolArg("-litemode", false);
+    fLiteMode = gArgs.GetBoolArg("-litemode", false);
     if(fMasterNode && fLiteMode){
         return InitError("You can not start a masternode in litemode");
     }
 
     LogPrintf("fLiteMode %d\n", fLiteMode);
     LogPrintf("nInstantSendDepth %d\n", nInstantSendDepth);
+#if 0
 #ifdef ENABLE_WALLET
     LogPrintf("PrivateSend rounds %d\n", privateSendClient.nPrivateSendRounds);
     LogPrintf("PrivateSend amount %d\n", privateSendClient.nPrivateSendAmount);

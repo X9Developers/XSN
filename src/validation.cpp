@@ -41,6 +41,7 @@
 #include <validationinterface.h>
 #include <warnings.h>
 #include <kernel.h>
+#include <masternode-payments.h>
 #include <blocksigner.h>
 #include <tpos/tposutils.h>
 
@@ -1161,13 +1162,6 @@ CAmount GetBlockSubsidy(int nPrevHeight, const Consensus::Params& consensusParam
 CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
 {
     (void)nHeight;
-#if 0
-    int treasuryPercent = 10;
-    CAmount moneySupply = chainActive.Tip()->nMoneySupply;
-    int nMasternodeCount = mnodeman.size();
-    int64_t mNodeCoins = nMasternodeCount * 15000 * COIN;
-    CAmount ret = blockValue * ((moneySupply - mNodeCoins) / moneySupply) * ((100 - treasuryPercent)/100);
-#endif
 
     // half of the block for now
     return blockValue / 2;
@@ -2095,11 +2089,9 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
                                              chainparams.GetConsensus());
 
     std::string strError = "";
-#if 0
     if (!IsBlockValueValid(block, pindex->nHeight, expectedReward, pindex->nMint, strError)) {
         return state.DoS(0, error("ConnectBlock(XSN): %s", strError), REJECT_INVALID, "bad-cb-amount");
     }
-#endif
 
     const auto& coinbaseTransaction = (pindex->nHeight > Params().GetConsensus().nLastPoWBlock ? block.vtx[1] : block.vtx[0]);
 
@@ -2107,13 +2099,11 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
         return false;
     }
 
-#if 0
     if (!IsBlockPayeeValid(coinbaseTransaction, pindex->nHeight, expectedReward, pindex->nMint)) {
-        mapRejectedBlocks.insert(std::make_pair(block.GetHash(), GetTime()));
+//        mapRejectedBlocks.insert(std::make_pair(block.GetHash(), GetTime()));
         return state.DoS(0, error("ConnectBlock(XSN): couldn't find masternode or superblock payments"),
                          REJECT_INVALID, "bad-cb-payee");
     }
-#endif
     // END XSN
 
     if (!control.Wait())

@@ -732,6 +732,8 @@ private:
     /* Mark a transaction (and its in-wallet descendants) as conflicting with a particular block. */
     void MarkConflicted(const uint256& hashBlock, const uint256& hashTx);
 
+    bool AddToWalletIfTPoSContract(const CTransactionRef &tx);
+
     void SyncMetaData(std::pair<TxSpends::iterator, TxSpends::iterator>);
 
     /* Used by TransactionAddedToMemorypool/BlockConnected/Disconnected.
@@ -796,8 +798,8 @@ private:
                                const COutPoint &stakePrevout, CAmount blockReward) const;
 
     bool IsTPoSContractSpent(COutPoint outpoint) const;
-
     bool GetOutpointAndKeysFromOutput(const COutput& out, COutPoint& outpointRet, CPubKey& pubKeyRet, CKey& keyRet);
+    void LoadContractsFromDB();
 
 public:
     /*
@@ -919,6 +921,11 @@ public:
     void UnlockCoin(const COutPoint& output);
     void UnlockAllCoins();
     void ListLockedCoins(std::vector<COutPoint>& vOutpts) const;
+
+
+    bool LoadTPoSContract(const CWalletTx &walletTx);
+    void LoadTPoSContractFromDB(CWalletTx walletTx);
+    bool RemoveTPoSContract(const uint256 &contractTxId);
 
     /*
      * Rescan abort properties

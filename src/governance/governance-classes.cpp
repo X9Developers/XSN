@@ -448,7 +448,7 @@ void CSuperblockManager::CreateSuperblock(CMutableTransaction& txNewRet, int nBl
 //    DBG( cout << "CSuperblockManager::CreateSuperblock End" << endl; );
 }
 
-bool CSuperblockManager::IsValid(const CTransaction& txNew, int nBlockHeight, CAmount expectedReward, CAmount actualReward)
+bool CSuperblockManager::IsValid(const CTransactionRef& txNew, int nBlockHeight, CAmount expectedReward, CAmount actualReward)
 {
     // GET BEST SUPERBLOCK, SHOULD MATCH
     LOCK(governance.cs);
@@ -638,7 +638,7 @@ CAmount CSuperblock::GetPaymentsTotalAmount()
 *   - Does this transaction match the superblock?
 */
 
-bool CSuperblock::IsValid(const CTransaction& txNew, int nBlockHeight, CAmount expectedReward, CAmount actualReward)
+bool CSuperblock::IsValid(const CTransactionRef& txNew, int nBlockHeight, CAmount expectedReward, CAmount actualReward)
 {
     // TODO : LOCK(cs);
     // No reason for a lock here now since this method only accesses data
@@ -654,7 +654,7 @@ bool CSuperblock::IsValid(const CTransaction& txNew, int nBlockHeight, CAmount e
 
     // CONFIGURE SUPERBLOCK OUTPUTS
 
-    int nOutputs = txNew.vout.size();
+    int nOutputs = txNew->vout.size();
     int nPayments = CountPayments();
     int nMinerPayments = nOutputs - nPayments;
 
@@ -700,8 +700,8 @@ bool CSuperblock::IsValid(const CTransaction& txNew, int nBlockHeight, CAmount e
 
         for (int j = nVoutIndex; j < nOutputs; j++) {
             // Find superblock payment
-            fPaymentMatch = ((payment.script == txNew.vout[j].scriptPubKey) &&
-                             (payment.nAmount == txNew.vout[j].nValue));
+            fPaymentMatch = ((payment.script == txNew->vout[j].scriptPubKey) &&
+                             (payment.nAmount == txNew->vout[j].nValue));
 
             if (fPaymentMatch) {
                 nVoutIndex = j;

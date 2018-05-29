@@ -736,7 +736,9 @@ void CMasternodeMan::ProcessMasternodeConnections(CConnman& connman)
 
     connman.ForEachNode([](CNode* pnode) {
 #ifdef ENABLE_WALLET
-        if(pnode->fMasternode && !privateSendClient.IsMixingMasternode(pnode)) {
+#if 0
+#endif
+        if(pnode->fMasternode /*&& !privateSendClient.IsMixingMasternode(pnode)*/) {
 #else
         if(pnode->fMasternode) {
 #endif // ENABLE_WALLET

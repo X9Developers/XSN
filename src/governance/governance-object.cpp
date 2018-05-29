@@ -7,9 +7,7 @@
 #include <governance/governance-classes.h>
 #include <governance/governance-object.h>
 #include <governance/governance-vote.h>
-#if 0
 #include <instantx.h>
-#endif
 #include <masternode-sync.h>
 #include <masternodeman.h>
 #include <messagesigner.h>
@@ -565,7 +563,6 @@ bool CGovernanceObject::IsCollateralValid(std::string& strError, bool& fMissingC
 
     // GET CONFIRMATIONS FOR TRANSACTION
 
-#if 0
     AssertLockHeld(cs_main);
     int nConfirmationsIn = instantsend.GetConfirmations(nCollateralHash);
     if (nBlockHash != uint256()) {
@@ -591,8 +588,6 @@ bool CGovernanceObject::IsCollateralValid(std::string& strError, bool& fMissingC
 
         return false;
     }
-
-#endif
 
     strError = "valid";
     return true;

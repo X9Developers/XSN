@@ -335,8 +335,6 @@ bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contr
 
 bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &block, int nBlockHeight, CAmount expectedReward, CAmount actualReward)
 {
-#if 0
-
     auto contract = TPoSContract::FromTPoSContractTx(block.txTPoSContract);
     CBitcoinAddress merchantAddress = contract.merchantAddress;
     CScript scriptMerchantPubKey = GetScriptForDestination(merchantAddress.Get());
@@ -372,7 +370,6 @@ bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &bl
         LogPrintf("IsMerchantPaymentValid -- WARNING: merchant wasn't paid, this is weird, but totally acceptable. Shouldn't happen.\n");
     }
 
-#if 0
     if(!merchantnodeSync.IsSynced())
     {
         //there is no merchant node info to check anything, let's just accept the longest chain
@@ -381,7 +378,6 @@ bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &bl
 
         return true;
     }
-#endif
 
     if(!sporkManager.IsSporkActive(Spork::SPORK_15_TPOS_ENABLED))
     {
@@ -394,7 +390,6 @@ bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &bl
         return state.DoS(0, error("IsMerchantPaymentValid -- ERROR: coin stake was paid to invalid address\n"),
                          REJECT_INVALID, "bad-merchant-payee", true);
 
-#if 0
     CMerchantnode merchantNode;
     if(!merchantnodeman.Get(coinstakeKeyID, merchantNode))
     {
@@ -414,8 +409,6 @@ bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &bl
         return state.DoS(0, error("IsMerchantPaymentValid -- ERROR: merchantnode with address: %s is not valid for payment\n", merchantAddress.ToString().c_str()),
                          REJECT_INVALID, "bad-merchant-payee", true);
     }
-#endif
-#endif
 
     return true;
 }

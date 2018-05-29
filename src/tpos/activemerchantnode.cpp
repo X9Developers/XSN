@@ -128,7 +128,6 @@ bool CActiveMerchantnode::UpdateSentinelPing(int version)
 
 void CActiveMerchantnode::ManageStateInitial(CConnman& connman)
 {
-#if 0
     LogPrint(BCLog::MERCHANTNODE, "CActiveMerchantnode::ManageStateInitial -- status = %s, type = %s, pinger enabled = %d\n", GetStatus(), GetTypeString(), fPingerEnabled);
 
     // Check that our local network configuration is correct
@@ -184,25 +183,21 @@ void CActiveMerchantnode::ManageStateInitial(CConnman& connman)
 
     LogPrintf("CActiveMerchantnode::ManageStateInitial -- Checking inbound connection to '%s'\n", service.ToString());
 
-#if 0
-    if(!connman.ConnectNode(CAddress(service, NODE_NETWORK), NULL, true, false)) {
+    if(!connman.OpenMerchantnodeConnection(CAddress(service, NODE_NETWORK))) {
         nState = ACTIVE_MERCHANTNODE_NOT_CAPABLE;
         strNotCapableReason = "Could not connect to " + service.ToString();
         LogPrintf("CActiveMerchantnode::ManageStateInitial -- %s: %s\n", GetStateString(), strNotCapableReason);
         return;
     }
-#endif
 
     // Default to REMOTE
     eType = MERCHANTNODE_REMOTE;
 
     LogPrint(BCLog::MERCHANTNODE, "CActiveMerchantnode::ManageStateInitial -- End status = %s, type = %s, pinger enabled = %d\n", GetStatus(), GetTypeString(), fPingerEnabled);
-#endif
 }
 
 void CActiveMerchantnode::ManageStateRemote()
 {
-#if 0
     LogPrint(BCLog::MERCHANTNODE, "CActiveMerchantnode::ManageStateRemote -- Start status = %s, type = %s, pinger enabled = %d, pubKeyMerchantnode.GetID() = %s\n",
              GetStatus(), GetTypeString(), fPingerEnabled, pubKeyMerchantnode.GetID().ToString());
 
@@ -240,5 +235,4 @@ void CActiveMerchantnode::ManageStateRemote()
         strNotCapableReason = "Merchantnode not in masternode list";
         LogPrintf("CActiveMerchantnode::ManageStateRemote -- %s: %s\n", GetStateString(), strNotCapableReason);
     }
-#endif
 }

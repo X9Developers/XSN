@@ -4,9 +4,7 @@
 
 #include <tpos/activemerchantnode.h>
 #include <checkpoints.h>
-#if 0
-#include <governance.h>
-#endif
+#include <governance/governance.h>
 #include <validation.h>
 #include <tpos/merchantnode-sync.h>
 #include <tpos/merchantnode.h>
@@ -163,9 +161,7 @@ void CMerchantnodeSync::ProcessTick(CConnman& connman)
     // gradually request the rest of the votes after sync finished
     if(IsSynced()) {
         std::vector<CNode*> vNodesCopy = connman.CopyNodeVector();
-#if 0
         governance.RequestGovernanceObjectVotes(vNodesCopy, connman);
-#endif
         connman.ReleaseNodeVector(vNodesCopy);
         return;
     }
@@ -184,27 +180,6 @@ void CMerchantnodeSync::ProcessTick(CConnman& connman)
         // Inbound connection this early is most likely a "merchantnode" connection
         // initiated from another node, so skip it too.
         if(pnode->fMerchantnode || (fMerchantNode && pnode->fInbound)) continue;
-
-        // QUICK MODE (REGTEST ONLY!)
-#if 0
-        if(Params().NetworkIDString() == CBaseChainParams::REGTEST)
-        {
-            if(nRequestedMerchantnodeAttempt <= 2) {
-                connman.PushMessageWithVersion(pnode, INIT_PROTO_VERSION, NetMsgType::GETSPORKS); //get current network sporks
-            } else if(nRequestedMerchantnodeAttempt < 4) {
-                merchantnodeman.DsegUpdate(pnode, connman);
-            } else if(nRequestedMerchantnodeAttempt < 6) {
-                int nMnCount = merchantnodeman.CountMerchantnodes();
-                connman.PushMessage(pnode, NetMsgType::MERCHANTNODEPAYMENTSYNC, nMnCount); //sync payment votes
-                SendGovernanceSyncRequest(pnode, connman);
-            } else {
-                nRequestedMerchantnodeAssets = MERCHANTNODE_SYNC_FINISHED;
-            }
-            nRequestedMerchantnodeAttempt++;
-            connman.ReleaseNodeVector(vNodesCopy);
-            return;
-        }
-#endif
 
         // NORMAL NETWORK MODE - TESTNET/MAINNET
         {
