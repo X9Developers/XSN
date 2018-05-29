@@ -1,21 +1,21 @@
 // Copyright (c) 2014-2017 The Dash Core developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#include "privatesend.h"
+#include <privatesend/privatesend.h>
 
-#include "activemasternode.h"
-#include "consensus/validation.h"
-#include "governance.h"
-#include "init.h"
-#include "instantx.h"
-#include "masternode-payments.h"
-#include "masternode-sync.h"
-#include "masternodeman.h"
-#include "messagesigner.h"
-#include "script/sign.h"
-#include "txmempool.h"
-#include "util.h"
-#include "utilmoneystr.h"
+#include <activemasternode.h>
+#include <consensus/validation.h>
+#include <governance/governance.h>
+#include <init.h>
+#include <instantx.h>
+#include <masternode-payments.h>
+#include <masternode-sync.h>
+#include <masternodeman.h>
+#include <messagesigner.h>
+#include <script/sign.h>
+#include <txmempool.h>
+#include <util.h>
+#include <utilmoneystr.h>
 
 #include <boost/lexical_cast.hpp>
 

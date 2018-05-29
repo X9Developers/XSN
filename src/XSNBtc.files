@@ -142,6 +142,14 @@ primitives/block.cpp
 primitives/block.h
 primitives/transaction.cpp
 primitives/transaction.h
+privatesend/privatesend-client.cpp
+privatesend/privatesend-client.h
+privatesend/privatesend-server.cpp
+privatesend/privatesend-server.h
+privatesend/privatesend-util.cpp
+privatesend/privatesend-util.h
+privatesend/privatesend.cpp
+privatesend/privatesend.h
 protocol.cpp
 protocol.h
 pubkey.cpp

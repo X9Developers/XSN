@@ -5,13 +5,13 @@
 #ifndef PRIVATESEND_H
 #define PRIVATESEND_H
 
-#include "chain.h"
-#include "chainparams.h"
-#include "primitives/transaction.h"
-#include "pubkey.h"
-#include "sync.h"
-#include "tinyformat.h"
-#include "timedata.h"
+#include <chain.h>
+#include <chainparams.h>
+#include <primitives/transaction.h>
+#include <pubkey.h>
+#include <sync.h>
+#include <tinyformat.h>
+#include <timedata.h>
 
 class CPrivateSend;
 class CConnman;
@@ -125,7 +125,7 @@ public:
     ADD_SERIALIZE_METHODS;
 
     template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
+    inline void SerializationOp(Stream& s, Operation ser_action) {
         READWRITE(vecTxDSIn);
         READWRITE(txCollateral);
         READWRITE(vecTxOut);
@@ -170,7 +170,7 @@ public:
     ADD_SERIALIZE_METHODS;
 
     template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
+    inline void SerializationOp(Stream& s, Operation ser_action) {
         READWRITE(nDenom);
         READWRITE(vin);
         READWRITE(nTime);
@@ -197,7 +197,7 @@ public:
     std::string ToString()
     {
         return strprintf("nDenom=%d, nTime=%lld, fReady=%s, fTried=%s, masternode=%s",
-                        nDenom, nTime, fReady ? "true" : "false", fTried ? "true" : "false", vin.prevout.ToStringShort());
+                        nDenom, nTime, fReady ? "true" : "false", fTried ? "true" : "false", vin.prevout.ToString());
     }
 
     friend bool operator==(const CDarksendQueue& a, const CDarksendQueue& b)
@@ -240,7 +240,7 @@ public:
     ADD_SERIALIZE_METHODS;
 
     template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
+    inline void SerializationOp(Stream& s, Operation ser_action) {
         READWRITE(tx);
         READWRITE(vin);
         READWRITE(vchSig);

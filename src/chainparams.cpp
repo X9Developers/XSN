@@ -173,6 +173,7 @@ public:
         fRequireStandard = true;
         fMineBlocksOnDemand = false;
 
+        nPoolMaxTransactions = 3;
         nFulfilledRequestExpireTime = 60*60; // fulfilled requests expire in 1 hour
         strSporkPubKey = "030a2b7fdf1f123f3686ebc00f1226a20275bc785570ef069e2c2d81b61d616e91";
 
@@ -294,6 +295,7 @@ public:
         fRequireStandard = false;
         fMineBlocksOnDemand = false;
 
+        nPoolMaxTransactions = 3;
         nFulfilledRequestExpireTime = 5*60; // fulfilled requests expire in 5 minutes
         strSporkPubKey = "02a80a535f8adae9b557d5b1cf1e088333efdfd51c5e1af7f913483197e66433ab";
 
