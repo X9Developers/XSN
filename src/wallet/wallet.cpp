@@ -696,6 +696,7 @@ void CWallet::SyncMetaData(std::pair<TxSpends::iterator, TxSpends::iterator> ran
     }
 }
 
+#if 0
 // Recursively determine the rounds of a given input (How deep is the PrivateSend chain for a given input)
 int CWallet::GetRealOutpointPrivateSendRounds(const COutPoint& outpoint, int nRounds) const
 {
@@ -797,6 +798,8 @@ bool CWallet::IsDenominated(const COutPoint& outpoint) const
 
     return false;
 }
+
+#endif
 
 /**
  * Outpoint is spent if any non-conflicted transaction
@@ -2516,16 +2519,22 @@ static bool IsCorrectType(CAmount nAmount, AvailableCoinsType nCoinType)
 {
     bool found = false;
     if(nCoinType == ONLY_DENOMINATED) {
+#if 0
         found = CPrivateSend::IsDenominatedAmount(nAmount);
+#endif
     } else if(nCoinType == ONLY_NONDENOMINATED) {
+#if 0
         if (!CPrivateSend::IsCollateralAmount(nAmount))
             found = !CPrivateSend::IsDenominatedAmount(nAmount);
+#endif
     } else if(nCoinType == ONLY_MASTERNODE_COLLATERAL) {
         found = nAmount == 15000 * COIN;
     } else if(nCoinType == ONLY_MERCHANTNODE_COLLATERAL) {
         found = nAmount == 1 * COIN;
     } else if(nCoinType == ONLY_PRIVATESEND_COLLATERAL) {
+#if 0
         found = CPrivateSend::IsCollateralAmount(nAmount);
+#endif
     } else {
         found = true;
     }
@@ -2871,6 +2880,7 @@ struct CompareByAmount
     }
 };
 
+#if 0
 bool CWallet::SelectCoinsGrouppedByAddresses(std::vector<CompactTallyItem>& vecTallyRet, bool fSkipDenominated, bool fAnonymizable, bool fSkipUnconfirmed) const
 {
     LOCK2(cs_main, cs_wallet);
@@ -2959,6 +2969,7 @@ bool CWallet::SelectCoinsGrouppedByAddresses(std::vector<CompactTallyItem>& vecT
 
     return vecTallyRet.size() > 0;
 }
+#endif
 
 bool CWallet::SelectCoins(const std::vector<COutput>& vAvailableCoins, const CAmount& nTargetValue, std::set<CInputCoin>& setCoinsRet, CAmount& nValueRet, const CCoinControl& coin_control, CoinSelectionParams& coin_selection_params, bool& bnb_used) const
 {

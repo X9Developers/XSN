@@ -903,11 +903,13 @@ public:
     bool SelectStakeCoins(StakeCoinsSet& setCoins, CAmount nTargetAmount, const CScript &scriptFilterPubKey = CScript()) const;
     bool SelectCoinsGrouppedByAddresses(std::vector<CompactTallyItem>& vecTallyRet, bool fSkipDenominated = true, bool fAnonymizable = true, bool fSkipUnconfirmed = true) const;
 
+#if 0
     // get the PrivateSend chain depth for a given input
     int GetRealOutpointPrivateSendRounds(const COutPoint& outpoint, int nRounds) const;
     // respect current settings
     int GetOutpointPrivateSendRounds(const COutPoint& outpoint) const;
     bool IsDenominated(const COutPoint& outpoint) const;
+#endif
 
     bool IsSpent(const uint256& hash, unsigned int n) const;
 
