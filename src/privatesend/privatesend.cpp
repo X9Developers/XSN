@@ -21,7 +21,7 @@
 
 bool CDarkSendEntry::AddScriptSig(const CTxIn& txin)
 {
-    BOOST_FOREACH(CTxDSIn& txdsin, vecTxDSIn) {
+    for(CTxDSIn& txdsin : vecTxDSIn) {
         if(txdsin.prevout == txin.prevout && txdsin.nSequence == txin.nSequence) {
             if(txdsin.fHasSig) return false;
 

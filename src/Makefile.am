@@ -147,6 +147,7 @@ BITCOIN_CORE_H = \
   policy/fees.h \
   policy/policy.h \
   policy/rbf.h \
+  privatesend/privatesend.h \
   pow.h \
   protocol.h \
   random.h \
@@ -261,6 +262,7 @@ libbitcoin_server_a_SOURCES = \
   policy/policy.cpp \
   policy/rbf.cpp \
   pow.cpp \
+  privatesend/privatesend.cpp \
   rest.cpp \
   rpc/blockchain.cpp \
   rpc/mining.cpp \
