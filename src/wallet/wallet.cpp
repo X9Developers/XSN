@@ -4081,6 +4081,20 @@ void CWallet::MarkReserveKeysAsUsed(int64_t keypool_id)
     }
 }
 
+bool CWallet::UpdatedTransaction(const uint256 &hashTx)
+{
+    {
+        LOCK(cs_wallet);
+        // Only notify UI if this transaction is in this wallet
+        auto mi = mapWallet.find(hashTx);
+        if (mi != mapWallet.end()){
+            NotifyTransactionChanged(this, hashTx, CT_UPDATED);
+            return true;
+        }
+    }
+    return false;
+}
+
 void CWallet::GetScriptForMining(std::shared_ptr<CReserveScript> &script)
 {
     std::shared_ptr<CReserveKey> rKey = std::make_shared<CReserveKey>(this);

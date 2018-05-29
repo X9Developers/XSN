@@ -3,6 +3,7 @@
 #include <masternodeconfig.h>
 #include <util.h>
 #include <chainparams.h>
+#include <utilstrencodings.h>
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>

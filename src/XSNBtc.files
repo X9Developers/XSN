@@ -76,6 +76,8 @@ httpserver.h
 indirectmap.h
 init.cpp
 init.h
+instantx.cpp
+instantx.h
 interfaces/handler.cpp
 interfaces/handler.h
 interfaces/node.cpp
