@@ -69,7 +69,7 @@ static int GetUTXOHeight(const COutPoint& outpoint)
 // CInstantSend
 //
 
-void CInstantSend::ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStream& vRecv, CConnman& connman)
+void CInstantSend::ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman)
 {
     if(fLiteMode) return; // disable all XSN specific functionality
     if(!sporkManager.IsSporkActive(Spork::SPORK_2_INSTANTSEND_ENABLED)) return;

@@ -1270,7 +1270,7 @@ bool AppInitPrivateSend()
 #ifdef ENABLE_WALLET
     LogPrintf("Using masternode config file %s\n", GetMasternodeConfigFile().string());
 
-    auto pwalletMain = GetWallets().at(1);
+    auto pwalletMain = GetWallets().at(0);
 
     if(gArgs.GetBoolArg("-mnconflock", true) && pwalletMain && (masternodeConfig.getCount() > 0)) {
         LOCK(pwalletMain->cs_wallet);

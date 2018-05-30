@@ -105,7 +105,7 @@ std::string CMerchantnodeSync::GetSyncStatus()
     }
 }
 
-void CMerchantnodeSync::ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStream& vRecv)
+void CMerchantnodeSync::ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv)
 {
     if (strCommand == NetMsgType::MERCHANTSYNCSTATUSCOUNT) { //Sync status count
 

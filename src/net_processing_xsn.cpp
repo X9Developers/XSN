@@ -4,6 +4,13 @@
 #include <netmessagemaker.h>
 #include <map>
 #include <functional>
+#include <masternodeman.h>
+#include <masternode-sync.h>
+#include <masternode-payments.h>
+#include <governance/governance.h>
+#include <tpos/merchantnode-sync.h>
+#include <tpos/merchantnodeman.h>
+#include <instantx.h>
 
 using SporkHandler = std::function<CSerializedNetMsg(const CNetMsgMaker &, const uint256 &)>;
 using MapSporkHandlers = std::map<int, SporkHandler>;
@@ -47,5 +54,12 @@ bool net_processing_xsn::ProcessGetData(CNode *pfrom, const Consensus::Params &c
 
 void net_processing_xsn::ProcessExtension(CNode *pfrom, const std::string &strCommand, CDataStream &vRecv, CConnman *connman)
 {
+    mnodeman.ProcessMessage(pfrom, strCommand, vRecv, *connman);
+    mnpayments.ProcessMessage(pfrom, strCommand, vRecv, *connman);
+    merchantnodeman.ProcessMessage(pfrom, strCommand, vRecv, *connman);
+    instantsend.ProcessMessage(pfrom, strCommand, vRecv, *connman);
     sporkManager.ProcessSpork(pfrom, strCommand, vRecv, connman);
+    masternodeSync.ProcessMessage(pfrom, strCommand, vRecv);
+    merchantnodeSync.ProcessMessage(pfrom, strCommand, vRecv);
+    governance.ProcessMessage(pfrom, strCommand, vRecv, *connman);
 }

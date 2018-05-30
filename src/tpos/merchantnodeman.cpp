@@ -473,7 +473,7 @@ std::pair<CService, std::set<uint256> > CMerchantnodeMan::PopScheduledMnbRequest
 }
 
 
-void CMerchantnodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStream& vRecv, CConnman& connman)
+void CMerchantnodeMan::ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman)
 {
     if(fLiteMode) return; // disable all XSN specific functionality
 

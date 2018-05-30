@@ -279,6 +279,8 @@ rpc/blockchain.cpp
 rpc/blockchain.h
 rpc/client.cpp
 rpc/client.h
+rpc/masternode.cpp
+rpc/merchantnode.cpp
 rpc/mining.cpp
 rpc/mining.h
 rpc/misc.cpp
