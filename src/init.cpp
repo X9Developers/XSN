@@ -54,6 +54,7 @@
 #include <activemasternode.h>
 #include <instantx.h>
 #include <wallet/wallet.h>
+#include <net_processing_xsn.h>
 
 #ifndef WIN32
 #include <signal.h>
@@ -1325,6 +1326,8 @@ bool AppInitPrivateSend()
 
     CPrivateSend::InitStandardDenominations();
 #endif
+
+    threadGroup.create_thread(boost::bind(net_processing_xsn::ThreadProcessExtensions, g_connman.get()));
 
     return true;
 }

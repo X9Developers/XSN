@@ -426,9 +426,8 @@ TPoSContract::TPoSContract(CTransactionRef tx, CBitcoinAddress merchantAddress, 
 
 bool TPoSContract::IsValid() const
 {
-    return !rawTx->IsNull() && merchantAddress.IsValid() &&
-            tposAddress.IsValid() &&
-            stakePercentage > 0 && stakePercentage < 100;
+    return rawTx && !rawTx->IsNull() && merchantAddress.IsValid() && tposAddress.IsValid() &&
+           stakePercentage > 0 && stakePercentage < 100;
 }
 
 TPoSContract TPoSContract::FromTPoSContractTx(const CTransactionRef tx)

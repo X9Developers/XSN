@@ -10,7 +10,10 @@
 #include <governance/governance.h>
 #include <tpos/merchantnode-sync.h>
 #include <tpos/merchantnodeman.h>
+#include <activemasternode.h>
+#include <tpos/activemerchantnode.h>
 #include <instantx.h>
+#include <init.h>
 
 using SporkHandler = std::function<CSerializedNetMsg(const CNetMsgMaker &, const uint256 &)>;
 using MapSporkHandlers = std::map<int, SporkHandler>;
@@ -62,4 +65,69 @@ void net_processing_xsn::ProcessExtension(CNode *pfrom, const std::string &strCo
     masternodeSync.ProcessMessage(pfrom, strCommand, vRecv);
     merchantnodeSync.ProcessMessage(pfrom, strCommand, vRecv);
     governance.ProcessMessage(pfrom, strCommand, vRecv, *connman);
+}
+
+void net_processing_xsn::ThreadProcessExtensions(CConnman *pConnman)
+{
+    if(fLiteMode) return; // disable all XSN specific functionality
+
+    static bool fOneThread;
+    if(fOneThread) return;
+    fOneThread = true;
+
+    // Make this thread recognisable as the PrivateSend thread
+    RenameThread("xsn-ps");
+
+    unsigned int nTick = 0;
+
+    auto &connman = *pConnman;
+    while (true)
+    {
+        MilliSleep(1000);
+
+        // try to sync from all available nodes, one step at a time
+        masternodeSync.ProcessTick(connman);
+        merchantnodeSync.ProcessTick(connman);
+
+        if(masternodeSync.IsBlockchainSynced() &&
+                merchantnodeSync.IsBlockchainSynced() &&
+                !ShutdownRequested()) {
+
+            nTick++;
+
+            // make sure to check all masternodes first
+            mnodeman.Check();
+            merchantnodeman.Check();
+
+            // check if we should activate or ping every few minutes,
+            // slightly postpone first run to give net thread a chance to connect to some peers
+            if(nTick % MASTERNODE_MIN_MNP_SECONDS == 15)
+                activeMasternode.ManageState(connman);
+
+            if(nTick % 60 == 0) {
+                mnodeman.ProcessMasternodeConnections(connman);
+                mnodeman.CheckAndRemove(connman);
+                mnpayments.CheckAndRemove();
+                instantsend.CheckAndRemove();
+            }
+            if(fMasterNode && (nTick % (60 * 5) == 0)) {
+                mnodeman.DoFullVerificationStep(connman);
+            }
+
+            if(nTick % (60 * 5) == 0) {
+                governance.DoMaintenance(connman);
+            }
+
+            if(nTick % MERCHANTNODE_MIN_MNP_SECONDS == 15)
+                activeMerchantnode.ManageState(connman);
+
+            if(nTick % 60 == 0) {
+                merchantnodeman.ProcessMerchantnodeConnections(connman);
+                merchantnodeman.CheckAndRemove(connman);
+            }
+            if(fMerchantNode && (nTick % (60 * 5) == 0)) {
+                merchantnodeman.DoFullVerificationStep(connman);
+            }
+        }
+    }
 }

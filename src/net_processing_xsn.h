@@ -16,6 +16,9 @@ bool ProcessGetData(CNode* pfrom, const Consensus::Params& consensusParams, CCon
                     const CInv &inv);
 
 void ProcessExtension(CNode* pfrom, const std::string &strCommand, CDataStream& vRecv, CConnman *connman);
+
+/** Run an instance of extension processor */
+void ThreadProcessExtensions(CConnman *pConnman);
 }
 
 #endif // NET_PROCESSING_XSN_H
