@@ -234,6 +234,8 @@ std::string CInv::GetCommand() const
     if (type & MSG_WITNESS_FLAG)
         cmd.append("witness-");
     int masked = type & MSG_TYPE_MASK;
+
+
     switch (masked)
     {
     case MSG_TX:             return cmd.append(NetMsgType::TX);
@@ -241,6 +243,17 @@ std::string CInv::GetCommand() const
     case MSG_FILTERED_BLOCK: return cmd.append(NetMsgType::MERKLEBLOCK);
     case MSG_CMPCT_BLOCK:    return cmd.append(NetMsgType::CMPCTBLOCK);
     case MSG_SPORK:          return cmd.append(NetMsgType::SPORK);
+    case MSG_MASTERNODE_PAYMENT_VOTE: return cmd.append(NetMsgType::MASTERNODEPAYMENTVOTE);
+    case MSG_MASTERNODE_PAYMENT_BLOCK: return cmd.append(NetMsgType::MASTERNODEPAYMENTBLOCK);
+    case MSG_MASTERNODE_ANNOUNCE: return cmd.append(NetMsgType::MNANNOUNCE);
+    case MSG_MASTERNODE_PING: return cmd.append(NetMsgType::MNPING);
+    case MSG_DSTX: return cmd.append(NetMsgType::DSTX);
+    case MSG_GOVERNANCE_OBJECT: return cmd.append(NetMsgType::MNGOVERNANCEOBJECT);
+    case MSG_GOVERNANCE_OBJECT_VOTE: return cmd.append(NetMsgType::MNGOVERNANCEOBJECTVOTE);
+    case MSG_MASTERNODE_VERIFY: return cmd.append(NetMsgType::MNVERIFY);
+    case MSG_MERCHANTNODE_VERIFY: return cmd.append(NetMsgType::MERCHANTNODEVERIFY);
+    case MSG_MERCHANTNODE_ANNOUNCE: return cmd.append(NetMsgType::MERCHANTNODEANNOUNCE);
+    case MSG_MERCHANTNODE_PING: return cmd.append(NetMsgType::MERCHANTNODEPING);
     default:
         throw std::out_of_range(strprintf("CInv::GetCommand(): type=%d unknown type", type));
     }

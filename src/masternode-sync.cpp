@@ -278,7 +278,7 @@ void CMasternodeSync::ProcessTick(CConnman& connman)
                 if(netfulfilledman.HasFulfilledRequest(pnode->addr, "masternode-list-sync")) continue;
                 netfulfilledman.AddFulfilledRequest(pnode->addr, "masternode-list-sync");
 
-                if (pnode->nVersion < mnpayments.GetMinMasternodePaymentsProto()) continue;
+//                if (pnode->nVersion < mnpayments.GetMinMasternodePaymentsProto()) continue;
                 nRequestedMasternodeAttempt++;
 
                 mnodeman.DsegUpdate(pnode, connman);

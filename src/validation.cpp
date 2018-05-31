@@ -1362,8 +1362,10 @@ void InitScriptExecutionCache() {
 
 void ReprocessBlocks(int nBlocks)
 {
-    LOCK(cs_main);
-    g_chainstate.DisconnectBlocks(nBlocks);
+    {
+        LOCK(cs_main);
+        g_chainstate.DisconnectBlocks(nBlocks);
+    }
     CValidationState state;
     ActivateBestChain(state, Params());
 }

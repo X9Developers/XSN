@@ -81,8 +81,9 @@ void net_processing_xsn::ThreadProcessExtensions(CConnman *pConnman)
     unsigned int nTick = 0;
 
     auto &connman = *pConnman;
-    while (true)
+    while (!ShutdownRequested())
     {
+        boost::this_thread::interruption_point();
         MilliSleep(1000);
 
         // try to sync from all available nodes, one step at a time
