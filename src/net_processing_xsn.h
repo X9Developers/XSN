@@ -17,6 +17,8 @@ bool ProcessGetData(CNode* pfrom, const Consensus::Params& consensusParams, CCon
 
 void ProcessExtension(CNode* pfrom, const std::string &strCommand, CDataStream& vRecv, CConnman *connman);
 
+bool AlreadyHave(CInv inv, CNode *pfrom);
+
 /** Run an instance of extension processor */
 void ThreadProcessExtensions(CConnman *pConnman);
 }

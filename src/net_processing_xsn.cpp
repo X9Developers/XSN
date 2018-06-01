@@ -132,3 +132,39 @@ void net_processing_xsn::ThreadProcessExtensions(CConnman *pConnman)
         }
     }
 }
+
+bool net_processing_xsn::AlreadyHave(CInv inv, CNode *pfrom)
+{
+
+    LogPrintf("Got extension: %d, send version: %d, recv version: %d\n", inv.type,
+              pfrom->GetSendVersion(),
+              pfrom->GetRecvVersion());
+
+    switch(inv.type)
+    {
+    case MSG_SPORK:
+        return mapSporks.count(inv.hash);
+
+    case MSG_MASTERNODE_PAYMENT_VOTE:
+        return mnpayments.mapMasternodePaymentVotes.count(inv.hash);
+
+    case MSG_MASTERNODE_PAYMENT_BLOCK:
+    {
+        BlockMap::iterator mi = mapBlockIndex.find(inv.hash);
+        return mi != mapBlockIndex.end() && mnpayments.mapMasternodeBlocks.find(mi->second->nHeight) != mnpayments.mapMasternodeBlocks.end();
+    }
+
+    case MSG_MASTERNODE_ANNOUNCE:
+        return mnodeman.mapSeenMasternodeBroadcast.count(inv.hash) && !mnodeman.IsMnbRecoveryRequested(inv.hash);
+    case MSG_MERCHANTNODE_ANNOUNCE:
+        return merchantnodeman.mapSeenMerchantnodeBroadcast.count(inv.hash) && !merchantnodeman.IsMnbRecoveryRequested(inv.hash);
+
+    case MSG_MASTERNODE_PING:
+        return mnodeman.mapSeenMasternodePing.count(inv.hash);
+    case MSG_MERCHANTNODE_PING:
+        return merchantnodeman.mapSeenMerchantnodePing.count(inv.hash);
+    }
+
+    // Don't know what it is, just say we already got one
+    return true;
+}
