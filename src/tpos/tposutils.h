@@ -10,12 +10,13 @@
 
 class CWallet;
 class CWalletTx;
-class CMutableTransaction;
+struct CMutableTransaction;
 class CReserveKey;
 class CValidationState;
 
-struct TPoSContract
+class TPoSContract
 {
+public:
     TPoSContract() = default;
     TPoSContract(CTransaction tx,
                  CBitcoinAddress merchantAddress,
