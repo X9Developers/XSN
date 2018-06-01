@@ -1918,7 +1918,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
 
         uint32_t nFetchFlags = GetFetchFlags(pfrom);
 
-        for (const CInv &inv : vInv)
+        for (CInv &inv : vInv)
         {
             if (interruptMsgProc)
                 return true;
