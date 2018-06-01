@@ -9,6 +9,7 @@
 
 #include <QDialog>
 #include <QString>
+#include <QButtonGroup>
 
 static const int MAX_SEND_POPUP_ENTRIES = 10;
 
@@ -17,7 +18,6 @@ class OptionsModel;
 class PlatformStyle;
 class SendCoinsEntry;
 class SendCoinsRecipient;
-class QButtonGroup;
 
 namespace Ui {
     class SendCoinsDialog;
