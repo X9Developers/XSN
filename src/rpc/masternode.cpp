@@ -905,11 +905,11 @@ static UniValue sentinelping(const JSONRPCRequest& request)
 static const CRPCCommand commands[] =
 { //  category              name                      actor (function)         argNames
   //  --------------------- ------------------------  -----------------------  ----------
-    { "masternode",            "masternode",        &masternode,        {"command"} }, /* uses wallet if enabled */
-    { "masternode",            "masternodelist",         &masternodelist,         {"mode", "filter"} },
-    { "masternode",            "masternodebroadcast",          &masternodebroadcast,          {"command"} },
-    { "masternode",            "sentinelping", &sentinelping, {"version"} },
-    { "masternode",            "mnsync", &mnsync, {"command"} },
+    { "masternode",            "masternode",            &masternode,            {"command"} }, /* uses wallet if enabled */
+    { "masternode",            "masternodelist",        &masternodelist,        {"mode", "filter"} },
+    { "masternode",            "masternodebroadcast",   &masternodebroadcast,   {"command"} },
+    { "masternode",            "sentinelping",          &sentinelping,          {"version"} },
+    { "masternode",            "mnsync",                &mnsync,                {"command"} },
 };
 
 void RegisterMasternodeCommands(CRPCTable &t)
