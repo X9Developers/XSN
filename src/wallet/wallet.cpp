@@ -36,6 +36,7 @@
 #include <assert.h>
 #include <future>
 
+
 #include <boost/algorithm/string/replace.hpp>
 
 static CCriticalSection cs_wallets;
@@ -3232,6 +3233,33 @@ OutputType CWallet::TransactionChangeType(OutputType change_type, const std::vec
 
     // else use m_default_address_type for change
     return m_default_address_type;
+}
+
+bool CWallet::GetBudgetSystemCollateralTX(CWalletTx& tx, uint256 hash, CAmount amount, bool fUseInstantSend)
+{
+    // make our change address
+    CReserveKey reservekey(this);
+
+    CScript scriptChange;
+    scriptChange << OP_RETURN << ToByteVector(hash);
+
+    CAmount nFeeRet = 0;
+    int nChangePosRet = -1;
+    std::string strFail = "";
+    std::vector< CRecipient > vecSend;
+    vecSend.push_back({scriptChange, amount, false});
+
+    const CCoinControl *coinControl = nullptr;
+#if 0
+    bool success = CreateTransaction(vecSend, tx.tx, reservekey, nFeeRet, nChangePosRet, strFail, coinControl, true, ALL_COINS, fUseInstantSend);
+#endif
+    bool success = CreateTransaction(vecSend, tx.tx, reservekey, nFeeRet, nChangePosRet, strFail, {}, true);
+    if(!success){
+        LogPrintf("CWallet::GetBudgetSystemCollateralTX -- Error: %s\n", strFail);
+        return false;
+    }
+
+    return true;
 }
 
 bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CTransactionRef& tx, CReserveKey& reservekey, CAmount& nFeeRet,

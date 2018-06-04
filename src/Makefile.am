@@ -273,6 +273,7 @@ libbitcoin_server_a_SOURCES = \
   rpc/rawtransaction.cpp \
   rpc/server.cpp \
   rpc/xsnmisc.cpp \
+  rpc/governance.cpp\
   script/sigcache.cpp \
   spork.cpp \
   timedata.cpp \

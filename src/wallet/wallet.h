@@ -1019,6 +1019,9 @@ public:
 
     OutputType TransactionChangeType(OutputType change_type, const std::vector<CRecipient>& vecSend);
 
+    bool GetBudgetSystemCollateralTX(CWalletTx& tx, uint256 hash, CAmount amount, bool fUseInstantSend);
+
+
     /**
      * Insert additional inputs into the transaction by
      * calling CreateTransaction();

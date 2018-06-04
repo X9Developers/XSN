@@ -1,3 +1,5 @@
+../../../XSN/src/governance.cpp
+../../../XSN/src/governance.h
 activemasternode.cpp
 activemasternode.h
 addrdb.cpp
@@ -279,6 +281,7 @@ rpc/blockchain.cpp
 rpc/blockchain.h
 rpc/client.cpp
 rpc/client.h
+rpc/governance.cpp
 rpc/masternode.cpp
 rpc/merchantnode.cpp
 rpc/mining.cpp
