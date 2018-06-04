@@ -1007,13 +1007,13 @@ UniValue getsuperblockbudget(const JSONRPCRequest& request)
 static const CRPCCommand commands[] =
 { //  category              name                      actor (function)         argNames
   //  --------------------- ------------------------  -----------------------  ----------
-  { "governance",             "gobject",       &gobject,       {"",""} },
+  { "governance",             "gobject",       &gobject,       {} },
   { "governance",             "voteraw",          &voteraw,          {} },
   { "governance",             "getgovernanceinfo",  &getgovernanceinfo,  {} },
   { "governance",             "getsuperblockbudget",       &getsuperblockbudget,       {"index"} },
 };
 
-void RegisterMiningRPCCommands(CRPCTable &t)
+void RegisterGoverenceRPCCommands(CRPCTable &t)
 {
     for (unsigned int vcidx = 0; vcidx < ARRAYLEN(commands); vcidx++)
         t.appendCommand(commands[vcidx].name, &commands[vcidx]);
