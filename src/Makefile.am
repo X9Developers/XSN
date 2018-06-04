@@ -103,6 +103,7 @@ BITCOIN_CORE_H = \
   core_memusage.h \
   cuckoocache.h \
   fs.h \
+  flat-database.h \
   governance/governance.h \
   governance/governance-classes.h \
   governance/governance-exceptions.h \
