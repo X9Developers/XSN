@@ -877,29 +877,19 @@ void CInstantSend::UpdatedBlockTip(const CBlockIndex *pindex)
     nCachedBlockHeight = pindex->nHeight;
 }
 
-void CInstantSend::SyncTransaction(const CTransaction& tx, const CBlock* pblock)
+void CInstantSend::SyncTransaction(const CTransactionRef &tx, const CBlockIndex *pindex)
 {
     // Update lock candidates and votes if corresponding tx confirmed
     // or went from confirmed to 0-confirmed or conflicted.
 
-    if (tx.IsCoinBase()) return;
+    if (tx->IsCoinBase()) return;
 
     LOCK2(cs_main, cs_instantsend);
 
-    uint256 txHash = tx.GetHash();
+    uint256 txHash = tx->GetHash();
 
     // When tx is 0-confirmed or conflicted, pblock is NULL and nHeightNew should be set to -1
-    CBlockIndex* pblockindex = NULL;
-    if(pblock) {
-        uint256 blockHash = pblock->GetHash();
-        BlockMap::iterator mi = mapBlockIndex.find(blockHash);
-        if(mi == mapBlockIndex.end() || !mi->second) {
-            // shouldn't happen
-            LogPrint(BCLog::INSTANTSEND, "CTxLockRequest::SyncTransaction -- Failed to find block %s\n", blockHash.ToString());
-            return;
-        }
-        pblockindex = mi->second;
-    }
+    const CBlockIndex* pblockindex = pindex;
     int nHeightNew = pblockindex ? pblockindex->nHeight : -1;
 
     LogPrint(BCLog::INSTANTSEND, "CInstantSend::SyncTransaction -- txid=%s nHeightNew=%d\n", txHash.ToString(), nHeightNew);

@@ -16,6 +16,7 @@
 #include <checkpoints.h>
 #include <compat/sanity.h>
 #include <consensus/validation.h>
+#include <dsnotificationinterface.h>
 #include <fs.h>
 #include <httpserver.h>
 #include <httprpc.h>
@@ -104,6 +105,8 @@ const WalletInitInterface& g_wallet_init_interface = DummyWalletInit();
 #if ENABLE_ZMQ
 static CZMQNotificationInterface* pzmqNotificationInterface = nullptr;
 #endif
+
+static CDSNotificationInterface* pdsNotificationInterface = NULL;
 
 #ifdef WIN32
 // Win32 LevelDB doesn't use filedescriptors, and the ones used for
@@ -350,6 +353,12 @@ void Shutdown()
         pzmqNotificationInterface = nullptr;
     }
 #endif
+
+    if (pdsNotificationInterface) {
+        UnregisterValidationInterface(pdsNotificationInterface);
+        delete pdsNotificationInterface;
+        pdsNotificationInterface = nullptr;
+    }
 
 #ifndef WIN32
     try {
@@ -1392,8 +1401,6 @@ bool AppInitPrivateSend()
     CPrivateSend::InitStandardDenominations();
 #endif
 
-    threadGroup.create_thread(boost::bind(net_processing_xsn::ThreadProcessExtensions, g_connman.get()));
-
     return true;
 }
 
@@ -1577,6 +1584,10 @@ bool AppInitMain()
         RegisterValidationInterface(pzmqNotificationInterface);
     }
 #endif
+
+    pdsNotificationInterface = new CDSNotificationInterface(connman);
+    RegisterValidationInterface(pdsNotificationInterface);
+
     uint64_t nMaxOutboundLimit = 0; //unlimited unless -maxuploadtarget is set
     uint64_t nMaxOutboundTimeframe = MAX_UPLOAD_TIMEFRAME;
 
@@ -1864,6 +1875,17 @@ bool AppInitMain()
 
     if(!LoadExtensionsDataCaches())
         return false;
+
+    // ********************************************************* Step 11c: update block tip in XSN modules
+
+    // force UpdatedBlockTip to initialize nCachedBlockHeight for DS, MN payments and budgets
+    // but don't call it directly to prevent triggering of other listeners like zmq etc.
+    // GetMainSignals().UpdatedBlockTip(chainActive.Tip());
+    pdsNotificationInterface->InitializeCurrentBlockTip();
+
+    // ********************************************************* Step 11d: start thread for xsn extensions
+
+    threadGroup.create_thread(boost::bind(net_processing_xsn::ThreadProcessExtensions, g_connman.get()));
 
     // ********************************************************* Step 12: start node
 

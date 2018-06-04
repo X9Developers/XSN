@@ -133,6 +133,8 @@ protected:
      * has been received and connected to the headers tree, though not validated yet */
     virtual void NewPoWValidBlock(const CBlockIndex *pindex, const std::shared_ptr<const CBlock>& block) {}
     virtual void NotifyTransactionLock(const CTransactionRef &tx) {}
+    virtual void NotifyHeaderTip(const CBlockIndex *pindexNew, bool fInitialDownload) {}
+    virtual void AcceptedBlockHeader(const CBlockIndex *pindexNew) {}
     friend void ::RegisterValidationInterface(CValidationInterface*);
     friend void ::UnregisterValidationInterface(CValidationInterface*);
     friend void ::UnregisterAllValidationInterfaces();
@@ -175,6 +177,8 @@ public:
     void BlockChecked(const CBlock&, const CValidationState&);
     void NewPoWValidBlock(const CBlockIndex *, const std::shared_ptr<const CBlock>&);
     void NotifyTransactionLock(const CTransactionRef &tx);
+    void NotifyHeaderTip(const CBlockIndex *pindexNew, bool fInitialDownload);
+    void AcceptedBlockHeader(const CBlockIndex *pindexNew);
 };
 
 CMainSignals& GetMainSignals();
