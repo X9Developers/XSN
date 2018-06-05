@@ -168,6 +168,21 @@ bool net_processing_xsn::AlreadyHave(const CInv &inv)
 {
     switch(inv.type)
     {
+    /*
+    XSN Related Inventory Messages
+
+    --
+
+    We shouldn't update the sync times for each of the messages when we already have it.
+    We're going to be asking many nodes upfront for the full inventory list, so we'll get duplicates of these.
+    We want to only update the time on new hits, so that we can time out appropriately if needed.
+    */
+    case MSG_TXLOCK_REQUEST:
+        return instantsend.AlreadyHave(inv.hash);
+
+    case MSG_TXLOCK_VOTE:
+        return instantsend.AlreadyHave(inv.hash);
+
     case MSG_SPORK:
         return mapSporks.count(inv.hash);
 
@@ -189,9 +204,21 @@ bool net_processing_xsn::AlreadyHave(const CInv &inv)
         return mnodeman.mapSeenMasternodePing.count(inv.hash);
     case MSG_MERCHANTNODE_PING:
         return merchantnodeman.mapSeenMerchantnodePing.count(inv.hash);
+
+    case MSG_DSTX: {
+//        return static_cast<bool>(CPrivateSend::GetDSTX(inv.hash));
+        return true;
     }
 
-    // Don't know what it is, just say we already got one
+    case MSG_GOVERNANCE_OBJECT:
+    case MSG_GOVERNANCE_OBJECT_VOTE:
+        return !governance.ConfirmInventoryRequest(inv);
+
+    case MSG_MASTERNODE_VERIFY:
+        return mnodeman.mapSeenMasternodeVerification.count(inv.hash);
+    case MSG_MERCHANTNODE_VERIFY:
+        return merchantnodeman.mapSeenMerchantnodeVerification.count(inv.hash);
+    }
     return true;
 }
 
