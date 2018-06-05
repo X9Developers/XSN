@@ -20,6 +20,7 @@
 #include <string.h>
 #include <utility>
 #include <vector>
+#include <list>
 
 #include <prevector.h>
 #include <span.h>
@@ -564,6 +565,9 @@ template<typename Stream, typename K, typename T, typename Pred, typename A> voi
 template<typename Stream, typename K, typename Pred, typename A> void Serialize(Stream& os, const std::set<K, Pred, A>& m);
 template<typename Stream, typename K, typename Pred, typename A> void Unserialize(Stream& is, std::set<K, Pred, A>& m);
 
+template<typename Stream, typename T, typename A> inline void Serialize(Stream& os, const std::list<T, A>& l);
+template<typename Stream, typename T, typename A> inline void Unserialize(Stream& is, std::list<T, A>& l);
+
 /**
  * shared_ptr
  */
@@ -823,6 +827,30 @@ void Unserialize(Stream& is, std::set<K, Pred, A>& m)
         K key;
         Unserialize(is, key);
         it = m.insert(it, key);
+    }
+}
+
+/**
+ * list
+ */
+template<typename Stream, typename T, typename A>
+void Serialize(Stream& os, const std::list<T, A>& l)
+{
+    WriteCompactSize(os, l.size());
+    for (typename std::list<T, A>::const_iterator li = l.begin(); li != l.end(); ++li)
+        ::Serialize(os, (*li));
+}
+
+template<typename Stream, typename T, typename A>
+void Unserialize(Stream& is, std::list<T, A>& l)
+{
+    l.clear();
+    unsigned int nSize = ReadCompactSize(is);
+    for (unsigned int i = 0; i < nSize; i++)
+    {
+        T value;
+        Unserialize(is, value);
+        l.push_back(value);
     }
 }
 
