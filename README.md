@@ -1,4 +1,4 @@
-XSN Core integration/staging repository
+XSN Core integration/staging repository [![Build Status](https://travis-ci.org/X9Developers/XSN.svg?branch=master)](https://travis-ci.org/X9Developers/XSN)
 ===============================
 All software, including wallets, are experimental in nature and come with no guarantee whatsoever. Users may download and use them at their own risk. XSN-core, contributing developers, and any affiliates take no responsibility for the technical functionalities or the lack thereof.
 ===============================
