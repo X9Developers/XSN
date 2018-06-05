@@ -22,6 +22,7 @@ void RegisterRawTransactionRPCCommands(CRPCTable &tableRPC);
 /** Register XSN misc RPC commands */
 void RegisterXSNMiscCommands(CRPCTable &tableRPC);
 void RegisterMasternodeCommands(CRPCTable &tableRPC);
+void RegisterGoverenceRPCCommands(CRPCTable &tableRPC);
 
 static inline void RegisterAllCoreRPCCommands(CRPCTable &t)
 {
@@ -32,6 +33,7 @@ static inline void RegisterAllCoreRPCCommands(CRPCTable &t)
     RegisterRawTransactionRPCCommands(t);
     RegisterXSNMiscCommands(t);
     RegisterMasternodeCommands(t);
+    RegisterGoverenceRPCCommands(t);
 }
 
 #endif // BITCOIN_RPC_REGISTER_H
