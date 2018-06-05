@@ -1022,8 +1022,10 @@ bool static AlreadyHave(const CInv& inv) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
     case MSG_WITNESS_BLOCK:
         return LookupBlockIndex(inv.hash) != nullptr;
     }
-    // Don't know what it is, just say we already got one
-    return true;
+
+
+    // process one of the extensions
+    return net_processing_xsn::AlreadyHave(inv);
 }
 
 static void RelayTransaction(const CTransaction& tx, CConnman* connman)
@@ -1922,6 +1924,8 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         {
             if (interruptMsgProc)
                 return true;
+
+            net_processing_xsn::TransformInvForLegacyVersion(inv, pfrom, false);
 
             bool fAlreadyHave = AlreadyHave(inv);
             LogPrint(BCLog::NET, "got inv: %s  %s peer=%d\n", inv.ToString(), fAlreadyHave ? "have" : "new", pfrom->GetId());
@@ -3686,10 +3690,15 @@ bool PeerLogicValidation::SendMessages(CNode* pto, std::atomic<bool>& interruptM
         //
         while (!pto->mapAskFor.empty() && (*pto->mapAskFor.begin()).first <= nNow)
         {
-            const CInv& inv = (*pto->mapAskFor.begin()).second;
+            CInv& inv = (*pto->mapAskFor.begin()).second;
             if (!AlreadyHave(inv))
             {
-                LogPrint(BCLog::NET, "Requesting %s peer=%d\n", inv.ToString(), pto->GetId());
+                LogPrint(BCLog::NET, "Requesting %s peer=%d s:%d r:%d\n", inv.ToString(), pto->GetId(),
+                         pto->GetSendVersion(),
+                         pto->GetRecvVersion());
+
+                net_processing_xsn::TransformInvForLegacyVersion(inv, pto, true);
+
                 vGetData.push_back(inv);
                 if (vGetData.size() >= 1000)
                 {

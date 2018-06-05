@@ -16,6 +16,7 @@
 #include <checkpoints.h>
 #include <compat/sanity.h>
 #include <consensus/validation.h>
+#include <dsnotificationinterface.h>
 #include <fs.h>
 #include <httpserver.h>
 #include <httprpc.h>
@@ -55,6 +56,8 @@
 #include <instantx.h>
 #include <wallet/wallet.h>
 #include <net_processing_xsn.h>
+#include <masternodeman.h>
+#include <flat-database.h>
 
 #ifndef WIN32
 #include <signal.h>
@@ -102,6 +105,8 @@ const WalletInitInterface& g_wallet_init_interface = DummyWalletInit();
 #if ENABLE_ZMQ
 static CZMQNotificationInterface* pzmqNotificationInterface = nullptr;
 #endif
+
+static CDSNotificationInterface* pdsNotificationInterface = NULL;
 
 #ifdef WIN32
 // Win32 LevelDB doesn't use filedescriptors, and the ones used for
@@ -196,6 +201,67 @@ void Interrupt()
     }
 }
 
+static bool LoadExtensionsDataCaches()
+{
+    // LOAD SERIALIZED DAT FILES INTO DATA CACHES FOR INTERNAL USE
+
+    boost::filesystem::path pathDB = GetDataDir();
+    std::string strDBName;
+
+    strDBName = "mncache.dat";
+    uiInterface.InitMessage(_("Loading masternode cache..."));
+    if(gArgs.GetBoolArg("-clearmncache", false))
+    {
+        boost::system::error_code ec;
+        boost::filesystem::remove((pathDB / strDBName).string(), ec);
+    }
+
+    CFlatDB<CMasternodeMan> flatdb1(strDBName, "magicMasternodeCache");
+    if(!flatdb1.Load(mnodeman)) {
+        return InitError(_("Failed to load masternode cache from") + "\n" + (pathDB / strDBName).string());
+    }
+
+//    if(mnodeman.size()) {
+//        strDBName = "mnpayments.dat";
+//        uiInterface.InitMessage(_("Loading masternode payment cache..."));
+//        CFlatDB<CMasternodePayments> flatdb2(strDBName, "magicMasternodePaymentsCache");
+//        if(!flatdb2.Load(mnpayments)) {
+//            return InitError(_("Failed to load masternode payments cache from") + "\n" + (pathDB / strDBName).string());
+//        }
+
+//        strDBName = "governance.dat";
+//        uiInterface.InitMessage(_("Loading governance cache..."));
+//        CFlatDB<CGovernanceManager> flatdb3(strDBName, "magicGovernanceCache");
+//        if(!flatdb3.Load(governance)) {
+//            return InitError(_("Failed to load governance cache from") + "\n" + (pathDB / strDBName).string());
+//        }
+//        governance.InitOnLoad();
+//    } else {
+//        uiInterface.InitMessage(_("Masternode cache is empty, skipping payments and governance cache..."));
+//    }
+
+//    strDBName = "netfulfilled.dat";
+//    uiInterface.InitMessage(_("Loading fulfilled requests cache..."));
+//    CFlatDB<CNetFulfilledRequestManager> flatdb4(strDBName, "magicFulfilledCache");
+//    if(!flatdb4.Load(netfulfilledman)) {
+//        return InitError(_("Failed to load fulfilled requests cache from") + "\n" + (pathDB / strDBName).string());
+//    }
+
+//    CFlatDB<CMerchantnodeMan> flatdb5("merchantnodecache.dat", "magicMerchantnodeCache");
+//    if(!flatdb5.Load(merchantnodeman)) {
+//        return InitError(_("Failed to load merchantnode cache from") + "\n" + (pathDB / strDBName).string());
+//    }
+
+    return true;
+}
+
+static void StoreExtensionsDataCaches()
+{
+    // STORE DATA CACHES INTO SERIALIZED DAT FILES
+    CFlatDB<CMasternodeMan> flatdb1("mncache.dat", "magicMasternodeCache");
+    flatdb1.Dump(mnodeman);
+}
+
 void Shutdown()
 {
     LogPrintf("%s: In progress...\n", __func__);
@@ -227,6 +293,8 @@ void Shutdown()
     if (g_txindex) {
         g_txindex.reset();
     }
+
+    StoreExtensionsDataCaches();
 
     StopTorControl();
 
@@ -285,6 +353,12 @@ void Shutdown()
         pzmqNotificationInterface = nullptr;
     }
 #endif
+
+    if (pdsNotificationInterface) {
+        UnregisterValidationInterface(pdsNotificationInterface);
+        delete pdsNotificationInterface;
+        pdsNotificationInterface = nullptr;
+    }
 
 #ifndef WIN32
     try {
@@ -1327,8 +1401,6 @@ bool AppInitPrivateSend()
     CPrivateSend::InitStandardDenominations();
 #endif
 
-    threadGroup.create_thread(boost::bind(net_processing_xsn::ThreadProcessExtensions, g_connman.get()));
-
     return true;
 }
 
@@ -1512,6 +1584,10 @@ bool AppInitMain()
         RegisterValidationInterface(pzmqNotificationInterface);
     }
 #endif
+
+    pdsNotificationInterface = new CDSNotificationInterface(connman);
+    RegisterValidationInterface(pdsNotificationInterface);
+
     uint64_t nMaxOutboundLimit = 0; //unlimited unless -maxuploadtarget is set
     uint64_t nMaxOutboundTimeframe = MAX_UPLOAD_TIMEFRAME;
 
@@ -1792,7 +1868,24 @@ bool AppInitMain()
 
     // ********************************************************* Step 11a: setup PrivateSend
 
-    AppInitPrivateSend();
+    if(!AppInitPrivateSend())
+        return false;
+
+    // ********************************************************* Step 11b: Load cache data
+
+    if(!LoadExtensionsDataCaches())
+        return false;
+
+    // ********************************************************* Step 11c: update block tip in XSN modules
+
+    // force UpdatedBlockTip to initialize nCachedBlockHeight for DS, MN payments and budgets
+    // but don't call it directly to prevent triggering of other listeners like zmq etc.
+    // GetMainSignals().UpdatedBlockTip(chainActive.Tip());
+    pdsNotificationInterface->InitializeCurrentBlockTip();
+
+    // ********************************************************* Step 11d: start thread for xsn extensions
+
+    threadGroup.create_thread(boost::bind(net_processing_xsn::ThreadProcessExtensions, g_connman.get()));
 
     // ********************************************************* Step 12: start node
 

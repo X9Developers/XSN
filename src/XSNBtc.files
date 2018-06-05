@@ -51,6 +51,9 @@ core_write.cpp
 cuckoocache.h
 dbwrapper.cpp
 dbwrapper.h
+dsnotificationinterface.cpp
+dsnotificationinterface.h
+flat-database.h
 fs.cpp
 fs.h
 governance/governance-classes.cpp
