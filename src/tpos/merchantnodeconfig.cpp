@@ -3,6 +3,7 @@
 #include <tpos/merchantnodeconfig.h>
 #include <util.h>
 #include <chainparams.h>
+#include <utilstrencodings.h>
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
@@ -64,7 +65,7 @@ bool CMerchantnodeConfig::read(std::string& strErr) {
             streamConfig.close();
             return false;
         }
-        int mainnetDefaultPort = Params(CBaseChainParams::MAIN).GetDefaultPort();
+        int mainnetDefaultPort = CreateChainParams(CBaseChainParams::MAIN)->GetDefaultPort();
         if(Params().NetworkIDString() == CBaseChainParams::MAIN) {
             if(port != mainnetDefaultPort) {
                 strErr = _("Invalid port detected in merchantnode.conf") + "\n" +

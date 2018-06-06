@@ -34,6 +34,7 @@ static inline void RegisterAllCoreRPCCommands(CRPCTable &t)
     RegisterRawTransactionRPCCommands(t);
     RegisterXSNMiscCommands(t);
     RegisterMasternodeCommands(t);
+    RegisterMerchantnodeCommands(t);
     RegisterGovernanceRPCCommands(t);
 }
 
