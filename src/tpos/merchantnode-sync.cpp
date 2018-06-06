@@ -168,7 +168,7 @@ void CMerchantnodeSync::ProcessTick(CConnman& connman)
 
     // Calculate "progress" for LOG reporting / GUI notification
     double nSyncProgress = double(nRequestedMerchantnodeAttempt + (nRequestedMerchantnodeAssets - 1) * 8) / (8*4);
-    LogPrintf("CMerchantnodeSync::ProcessTick -- nTick %d nRequestedMerchantnodeAssets %d nRequestedMerchantnodeAttempt %d nSyncProgress %f\n", nTick, nRequestedMerchantnodeAssets, nRequestedMerchantnodeAttempt, nSyncProgress);
+    LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeSync::ProcessTick -- nTick %d nRequestedMerchantnodeAssets %d nRequestedMerchantnodeAttempt %d nSyncProgress %f\n", nTick, nRequestedMerchantnodeAssets, nRequestedMerchantnodeAttempt, nSyncProgress);
     uiInterface.NotifyAdditionalDataSyncProgressChanged(nSyncProgress);
 
     std::vector<CNode*> vNodesCopy = connman.CopyNodeVector();
