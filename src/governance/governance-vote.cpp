@@ -247,7 +247,7 @@ bool CGovernanceVote::Sign(CKey& keyMasternode, CPubKey& pubKeyMasternode)
     CKey keyCollateralAddress;
 
     std::string strError;
-    std::string strMessage = vinMasternode.prevout.ToString() + "|" + nParentHash.ToString() + "|" +
+    std::string strMessage = vinMasternode.prevout.ToStringShort() + "|" + nParentHash.ToString() + "|" +
         boost::lexical_cast<std::string>(nVoteSignal) + "|" + boost::lexical_cast<std::string>(nVoteOutcome) + "|" + boost::lexical_cast<std::string>(nTime);
 
     if(!CMessageSigner::SignMessage(strMessage, vchSig, keyMasternode)) {
@@ -293,7 +293,7 @@ bool CGovernanceVote::IsValid(bool fSignatureCheck) const
     if(!fSignatureCheck) return true;
 
     std::string strError;
-    std::string strMessage = vinMasternode.prevout.ToString() + "|" + nParentHash.ToString() + "|" +
+    std::string strMessage = vinMasternode.prevout.ToStringShort() + "|" + nParentHash.ToString() + "|" +
         boost::lexical_cast<std::string>(nVoteSignal) + "|" + boost::lexical_cast<std::string>(nVoteOutcome) + "|" + boost::lexical_cast<std::string>(nTime);
 
     if(!CMessageSigner::VerifyMessage(infoMn.pubKeyMasternode, vchSig, strMessage, strError)) {

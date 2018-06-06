@@ -1062,7 +1062,7 @@ uint256 CTxLockVote::GetHash() const
 bool CTxLockVote::CheckSignature() const
 {
     std::string strError;
-    std::string strMessage = txHash.ToString() + outpoint.ToString();
+    std::string strMessage = txHash.ToString() + outpoint.ToStringShort();
 
     masternode_info_t infoMn;
 
@@ -1082,7 +1082,7 @@ bool CTxLockVote::CheckSignature() const
 bool CTxLockVote::Sign()
 {
     std::string strError;
-    std::string strMessage = txHash.ToString() + outpoint.ToString();
+    std::string strMessage = txHash.ToString() + outpoint.ToStringShort();
 
     if(!CMessageSigner::SignMessage(strMessage, vchMasternodeSignature, activeMasternode.keyMasternode)) {
         LogPrintf("CTxLockVote::Sign -- SignMessage() failed\n");

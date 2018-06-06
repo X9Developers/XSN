@@ -428,7 +428,7 @@ void CMasternodePayments::ProcessMessage(CNode* pfrom, const std::string& strCom
 bool CMasternodePaymentVote::Sign()
 {
     std::string strError;
-    std::string strMessage = vinMasternode.prevout.ToString() +
+    std::string strMessage = vinMasternode.prevout.ToStringShort() +
             boost::lexical_cast<std::string>(nBlockHeight) +
             ScriptToAsmStr(payee);
 
@@ -864,7 +864,7 @@ bool CMasternodePaymentVote::CheckSignature(const CPubKey& pubKeyMasternode, int
     // do not ban by default
     nDos = 0;
 
-    std::string strMessage = vinMasternode.prevout.ToString() +
+    std::string strMessage = vinMasternode.prevout.ToStringShort() +
             boost::lexical_cast<std::string>(nBlockHeight) +
             ScriptToAsmStr(payee);
 

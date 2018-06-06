@@ -814,7 +814,7 @@ void CMerchantnodeMan::SendVerifyReply(CNode* pnode, CMerchantnodeVerification& 
         return;
     }
 
-    std::string strMessage = strprintf("%s%d%s", activeMerchantnode.service.ToString(), mnv.nonce, blockHash.ToString());
+    std::string strMessage = strprintf("%s%d%s", activeMerchantnode.service.ToString(false), mnv.nonce, blockHash.ToString());
 
     if(!CMessageSigner::SignMessage(strMessage, mnv.vchSig1, activeMerchantnode.keyMerchantnode)) {
         LogPrintf("MerchantnodeMan::SendVerifyReply -- SignMessage() failed\n");
@@ -880,7 +880,7 @@ void CMerchantnodeMan::ProcessVerifyReply(CNode* pnode, CMerchantnodeVerificatio
 
         CMerchantnode* prealMerchantnode = NULL;
         std::vector<CMerchantnode*> vpMerchantnodesToBan;
-        std::string strMessage1 = strprintf("%s%d%s", pnode->addr.ToString(), mnv.nonce, blockHash.ToString());
+        std::string strMessage1 = strprintf("%s%d%s", pnode->addr.ToString(false), mnv.nonce, blockHash.ToString());
         for (auto& mnpair : mapMerchantnodes) {
             if(CAddress(mnpair.second.addr, NODE_NETWORK) == pnode->addr) {
                 if(CMessageSigner::VerifyMessage(mnpair.second.pubKeyMerchantnode, mnv.vchSig1, strMessage1, strError)) {
@@ -897,8 +897,8 @@ void CMerchantnodeMan::ProcessVerifyReply(CNode* pnode, CMerchantnodeVerificatio
                     mnv.addr = mnpair.second.addr;
                     mnv.pubKeyMerchantnode1 = mnpair.second.pubKeyMerchantnode;
                     mnv.pubKeyMerchantnode2 = activeMerchantnode.pubKeyMerchantnode;
-                    std::string strMessage2 = strprintf("%s%d%s%s%s", mnv.addr.ToString(), mnv.nonce, blockHash.ToString(),
-                                                        mnv.pubKeyMerchantnode1.GetID().ToString(), mnv.pubKeyMerchantnode2.GetID().ToString());
+                    std::string strMessage2 = strprintf("%s%d%s%s%s", mnv.addr.ToString(false), mnv.nonce, blockHash.ToString(),
+                                                        HexStr(mnv.pubKeyMerchantnode1.Raw()), HexStr(mnv.pubKeyMerchantnode2.Raw()));
                     // ... and sign it
                     if(!CMessageSigner::SignMessage(strMessage2, mnv.vchSig2, activeMerchantnode.keyMerchantnode)) {
                         LogPrintf("MerchantnodeMan::ProcessVerifyReply -- SignMessage() failed\n");
@@ -995,9 +995,9 @@ void CMerchantnodeMan::ProcessVerifyBroadcast(CNode* pnode, const CMerchantnodeV
     {
         LOCK(cs);
 
-        std::string strMessage1 = strprintf("%s%d%s", mnv.addr.ToString(), mnv.nonce, blockHash.ToString());
-        std::string strMessage2 = strprintf("%s%d%s%s%s", mnv.addr.ToString(), mnv.nonce, blockHash.ToString(),
-                                            mnv.pubKeyMerchantnode1.GetID().ToString(), mnv.pubKeyMerchantnode2.GetID().ToString());
+        std::string strMessage1 = strprintf("%s%d%s", mnv.addr.ToString(false), mnv.nonce, blockHash.ToString());
+        std::string strMessage2 = strprintf("%s%d%s%s%s", mnv.addr.ToString(false), mnv.nonce, blockHash.ToString(),
+                                            HexStr(mnv.pubKeyMerchantnode1.Raw()), HexStr(mnv.pubKeyMerchantnode2.Raw()));
 
         CMerchantnode* pmn1 = Find(mnv.pubKeyMerchantnode1);
         if(!pmn1) {

@@ -1120,7 +1120,7 @@ void CMasternodeMan::SendVerifyReply(CNode* pnode, CMasternodeVerification& mnv,
         return;
     }
 
-    std::string strMessage = strprintf("%s%d%s", activeMasternode.service.ToString(), mnv.nonce, blockHash.ToString());
+    std::string strMessage = strprintf("%s%d%s", activeMasternode.service.ToString(false), mnv.nonce, blockHash.ToString());
 
     if(!CMessageSigner::SignMessage(strMessage, mnv.vchSig1, activeMasternode.keyMasternode)) {
         LogPrintf("MasternodeMan::SendVerifyReply -- SignMessage() failed\n");
@@ -1184,7 +1184,7 @@ void CMasternodeMan::ProcessVerifyReply(CNode* pnode, CMasternodeVerification& m
 
         CMasternode* prealMasternode = NULL;
         std::vector<CMasternode*> vpMasternodesToBan;
-        std::string strMessage1 = strprintf("%s%d%s", pnode->addr.ToString(), mnv.nonce, blockHash.ToString());
+        std::string strMessage1 = strprintf("%s%d%s", pnode->addr.ToString(false), mnv.nonce, blockHash.ToString());
         for (auto& mnpair : mapMasternodes) {
             if(CAddress(mnpair.second.addr, NODE_NETWORK) == pnode->addr) {
                 if(CMessageSigner::VerifyMessage(mnpair.second.pubKeyMasternode, mnv.vchSig1, strMessage1, strError)) {
@@ -1201,8 +1201,8 @@ void CMasternodeMan::ProcessVerifyReply(CNode* pnode, CMasternodeVerification& m
                     mnv.addr = mnpair.second.addr;
                     mnv.vin1 = mnpair.second.vin;
                     mnv.vin2 = CTxIn(activeMasternode.outpoint);
-                    std::string strMessage2 = strprintf("%s%d%s%s%s", mnv.addr.ToString(), mnv.nonce, blockHash.ToString(),
-                                            mnv.vin1.prevout.ToString(), mnv.vin2.prevout.ToString());
+                    std::string strMessage2 = strprintf("%s%d%s%s%s", mnv.addr.ToString(false), mnv.nonce, blockHash.ToString(),
+                                            mnv.vin1.prevout.ToStringShort(), mnv.vin2.prevout.ToStringShort());
                     // ... and sign it
                     if(!CMessageSigner::SignMessage(strMessage2, mnv.vchSig2, activeMasternode.keyMasternode)) {
                         LogPrintf("MasternodeMan::ProcessVerifyReply -- SignMessage() failed\n");
@@ -1297,9 +1297,9 @@ void CMasternodeMan::ProcessVerifyBroadcast(CNode* pnode, const CMasternodeVerif
     {
         LOCK(cs);
 
-        std::string strMessage1 = strprintf("%s%d%s", mnv.addr.ToString(), mnv.nonce, blockHash.ToString());
-        std::string strMessage2 = strprintf("%s%d%s%s%s", mnv.addr.ToString(), mnv.nonce, blockHash.ToString(),
-                                mnv.vin1.prevout.ToString(), mnv.vin2.prevout.ToString());
+        std::string strMessage1 = strprintf("%s%d%s", mnv.addr.ToString(false), mnv.nonce, blockHash.ToString());
+        std::string strMessage2 = strprintf("%s%d%s%s%s", mnv.addr.ToString(false), mnv.nonce, blockHash.ToString(),
+                                mnv.vin1.prevout.ToStringShort(), mnv.vin2.prevout.ToStringShort());
 
         CMasternode* pmn1 = Find(mnv.vin1.prevout);
         if(!pmn1) {

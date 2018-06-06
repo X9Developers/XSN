@@ -218,7 +218,7 @@ std::string CGovernanceObject::GetSignatureMessage() const
         boost::lexical_cast<std::string>(nRevision) + "|" +
         boost::lexical_cast<std::string>(nTime) + "|" +
         strData + "|" +
-        vinMasternode.prevout.ToString() + "|" +
+        vinMasternode.prevout.ToStringShort() + "|" +
         nCollateralHash.ToString();
 
     return strMessage;
@@ -512,8 +512,11 @@ bool CGovernanceObject::IsCollateralValid(std::string& strError, bool& fMissingC
 
     // RETRIEVE TRANSACTION IN QUESTION
 
-    if(!GetTransaction(nCollateralHash, txCollateral, Params().GetConsensus(), nBlockHash, true)){
-        strError = strprintf("Can't find collateral tx %s", txCollateral->ToString());
+    const Coin& coin = AccessByTxid(*pcoinsTip, nCollateralHash);
+    auto pindexSlow = chainActive[coin.nHeight];
+
+    if(!GetTransaction(nCollateralHash, txCollateral, Params().GetConsensus(), nBlockHash, true, pindexSlow)){
+        strError = strprintf("Can't find collateral tx %s", nCollateralHash.ToString());
         LogPrintf("CGovernanceObject::IsCollateralValid -- %s\n", strError);
         return false;
     }
