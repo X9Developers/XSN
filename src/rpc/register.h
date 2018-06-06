@@ -22,6 +22,7 @@ void RegisterRawTransactionRPCCommands(CRPCTable &tableRPC);
 /** Register XSN misc RPC commands */
 void RegisterXSNMiscCommands(CRPCTable &tableRPC);
 void RegisterMasternodeCommands(CRPCTable &tableRPC);
+void RegisterMerchantnodeCommands(CRPCTable &tableRPC);
 void RegisterGovernanceRPCCommands(CRPCTable &tableRPC);
 
 static inline void RegisterAllCoreRPCCommands(CRPCTable &t)

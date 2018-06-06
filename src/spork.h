@@ -21,16 +21,17 @@ enum {
     Don't ever reuse these IDs for other sporks
     - This would result in old clients getting confused about which spork is for what
 */
-    SPORK_2_INSTANTSEND_ENABLED = SPORK_START,
-    SPORK_3_INSTANTSEND_BLOCK_FILTERING = SPORK_START + 1,
-    SPORK_5_INSTANTSEND_MAX_VALUE = SPORK_START + 3,
-    SPORK_8_MASTERNODE_PAYMENT_ENFORCEMENT = SPORK_START + 6,
-    SPORK_9_SUPERBLOCKS_ENABLED,
-    SPORK_10_MASTERNODE_PAY_UPDATED_NODES,
-    SPORK_12_RECONSIDER_BLOCKS = SPORK_START + 10,
-    SPORK_13_OLD_SUPERBLOCK_FLAG,
-    SPORK_14_REQUIRE_SENTINEL_FLAG,
-    SPORK_15_TPOS_ENABLED,
+
+    SPORK_2_INSTANTSEND_ENABLED                            = SPORK_START,
+    SPORK_3_INSTANTSEND_BLOCK_FILTERING                    = 10002,
+    SPORK_5_INSTANTSEND_MAX_VALUE                          = 10004,
+    SPORK_8_MASTERNODE_PAYMENT_ENFORCEMENT                 = 10007,
+    SPORK_9_SUPERBLOCKS_ENABLED                            = 10008,
+    SPORK_10_MASTERNODE_PAY_UPDATED_NODES                  = 10009,
+    SPORK_12_RECONSIDER_BLOCKS                             = 10011,
+    SPORK_13_OLD_SUPERBLOCK_FLAG                           = 10012,
+    SPORK_14_REQUIRE_SENTINEL_FLAG                         = 10013,
+    SPORK_15_TPOS_ENABLED                                  = 10014,
     SPORK_END
 };
 

@@ -24,7 +24,7 @@
 #include <iomanip>
 #include <univalue.h>
 
-UniValue merchantsync(const JSONRPCRequest& request)
+static UniValue merchantsync(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
@@ -145,7 +145,7 @@ static UniValue ListOfMerchantNodes(const UniValue& params, std::set<CService> m
     return obj;
 }
 
-UniValue merchantnodelist(const JSONRPCRequest& request)
+static UniValue merchantnodelist(const JSONRPCRequest& request)
 {
     std::string strMode = "status";
     std::string strFilter = "";
@@ -199,7 +199,7 @@ UniValue merchantnodelist(const JSONRPCRequest& request)
     return  ListOfMerchantNodes(request.params, myMerchantNodesIps, false);
 }
 
-UniValue merchantnode(const JSONRPCRequest& request)
+static UniValue merchantnode(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     auto pwallet = GetWalletForJSONRPCRequest(request);
@@ -415,9 +415,7 @@ UniValue merchantnode(const JSONRPCRequest& request)
     return NullUniValue;
 }
 
-
-
-bool DecodeHexVecMnb(std::vector<CMerchantnodeBroadcast>& vecMnb, std::string strHexMnb) {
+static bool DecodeHexVecMnb(std::vector<CMerchantnodeBroadcast>& vecMnb, std::string strHexMnb) {
 
     if (!IsHex(strHexMnb))
         return false;
@@ -565,3 +563,21 @@ UniValue tposcontract(const JSONRPCRequest& request)
 }
 
 #endif
+
+static const CRPCCommand commands[] =
+{ //  category              name                      actor (function)         argNames
+  //  --------------------- ------------------------  -----------------------  ----------
+    { "merchantnode",            "merchantnode",            &merchantnode,            {"command"} }, /* uses wallet if enabled */
+    { "merchantnode",            "merchantnodelist",        &merchantnodelist,        {"mode", "filter"} },
+#ifdef ENABLE_WALLET
+    { "merchantnode",            "tposcontract",            &tposcontract,            {"command"} },
+#endif
+    { "merchantnode",            "merchantsync",            &merchantsync,            {"command"} },
+};
+
+void RegisterMerchantnodeCommands(CRPCTable &t)
+{
+    for (unsigned int vcidx = 0; vcidx < ARRAYLEN(commands); vcidx++)
+        t.appendCommand(commands[vcidx].name, &commands[vcidx]);
+}
+
