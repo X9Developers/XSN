@@ -213,7 +213,7 @@ void CMerchantnodeSync::ProcessTick(CConnman& connman)
                 LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeSync::ProcessTick -- nTick %d nRequestedMerchantnodeAssets %d nTimeLastBumped %lld GetTime() %lld diff %lld\n", nTick, nRequestedMerchantnodeAssets, nTimeLastBumped, GetTime(), GetTime() - nTimeLastBumped);
                 // check for timeout first
                 if(GetTime() - nTimeLastBumped > MERCHANTNODE_SYNC_TIMEOUT_SECONDS) {
-                    LogPrintf("CMerchantnodeSync::ProcessTick -- nTick %d nRequestedMerchantnodeAssets %d -- timeout\n", nTick, nRequestedMerchantnodeAssets);
+                    LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeSync::ProcessTick -- nTick %d nRequestedMerchantnodeAssets %d -- timeout\n", nTick, nRequestedMerchantnodeAssets);
                     if (nRequestedMerchantnodeAttempt == 0) {
                         LogPrintf("CMerchantnodeSync::ProcessTick -- ERROR: failed to sync %s\n", GetAssetName());
                         // there is no way we can continue without masternode list, fail here and try later
