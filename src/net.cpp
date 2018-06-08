@@ -173,7 +173,7 @@ bool IsPeerAddrLocalGood(CNode *pnode)
 {
     CService addrLocal = pnode->GetAddrLocal();
     return fDiscover && pnode->addr.IsRoutable() && addrLocal.IsRoutable() &&
-           !IsLimited(addrLocal.GetNetwork());
+            !IsLimited(addrLocal.GetNetwork());
 }
 
 // pushes our own address to a peer
@@ -190,7 +190,7 @@ void AdvertiseLocal(CNode *pnode)
         // tells us that it sees us as in case it has a better idea of our
         // address than we do.
         if (IsPeerAddrLocalGood(pnode) && (!addrLocal.IsRoutable() ||
-             GetRand((GetnScore(addrLocal) > LOCAL_MANUAL) ? 8:2) == 0))
+                                           GetRand((GetnScore(addrLocal) > LOCAL_MANUAL) ? 8:2) == 0))
         {
             addrLocal.SetIP(pnode->GetAddrLocal());
         }
@@ -302,7 +302,7 @@ CNode* CConnman::FindNode(const CNetAddr& ip)
 {
     LOCK(cs_vNodes);
     for (CNode* pnode : vNodes) {
-      if (static_cast<CNetAddr>(pnode->addr) == ip) {
+        if (static_cast<CNetAddr>(pnode->addr) == ip) {
             return pnode;
         }
     }
@@ -385,8 +385,8 @@ CNode* CConnman::ConnectNode(CAddress addrConnect, const char *pszDest, bool fCo
 
     /// debug print
     LogPrint(BCLog::NET, "trying connection %s lastseen=%.1fhrs\n",
-        pszDest ? pszDest : addrConnect.ToString(),
-        pszDest ? 0.0 : (double)(GetAdjustedTime() - addrConnect.nTime)/3600.0);
+             pszDest ? pszDest : addrConnect.ToString(),
+             pszDest ? 0.0 : (double)(GetAdjustedTime() - addrConnect.nTime)/3600.0);
 
     // Resolve
     const int default_port = Params().GetDefaultPort();
@@ -481,7 +481,7 @@ void CConnman::DumpBanlist()
     }
 
     LogPrint(BCLog::NET, "Flushed %d banned node ips/subnets to banlist.dat  %dms\n",
-        banmap.size(), GetTimeMillis() - nStart);
+             banmap.size(), GetTimeMillis() - nStart);
 }
 
 void CNode::CloseSocketDisconnect()
@@ -750,7 +750,7 @@ bool CNode::ReceiveMsgBytes(const char *pch, unsigned int nBytes, bool& complete
 
         // get current incomplete message, or create a new one
         if (vRecvMsg.empty() ||
-            vRecvMsg.back().complete())
+                vRecvMsg.back().complete())
             vRecvMsg.push_back(CNetMessage(Params().MessageStart(), SER_NETWORK, INIT_PROTO_VERSION));
 
         CNetMessage& msg = vRecvMsg.back();
@@ -1527,16 +1527,16 @@ static void ThreadMapPort()
 #ifndef UPNPDISCOVER_SUCCESS
             /* miniupnpc 1.5 */
             r = UPNP_AddPortMapping(urls.controlURL, data.first.servicetype,
-                                port.c_str(), port.c_str(), lanaddr, strDesc.c_str(), "TCP", 0);
+                                    port.c_str(), port.c_str(), lanaddr, strDesc.c_str(), "TCP", 0);
 #else
             /* miniupnpc 1.6 */
             r = UPNP_AddPortMapping(urls.controlURL, data.first.servicetype,
-                                port.c_str(), port.c_str(), lanaddr, strDesc.c_str(), "TCP", 0, "0");
+                                    port.c_str(), port.c_str(), lanaddr, strDesc.c_str(), "TCP", 0, "0");
 #endif
 
             if(r!=UPNPCOMMAND_SUCCESS)
                 LogPrintf("AddPortMapping(%s, %s, %s) failed with code %d (%s)\n",
-                    port, port, lanaddr, r, strupnperror(r));
+                          port, port, lanaddr, r, strupnperror(r));
             else
                 LogPrintf("UPnP Port Mapping successful.\n");
         }
@@ -1604,7 +1604,7 @@ void CConnman::ThreadDNSAddressSeed()
     //  creating fewer identifying DNS requests, reduces trust by giving seeds
     //  less influence on the network topology, and reduces traffic to the seeds.
     if ((addrman.size() > 0) &&
-        (!gArgs.GetBoolArg("-forcednsseed", DEFAULT_FORCEDNSSEED))) {
+            (!gArgs.GetBoolArg("-forcednsseed", DEFAULT_FORCEDNSSEED))) {
         if (!interruptNet.sleep_for(std::chrono::seconds(11)))
             return;
 
@@ -1681,7 +1681,7 @@ void CConnman::DumpAddresses()
     adb.Write(addrman);
 
     LogPrint(BCLog::NET, "Flushed %d addresses to peers.dat  %dms\n",
-           addrman.size(), GetTimeMillis() - nStart);
+             addrman.size(), GetTimeMillis() - nStart);
 }
 
 void CConnman::DumpData()
@@ -1989,22 +1989,30 @@ void CConnman::OpenNetworkConnection(const CAddress& addrConnect, bool fCountFai
 
 CNode *CConnman::OpenMasternodeConnection(const CAddress &addrConnect)
 {
-    auto pNode = OpenNetworkConnectionImpl(addrConnect, true);
-    if(!pNode->fMasternode)
-        pNode->AddRef();
+    if(auto pNode = OpenNetworkConnectionImpl(addrConnect, true))
+    {
+        if(!pNode->fMasternode)
+            pNode->AddRef();
 
-    pNode->fMasternode = true;
-    return pNode;
+        pNode->fMasternode = true;
+        return pNode;
+    }
+
+    return nullptr;
 }
 
 CNode *CConnman::OpenMerchantnodeConnection(const CAddress &addrConnect)
 {
-    auto pNode = OpenNetworkConnectionImpl(addrConnect, true);
-    if(!pNode->fMerchantnode)
-        pNode->AddRef();
+    if(auto pNode = OpenNetworkConnectionImpl(addrConnect, true))
+    {
+        if(!pNode->fMerchantnode)
+            pNode->AddRef();
 
-    pNode->fMerchantnode = true;
-    return pNode;
+        pNode->fMerchantnode = true;
+        return pNode;
+    }
+
+    return nullptr;
 }
 
 void CConnman::ThreadMessageHandler()
@@ -2271,8 +2279,8 @@ bool CConnman::Start(CScheduler& scheduler, const Options& connOptions)
     if (fListen && !InitBinds(connOptions.vBinds, connOptions.vWhiteBinds)) {
         if (clientInterface) {
             clientInterface->ThreadSafeMessageBox(
-                _("Failed to listen on any port. Use -listen=0 if you want this."),
-                "", CClientUIInterface::MSG_ERROR);
+                        _("Failed to listen on any port. Use -listen=0 if you want this."),
+                        "", CClientUIInterface::MSG_ERROR);
         }
         return false;
     }
@@ -2308,7 +2316,7 @@ bool CConnman::Start(CScheduler& scheduler, const Options& connOptions)
         SweepBanned(); // sweep out unused entries
 
         LogPrint(BCLog::NET, "Loaded %d banned node ips/subnets from banlist.dat  %dms\n",
-            banmap.size(), GetTimeMillis() - nStart);
+                 banmap.size(), GetTimeMillis() - nStart);
     } else {
         LogPrintf("Invalid or missing banlist.dat; recreating\n");
         SetBannedSetDirty(true); // force write
@@ -2355,8 +2363,8 @@ bool CConnman::Start(CScheduler& scheduler, const Options& connOptions)
     if (connOptions.m_use_addrman_outgoing && !connOptions.m_specified_outgoing.empty()) {
         if (clientInterface) {
             clientInterface->ThreadSafeMessageBox(
-                _("Cannot provide specific connections and have addrman find outgoing connections at the same."),
-                "", CClientUIInterface::MSG_ERROR);
+                        _("Cannot provide specific connections and have addrman find outgoing connections at the same."),
+                        "", CClientUIInterface::MSG_ERROR);
         }
         return false;
     }
