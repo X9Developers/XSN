@@ -338,7 +338,8 @@ private:
                                      const char *strDest = nullptr,
                                      bool fOneShot = false,
                                      bool fFeeler = false,
-                                     bool manual_connection = false);
+                                     bool manual_connection = false,
+                                     bool fAllowLocal = false);
     bool BindListenPort(const CService &bindAddr, std::string& strError, bool fWhitelisted = false);
     bool Bind(const CService &addr, unsigned int flags);
     bool InitBinds(const std::vector<CService>& binds, const std::vector<CService>& whiteBinds);

@@ -1989,7 +1989,7 @@ void CConnman::OpenNetworkConnection(const CAddress& addrConnect, bool fCountFai
 
 CNode *CConnman::OpenMasternodeConnection(const CAddress &addrConnect)
 {
-    if(auto pNode = OpenNetworkConnectionImpl(addrConnect, true))
+    if(auto pNode = OpenNetworkConnectionImpl(addrConnect, true, nullptr, nullptr, false, false, false, true))
     {
         if(!pNode->fMasternode)
             pNode->AddRef();
@@ -2003,7 +2003,7 @@ CNode *CConnman::OpenMasternodeConnection(const CAddress &addrConnect)
 
 CNode *CConnman::OpenMerchantnodeConnection(const CAddress &addrConnect)
 {
-    if(auto pNode = OpenNetworkConnectionImpl(addrConnect, true))
+    if(auto pNode = OpenNetworkConnectionImpl(addrConnect, true, nullptr, nullptr, false, false, false, true))
     {
         if(!pNode->fMerchantnode)
             pNode->AddRef();
@@ -2924,7 +2924,7 @@ void CConnman::RelayTransaction(const CTransaction& tx)
     });
 }
 
-CNode *CConnman::OpenNetworkConnectionImpl(const CAddress &addrConnect, bool fCountFailure, CSemaphoreGrant *grantOutbound, const char *pszDest, bool fOneShot, bool fFeeler, bool manual_connection)
+CNode *CConnman::OpenNetworkConnectionImpl(const CAddress &addrConnect, bool fCountFailure, CSemaphoreGrant *grantOutbound, const char *pszDest, bool fOneShot, bool fFeeler, bool manual_connection, bool fAllowLocal)
 {
     //
     // Initiate outbound network connection
@@ -2936,7 +2936,7 @@ CNode *CConnman::OpenNetworkConnectionImpl(const CAddress &addrConnect, bool fCo
         return nullptr;
     }
     if (!pszDest) {
-        if (IsLocal(addrConnect) || IsBanned(addrConnect))
+        if ((IsLocal(addrConnect) && !fAllowLocal) || IsBanned(addrConnect))
             return nullptr;
 
         if(auto node = FindNode(static_cast<CNetAddr>(addrConnect)))
