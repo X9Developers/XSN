@@ -370,16 +370,16 @@ static bool InterpretNegatedOption(std::string& key, std::string& val)
 
 ArgsManager::ArgsManager() :
     /* These options would cause cross-contamination if values for
-     * mainnet were used while running on regtest/testnet (or vice-versa).
-     * Setting them as section_only_args ensures that sharing a config file
-     * between mainnet and regtest/testnet won't cause problems due to these
-     * parameters by accident. */
+             * mainnet were used while running on regtest/testnet (or vice-versa).
+             * Setting them as section_only_args ensures that sharing a config file
+             * between mainnet and regtest/testnet won't cause problems due to these
+             * parameters by accident. */
     m_network_only_args{
-      "-addnode", "-connect",
-      "-port", "-bind",
-      "-rpcport", "-rpcbind",
-      "-wallet",
-    }
+        "-addnode", "-connect",
+        "-port", "-bind",
+        "-rpcport", "-rpcbind",
+        "-wallet",
+        }
 {
     // nothing to do
 }
@@ -556,9 +556,9 @@ std::string HelpMessageGroup(const std::string &message) {
 
 std::string HelpMessageOpt(const std::string &option, const std::string &message) {
     return std::string(optIndent,' ') + std::string(option) +
-           std::string("\n") + std::string(msgIndent,' ') +
-           FormatParagraph(message, screenWidth - msgIndent, msgIndent) +
-           std::string("\n\n");
+            std::string("\n") + std::string(msgIndent,' ') +
+            FormatParagraph(message, screenWidth - msgIndent, msgIndent) +
+            std::string("\n\n");
 }
 
 static std::string FormatException(const std::exception* pex, const char* pszThread)
@@ -571,10 +571,10 @@ static std::string FormatException(const std::exception* pex, const char* pszThr
 #endif
     if (pex)
         return strprintf(
-            "EXCEPTION: %s       \n%s       \n%s in %s       \n", typeid(*pex).name(), pex->what(), pszModule, pszThread);
+                    "EXCEPTION: %s       \n%s       \n%s in %s       \n", typeid(*pex).name(), pex->what(), pszModule, pszThread);
     else
         return strprintf(
-            "UNKNOWN EXCEPTION       \n%s in %s       \n", pszModule, pszThread);
+                    "UNKNOWN EXCEPTION       \n%s in %s       \n", pszModule, pszThread);
 }
 
 void PrintExceptionContinue(const std::exception* pex, const char* pszThread)
@@ -697,6 +697,7 @@ fs::path GetMasternodeConfigFile()
     boost::filesystem::path pathConfigFile(gArgs.GetArg("-mnconf", "masternode.conf"));
     if (!pathConfigFile.is_complete())
         return fs::absolute(pathConfigFile, GetDataDir());
+
 
     return pathConfigFile;
 }
@@ -824,22 +825,22 @@ bool FileCommit(FILE *file)
         return false;
     }
 #else
-    #if defined(__linux__) || defined(__NetBSD__)
+#if defined(__linux__) || defined(__NetBSD__)
     if (fdatasync(fileno(file)) != 0 && errno != EINVAL) { // Ignore EINVAL for filesystems that don't support sync
         LogPrintf("%s: fdatasync failed: %d\n", __func__, errno);
         return false;
     }
-    #elif defined(__APPLE__) && defined(F_FULLFSYNC)
+#elif defined(__APPLE__) && defined(F_FULLFSYNC)
     if (fcntl(fileno(file), F_FULLFSYNC, 0) == -1) { // Manpage says "value other than -1" is returned on success
         LogPrintf("%s: fcntl F_FULLFSYNC failed: %d\n", __func__, errno);
         return false;
     }
-    #else
+#else
     if (fsync(fileno(file)) != 0 && errno != EINVAL) {
         LogPrintf("%s: fsync failed: %d\n", __func__, errno);
         return false;
     }
-    #endif
+#endif
 #endif
     return true;
 }
