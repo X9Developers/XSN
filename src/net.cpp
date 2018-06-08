@@ -368,10 +368,10 @@ static CAddress GetBindAddress(SOCKET sock)
     return addr_bind;
 }
 
-CNode* CConnman::ConnectNode(CAddress addrConnect, const char *pszDest, bool fCountFailure, bool manual_connection)
+CNode* CConnman::ConnectNode(CAddress addrConnect, const char *pszDest, bool fCountFailure, bool manual_connection, bool fAllowLocal)
 {
     if (pszDest == nullptr) {
-        if (IsLocal(addrConnect))
+        if (IsLocal(addrConnect) && !fAllowLocal)
             return nullptr;
 
         // Look for an existing connection
@@ -2947,7 +2947,7 @@ CNode *CConnman::OpenNetworkConnectionImpl(const CAddress &addrConnect, bool fCo
         return node;
 
 
-    CNode* pnode = ConnectNode(addrConnect, pszDest, fCountFailure, manual_connection);
+    CNode* pnode = ConnectNode(addrConnect, pszDest, fCountFailure, manual_connection, fAllowLocal);
 
     if (!pnode)
         return nullptr;
