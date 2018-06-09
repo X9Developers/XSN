@@ -1231,7 +1231,7 @@ void CConnman::ThreadSocketHandler()
         //
         // Find which sockets have data to receive
         //
-        struct timeval timeout;vNodesCopy
+        struct timeval timeout;
         timeout.tv_sec  = 0;
         timeout.tv_usec = 50000; // frequency to poll pnode->vSend
 
