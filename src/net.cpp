@@ -1181,11 +1181,13 @@ void CConnman::ThreadSocketHandler()
                     // hold in disconnected pool until all refs are released
                     pnode->Release();
 
+#if 0
                     if (pnode->fMasternode)
                         pnode->Release();
 
                     if (pnode->fMerchantnode)
                         pnode->Release();
+#endif
 
                     vNodesDisconnected.push_back(pnode);
                 }
@@ -1229,7 +1231,7 @@ void CConnman::ThreadSocketHandler()
         //
         // Find which sockets have data to receive
         //
-        struct timeval timeout;
+        struct timeval timeout;vNodesCopy
         timeout.tv_sec  = 0;
         timeout.tv_usec = 50000; // frequency to poll pnode->vSend
 
