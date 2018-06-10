@@ -47,7 +47,7 @@ bool CGovernanceManager::HaveObjectForHash(uint256 nHash) {
     return (mapObjects.count(nHash) == 1 || mapPostponedObjects.count(nHash) == 1);
 }
 
-bool CGovernanceManager::SerializeObjectForHash(uint256 nHash, CDataStream& ss)
+bool CGovernanceManager::SerializeObjectForHash(uint256 nHash, CGovernanceObject& objOut)
 {
     LOCK(cs);
     object_m_it it = mapObjects.find(nHash);
@@ -56,7 +56,7 @@ bool CGovernanceManager::SerializeObjectForHash(uint256 nHash, CDataStream& ss)
         if (it == mapPostponedObjects.end())
             return false;
     }
-    ss << it->second;
+    objOut = it->second;
     return true;
 }
 
@@ -81,7 +81,7 @@ int CGovernanceManager::GetVoteCount() const
     return (int)mapVoteToObject.GetSize();
 }
 
-bool CGovernanceManager::SerializeVoteForHash(uint256 nHash, CDataStream& ss)
+bool CGovernanceManager::SerializeVoteForHash(uint256 nHash, CGovernanceVote& voteOut)
 {
     LOCK(cs);
 
@@ -95,7 +95,7 @@ bool CGovernanceManager::SerializeVoteForHash(uint256 nHash, CDataStream& ss)
         return false;
     }
 
-    ss << vote;
+    voteOut = vote;
     return true;
 }
 

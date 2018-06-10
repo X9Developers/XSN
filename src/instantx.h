@@ -131,7 +131,7 @@ public:
     static const int WARN_MANY_INPUTS       = 100;
 
     CTxLockRequest() = default;
-    CTxLockRequest(const CTransaction& tx) : CTransaction(tx) {};
+    CTxLockRequest(const CTransaction& tx) : CTransaction(tx) {}
 
     bool IsValid() const;
     CAmount GetMinFee() const;

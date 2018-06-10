@@ -379,9 +379,9 @@ public:
 
     int GetVoteCount() const;
 
-    bool SerializeObjectForHash(uint256 nHash, CDataStream& ss);
+    bool SerializeObjectForHash(uint256 nHash, CGovernanceObject &objOut);
 
-    bool SerializeVoteForHash(uint256 nHash, CDataStream& ss);
+    bool SerializeVoteForHash(uint256 nHash, CGovernanceVote &voteOut);
 
     void AddPostponedObject(const CGovernanceObject& govobj)
     {

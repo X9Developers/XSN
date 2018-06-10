@@ -125,6 +125,10 @@ class CVectorWriter
     {
         return nType;
     }
+    size_t size() const
+    {
+        return vchData.size();
+    }
     void seek(size_t nSize)
     {
         nPos += nSize;

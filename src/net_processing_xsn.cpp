@@ -51,7 +51,7 @@ using MapSporkHandlers = std::map<int, SporkHandler>;
 
 #define ADD_HANDLER(sporkID, handler) sporkHandlers.emplace(sporkID, [](const CNetMsgMaker &msgMaker, const uint256 &hash) -> CSerializedNetMsg handler)
 
-static const MapSporkHandlers &GetMapSporkHandlers()
+static const MapSporkHandlers &GetMapGetDataHandlers()
 {
     static MapSporkHandlers sporkHandlers;
 
@@ -63,6 +63,97 @@ static const MapSporkHandlers &GetMapSporkHandlers()
                         }
                         return {};
                     });
+        ADD_HANDLER(MSG_TXLOCK_REQUEST, {
+                        CTxLockRequestRef txLockRequest;
+                        if(instantsend.GetTxLockRequest(hash, txLockRequest)) {
+                            return msgMaker.Make(NetMsgType::TXLOCKREQUEST, *txLockRequest);
+                        }
+                        return {};
+                    });
+        ADD_HANDLER(MSG_TXLOCK_VOTE, {
+                        CTxLockVote vote;
+                        if(instantsend.GetTxLockVote(hash, vote)) {
+                            return msgMaker.Make(NetMsgType::TXLOCKVOTE, vote);
+                        }
+                        return {};
+                    });
+        ADD_HANDLER(MSG_MASTERNODE_PAYMENT_BLOCK, {
+                        BlockMap::iterator mi = mapBlockIndex.find(hash);
+                        LOCK(cs_mapMasternodeBlocks);
+                        if (mi != mapBlockIndex.end() && mnpayments.mapMasternodeBlocks.count(mi->second->nHeight)) {
+                            for(const CMasternodePayee& payee : mnpayments.mapMasternodeBlocks[mi->second->nHeight].vecPayees) {
+                                std::vector<uint256> vecVoteHashes = payee.GetVoteHashes();
+                                for(const uint256& hash : vecVoteHashes) {
+                                    if(mnpayments.HasVerifiedPaymentVote(hash)) {
+                                        return msgMaker.Make(NetMsgType::MASTERNODEPAYMENTVOTE, mnpayments.mapMasternodePaymentVotes[hash]);
+                                    }
+                                }
+                            }
+                        }
+                        return {};
+                    });
+        ADD_HANDLER(MSG_MASTERNODE_PAYMENT_VOTE, {
+                        if(mnpayments.HasVerifiedPaymentVote(hash)) {
+                            return msgMaker.Make(NetMsgType::MASTERNODEPAYMENTVOTE, mnpayments.mapMasternodePaymentVotes[hash]);
+                        }
+                        return {};
+                    });
+        ADD_HANDLER(MSG_MASTERNODE_ANNOUNCE, {
+                        if(mnodeman.mapSeenMasternodeBroadcast.count(hash)) {
+                            return msgMaker.Make(NetMsgType::MNANNOUNCE, mnodeman.mapSeenMasternodeBroadcast[hash].second);
+                        }
+                        return {};
+                    });
+        ADD_HANDLER(MSG_MERCHANTNODE_ANNOUNCE, {
+                        if(merchantnodeman.mapSeenMerchantnodeBroadcast.count(hash)){
+                            return msgMaker.Make(NetMsgType::MERCHANTNODEANNOUNCE, merchantnodeman.mapSeenMerchantnodeBroadcast[hash].second);
+                        }
+                        return {};
+                    });
+        ADD_HANDLER(MSG_MASTERNODE_PING, {
+                        if(mnodeman.mapSeenMasternodePing.count(hash)) {
+                            return msgMaker.Make(NetMsgType::MNPING, mnodeman.mapSeenMasternodePing[hash]);
+                        }
+                        return {};
+                    });
+        ADD_HANDLER(MSG_MERCHANTNODE_PING, {
+                        if(merchantnodeman.mapSeenMerchantnodePing.count(hash)) {
+                            return msgMaker.Make(NetMsgType::MERCHANTNODEPING, merchantnodeman.mapSeenMerchantnodePing[hash]);
+                        }
+                        return {};
+                    });
+        ADD_HANDLER(MSG_GOVERNANCE_OBJECT, {
+                        if(governance.HaveObjectForHash(hash)) {
+                            CGovernanceObject obj;
+                            if(governance.SerializeObjectForHash(hash, obj)) {
+                                return msgMaker.Make(NetMsgType::MNGOVERNANCEOBJECT, obj);
+                            }
+                        }
+                        return {};
+                    });
+        ADD_HANDLER(MSG_GOVERNANCE_OBJECT_VOTE, {
+                        if(governance.HaveVoteForHash(hash)) {
+                            CGovernanceVote vote;
+                            if(governance.SerializeVoteForHash(hash, vote)) {
+                                return msgMaker.Make(NetMsgType::MNGOVERNANCEOBJECTVOTE, vote);
+
+                            }
+                        }
+                        return {};
+                    });
+        ADD_HANDLER(MSG_MASTERNODE_VERIFY, {
+                        if(mnodeman.mapSeenMasternodeVerification.count(hash)) {
+                            return msgMaker.Make(NetMsgType::MNVERIFY, mnodeman.mapSeenMasternodeVerification[hash]);
+
+                        }
+                        return {};
+                    });
+        ADD_HANDLER(MSG_MERCHANTNODE_VERIFY, {
+                        if(merchantnodeman.mapSeenMerchantnodeVerification.count(hash)) {
+                            return msgMaker.Make(NetMsgType::MERCHANTNODEVERIFY, merchantnodeman.mapSeenMerchantnodeVerification[hash]);
+                        }
+                        return {};
+                    });
     }
 
     return sporkHandlers;
@@ -70,7 +161,7 @@ static const MapSporkHandlers &GetMapSporkHandlers()
 
 bool net_processing_xsn::ProcessGetData(CNode *pfrom, const Consensus::Params &consensusParams, CConnman *connman, const CInv &inv)
 {
-    const auto &handlersMap = GetMapSporkHandlers();
+    const auto &handlersMap = GetMapGetDataHandlers();
     auto it = handlersMap.find(inv.type);
     if(it != std::end(handlersMap))
     {
@@ -206,7 +297,7 @@ bool net_processing_xsn::AlreadyHave(const CInv &inv)
         return merchantnodeman.mapSeenMerchantnodePing.count(inv.hash);
 
     case MSG_DSTX: {
-//        return static_cast<bool>(CPrivateSend::GetDSTX(inv.hash));
+        //        return static_cast<bool>(CPrivateSend::GetDSTX(inv.hash));
         return true;
     }
 

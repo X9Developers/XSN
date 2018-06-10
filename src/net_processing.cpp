@@ -1261,7 +1261,7 @@ void static ProcessGetData(CNode* pfrom, const Consensus::Params& consensusParam
             }
             else
             {
-
+                push = net_processing_xsn::ProcessGetData(pfrom, consensusParams, connman, inv);
             }
 
             if (!push) {
@@ -3607,6 +3607,8 @@ bool PeerLogicValidation::SendMessages(CNode* pto, std::atomic<bool>& interruptM
                     vInv.clear();
                 }
             }
+
+            pto->vInventoryToSend.clear();
         }
         if (!vInv.empty())
             connman->PushMessage(pto, msgMaker.Make(NetMsgType::INV, vInv));
