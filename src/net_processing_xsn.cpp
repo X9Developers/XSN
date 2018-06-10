@@ -361,13 +361,17 @@ static int MapCurrentToLegacy(int nCurrentType)
 
 bool net_processing_xsn::TransformInvForLegacyVersion(CInv &inv, CNode *pfrom, bool fForSending)
 {
-    LogPrintf("Before %d, send version: %d, recv version: %d\n", inv.type, pfrom->GetSendVersion(), pfrom->GetRecvVersion());
-    if(fForSending)
-        inv.type = MapCurrentToLegacy(inv.type);
-    else
-        inv.type = MapLegacyToCurrent(inv.type);
 
-    LogPrintf("After %d, send version: %d, recv version: %d\n", inv.type, pfrom->GetSendVersion(), pfrom->GetRecvVersion());
+    if(pfrom->GetSendVersion() == PRESEGWIT_PROTO_VERSION)
+    {
+        LogPrint(BCLog::NET, "Before %d, send version: %d, recv version: %d\n", inv.type, pfrom->GetSendVersion(), pfrom->GetRecvVersion());
+        if(fForSending)
+            inv.type = MapCurrentToLegacy(inv.type);
+        else
+            inv.type = MapLegacyToCurrent(inv.type);
+
+        LogPrint(BCLog::NET, "After %d, send version: %d, recv version: %d\n", inv.type, pfrom->GetSendVersion(), pfrom->GetRecvVersion());
+    }
 
     return true;
 }
