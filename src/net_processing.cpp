@@ -1233,8 +1233,10 @@ void static ProcessGetData(CNode* pfrom, const Consensus::Params& consensusParam
             if (pfrom->fPauseSend)
                 break;
 
-            const CInv &inv = *it;
+            CInv &inv = *it;
             it++;
+
+            net_processing_xsn::TransformInvForLegacyVersion(inv, pfrom, false);
 
             // Send stream from relay memory
             bool push = false;
