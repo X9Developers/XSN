@@ -3597,6 +3597,16 @@ bool PeerLogicValidation::SendMessages(CNode* pto, std::atomic<bool>& interruptM
                     pto->filterInventoryKnown.insert(hash);
                 }
             }
+
+            for(auto &&inv : pto->vInventoryToSend)
+            {
+                vInv.push_back(inv);
+                if (vInv.size() == MAX_INV_SZ)
+                {
+                    connman->PushMessage(pto, msgMaker.Make(NetMsgType::INV, vInv));
+                    vInv.clear();
+                }
+            }
         }
         if (!vInv.empty())
             connman->PushMessage(pto, msgMaker.Make(NetMsgType::INV, vInv));
