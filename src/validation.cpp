@@ -3255,8 +3255,7 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
         }
 
         if(!CheckProofOfStake(block, hashProofOfStake)) {
-            state.DoS(100, error("CheckBlock(): check proof-of-stake failed for block %s\n", hash.ToString().c_str()));
-            return false;
+            return state.DoS(100, error("CheckBlock(): check proof-of-stake failed for block %s\n", hash.ToString().c_str()));
         }
 
         if(!mapProofOfStake.count(hash)) // add to mapProofOfStake

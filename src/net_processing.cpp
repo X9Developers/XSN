@@ -2678,6 +2678,18 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
 
         bool forceProcessing = false;
         const uint256 hash(pblock->GetHash());
+
+        auto it = mapBlockIndex.find(pblock->hashPrevBlock);
+        if (it != mapBlockIndex.end() && ((it->second->nStatus & BLOCK_HAVE_DATA) == 0))
+        {
+            if (!mapBlocksInFlight.count(pblock->hashPrevBlock))
+            {
+                //ask to sync to this block
+                pfrom->PushInventory(CInv(MSG_BLOCK | GetFetchFlags(pfrom), pblock->hashPrevBlock));
+                MarkBlockAsInFlight(pfrom->GetId(), pblock->hashPrevBlock, it->second);
+            }
+        }
+        else
         {
             LOCK(cs_main);
             // Also always process if we requested the block explicitly, as we may
@@ -3602,6 +3614,7 @@ bool PeerLogicValidation::SendMessages(CNode* pto, std::atomic<bool>& interruptM
 
             for(auto &&inv : pto->vInventoryToSend)
             {
+                net_processing_xsn::TransformInvForLegacyVersion(inv, pto, true);
                 vInv.push_back(inv);
                 if (vInv.size() == MAX_INV_SZ)
                 {
