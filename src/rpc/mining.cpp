@@ -989,7 +989,7 @@ static UniValue setgenerate(const JSONRPCRequest& request)
         }
     }
 
-    GenerateBitcoins(fGenerate, nGenProcLimit, Params(), g_connman.get());
+    GenerateBitcoins(fGenerate, nGenProcLimit, Params(), *g_connman);
 
     return fGenerate ? std::string("Mining started") : std::string("Mining stopped");
 }

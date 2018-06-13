@@ -3654,7 +3654,8 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
                               CAmount blockReward,
                               CMutableTransaction &txNew,
                               unsigned int &nTxNewTime,
-                              const TPoSContract &tposContract)
+                              const TPoSContract &tposContract,
+                              std::vector<const CWalletTx*> &vwtxPrev)
 {
     // The following split & combine thresholds are important to security
     // Should not be adjusted if you don't understand the consequences
@@ -3699,8 +3700,6 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
 
     if (setStakeCoins.empty())
         return error("CreateCoinStake() : No Coins to stake");
-
-    std::vector<const CWalletTx*> vwtxPrev;
 
     //prevent staking a time that won't be accepted
     if (GetAdjustedTime() <= chainActive.Tip()->nTime)
@@ -3766,20 +3765,10 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
     CTxOut txoutMasternode;
     std::vector<CTxOut> voutSuperblock;
     int nHeight = chainActive.Tip()->nHeight + 1;
-    //    FillBlockPayments(txNew, nHeight, blockReward, txoutMasternode, voutSuperblock);
-    //    AdjustMasternodePayment(txNew, txoutMasternode, tposContract);
+//    FillBlockPayments(txNew, nHeight, blockReward, txoutMasternode, voutSuperblock);
+//    AdjustMasternodePayment(txNew, txoutMasternode, tposContract);
     LogPrintf("CreateCoinStake -- nBlockHeight %d blockReward %lld txoutMasternode %s txNew %s",
               nHeight, blockReward, txoutMasternode.ToString(), txNew.ToString());
-
-    // Sign
-    int nIn = 0;
-    for(const auto &wtx : vwtxPrev)
-    {
-        if(!SignSignature(*this, *wtx->tx, txNew, nIn++, SIGHASH_ALL))
-        {
-            continue;
-        }
-    }
 
     nLastStakeSetUpdate = 0; //this will trigger stake set to repopulate next round
     return true;

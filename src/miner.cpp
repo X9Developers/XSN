@@ -27,6 +27,7 @@
 #include <validationinterface.h>
 #include <wallet/wallet.h>
 #include <blocksigner.h>
+#include <masternode-sync.h>
 
 #include <algorithm>
 #include <queue>
@@ -122,6 +123,20 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     return CreateNewBlock(nullptr, scriptPubKeyIn, false, {}, fMineWitnessTx);
 }
 
+static bool SignInputsInCoinstake(const SigningProvider &provider, CMutableTransaction &txNew, const std::vector<const CWalletTx*> &vwtxPrev)
+{
+    // Sign
+    int nIn = 0;
+    for(const auto &wtx : vwtxPrev)
+    {
+        if(!SignSignature(provider, *wtx->tx, txNew, nIn++, SIGHASH_ALL))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
 std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(CWallet *wallet, const CScript &scriptPubKeyIn, bool fProofOfStake, const TPoSContract &tposContract, bool fMineWitnessTx)
 {
     int64_t nTimeStart = GetTimeMicros();
@@ -181,6 +196,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(CWallet *wallet, 
     coinbaseTx.vout.resize(1);
     coinbaseTx.vout[0].scriptPubKey = scriptPubKeyIn;
     CAmount blockReward = GetBlockSubsidy(pindexPrev->nHeight, Params().GetConsensus());
+    std::vector<const CWalletTx*> vwtxPrev;
     if(fProofOfStake)
     {
         assert(wallet);
@@ -193,7 +209,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(CWallet *wallet, 
             unsigned int nTxNewTime = 0;
             if (wallet->CreateCoinStake(pblock->nBits, blockReward,
                                         coinstakeTx, nTxNewTime,
-                                        tposContract))
+                                        tposContract, vwtxPrev))
             {
                 pblock->nTime = nTxNewTime;
                 coinbaseTx.vout[0].SetEmpty();
@@ -204,7 +220,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(CWallet *wallet, 
                     pblock->hashTPoSContractTx = tposContract.rawTx->GetHash();
                 }
 
-                fStakeFound = true;
+                fStakeFound = true;   
             }
 
             nLastCoinStakeSearchInterval = nSearchTime - nLastCoinStakeSearchTime;
@@ -223,6 +239,13 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(CWallet *wallet, 
     pblocktemplate->vchCoinbaseCommitment = GenerateCoinbaseCommitment(*pblock, pindexPrev, chainparams.GetConsensus());
     pblocktemplate->vTxFees[0] = -nFees;
 
+    if(pblock->IsProofOfStake())
+    {
+        CMutableTransaction mutableTx(*pblock->vtx[1]);
+        SignInputsInCoinstake(*wallet, mutableTx, vwtxPrev);
+        pblock->vtx[1] = MakeTransactionRef(std::move(mutableTx));
+    }
+
     LogPrintf("CreateNewBlock(): block weight: %u txs: %u fees: %ld sigops %d\n", GetBlockWeight(*pblock), nBlockTx, nFees, nBlockSigOpsCost);
 
     // Fill in header
@@ -234,9 +257,9 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(CWallet *wallet, 
     pblocktemplate->vTxSigOpsCost[0] = WITNESS_SCALE_FACTOR * GetLegacySigOpCount(*pblock->vtx[0]);
 
     CValidationState state;
-    if (!TestBlockValidity(state, chainparams, *pblock, pindexPrev, false, false)) {
-        throw std::runtime_error(strprintf("%s: TestBlockValidity failed: %s", __func__, FormatStateMessage(state)));
-    }
+//    if (!TestBlockValidity(state, chainparams, *pblock, pindexPrev, false, false)) {
+//        throw std::runtime_error(strprintf("%s: TestBlockValidity failed: %s", __func__, FormatStateMessage(state)));
+//    }
     int64_t nTime2 = GetTimeMicros();
 
     LogPrint(BCLog::BENCH, "CreateNewBlock() packages: %.2fms (%d packages, %d updated descendants), validity: %.2fms (total %.2fms)\n", 0.001 * (nTime1 - nTimeStart), nPackagesSelected, nDescendantsUpdated, 0.001 * (nTime2 - nTime1), 0.001 * (nTime2 - nTimeStart));
@@ -536,7 +559,7 @@ static bool ProcessBlockFound(const std::shared_ptr<const CBlock> &pblock, const
 }
 
 // ***TODO*** that part changed in bitcoin, we are using a mix with old one here for now
-void static BitcoinMiner(const CChainParams& chainparams, CConnman* connman,
+void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
                          CWallet* pwallet, bool fProofOfStake)
 {
     LogPrintf("XsnMiner -- started\n");
@@ -560,8 +583,8 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman* connman,
                 throw std::runtime_error("No coinbase script available (mining requires a wallet)");
 
             do {
-                bool fvNodesEmpty = connman->GetNodeCount(CConnman::CONNECTIONS_ALL) == 0;
-                if (!fvNodesEmpty && !IsInitialBlockDownload() /*&& masternodeSync.IsSynced()*/)
+                bool fvNodesEmpty = connman.GetNodeCount(CConnman::CONNECTIONS_ALL) == 0;
+                if (!fvNodesEmpty && !IsInitialBlockDownload() && masternodeSync.IsSynced())
                     break;
                 MilliSleep(1000);
             } while (true);
@@ -706,7 +729,7 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman* connman,
                 // Check for stop or if block needs to be rebuilt
                 boost::this_thread::interruption_point();
                 // Regtest mode doesn't require peers
-                if (connman->GetNodeCount(CConnman::CONNECTIONS_ALL) == 0)
+                if (connman.GetNodeCount(CConnman::CONNECTIONS_ALL) == 0)
                     break;
                 if (pblock->nNonce >= 0xffff0000)
                     break;
@@ -743,7 +766,7 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman* connman,
 void GenerateBitcoins(bool fGenerate,
                       int nThreads,
                       const CChainParams& chainparams,
-                      CConnman *connman)
+                      CConnman &connman)
 {
     static boost::thread_group* minerThreads = NULL;
 
@@ -765,7 +788,7 @@ void GenerateBitcoins(bool fGenerate,
         minerThreads->create_thread(boost::bind(&BitcoinMiner, boost::cref(chainparams), boost::ref(connman), nullptr, false));
 }
 
-void ThreadStakeMinter(const CChainParams &chainparams, CConnman *connman, CWallet *pwallet)
+void ThreadStakeMinter(const CChainParams &chainparams, CConnman &connman, CWallet *pwallet)
 {
     boost::this_thread::interruption_point();
     LogPrintf("ThreadStakeMinter started\n");

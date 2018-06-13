@@ -273,6 +273,12 @@ std::unique_ptr<CWalletTx> TPoSUtils::CreateCancelContractTransaction(CWallet *w
 COutPoint TPoSUtils::GetContractCollateralOutpoint(const TPoSContract &contract)
 {
     COutPoint result;
+    if(!contract.rawTx)
+    {
+        return result;
+    }
+
+
     const auto &vout = contract.rawTx->vout;
     for(size_t i = 0; i < vout.size(); ++i)
     {

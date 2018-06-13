@@ -1039,7 +1039,7 @@ public:
                            std::string& strFailReason, const CCoinControl& coin_control, bool sign = true);
     bool CreateCoinStake(unsigned int nBits, CAmount blockReward,
                          CMutableTransaction& txNew, unsigned int& nTxNewTime,
-                         const TPoSContract &tposContract);
+                         const TPoSContract &tposContract, std::vector<const CWalletTx *> &vwtxPrev);
     bool CommitTransaction(CTransactionRef tx, mapValue_t mapValue, std::vector<std::pair<std::string, std::string>> orderForm, std::string fromAccount, CReserveKey& reservekey, CConnman* connman, CValidationState& state);
 
     void ListAccountCreditDebit(const std::string& strAccount, std::list<CAccountingEntry>& entries);
