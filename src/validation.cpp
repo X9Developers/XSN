@@ -3404,6 +3404,31 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationSta
     return true;
 }
 
+/** NOTE: We need this function in order to place the commitment into the coinstake as last CTxOut.
+ * The problem is that when we were building the witness commitment our coinstake was without extra output.
+ * We will hack here in order to get correct hash without commitment.
+ */
+static uint256 WitnessComittmentForPoSBlock(const CBlock &block, int commitpos, bool &malleated)
+{
+
+    return BlockWitnessMerkleRoot(block, &malleated);
+
+    /*
+    if(!block.IsProofOfStake())
+        return BlockWitnessMerkleRoot(block, &malleated);
+
+    CBlock tmpBlock = block;
+    CMutableTransaction tempTx(*tmpBlock.vtx[1]);
+
+    auto &vout = tempTx.vout;
+    vout.erase(std::begin(vout) + commitpos);
+    tmpBlock.vtx[1] = MakeTransactionRef(std::move(tempTx));
+    auto value = BlockWitnessMerkleRoot(tmpBlock, &malleated);
+    LogPrintf("%s hash: %s\n%s\n", __func__, tmpBlock.ToString(), value.ToString());
+    return value;
+    */
+}
+
 /** NOTE: This function is not currently invoked by ConnectBlock(), so we
  *  should consider upgrade issues if we change which consensus rules are
  *  enforced in this function (eg by adding a new consensus rule). See comment
@@ -3454,7 +3479,8 @@ static bool ContextualCheckBlock(const CBlock& block, CValidationState& state, c
         int commitpos = GetWitnessCommitmentIndex(block);
         if (commitpos != -1) {
             bool malleated = false;
-            uint256 hashWitness = BlockWitnessMerkleRoot(block, &malleated);
+            uint256 hashWitness = WitnessComittmentForPoSBlock(block, commitpos, malleated);
+
             // The malleation check is ignored; as the transaction tree itself
             // already does not permit it, it is impossible to trigger in the
             // witness tree.

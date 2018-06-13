@@ -217,7 +217,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(CWallet *wallet, 
                     pblock->hashTPoSContractTx = tposContract.rawTx->GetHash();
                 }
 
-                fStakeFound = true;   
+                fStakeFound = true;
             }
 
             nLastCoinStakeSearchInterval = nSearchTime - nLastCoinStakeSearchTime;

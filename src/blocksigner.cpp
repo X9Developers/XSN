@@ -20,8 +20,6 @@ bool CBlockSigner::SignBlock()
 
     CKey keySecret;
 
-    LogPrintf("Signing block: %s\n", refBlock.ToString());
-
     if(refBlock.IsProofOfStake())
     {
         const CTxOut& txout = refBlock.vtx[1]->vout[1];
