@@ -16,6 +16,8 @@ bitcoin-tx.cpp
 bitcoind.cpp
 blockencodings.cpp
 blockencodings.h
+blocksigner.cpp
+blocksigner.h
 bloom.cpp
 bloom.h
 cachemap.h

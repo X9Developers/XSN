@@ -20,12 +20,14 @@ bool CBlockSigner::SignBlock()
 
     CKey keySecret;
 
+    LogPrintf("Signing block: %s\n", refBlock.ToString());
+
     if(refBlock.IsProofOfStake())
     {
         const CTxOut& txout = refBlock.vtx[1]->vout[1];
 
         if (!Solver(txout.scriptPubKey, whichType, vSolutions))
-            return false;
+            return error("Failed to solve during signing: %s\n", txout.ToString());
 
         if(refBlock.IsTPoSBlock())
         {
@@ -52,7 +54,7 @@ bool CBlockSigner::SignBlock()
             }
 
             if (!refKeystore->GetKey(keyID, keySecret))
-                return false;
+                return error("Failed to get key for keyID: %s\n", keyID.ToString());
         }
     }
     else
