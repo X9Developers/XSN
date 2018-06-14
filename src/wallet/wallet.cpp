@@ -31,6 +31,7 @@
 #include <tpos/tposutils.h>
 #include <kernel.h>
 #include <privatesend/privatesend-client.h>
+#include <masternode-payments.h>
 
 #include <algorithm>
 #include <assert.h>
@@ -3765,8 +3766,8 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
     CTxOut txoutMasternode;
     std::vector<CTxOut> voutSuperblock;
     int nHeight = chainActive.Tip()->nHeight + 1;
-//    FillBlockPayments(txNew, nHeight, blockReward, txoutMasternode, voutSuperblock);
-//    AdjustMasternodePayment(txNew, txoutMasternode, tposContract);
+    FillBlockPayments(txNew, nHeight, blockReward, txoutMasternode, voutSuperblock);
+    AdjustMasternodePayment(txNew, txoutMasternode, tposContract);
     LogPrintf("CreateCoinStake -- nBlockHeight %d blockReward %lld txoutMasternode %s txNew %s",
               nHeight, blockReward, txoutMasternode.ToString(), txNew.ToString());
 

@@ -14,6 +14,7 @@
 #include <netmessagemaker.h>
 #include <script/standard.h>
 #include <key_io.h>
+#include <tpos/tposutils.h>
 
 #include <boost/lexical_cast.hpp>
 
@@ -1030,4 +1031,27 @@ void CMasternodePayments::UpdatedBlockTip(const CBlockIndex *pindex, CConnman& c
 
     CheckPreviousBlockVotes(nFutureBlock - 1);
     ProcessBlock(nFutureBlock, connman);
+}
+
+void AdjustMasternodePayment(CMutableTransaction &tx, const CTxOut &txoutMasternodePayment, const TPoSContract &tposContract)
+{
+    auto it = std::find(std::begin(tx.vout), std::end(tx.vout), txoutMasternodePayment);
+
+    if(it != std::end(tx.vout))
+    {
+        int mnPaymentOutIndex = std::distance(std::begin(tx.vout), it);
+        auto masternodePayment = tx.vout[mnPaymentOutIndex].nValue;
+
+        int i = tx.vout.size() - 2;
+        if(tposContract.IsValid()) // here we have 3 outputs, first as stake reward, second as tpos reward, third as MN reward
+        {
+            masternodePayment /= 100; // to calculate percentage
+            tx.vout[i - 1].nValue -= masternodePayment * tposContract.stakePercentage; // adjust reward for owner.
+            tx.vout[i].nValue -= masternodePayment * (100 - tposContract.stakePercentage); // adjust reward for merchant
+        }
+        else // here we have 2 outputs, first as stake reward, second as MN reward
+        {
+            tx.vout[i].nValue -= masternodePayment; // last vout is mn payment.
+        }
+    }
 }

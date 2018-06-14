@@ -15,6 +15,7 @@
 class CMasternodePayments;
 class CMasternodePaymentVote;
 class CMasternodeBlockPayees;
+class TPoSContract;
 
 static const int MNPAYMENTS_SIGNATURES_REQUIRED         = 6;
 static const int MNPAYMENTS_SIGNATURES_TOTAL            = 10;
@@ -36,6 +37,7 @@ extern CMasternodePayments mnpayments;
 bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount expectedReward, CAmount actualReward, std::string &strErrorRet);
 bool IsBlockPayeeValid(const CTransactionRef &txNew, int nBlockHeight, CAmount expectedReward, CAmount actualReward);
 void FillBlockPayments(CMutableTransaction& txNew, int nBlockHeight, CAmount blockReward, CTxOut& txoutMasternodeRet, std::vector<CTxOut>& voutSuperblockRet);
+void AdjustMasternodePayment(CMutableTransaction &tx, const CTxOut& txoutMasternodePayment, const TPoSContract &tposContract);
 std::string GetRequiredPaymentsString(int nBlockHeight);
 
 class CMasternodePayee
