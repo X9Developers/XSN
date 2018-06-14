@@ -212,48 +212,52 @@ void net_processing_xsn::ThreadProcessExtensions(CConnman *pConnman)
         masternodeSync.ProcessTick(connman);
         merchantnodeSync.ProcessTick(connman);
 
-        if(masternodeSync.IsBlockchainSynced() &&
-                merchantnodeSync.IsBlockchainSynced() &&
-                !ShutdownRequested()) {
+        if(!ShutdownRequested()) {
 
             nTick++;
 
-            // make sure to check all masternodes first
-            mnodeman.Check();
-            merchantnodeman.Check();
+            if(masternodeSync.IsBlockchainSynced()) {
+                // make sure to check all masternodes first
+                mnodeman.Check();
 
-            // check if we should activate or ping every few minutes,
-            // slightly postpone first run to give net thread a chance to connect to some peers
-            if(nTick % MASTERNODE_MIN_MNP_SECONDS == 15)
-                activeMasternode.ManageState(connman);
+                // check if we should activate or ping every few minutes,
+                // slightly postpone first run to give net thread a chance to connect to some peers
+                if(nTick % MASTERNODE_MIN_MNP_SECONDS == 15)
+                    activeMasternode.ManageState(connman);
 
-            if(nTick % 60 == 0) {
-                mnodeman.ProcessMasternodeConnections(connman);
-                mnodeman.CheckAndRemove(connman);
-                mnpayments.CheckAndRemove();
-                instantsend.CheckAndRemove();
+                if(nTick % 60 == 0) {
+                    mnodeman.ProcessMasternodeConnections(connman);
+                    mnodeman.CheckAndRemove(connman);
+                    mnpayments.CheckAndRemove();
+                    instantsend.CheckAndRemove();
+                }
+                if(fMasterNode && (nTick % (60 * 5) == 0)) {
+                    mnodeman.DoFullVerificationStep(connman);
+                }
+
+                if(nTick % (60 * 5) == 0) {
+                    governance.DoMaintenance(connman);
+                }
             }
-            if(fMasterNode && (nTick % (60 * 5) == 0)) {
-                mnodeman.DoFullVerificationStep(connman);
-            }
 
-            if(nTick % (60 * 5) == 0) {
-                governance.DoMaintenance(connman);
-            }
+            if(merchantnodeSync.IsBlockchainSynced()) {
 
-            if(nTick % MERCHANTNODE_MIN_MNP_SECONDS == 15)
-                activeMerchantnode.ManageState(connman);
+                merchantnodeman.Check();
+                if(nTick % MERCHANTNODE_MIN_MNP_SECONDS == 15)
+                    activeMerchantnode.ManageState(connman);
 
-            if(nTick % 60 == 0) {
-                merchantnodeman.ProcessMerchantnodeConnections(connman);
-                merchantnodeman.CheckAndRemove(connman);
-            }
-            if(fMerchantNode && (nTick % (60 * 5) == 0)) {
-                merchantnodeman.DoFullVerificationStep(connman);
+                if(nTick % 60 == 0) {
+                    merchantnodeman.ProcessMerchantnodeConnections(connman);
+                    merchantnodeman.CheckAndRemove(connman);
+                }
+                if(fMerchantNode && (nTick % (60 * 5) == 0)) {
+                    merchantnodeman.DoFullVerificationStep(connman);
+                }
             }
         }
     }
 }
+
 
 bool net_processing_xsn::AlreadyHave(const CInv &inv)
 {
