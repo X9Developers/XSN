@@ -236,6 +236,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(CWallet *wallet, 
     int nDescendantsUpdated = 0;
     addPackageTxs(nPackagesSelected, nDescendantsUpdated);
 
+
     coinbaseTx.vin[0].scriptSig = CScript() << nHeight << OP_0;
     pblock->vtx[0] = MakeTransactionRef(std::move(coinbaseTx));
     pblocktemplate->vchCoinbaseCommitment = GenerateCoinbaseCommitment(*pblock, pindexPrev, chainparams.GetConsensus());
@@ -650,7 +651,7 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
             if(!pindexPrev) break;
 
             BlockAssembler assemlber(chainparams);
-            auto pblocktemplate = assemlber.CreateNewBlock(pwallet, coinbaseScript->reserveScript, fProofOfStake, contract, false);
+            auto pblocktemplate = assemlber.CreateNewBlock(pwallet, coinbaseScript->reserveScript, fProofOfStake, contract, true);
             if (!pblocktemplate.get())
             {
                 LogPrintf("XsnMiner -- Failed to find a coinstake\n");
