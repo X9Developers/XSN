@@ -347,7 +347,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
                 && test_args.GetConfigArgs().count("-i")
                );
     BOOST_CHECK(test_args.GetConfigArgs().count("-sec1.ccc")
-                && test_args.GetConfigArgs().count("-sec1.h>)
+                && test_args.GetConfigArgs().count("-sec1.h")
                 && test_args.GetConfigArgs().count("-sec2.ccc")
                 && test_args.GetConfigArgs().count("-sec2.iii")
                );

@@ -50,6 +50,7 @@ BasicTestingSetup::BasicTestingSetup(const std::string& chainName)
         fCheckBlockIndex = true;
         SelectParams(chainName);
         noui_connect();
+//        g_logger->m_print_to_console = true;
 }
 
 BasicTestingSetup::~BasicTestingSetup()
