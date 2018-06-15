@@ -95,7 +95,7 @@ static UniValue ListOfMerchantNodes(const UniValue& params, std::set<CService> m
             streamFull << std::setw(18) <<
                           mn.GetStatus() << " " <<
                           mn.nProtocolVersion << " " <<
-                          CBitcoinAddress(mn.pubKeyMerchantnode.GetID()).ToString() << " " <<
+                          CXSNAddress(mn.pubKeyMerchantnode.GetID()).ToString() << " " <<
                           mn.hashTPoSContractTx.ToString() << " " <<
                           (int64_t)mn.lastPing.sigTime << " " << std::setw(8) <<
                           (int64_t)(mn.lastPing.sigTime - mn.sigTime) << " " << std::setw(10) <<
@@ -109,7 +109,7 @@ static UniValue ListOfMerchantNodes(const UniValue& params, std::set<CService> m
             streamInfo << std::setw(18) <<
                           mn.GetStatus() << " " <<
                           mn.nProtocolVersion << " " <<
-                          CBitcoinAddress(mn.pubKeyMerchantnode.GetID()).ToString() << " " <<
+                          CXSNAddress(mn.pubKeyMerchantnode.GetID()).ToString() << " " <<
                           (int64_t)mn.lastPing.sigTime << " " << std::setw(8) <<
                           (int64_t)(mn.lastPing.sigTime - mn.sigTime) << " " <<
                           (mn.lastPing.fSentinelIsCurrent ? "current" : "expired") << " " <<
@@ -122,7 +122,7 @@ static UniValue ListOfMerchantNodes(const UniValue& params, std::set<CService> m
             if (strFilter !="" && strOutpoint.find(strFilter) == std::string::npos) continue;
             obj.push_back(Pair(strOutpoint, (int64_t)mn.lastPing.sigTime));
         } else if (strMode == "payee") {
-            CBitcoinAddress address(mn.pubKeyMerchantnode.GetID());
+            CXSNAddress address(mn.pubKeyMerchantnode.GetID());
             std::string strPayee = address.ToString();
             if (strFilter !="" && strPayee.find(strFilter) == std::string::npos &&
                     strOutpoint.find(strFilter) == std::string::npos) continue;
@@ -405,7 +405,7 @@ static UniValue merchantnode(const JSONRPCRequest& request)
         CMerchantnode mn;
         auto pubKey = activeMerchantnode.pubKeyMerchantnode;
         if(merchantnodeman.Get(pubKey, mn)) {
-            mnObj.push_back(Pair("merchantAddress", CBitcoinAddress(pubKey.GetID()).ToString()));
+            mnObj.push_back(Pair("merchantAddress", CXSNAddress(pubKey.GetID()).ToString()));
         }
 
         mnObj.push_back(Pair("status", activeMerchantnode.GetStatus()));
@@ -514,8 +514,8 @@ UniValue tposcontract(const JSONRPCRequest& request)
             throw JSONRPCError(RPC_INVALID_PARAMETER,
                                "Expected format: tposcontract create tpos_address merchant_address commission");
 
-        CBitcoinAddress tposAddress(request.params[1].get_str());
-        CBitcoinAddress merchantAddress(request.params[2].get_str());
+        CXSNAddress tposAddress(request.params[1].get_str());
+        CXSNAddress merchantAddress(request.params[2].get_str());
         int commission = std::stoi(request.params[3].get_str());
 
         if(!tposAddress.IsValid())

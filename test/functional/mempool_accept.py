@@ -5,7 +5,7 @@
 """Test mempool acceptance of raw transactions."""
 
 from io import BytesIO
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import XSNTestFramework
 from test_framework.messages import (
     BIP125_SEQUENCE_NUMBER,
     COIN,
@@ -31,7 +31,7 @@ from test_framework.util import (
 )
 
 
-class MempoolAcceptanceTest(BitcoinTestFramework):
+class MempoolAcceptanceTest(XSNTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.extra_args = [[

@@ -565,8 +565,8 @@ static bool ProcessBlockFound(const std::shared_ptr<const CBlock> &pblock, const
     return true;
 }
 
-// ***TODO*** that part changed in bitcoin, we are using a mix with old one here for now
-void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
+// ***TODO*** that part changed in xsn, we are using a mix with old one here for now
+void static XSNMiner(const CChainParams& chainparams, CConnman& connman,
                          CWallet* pwallet, bool fProofOfStake)
 {
     LogPrintf("XsnMiner -- started\n");
@@ -626,7 +626,7 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
                     bool isValidForPayment = merchantnodeman.Get(activeMerchantnode.pubKeyMerchantnode, merchantNode);
 
                     isValidForPayment &= merchantNode.IsValidForPayment();
-                    auto merchantnodePayee = CBitcoinAddress(activeMerchantnode.pubKeyMerchantnode.GetID());
+                    auto merchantnodePayee = CXSNAddress(activeMerchantnode.pubKeyMerchantnode.GetID());
                     bool isValidContract = contract.merchantAddress == merchantnodePayee;
                     if(!isValidForPayment || !isValidContract)
                     {
@@ -674,7 +674,7 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
                 CBlockSigner signer(*pblock, pwallet, contract);
 
                 if (!signer.SignBlock()) {
-                    LogPrintf("BitcoinMiner(): Signing new block failed \n");
+                    LogPrintf("XSNMiner(): Signing new block failed \n");
                     throw std::runtime_error(strprintf("%s: SignBlock failed", __func__));
                 }
 
@@ -768,7 +768,7 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
     }
 }
 
-void GenerateBitcoins(bool fGenerate,
+void GenerateXSNs(bool fGenerate,
                       int nThreads,
                       const CChainParams& chainparams,
                       CConnman &connman)
@@ -790,7 +790,7 @@ void GenerateBitcoins(bool fGenerate,
 
     minerThreads = new boost::thread_group();
     for (int i = 0; i < nThreads; i++)
-        minerThreads->create_thread(boost::bind(&BitcoinMiner, boost::cref(chainparams), boost::ref(connman), nullptr, false));
+        minerThreads->create_thread(boost::bind(&XSNMiner, boost::cref(chainparams), boost::ref(connman), nullptr, false));
 }
 
 void ThreadStakeMinter(const CChainParams &chainparams, CConnman &connman, CWallet *pwallet)
@@ -798,7 +798,7 @@ void ThreadStakeMinter(const CChainParams &chainparams, CConnman &connman, CWall
     boost::this_thread::interruption_point();
     LogPrintf("ThreadStakeMinter started\n");
     try {
-        BitcoinMiner(chainparams, connman, pwallet, true);
+        XSNMiner(chainparams, connman, pwallet, true);
         boost::this_thread::interruption_point();
     } catch (std::exception& e) {
         LogPrintf("ThreadStakeMinter() exception %s\n", e.what());

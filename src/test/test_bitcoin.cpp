@@ -2,7 +2,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <test/test_bitcoin.h>
+#include <test/test_xsn.h>
 
 #include <chainparams.h>
 #include <consensus/consensus.h>
@@ -66,7 +66,7 @@ TestingSetup::TestingSetup(const std::string& chainName) : BasicTestingSetup(cha
 
         RegisterAllCoreRPCCommands(tableRPC);
         ClearDatadirCache();
-        pathTemp = fs::temp_directory_path() / strprintf("test_bitcoin_%lu_%i", (unsigned long)GetTime(), (int)(InsecureRandRange(1 << 30)));
+        pathTemp = fs::temp_directory_path() / strprintf("test_xsn_%lu_%i", (unsigned long)GetTime(), (int)(InsecureRandRange(1 << 30)));
         fs::create_directories(pathTemp);
         gArgs.ForceSetArg("-datadir", pathTemp.string());
 

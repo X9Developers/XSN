@@ -2,7 +2,7 @@
 # Copyright (c) 2017 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
-"""Class for bitcoind node under test"""
+"""Class for xsnd node under test"""
 
 import decimal
 import errno
@@ -44,7 +44,7 @@ class ErrorMatch(Enum):
 
 
 class TestNode():
-    """A class for representing a bitcoind node under test.
+    """A class for representing a xsnd node under test.
 
     This class contains:
 
@@ -67,7 +67,7 @@ class TestNode():
             # Wait for up to 60 seconds for the RPC server to respond
             self.rpc_timeout = 60
         if binary is None:
-            self.binary = os.getenv("BITCOIND", "bitcoind")
+            self.binary = os.getenv("BITCOIND", "xsnd")
         else:
             self.binary = binary
         self.stderr = stderr
@@ -90,7 +90,7 @@ class TestNode():
             "-noprinttoconsole"
         ]
 
-        self.cli = TestNodeCLI(os.getenv("BITCOINCLI", "bitcoin-cli"), self.datadir)
+        self.cli = TestNodeCLI(os.getenv("BITCOINCLI", "xsn-cli"), self.datadir)
         self.use_cli = use_cli
 
         self.running = False
@@ -104,7 +104,7 @@ class TestNode():
         self.p2ps = []
 
     def __del__(self):
-        # Ensure that we don't leave any bitcoind processes lying around after
+        # Ensure that we don't leave any xsnd processes lying around after
         # the test ends
         if self.process and self.cleanup_on_exit:
             # Should only happen on test failure
@@ -128,20 +128,20 @@ class TestNode():
         if stderr is None:
             stderr = self.stderr
         # Delete any existing cookie file -- if such a file exists (eg due to
-        # unclean shutdown), it will get overwritten anyway by bitcoind, and
+        # unclean shutdown), it will get overwritten anyway by xsnd, and
         # potentially interfere with our attempt to authenticate
         delete_cookie_file(self.datadir)
         self.process = subprocess.Popen(self.args + extra_args, stderr=stderr, *args, **kwargs)
         self.running = True
-        self.log.debug("bitcoind started, waiting for RPC to come up")
+        self.log.debug("xsnd started, waiting for RPC to come up")
 
     def wait_for_rpc_connection(self):
-        """Sets up an RPC connection to the bitcoind process. Returns False if unable to connect."""
+        """Sets up an RPC connection to the xsnd process. Returns False if unable to connect."""
         # Poll at a rate of four times per second
         poll_per_s = 4
         for _ in range(poll_per_s * self.rpc_timeout):
             if self.process.poll() is not None:
-                raise FailedToStartError('bitcoind exited with status {} during initialization'.format(self.process.returncode))
+                raise FailedToStartError('xsnd exited with status {} during initialization'.format(self.process.returncode))
             try:
                 self.rpc = get_rpc_proxy(rpc_url(self.datadir, self.index, self.rpchost), self.index, timeout=self.rpc_timeout, coveragedir=self.coverage_dir)
                 self.rpc.getblockcount()
@@ -156,11 +156,11 @@ class TestNode():
             except JSONRPCException as e:  # Initialization phase
                 if e.error['code'] != -28:  # RPC in warmup?
                     raise  # unknown JSON RPC exception
-            except ValueError as e:  # cookie file not found and no rpcuser or rpcassword. bitcoind still starting
+            except ValueError as e:  # cookie file not found and no rpcuser or rpcassword. xsnd still starting
                 if "No RPC credentials" not in str(e):
                     raise
             time.sleep(1.0 / poll_per_s)
-        raise AssertionError("Unable to connect to bitcoind")
+        raise AssertionError("Unable to connect to xsnd")
 
     def get_wallet_rpc(self, wallet_name):
         if self.use_cli:
@@ -208,11 +208,11 @@ class TestNode():
     def assert_start_raises_init_error(self, extra_args=None, expected_msg=None, match=ErrorMatch.FULL_TEXT, *args, **kwargs):
         """Attempt to start the node and expect it to raise an error.
 
-        extra_args: extra arguments to pass through to bitcoind
-        expected_msg: regex that stderr should match when bitcoind fails
+        extra_args: extra arguments to pass through to xsnd
+        expected_msg: regex that stderr should match when xsnd fails
 
-        Will throw if bitcoind starts without an error.
-        Will throw if an expected_msg is provided and it does not match bitcoind's stdout."""
+        Will throw if xsnd starts without an error.
+        Will throw if an expected_msg is provided and it does not match xsnd's stdout."""
         with tempfile.SpooledTemporaryFile(max_size=2**16) as log_stderr:
             try:
                 self.start(extra_args, stderr=log_stderr, *args, **kwargs)
@@ -220,7 +220,7 @@ class TestNode():
                 self.stop_node()
                 self.wait_until_stopped()
             except FailedToStartError as e:
-                self.log.debug('bitcoind failed to start: %s', e)
+                self.log.debug('xsnd failed to start: %s', e)
                 self.running = False
                 self.process = None
                 # Check stderr for expected message
@@ -238,15 +238,15 @@ class TestNode():
                             raise AssertionError('Expected message "{}" does not fully match stderr:\n"{}"'.format(expected_msg, stderr))
             else:
                 if expected_msg is None:
-                    assert_msg = "bitcoind should have exited with an error"
+                    assert_msg = "xsnd should have exited with an error"
                 else:
-                    assert_msg = "bitcoind should have exited with expected error " + expected_msg
+                    assert_msg = "xsnd should have exited with expected error " + expected_msg
                 raise AssertionError(assert_msg)
 
     def node_encrypt_wallet(self, passphrase):
         """"Encrypts the wallet.
 
-        This causes bitcoind to shutdown, so this method takes
+        This causes xsnd to shutdown, so this method takes
         care of cleaning up resources."""
         self.encryptwallet(passphrase)
         self.wait_until_stopped()
@@ -293,17 +293,17 @@ class TestNodeCLIAttr:
         return lambda: self(*args, **kwargs)
 
 class TestNodeCLI():
-    """Interface to bitcoin-cli for an individual node"""
+    """Interface to xsn-cli for an individual node"""
 
     def __init__(self, binary, datadir):
         self.options = []
         self.binary = binary
         self.datadir = datadir
         self.input = None
-        self.log = logging.getLogger('TestFramework.bitcoincli')
+        self.log = logging.getLogger('TestFramework.xsncli')
 
     def __call__(self, *options, input=None):
-        # TestNodeCLI is callable with bitcoin-cli command-line options
+        # TestNodeCLI is callable with xsn-cli command-line options
         cli = TestNodeCLI(self.binary, self.datadir)
         cli.options = [str(o) for o in options]
         cli.input = input
@@ -322,18 +322,18 @@ class TestNodeCLI():
         return results
 
     def send_cli(self, command=None, *args, **kwargs):
-        """Run bitcoin-cli command. Deserializes returned string as python object."""
+        """Run xsn-cli command. Deserializes returned string as python object."""
 
         pos_args = [str(arg) for arg in args]
         named_args = [str(key) + "=" + str(value) for (key, value) in kwargs.items()]
-        assert not (pos_args and named_args), "Cannot use positional arguments and named arguments in the same bitcoin-cli call"
+        assert not (pos_args and named_args), "Cannot use positional arguments and named arguments in the same xsn-cli call"
         p_args = [self.binary, "-datadir=" + self.datadir] + self.options
         if named_args:
             p_args += ["-named"]
         if command is not None:
             p_args += [command]
         p_args += pos_args + named_args
-        self.log.debug("Running bitcoin-cli command: %s" % command)
+        self.log.debug("Running xsn-cli command: %s" % command)
         process = subprocess.Popen(p_args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
         cli_stdout, cli_stderr = process.communicate(input=self.input)
         returncode = process.poll()

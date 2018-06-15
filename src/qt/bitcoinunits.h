@@ -41,18 +41,18 @@
 #define THIN_SP_UTF8 REAL_THIN_SP_UTF8
 #define THIN_SP_HTML HTML_HACK_SP
 
-/** Bitcoin unit definitions. Encapsulates parsing and formatting
+/** XSN unit definitions. Encapsulates parsing and formatting
    and serves as list model for drop-down selection boxes.
 */
-class BitcoinUnits: public QAbstractListModel
+class XSNUnits: public QAbstractListModel
 {
     Q_OBJECT
 
 public:
-    explicit BitcoinUnits(QObject *parent);
+    explicit XSNUnits(QObject *parent);
 
-    /** Bitcoin units.
-      @note Source: https://en.bitcoin.it/wiki/Units . Please add only sensible ones
+    /** XSN units.
+      @note Source: https://en.xsn.it/wiki/Units . Please add only sensible ones
      */
     enum Unit
     {
@@ -123,8 +123,8 @@ public:
     static CAmount maxMoney();
 
 private:
-    QList<BitcoinUnits::Unit> unitlist;
+    QList<XSNUnits::Unit> unitlist;
 };
-typedef BitcoinUnits::Unit BitcoinUnit;
+typedef XSNUnits::Unit XSNUnit;
 
 #endif // BITCOIN_QT_BITCOINUNITS_H

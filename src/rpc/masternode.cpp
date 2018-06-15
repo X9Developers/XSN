@@ -188,7 +188,7 @@ static UniValue masternodelist(const JSONRPCRequest& request)
                 streamFull << std::setw(18) <<
                                mn.GetStatus() << " " <<
                                mn.nProtocolVersion << " " <<
-                               CBitcoinAddress(mn.pubKeyCollateralAddress.GetID()).ToString() << " " <<
+                               CXSNAddress(mn.pubKeyCollateralAddress.GetID()).ToString() << " " <<
                                (int64_t)mn.lastPing.sigTime << " " << std::setw(8) <<
                                (int64_t)(mn.lastPing.sigTime - mn.sigTime) << " " << std::setw(10) <<
                                mn.GetLastPaidTime() << " "  << std::setw(6) <<
@@ -203,7 +203,7 @@ static UniValue masternodelist(const JSONRPCRequest& request)
                 streamInfo << std::setw(18) <<
                                mn.GetStatus() << " " <<
                                mn.nProtocolVersion << " " <<
-                               CBitcoinAddress(mn.pubKeyCollateralAddress.GetID()).ToString() << " " <<
+                               CXSNAddress(mn.pubKeyCollateralAddress.GetID()).ToString() << " " <<
                                (int64_t)mn.lastPing.sigTime << " " << std::setw(8) <<
                                (int64_t)(mn.lastPing.sigTime - mn.sigTime) << " " <<
                                (mn.lastPing.fSentinelIsCurrent ? "current" : "expired") << " " <<
@@ -222,7 +222,7 @@ static UniValue masternodelist(const JSONRPCRequest& request)
                 if (strFilter !="" && strOutpoint.find(strFilter) == std::string::npos) continue;
                 obj.push_back(Pair(strOutpoint, (int64_t)mn.lastPing.sigTime));
             } else if (strMode == "payee") {
-                CBitcoinAddress address(mn.pubKeyCollateralAddress.GetID());
+                CXSNAddress address(mn.pubKeyCollateralAddress.GetID());
                 std::string strPayee = address.ToString();
                 if (strFilter !="" && strPayee.find(strFilter) == std::string::npos &&
                     strOutpoint.find(strFilter) == std::string::npos) continue;
@@ -411,7 +411,7 @@ static UniValue masternode(const JSONRPCRequest& request)
         obj.push_back(Pair("IP:port",       mnInfo.addr.ToString()));
         obj.push_back(Pair("protocol",      (int64_t)mnInfo.nProtocolVersion));
         obj.push_back(Pair("outpoint",      mnInfo.vin.prevout.ToString()));
-        obj.push_back(Pair("payee",         CBitcoinAddress(mnInfo.pubKeyCollateralAddress.GetID()).ToString()));
+        obj.push_back(Pair("payee",         CXSNAddress(mnInfo.pubKeyCollateralAddress.GetID()).ToString()));
         obj.push_back(Pair("lastseen",      mnInfo.nTimeLastPing));
         obj.push_back(Pair("activeseconds", mnInfo.nTimeLastPing - mnInfo.sigTime));
         return obj;
@@ -579,7 +579,7 @@ static UniValue masternode(const JSONRPCRequest& request)
 
         CMasternode mn;
         if(mnodeman.Get(activeMasternode.outpoint, mn)) {
-            mnObj.push_back(Pair("payee", CBitcoinAddress(mn.pubKeyCollateralAddress.GetID()).ToString()));
+            mnObj.push_back(Pair("payee", CXSNAddress(mn.pubKeyCollateralAddress.GetID()).ToString()));
         }
 
         mnObj.push_back(Pair("status", activeMasternode.GetStatus()));
@@ -798,8 +798,8 @@ static UniValue masternodebroadcast(const JSONRPCRequest& request)
                 nSuccessful++;
                 resultObj.push_back(Pair("outpoint", mnb.vin.prevout.ToString()));
                 resultObj.push_back(Pair("addr", mnb.addr.ToString()));
-                resultObj.push_back(Pair("pubKeyCollateralAddress", CBitcoinAddress(mnb.pubKeyCollateralAddress.GetID()).ToString()));
-                resultObj.push_back(Pair("pubKeyMasternode", CBitcoinAddress(mnb.pubKeyMasternode.GetID()).ToString()));
+                resultObj.push_back(Pair("pubKeyCollateralAddress", CXSNAddress(mnb.pubKeyCollateralAddress.GetID()).ToString()));
+                resultObj.push_back(Pair("pubKeyMasternode", CXSNAddress(mnb.pubKeyMasternode.GetID()).ToString()));
                 resultObj.push_back(Pair("vchSig", EncodeBase64(&mnb.vchSig[0], mnb.vchSig.size())));
                 resultObj.push_back(Pair("sigTime", mnb.sigTime));
                 resultObj.push_back(Pair("protocolVersion", mnb.nProtocolVersion));

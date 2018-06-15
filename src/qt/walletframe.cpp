@@ -5,7 +5,7 @@
 #include <qt/walletframe.h>
 #include <qt/walletmodel.h>
 
-#include <qt/bitcoingui.h>
+#include <qt/xsngui.h>
 #include <qt/walletview.h>
 
 #include <cassert>
@@ -14,7 +14,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 
-WalletFrame::WalletFrame(const PlatformStyle *_platformStyle, BitcoinGUI *_gui) :
+WalletFrame::WalletFrame(const PlatformStyle *_platformStyle, XSNGUI *_gui) :
     QFrame(_gui),
     gui(_gui),
     platformStyle(_platformStyle)
@@ -52,7 +52,7 @@ bool WalletFrame::addWallet(WalletModel *walletModel)
     }
 
     WalletView *walletView = new WalletView(platformStyle, this);
-    walletView->setBitcoinGUI(gui);
+    walletView->setXSNGUI(gui);
     walletView->setClientModel(clientModel);
     walletView->setWalletModel(walletModel);
     walletView->showOutOfSyncWarning(bOutOfSync);

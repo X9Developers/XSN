@@ -18,8 +18,8 @@ struct TPoSContract
 {
     TPoSContract() = default;
     TPoSContract(CTransactionRef tx,
-                 CBitcoinAddress merchantAddress,
-                 CBitcoinAddress tposAddress,
+                 CXSNAddress merchantAddress,
+                 CXSNAddress tposAddress,
                  short stakePercentage,
                  std::vector<unsigned char> vchSignature);
 
@@ -28,8 +28,8 @@ struct TPoSContract
     static TPoSContract FromTPoSContractTx(const CTransactionRef tx);
 
     CTransactionRef rawTx;
-    CBitcoinAddress merchantAddress;
-    CBitcoinAddress tposAddress;
+    CXSNAddress merchantAddress;
+    CXSNAddress tposAddress;
     std::vector<unsigned char> vchSignature;
     int stakePercentage = 0;
 };
@@ -50,15 +50,15 @@ public:
                                 const CWalletTx& wtx,
                                 CAmount &stakeAmount,
                                 CAmount &commissionAmount,
-                                CBitcoinAddress &tposAddress, CBitcoinAddress &merchantAddress);
+                                CXSNAddress &tposAddress, CXSNAddress &merchantAddress);
 
     static bool IsTPoSOwnerContract(CWallet *wallet, const CTransactionRef &tx);
     static bool IsTPoSMerchantContract(CWallet *wallet, const CTransactionRef &tx);
 
     static std::unique_ptr<CWalletTx> CreateTPoSTransaction(CWallet *wallet,
                                                             CReserveKey &reserveKey,
-                                                            const CBitcoinAddress &tposAddress,
-                                                            const CBitcoinAddress &merchantAddress,
+                                                            const CXSNAddress &tposAddress,
+                                                            const CXSNAddress &merchantAddress,
                                                             int merchantCommission,
                                                             std::string &strError);
 

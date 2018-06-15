@@ -23,7 +23,7 @@ public:
 class CScriptNum10
 {
 /**
- * The ScriptNum implementation from Bitcoin Core 0.10.0, for cross-comparison.
+ * The ScriptNum implementation from XSN Core 0.10.0, for cross-comparison.
  */
 public:
 

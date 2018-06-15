@@ -3,10 +3,10 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the wallet."""
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import XSNTestFramework
 from test_framework.util import *
 
-class WalletTest(BitcoinTestFramework):
+class WalletTest(XSNTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
         self.setup_clean_chain = True
@@ -121,7 +121,7 @@ class WalletTest(BitcoinTestFramework):
         self.nodes[1].generate(100)
         self.sync_all([self.nodes[0:3]])
 
-        # node0 should end up with 100 btc in block rewards plus fees, but
+        # node0 should end up with 100 xsn in block rewards plus fees, but
         # minus the 21 plus fees sent to node2
         assert_equal(self.nodes[0].getbalance(), 100-21)
         assert_equal(self.nodes[2].getbalance(), 21)
@@ -368,7 +368,7 @@ class WalletTest(BitcoinTestFramework):
             '-reindex',
             '-zapwallettxes=1',
             '-zapwallettxes=2',
-            # disabled until issue is fixed: https://github.com/bitcoin/bitcoin/issues/7463
+            # disabled until issue is fixed: https://github.com/xsn/xsn/issues/7463
             # '-salvagewallet',
         ]
         chainlimit = 6

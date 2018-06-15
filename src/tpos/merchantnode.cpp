@@ -462,7 +462,7 @@ bool CMerchantnodeBroadcast::CheckSignature(int& nDos)
             pubKeyMerchantnode.GetID().ToString() +
             boost::lexical_cast<std::string>(nProtocolVersion);
 
-    LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeBroadcast::CheckSignature -- strMessage: %s  pubKeyMerchantnode address: %s  sig: %s\n", strMessage, CBitcoinAddress(pubKeyMerchantnode.GetID()).ToString(), EncodeBase64(&vchSig[0], vchSig.size()));
+    LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeBroadcast::CheckSignature -- strMessage: %s  pubKeyMerchantnode address: %s  sig: %s\n", strMessage, CXSNAddress(pubKeyMerchantnode.GetID()).ToString(), EncodeBase64(&vchSig[0], vchSig.size()));
 
     if(!CMessageSigner::VerifyMessage(pubKeyMerchantnode, vchSig, strMessage, strError)){
         LogPrintf("CMerchantnodeBroadcast::CheckSignature -- Got bad Merchantnode announce signature, error: %s\n", strError);

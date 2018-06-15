@@ -6,10 +6,10 @@
 
 import os
 
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import XSNTestFramework
 
 
-class ConfArgsTest(BitcoinTestFramework):
+class ConfArgsTest(XSNTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1
@@ -28,7 +28,7 @@ class ConfArgsTest(BitcoinTestFramework):
         self.nodes[0].assert_start_raises_init_error(['-datadir=' + new_data_dir], 'Error: Specified data directory "' + new_data_dir + '" does not exist.')
 
         # Check that using non-existent datadir in conf file fails
-        conf_file = os.path.join(default_data_dir, "bitcoin.conf")
+        conf_file = os.path.join(default_data_dir, "xsn.conf")
 
         # datadir needs to be set before [regtest] section
         conf_file_contents = open(conf_file, encoding='utf8').read()

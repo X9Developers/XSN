@@ -14,10 +14,10 @@ RPCs tested are:
 """
 from collections import defaultdict
 
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import XSNTestFramework
 from test_framework.util import assert_equal
 
-class WalletLabelsTest(BitcoinTestFramework):
+class WalletLabelsTest(XSNTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1
@@ -35,7 +35,7 @@ class WalletLabelsTest(BitcoinTestFramework):
         assert_equal(node.getbalance(), 100)
 
         # there should be 2 address groups
-        # each with 1 address with a balance of 50 Bitcoins
+        # each with 1 address with a balance of 50 XSNs
         address_groups = node.listaddressgroupings()
         assert_equal(len(address_groups), 2)
         # the addresses aren't linked now, but will be after we send to the

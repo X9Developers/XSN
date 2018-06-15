@@ -6,7 +6,7 @@
 
 import os
 
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import XSNTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
@@ -77,7 +77,7 @@ def read_dump(file_name, addrs, script_addrs, hd_master_addr_old):
         return found_addr, found_script_addr, found_addr_chg, found_addr_rsv, hd_master_addr_ret, witness_addr_ret
 
 
-class WalletDumpTest(BitcoinTestFramework):
+class WalletDumpTest(XSNTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.extra_args = [["-keypool=90", "-addresstype=legacy", "-deprecatedrpc=addwitnessaddress"]]

@@ -1,6 +1,6 @@
-diff -ur bitcoin-0.12.0.orig/src/init.cpp bitcoin-0.12.0/src/init.cpp
---- bitcoin-0.12.0.orig/src/init.cpp	2015-12-31 16:00:00.000000000 -0800
-+++ bitcoin-0.12.0/src/init.cpp	2016-02-23 06:03:47.133227757 -0800
+diff -ur xsn-0.12.0.orig/src/init.cpp xsn-0.12.0/src/init.cpp
+--- xsn-0.12.0.orig/src/init.cpp	2015-12-31 16:00:00.000000000 -0800
++++ xsn-0.12.0/src/init.cpp	2016-02-23 06:03:47.133227757 -0800
 @@ -1075,7 +1075,7 @@
      if (fPrintToDebugLog)
          OpenDebugLog();
@@ -10,9 +10,9 @@ diff -ur bitcoin-0.12.0.orig/src/init.cpp bitcoin-0.12.0/src/init.cpp
      LogPrintf("Using OpenSSL version %s\n", SSLeay_version(SSLEAY_VERSION));
  #else
      LogPrintf("Using OpenSSL version %s\n", OpenSSL_version(OPENSSL_VERSION));
-diff -ur bitcoin-0.12.0.orig/src/qt/rpcconsole.cpp bitcoin-0.12.0/src/qt/rpcconsole.cpp
---- bitcoin-0.12.0.orig/src/qt/rpcconsole.cpp	2015-12-31 16:00:00.000000000 -0800
-+++ bitcoin-0.12.0/src/qt/rpcconsole.cpp	2016-02-23 15:09:42.881126841 -0800
+diff -ur xsn-0.12.0.orig/src/qt/rpcconsole.cpp xsn-0.12.0/src/qt/rpcconsole.cpp
+--- xsn-0.12.0.orig/src/qt/rpcconsole.cpp	2015-12-31 16:00:00.000000000 -0800
++++ xsn-0.12.0/src/qt/rpcconsole.cpp	2016-02-23 15:09:42.881126841 -0800
 @@ -264,7 +264,7 @@
  
      // set library version labels

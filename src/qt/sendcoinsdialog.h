@@ -25,7 +25,7 @@ QT_BEGIN_NAMESPACE
 class QUrl;
 QT_END_NAMESPACE
 
-/** Dialog for sending bitcoins */
+/** Dialog for sending xsns */
 class SendCoinsDialog : public QDialog
 {
     Q_OBJECT

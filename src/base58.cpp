@@ -226,13 +226,13 @@ int CBase58Data::CompareTo(const CBase58Data& b58) const
 
 namespace
 {
-class CBitcoinAddressVisitor : public boost::static_visitor<bool>
+class CXSNAddressVisitor : public boost::static_visitor<bool>
 {
 private:
-    CBitcoinAddress* addr;
+    CXSNAddress* addr;
 
 public:
-    CBitcoinAddressVisitor(CBitcoinAddress* addrIn) : addr(addrIn) {}
+    CXSNAddressVisitor(CXSNAddress* addrIn) : addr(addrIn) {}
 
     bool operator()(const CKeyID& id) const { return addr->Set(id); }
     bool operator()(const CScriptID& id) const { return addr->Set(id); }
@@ -244,29 +244,29 @@ public:
 
 } // anon namespace
 
-bool CBitcoinAddress::Set(const CKeyID& id)
+bool CXSNAddress::Set(const CKeyID& id)
 {
     SetData(Params().Base58Prefix(CChainParams::PUBKEY_ADDRESS), &id, 20);
     return true;
 }
 
-bool CBitcoinAddress::Set(const CScriptID& id)
+bool CXSNAddress::Set(const CScriptID& id)
 {
     SetData(Params().Base58Prefix(CChainParams::SCRIPT_ADDRESS), &id, 20);
     return true;
 }
 
-bool CBitcoinAddress::Set(const CTxDestination& dest)
+bool CXSNAddress::Set(const CTxDestination& dest)
 {
-    return boost::apply_visitor(CBitcoinAddressVisitor(this), dest);
+    return boost::apply_visitor(CXSNAddressVisitor(this), dest);
 }
 
-bool CBitcoinAddress::IsValid() const
+bool CXSNAddress::IsValid() const
 {
     return IsValid(Params());
 }
 
-bool CBitcoinAddress::IsValid(const CChainParams& params) const
+bool CXSNAddress::IsValid(const CChainParams& params) const
 {
     bool fCorrectSize = vchData.size() == 20;
     bool fKnownVersion = vchVersion == params.Base58Prefix(CChainParams::PUBKEY_ADDRESS) ||
@@ -274,7 +274,7 @@ bool CBitcoinAddress::IsValid(const CChainParams& params) const
     return fCorrectSize && fKnownVersion;
 }
 
-CTxDestination CBitcoinAddress::Get() const
+CTxDestination CXSNAddress::Get() const
 {
     if (!IsValid())
         return CNoDestination();
@@ -288,7 +288,7 @@ CTxDestination CBitcoinAddress::Get() const
         return CNoDestination();
 }
 
-bool CBitcoinAddress::GetIndexKey(uint160& hashBytes, int& type) const
+bool CXSNAddress::GetIndexKey(uint160& hashBytes, int& type) const
 {
     if (!IsValid()) {
         return false;
@@ -305,7 +305,7 @@ bool CBitcoinAddress::GetIndexKey(uint160& hashBytes, int& type) const
     return false;
 }
 
-bool CBitcoinAddress::GetKeyID(CKeyID& keyID) const
+bool CXSNAddress::GetKeyID(CKeyID& keyID) const
 {
     if (!IsValid() || vchVersion != Params().Base58Prefix(CChainParams::PUBKEY_ADDRESS))
         return false;
@@ -315,7 +315,7 @@ bool CBitcoinAddress::GetKeyID(CKeyID& keyID) const
     return true;
 }
 
-bool CBitcoinAddress::IsScript() const
+bool CXSNAddress::IsScript() const
 {
     return IsValid() && vchVersion == Params().Base58Prefix(CChainParams::SCRIPT_ADDRESS);
 }

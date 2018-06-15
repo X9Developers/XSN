@@ -11,7 +11,7 @@
 #define BITCOIN_UTIL_H
 
 #if defined(HAVE_CONFIG_H)
-#include <config/bitcoin-config.h>
+#include <config/xsn-config.h>
 #endif
 
 #include <compat.h>
@@ -276,7 +276,7 @@ void RenameThread(const char* name);
  */
 template <typename Callable> void TraceThread(const char* name,  Callable func)
 {
-    std::string s = strprintf("bitcoin-%s", name);
+    std::string s = strprintf("xsn-%s", name);
     RenameThread(s.c_str());
     try
     {

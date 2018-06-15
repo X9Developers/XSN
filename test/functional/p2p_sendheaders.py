@@ -101,7 +101,7 @@ from test_framework.mininode import (
     msg_inv,
     msg_sendheaders,
 )
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import XSNTestFramework
 from test_framework.util import (
     assert_equal,
     sync_blocks,
@@ -198,7 +198,7 @@ class BaseNode(P2PInterface):
             self.last_message.pop("inv", None)
             self.last_message.pop("headers", None)
 
-class SendHeadersTest(BitcoinTestFramework):
+class SendHeadersTest(XSNTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2

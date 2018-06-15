@@ -30,7 +30,7 @@ void InitLogging();
 //!Parameter interaction: change current parameters depending on various rules
 void InitParameterInteraction();
 
-/** Initialize bitcoin core: Basic context setup.
+/** Initialize xsn core: Basic context setup.
  *  @note This can be done before daemonization. Do not call Shutdown() if this function fails.
  *  @pre Parameters should be parsed and config file should be read.
  */
@@ -48,13 +48,13 @@ bool AppInitParameterInteraction();
  */
 bool AppInitSanityChecks();
 /**
- * Lock bitcoin core data directory.
+ * Lock xsn core data directory.
  * @note This should only be done after daemonization. Do not call Shutdown() if this function fails.
  * @pre Parameters should be parsed and config file should be read, AppInitSanityChecks should have been called.
  */
 bool AppInitLockDataDirectory();
 /**
- * Bitcoin core main initialization.
+ * XSN core main initialization.
  * @note This should only be done after daemonization. Call Shutdown() if this function fails.
  * @pre Parameters should be parsed and config file should be read, AppInitLockDataDirectory should have been called.
  */

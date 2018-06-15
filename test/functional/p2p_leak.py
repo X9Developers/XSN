@@ -10,12 +10,12 @@ received a VERACK.
 This test connects to a node and sends it a few messages, trying to entice it
 into sending us something it shouldn't.
 
-Also test that nodes that send unsupported service bits to bitcoind are disconnected
+Also test that nodes that send unsupported service bits to xsnd are disconnected
 and don't receive a VERACK. Unsupported service bits are currently 1 << 5 and
 1 << 7 (until August 1st 2018)."""
 
 from test_framework.mininode import *
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import XSNTestFramework
 from test_framework.util import *
 
 banscore = 10
@@ -59,7 +59,7 @@ class CLazyNode(P2PInterface):
 # anyway, and eventually get disconnected.
 class CNodeNoVersionBan(CLazyNode):
     # send a bunch of veracks without sending a message. This should get us disconnected.
-    # NOTE: implementation-specific check here. Remove if bitcoind ban behavior changes
+    # NOTE: implementation-specific check here. Remove if xsnd ban behavior changes
     def on_open(self):
         super().on_open()
         for i in range(banscore):
@@ -89,7 +89,7 @@ class CNodeNoVerackIdle(CLazyNode):
         self.send_message(msg_ping())
         self.send_message(msg_getaddr())
 
-class P2PLeakTest(BitcoinTestFramework):
+class P2PLeakTest(XSNTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.extra_args = [['-banscore='+str(banscore)]]

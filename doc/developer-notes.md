@@ -19,7 +19,7 @@ Developer Notes
     - [Threads](#threads)
     - [Ignoring IDE/editor files](#ignoring-ideeditor-files)
 - [Development guidelines](#development-guidelines)
-    - [General Bitcoin Core](#general-bitcoin-core)
+    - [General XSN Core](#general-xsn-core)
     - [Wallet](#wallet)
     - [General C++](#general-c)
     - [C++ data structures](#c-data-structures)
@@ -199,7 +199,7 @@ to see it.
 
 ### Testnet and Regtest modes
 
-Run with the `-testnet` option to run with "play bitcoins" on the test network, if you
+Run with the `-testnet` option to run with "play xsns" on the test network, if you
 are testing multi-machine code that needs to operate across the internet.
 
 If you are testing something that can run on one machine, run with the `-regtest` option.
@@ -208,7 +208,7 @@ that run in `-regtest` mode.
 
 ### DEBUG_LOCKORDER
 
-Bitcoin Core is a multi-threaded application, and deadlocks or other
+XSN Core is a multi-threaded application, and deadlocks or other
 multi-threading bugs can be very difficult to track down. The `--enable-debug`
 configure option adds `-DDEBUG_LOCKORDER` to the compiler flags. This inserts
 run-time checks to keep track of which locks are held, and adds warnings to the
@@ -218,15 +218,15 @@ debug.log file if inconsistencies are detected.
 
 Valgrind is a programming tool for memory debugging, memory leak detection, and
 profiling. The repo contains a Valgrind suppressions file
-([`valgrind.supp`](https://github.com/bitcoin/bitcoin/blob/master/contrib/valgrind.supp))
+([`valgrind.supp`](https://github.com/xsn/xsn/blob/master/contrib/valgrind.supp))
 which includes known Valgrind warnings in our dependencies that cannot be fixed
 in-tree. Example use:
 
 ```shell
-$ valgrind --suppressions=contrib/valgrind.supp src/test/test_bitcoin
+$ valgrind --suppressions=contrib/valgrind.supp src/test/test_xsn
 $ valgrind --suppressions=contrib/valgrind.supp --leak-check=full \
-      --show-leak-kinds=all src/test/test_bitcoin --log_level=test_suite
-$ valgrind -v --leak-check=full src/bitcoind -printtoconsole
+      --show-leak-kinds=all src/test/test_xsn --log_level=test_suite
+$ valgrind -v --leak-check=full src/xsnd -printtoconsole
 ```
 
 ### Compiling for test coverage
@@ -242,12 +242,12 @@ To enable LCOV report generation during test runs:
 make
 make cov
 
-# A coverage report will now be accessible at `./test_bitcoin.coverage/index.html`.
+# A coverage report will now be accessible at `./test_xsn.coverage/index.html`.
 ```
 
 **Sanitizers**
 
-Bitcoin can be compiled with various "sanitizers" enabled, which add
+XSN can be compiled with various "sanitizers" enabled, which add
 instrumentation for issues regarding things like memory safety, thread race
 conditions, or undefined behavior. This is controlled with the
 `--with-sanitizers` configure flag, which should be a comma separated list of
@@ -294,7 +294,7 @@ Additional resources:
  * [UndefinedBehaviorSanitizer](https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html)
  * [GCC Instrumentation Options](https://gcc.gnu.org/onlinedocs/gcc/Instrumentation-Options.html)
  * [Google Sanitizers Wiki](https://github.com/google/sanitizers/wiki)
- * [Issue #12691: Enable -fsanitize flags in Travis](https://github.com/bitcoin/bitcoin/issues/12691)
+ * [Issue #12691: Enable -fsanitize flags in Travis](https://github.com/xsn/xsn/issues/12691)
 
 Locking/mutex usage notes
 -------------------------
@@ -346,7 +346,7 @@ Ignoring IDE/editor files
 In closed-source environments in which everyone uses the same IDE it is common
 to add temporary files it produces to the project-wide `.gitignore` file.
 
-However, in open source software such as Bitcoin Core, where everyone uses
+However, in open source software such as XSN Core, where everyone uses
 their own editors/IDE/tools, it is less common. Only you know what files your
 editor produces and this may change from version to version. The canonical way
 to do this is thus to create your local gitignore. Add this to `~/.gitconfig`:
@@ -376,9 +376,9 @@ Development guidelines
 ============================
 
 A few non-style-related recommendations for developers, as well as points to
-pay attention to for reviewers of Bitcoin Core code.
+pay attention to for reviewers of XSN Core code.
 
-General Bitcoin Core
+General XSN Core
 ----------------------
 
 - New features should be exposed on RPC first, then can be made available in the GUI
@@ -503,7 +503,7 @@ Strings and formatting
 
 - For `strprintf`, `LogPrint`, `LogPrintf` formatting characters don't need size specifiers
 
-  - *Rationale*: Bitcoin Core uses tinyformat, which is type safe. Leave them out to avoid confusion
+  - *Rationale*: XSN Core uses tinyformat, which is type safe. Leave them out to avoid confusion
 
 Variable names
 --------------
@@ -639,12 +639,12 @@ Subtrees
 
 Several parts of the repository are subtrees of software maintained elsewhere.
 
-Some of these are maintained by active developers of Bitcoin Core, in which case changes should probably go
+Some of these are maintained by active developers of XSN Core, in which case changes should probably go
 directly upstream without being PRed directly against the project.  They will be merged back in the next
 subtree merge.
 
 Others are external projects without a tight relationship with our project.  Changes to these should also
-be sent upstream but bugfixes may also be prudent to PR against Bitcoin Core so that they can be integrated
+be sent upstream but bugfixes may also be prudent to PR against XSN Core so that they can be integrated
 quickly.  Cosmetic changes should be purely taken upstream.
 
 There is a tool in contrib/devtools/git-subtree-check.sh to check a subtree directory for consistency with
@@ -659,10 +659,10 @@ Current subtrees include:
     merging upstream changes to the leveldb subtree.
 
 - src/libsecp256k1
-  - Upstream at https://github.com/bitcoin-core/secp256k1/ ; actively maintaned by Core contributors.
+  - Upstream at https://github.com/xsn-core/secp256k1/ ; actively maintaned by Core contributors.
 
 - src/crypto/ctaes
-  - Upstream at https://github.com/bitcoin-core/ctaes ; actively maintained by Core contributors.
+  - Upstream at https://github.com/xsn-core/ctaes ; actively maintained by Core contributors.
 
 - src/univalue
   - Upstream at https://github.com/jgarzik/univalue ; report important PRs to Core to avoid delay.
@@ -677,7 +677,7 @@ you must be aware of.
 
 In most configurations we use the default LevelDB value for `max_open_files`,
 which is 1000 at the time of this writing. If LevelDB actually uses this many
-file descriptors it will cause problems with Bitcoin's `select()` loop, because
+file descriptors it will cause problems with XSN's `select()` loop, because
 it may cause new sockets to be created where the fd value is >= 1024. For this
 reason, on 64-bit Unix systems we rely on an internal LevelDB optimization that
 uses `mmap()` + `close()` to open table files without actually retaining
@@ -688,7 +688,7 @@ In addition to reviewing the upstream changes in `env_posix.cc`, you can use `ls
 check this. For example, on Linux this command will show open `.ldb` file counts:
 
 ```bash
-$ lsof -p $(pidof bitcoind) |\
+$ lsof -p $(pidof xsnd) |\
     awk 'BEGIN { fd=0; mem=0; } /ldb$/ { if ($4 == "mem") mem++; else fd++ } END { printf "mem = %s, fd = %s\n", mem, fd}'
 mem = 119, fd = 0
 ```
@@ -703,14 +703,14 @@ details.
 ### Consensus Compatibility
 
 It is possible for LevelDB changes to inadvertently change consensus
-compatibility between nodes. This happened in Bitcoin 0.8 (when LevelDB was
+compatibility between nodes. This happened in XSN 0.8 (when LevelDB was
 first introduced). When upgrading LevelDB you should review the upstream changes
 to check for issues affecting consensus compatibility.
 
 For example, if LevelDB had a bug that accidentally prevented a key from being
 returned in an edge case, and that bug was fixed upstream, the bug "fix" would
 be an incompatible consensus change. In this situation the correct behavior
-would be to revert the upstream fix before applying the updates to Bitcoin's
+would be to revert the upstream fix before applying the updates to XSN's
 copy of LevelDB. In general you should be wary of any upstream changes affecting
 what data is returned from LevelDB queries.
 
@@ -756,7 +756,7 @@ Git and GitHub tips
 
         [remote "upstream-pull"]
                 fetch = +refs/pull/*:refs/remotes/upstream-pull/*
-                url = git@github.com:bitcoin/bitcoin.git
+                url = git@github.com:xsn/xsn.git
 
   This will add an `upstream-pull` remote to your git repository, which can be fetched using `git fetch --all`
   or `git fetch upstream-pull`. Afterwards, you can use `upstream-pull/NUMBER/head` in arguments to `git show`,
@@ -780,7 +780,7 @@ To create a scripted-diff:
 
 The scripted-diff is verified by the tool `contrib/devtools/commit-script-check.sh`
 
-Commit [`bb81e173`](https://github.com/bitcoin/bitcoin/commit/bb81e173) is an example of a scripted-diff.
+Commit [`bb81e173`](https://github.com/xsn/xsn/commit/bb81e173) is an example of a scripted-diff.
 
 RPC interface guidelines
 --------------------------
@@ -822,7 +822,7 @@ A few guidelines for introducing and reviewing new RPC interfaces:
 - Try not to overload methods on argument type. E.g. don't make `getblock(true)` and `getblock("hash")`
   do different things.
 
-  - *Rationale*: This is impossible to use with `bitcoin-cli`, and can be surprising to users.
+  - *Rationale*: This is impossible to use with `xsn-cli`, and can be surprising to users.
 
   - *Exception*: Some RPC calls can take both an `int` and `bool`, most notably when a bool was switched
     to a multi-value, or due to other historical reasons. **Always** have false map to 0 and
@@ -841,7 +841,7 @@ A few guidelines for introducing and reviewing new RPC interfaces:
 
 - Add every non-string RPC argument `(method, idx, name)` to the table `vRPCConvertParams` in `rpc/client.cpp`.
 
-  - *Rationale*: `bitcoin-cli` and the GUI debug console use this table to determine how to
+  - *Rationale*: `xsn-cli` and the GUI debug console use this table to determine how to
     convert a plaintext command line to JSON. If the types don't match, the method can be unusable
     from there.
 
@@ -863,7 +863,7 @@ A few guidelines for introducing and reviewing new RPC interfaces:
   RPCs whose behavior does *not* depend on the current chainstate may omit this
   call.
 
-  - *Rationale*: In previous versions of Bitcoin Core, the wallet was always
+  - *Rationale*: In previous versions of XSN Core, the wallet was always
     in-sync with the chainstate (by virtue of them all being updated in the
     same cs_main lock). In order to maintain the behavior that wallet RPCs
     return results as of at least the highest best-known block an RPC

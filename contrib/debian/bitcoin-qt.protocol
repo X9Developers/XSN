@@ -1,6 +1,6 @@
 [Protocol]
-exec=bitcoin-qt '%u'
-protocol=bitcoin
+exec=xsn-qt '%u'
+protocol=xsn
 input=none
 output=none
 helper=true

@@ -69,8 +69,8 @@ GLOBAL sph_echo512_context      z_echo;
 #define ZKECCAK (memcpy(&ctx_keccak, &z_keccak, sizeof(z_keccak)))
 #define ZSKEIN (memcpy(&ctx_skein, &z_skein, sizeof(z_skein)))
 
-/* ----------- Bitcoin Hash ------------------------------------------------- */
-/** A hasher class for Bitcoin's 256-bit hash (double SHA-256). */
+/* ----------- XSN Hash ------------------------------------------------- */
+/** A hasher class for XSN's 256-bit hash (double SHA-256). */
 class CHash256 {
 private:
     CSHA256 sha;
@@ -94,7 +94,7 @@ public:
     }
 };
 
-/** A hasher class for Bitcoin's 160-bit hash (SHA-256 + RIPEMD-160). */
+/** A hasher class for XSN's 160-bit hash (SHA-256 + RIPEMD-160). */
 class CHash160 {
 private:
     CSHA256 sha;

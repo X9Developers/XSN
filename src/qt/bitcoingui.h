@@ -6,7 +6,7 @@
 #define BITCOIN_QT_BITCOINGUI_H
 
 #if defined(HAVE_CONFIG_H)
-#include <config/bitcoin-config.h>
+#include <config/xsn-config.h>
 #endif
 
 #include <amount.h>
@@ -46,18 +46,18 @@ class QProgressDialog;
 QT_END_NAMESPACE
 
 /**
-  Bitcoin GUI main class. This class represents the main window of the Bitcoin UI. It communicates with both the client and
+  XSN GUI main class. This class represents the main window of the XSN UI. It communicates with both the client and
   wallet models to give the user an up-to-date view of the current core state.
 */
-class BitcoinGUI : public QMainWindow
+class XSNGUI : public QMainWindow
 {
     Q_OBJECT
 
 public:
     static const std::string DEFAULT_UIPLATFORM;
 
-    explicit BitcoinGUI(interfaces::Node& node, const PlatformStyle *platformStyle, const NetworkStyle *networkStyle, QWidget *parent = 0);
-    ~BitcoinGUI();
+    explicit XSNGUI(interfaces::Node& node, const PlatformStyle *platformStyle, const NetworkStyle *networkStyle, QWidget *parent = 0);
+    ~XSNGUI();
 
     /** Set the client model.
         The client model represents the part of the core that communicates with the P2P network, and is wallet-agnostic.
@@ -66,7 +66,7 @@ public:
 
 #ifdef ENABLE_WALLET
     /** Set the wallet model.
-        The wallet model represents a bitcoin wallet, and offers access to the list of transactions, address book and sending
+        The wallet model represents a xsn wallet, and offers access to the list of transactions, address book and sending
         functionality.
     */
     bool addWallet(WalletModel *walletModel);

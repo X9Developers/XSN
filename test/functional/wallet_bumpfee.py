@@ -15,7 +15,7 @@ make assumptions about execution order.
 """
 
 from test_framework.blocktools import send_to_witness
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import XSNTestFramework
 from test_framework import blocktools
 from test_framework.messages import BIP125_SEQUENCE_NUMBER
 from test_framework.mininode import CTransaction
@@ -27,7 +27,7 @@ WALLET_PASSPHRASE = "test"
 WALLET_PASSPHRASE_TIMEOUT = 3600
 
 
-class BumpFeeTest(BitcoinTestFramework):
+class BumpFeeTest(XSNTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
         self.setup_clean_chain = True
@@ -46,7 +46,7 @@ class BumpFeeTest(BitcoinTestFramework):
         peer_node, rbf_node = self.nodes
         rbf_node_address = rbf_node.getnewaddress()
 
-        # fund rbf node with 10 coins of 0.001 btc (100,000 satoshis)
+        # fund rbf node with 10 coins of 0.001 xsn (100,000 satoshis)
         self.log.info("Mining blocks...")
         peer_node.generate(110)
         self.sync_all()

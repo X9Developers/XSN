@@ -34,7 +34,7 @@ class QUrl;
 class QWidget;
 QT_END_NAMESPACE
 
-/** Utility functions used by the Bitcoin Qt UI.
+/** Utility functions used by the XSN Qt UI.
  */
 namespace GUIUtil
 {
@@ -48,10 +48,10 @@ namespace GUIUtil
     // Set up widget for address
     void setupAddressWidget(QValidatedLineEdit *widget, QWidget *parent);
 
-    // Parse "bitcoin:" URI into recipient object, return true on successful parsing
-    bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out);
-    bool parseBitcoinURI(QString uri, SendCoinsRecipient *out);
-    QString formatBitcoinURI(const SendCoinsRecipient &info);
+    // Parse "xsn:" URI into recipient object, return true on successful parsing
+    bool parseXSNURI(const QUrl &uri, SendCoinsRecipient *out);
+    bool parseXSNURI(QString uri, SendCoinsRecipient *out);
+    QString formatXSNURI(const SendCoinsRecipient &info);
 
     // Returns true if given address+amount meets "dust" definition
     bool isDust(interfaces::Node& node, const QString& address, const CAmount& amount);
@@ -118,7 +118,7 @@ namespace GUIUtil
     void openDebugLogfile();
 
     // Open the config file
-    bool openBitcoinConf();
+    bool openXSNConf();
 
     // Replace invalid default fonts with known good ones
     void SubstituteFonts(const QString& language);
