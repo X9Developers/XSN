@@ -273,22 +273,22 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
             if (txFirst.size() < 4)
                 txFirst.push_back(pblock->vtx[0]);
             pblock->hashMerkleRoot = BlockMerkleRoot(*pblock);
-            if(i < 27)
-            {
+//            if(i < 27)
+//            {
                 pblock->nNonce = blockinfo[i].nonce;
-            }
-            else
-            {
-                MineBlock(pblock);
-            }
+//            }
+//            else
+//            {
+//                MineBlock(pblock);
+//            }
 
-            static int count = 0;
-            std::cout << boost::format("{0, 0x%08x}, ") % pblock->nNonce;
-            if(++count == 4)
-            {
-                count = 0;
-                std::cout << std::endl;
-            }
+//            static int count = 0;
+//            std::cout << boost::format("{0, 0x%08x}, ") % pblock->nNonce;
+//            if(++count == 4)
+//            {
+//                count = 0;
+//                std::cout << std::endl;
+//            }
         }
         std::shared_ptr<const CBlock> shared_pblock = std::make_shared<const CBlock>(*pblock);
 //        std::cout << pblock->ToString() << std::endl;
