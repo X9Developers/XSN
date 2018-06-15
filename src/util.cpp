@@ -592,7 +592,7 @@ fs::path GetDefaultDataDir()
     // Unix: ~/.xsn
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "XSN";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "XSNCore";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -602,10 +602,10 @@ fs::path GetDefaultDataDir()
         pathRet = fs::path(pszHome);
 #ifdef MAC_OSX
     // Mac
-    return pathRet / "Library/Application Support/XSN";
+    return pathRet / "Library/Application Support/XSNCore";
 #else
     // Unix
-    return pathRet / ".xsn";
+    return pathRet / ".xsncore";
 #endif
 #endif
 }
