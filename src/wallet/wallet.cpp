@@ -32,6 +32,7 @@
 #include <kernel.h>
 #include <privatesend/privatesend-client.h>
 #include <masternode-payments.h>
+#include <instantx.h>
 
 #include <algorithm>
 #include <assert.h>
@@ -2650,6 +2651,10 @@ void CWallet::AvailableCoins(std::vector<COutput> &vCoins, bool fOnlySafe, const
         // We should not consider coins which aren't at least in our mempool
         // It's possible for these to be conflicted via ancestors which we may never be able to detect
         if (nDepth == 0 && !pcoin->InMempool())
+            continue;
+
+        // do not use IX for inputs that have less then INSTANTSEND_CONFIRMATIONS_REQUIRED blockchain confirmations
+        if (fUseInstantSend && nDepth < INSTANTSEND_CONFIRMATIONS_REQUIRED)
             continue;
 
         bool safeTx = pcoin->IsTrusted();

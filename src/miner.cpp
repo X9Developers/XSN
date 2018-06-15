@@ -28,6 +28,10 @@
 #include <wallet/wallet.h>
 #include <blocksigner.h>
 #include <masternode-sync.h>
+#include <tpos/tposutils.h>
+#include <tpos/activemerchantnode.h>
+#include <tpos/merchantnodeman.h>
+#include <tpos/merchantnode.h>
 
 #include <algorithm>
 #include <queue>
@@ -611,7 +615,6 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
                 isTPoS = tposParams.fUseTPoS;
                 hashTPoSContractTxId = tposParams.hashTPoSContractTxId;
 
-#if 0
                 if(isTPoS)
                 {
                     auto it = pwallet->tposMerchantContracts.find(hashTPoSContractTxId);
@@ -635,7 +638,6 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman,
                         continue;
                     }
                 }
-#endif
             }
 
             if(!fProofOfStake && chainActive.Tip()->nHeight >= chainparams.GetConsensus().nLastPoWBlock)
