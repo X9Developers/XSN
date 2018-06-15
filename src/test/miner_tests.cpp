@@ -59,22 +59,20 @@ struct {
     {0, 0x00f25bf7}, {0, 0x00f38d7a}, {0, 0x00f7460a}, {0, 0x00fe00bf},
     {0, 0x00ffdecd}, {0, 0x0115f733}, {0, 0x011fa7c2}, {0, 0x01422b35},
     {0, 0x015e5c1e}, {0, 0x016b6b0d}, {0, 0x017520b4}, {0, 0x01a0e1df},
-    {0, 0x01b2e856}, {0, 0x01e815fe}, {0, 0x0207df9e}, {0, 0x08207df9e},
-
-
-
-    {0, 0x006eaf2d}, {0, 0x009c1a16}, {0, 0x00ab681b}, {0, 0x00bc00b0},
-    {0, 0x00bcdc6b}, {0, 0x00dc4931}, {0, 0x00dd6f22}, {0, 0x00f09490},
-    {0, 0x00f25bf7}, {0, 0x00f38d7a}, {0, 0x00f7460a}, {0, 0x00fe00bf},
-    {0, 0x00ffdecd}, {0, 0x0115f733}, {0, 0x011fa7c2}, {0, 0x01422b35},
-    {0, 0x015e5c1e}, {0, 0x016b6b0d}, {0, 0x017520b4}, {0, 0x01b1628a},
-    {0, 0x0002b9d1}, {0, 0x003bb189}, {0, 0x0057fce4}, {0, 0x005e9636},
-    {0, 0x006eaf2d}, {0, 0x009c1a16}, {0, 0x00ab681b}, {0, 0x00bc00b0},
-    {0, 0x00bcdc6b}, {0, 0x00dc4931}, {0, 0x00dd6f22}, {0, 0x00f09490},
-    {0, 0x00f25bf7}, {0, 0x00f38d7a}, {0, 0x00f7460a}, {0, 0x00fe00bf},
-    {0, 0x00ffdecd}, {0, 0x0115f733}, {0, 0x011fa7c2}, {0, 0x01422b35},
-    {0, 0x015e5c1e}, {0, 0x016b6b0d}, {0, 0x017520b4}, {0, 0x01a0e1df},
     {0, 0x01b2e856}, {0, 0x01e815fe}, {0, 0x0207df9e}, {0, 0x02207521},
+    {0, 0x023023d3}, {0, 0x0267d0d6}, {0, 0x0278dae1}, {0, 0x02b2b0a7},
+    {0, 0x02e881c5}, {0, 0x030a9e0a}, {0, 0x03ee111a}, {0, 0x04263bbe},
+    {0, 0x0426f2fe}, {0, 0x044f3bcd}, {0, 0x04b17ae2}, {0, 0x04d2ae91},
+    {0, 0x054e074f}, {0, 0x05932be0}, {0, 0x05b9eda5}, {0, 0x05cccde9},
+    {0, 0x0635f64c}, {0, 0x092e357d}, {0, 0x09c046c2}, {0, 0x0a5987b7},
+    {0, 0x0c2b2e5f}, {0, 0x0ca1af1c}, {0, 0x0d2ece24}, {0, 0x0d5bcdb2},
+    {0, 0x0e14c6af}, {0, 0x0e42f8f3}, {0, 0x0e45b94d}, {0, 0x0e620dd1},
+    {0, 0x0fefde33}, {0, 0x112fa478}, {0, 0x1182ea9e}, {0, 0x12c96ee9},
+    {0, 0x12ee4604}, {0, 0x158be085}, {0, 0x176427f0}, {0, 0x17df390f},
+    {0, 0x1802331c}, {0, 0x18fd60c5}, {0, 0x1bdb597f}, {0, 0x1c21a35a},
+//    {0, 0x00ffdecd}, {0, 0x0115f733}, {0, 0x011fa7c2}, {0, 0x01422b35},
+//    {0, 0x015e5c1e}, {0, 0x016b6b0d}, {0, 0x017520b4}, {0, 0x01a0e1df},
+//    {0, 0x01b2e856}, {0, 0x01e815fe}, {0, 0x0207df9e}, {0, 0x02207521},
 };
 
 void MineBlock(CBlock *pblock)
@@ -273,22 +271,7 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
             if (txFirst.size() < 4)
                 txFirst.push_back(pblock->vtx[0]);
             pblock->hashMerkleRoot = BlockMerkleRoot(*pblock);
-//            if(i < 27)
-//            {
-                pblock->nNonce = blockinfo[i].nonce;
-//            }
-//            else
-//            {
-//                MineBlock(pblock);
-//            }
-
-//            static int count = 0;
-//            std::cout << boost::format("{0, 0x%08x}, ") % pblock->nNonce;
-//            if(++count == 4)
-//            {
-//                count = 0;
-//                std::cout << std::endl;
-//            }
+            pblock->nNonce = blockinfo[i].nonce;
         }
         std::shared_ptr<const CBlock> shared_pblock = std::make_shared<const CBlock>(*pblock);
 //        std::cout << pblock->ToString() << std::endl;
