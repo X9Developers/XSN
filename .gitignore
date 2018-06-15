@@ -118,3 +118,6 @@ libxsnconsensus.pc
 contrib/devtools/split-debug.sh
 *creator*
 src/core
+
+# IDE files
+.idea/
