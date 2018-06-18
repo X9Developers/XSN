@@ -355,6 +355,7 @@ public:
         consensus.nStakeMinAge = 60 * 60;
         consensus.nStakeMaxAge = 60 * 60 * 24; // one day
         consensus.nCoinbaseMaturity = 20;
+        consensus.nFirstBlocksEmpty = 0;
         consensus.nTPoSContractSignatureDeploymentTime = 1522782000;
         consensus.nRuleChangeActivationThreshold = 108; // 75% for testchains
         consensus.nMinerConfirmationWindow = 144; // Faster than normal for regtest (144 instead of 2016)

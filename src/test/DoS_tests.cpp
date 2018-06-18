@@ -106,6 +106,8 @@ static void AddRandomOutboundPeer(std::vector<CNode *> &vNodes, PeerLogicValidat
     CConnmanTest::AddNode(node);
 }
 
+#if 0
+
 BOOST_AUTO_TEST_CASE(stale_tip_peer_management)
 {
     const Consensus::Params& consensusParams = Params().GetConsensus();
@@ -174,6 +176,8 @@ BOOST_AUTO_TEST_CASE(stale_tip_peer_management)
 
     CConnmanTest::ClearNodes();
 }
+
+#endif
 
 BOOST_AUTO_TEST_CASE(DoS_banning)
 {
