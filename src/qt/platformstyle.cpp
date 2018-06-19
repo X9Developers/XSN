@@ -1,15 +1,17 @@
-// Copyright (c) 2015-2017 The Bitcoin Core developers
+// Copyright (c) 2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <qt/platformstyle.h>
+#include <platformstyle.h>
 
-#include <qt/guiconstants.h>
+#include <guiconstants.h>
 
 #include <QApplication>
 #include <QColor>
+#include <QIcon>
 #include <QImage>
 #include <QPalette>
+#include <QPixmap>
 
 static const struct {
     const char *platformId;
@@ -23,7 +25,7 @@ static const struct {
     {"macosx", false, false, true},
     {"windows", true, false, false},
     /* Other: linux, unix, ... */
-    {"other", true, true, false}
+    {"other", true, false, false}
 };
 static const unsigned platform_styles_count = sizeof(platform_styles)/sizeof(*platform_styles);
 
@@ -46,7 +48,8 @@ void MakeSingleColorImage(QImage& img, const QColor& colorbase)
 QIcon ColorizeIcon(const QIcon& ico, const QColor& colorbase)
 {
     QIcon new_ico;
-    for (const QSize sz : ico.availableSizes())
+    QSize sz;
+    Q_FOREACH(sz, ico.availableSizes())
     {
         QImage img(ico.pixmap(sz).toImage());
         MakeSingleColorImage(img, colorbase);
@@ -70,11 +73,11 @@ QIcon ColorizeIcon(const QString& filename, const QColor& colorbase)
 }
 
 
-PlatformStyle::PlatformStyle(const QString &_name, bool _imagesOnButtons, bool _colorizeIcons, bool _useExtraSpacing):
-    name(_name),
-    imagesOnButtons(_imagesOnButtons),
-    colorizeIcons(_colorizeIcons),
-    useExtraSpacing(_useExtraSpacing),
+PlatformStyle::PlatformStyle(const QString &name, bool imagesOnButtons, bool colorizeIcons, bool useExtraSpacing):
+    name(name),
+    imagesOnButtons(imagesOnButtons),
+    colorizeIcons(colorizeIcons),
+    useExtraSpacing(useExtraSpacing),
     singleColor(0,0,0),
     textColor(0,0,0)
 {

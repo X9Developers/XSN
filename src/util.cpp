@@ -765,6 +765,42 @@ std::string ArgsManager::GetChainName() const
     return CBaseChainParams::MAIN;
 }
 
+void ArgsManager::AddArg(const std::string &name, const std::string &help, const bool debug_only, const OptionsCategory &cat)
+{
+    // Split arg name from its help param
+    size_t eq_index = name.find('=');
+    if (eq_index == std::string::npos) {
+        eq_index = name.size();
+    }
+
+    std::map<std::string, Arg>& arg_map = m_available_args[cat];
+    auto ret = arg_map.emplace(name.substr(0, eq_index), Arg(name.substr(eq_index, name.size() - eq_index), help, debug_only));
+    assert(ret.second); // Make sure an insertion actually happened
+}
+
+void ArgsManager::AddHiddenArgs(const std::vector<std::string> &names)
+{
+    for (const std::string& name : names) {
+        AddArg(name, "", false, OptionsCategory::HIDDEN);
+    }
+}
+
+bool ArgsManager::IsArgKnown(const std::string &key, std::string &error)
+{
+    size_t option_index = key.find('.');
+    std::string arg_no_net;
+    if (option_index == std::string::npos) {
+        arg_no_net = key;
+    } else {
+        arg_no_net = std::string("-") + key.substr(option_index + 1, std::string::npos);
+    }
+
+    for (const auto& arg_map : m_available_args) {
+        if (arg_map.second.count(arg_no_net)) return true;
+    }
+    return false;
+}
+
 #ifndef WIN32
 fs::path GetPidFile()
 {

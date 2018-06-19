@@ -1,9 +1,9 @@
-#include "blocksigner.h"
-#include "tpos/tposutils.h"
-#include "tpos/activemerchantnode.h"
-#include "keystore.h"
-#include "primitives/block.h"
-#include "utilstrencodings.h"
+#include <blocksigner.h>
+#include <tpos/tposutils.h>
+#include <tpos/activemerchantnode.h>
+#include <keystore.h>
+#include <primitives/block.h>
+#include <utilstrencodings.h>
 
 CBlockSigner::CBlockSigner(CBlock &block, const CKeyStore *keystore, const TPoSContract &contract) :
     refBlock(block),

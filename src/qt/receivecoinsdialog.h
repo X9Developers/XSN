@@ -1,11 +1,11 @@
-// Copyright (c) 2011-2017 The Bitcoin Core developers
+// Copyright (c) 2011-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #ifndef BITCOIN_QT_RECEIVECOINSDIALOG_H
 #define BITCOIN_QT_RECEIVECOINSDIALOG_H
 
-#include <qt/guiutil.h>
+#include <guiutil.h>
 
 #include <QDialog>
 #include <QHeaderView>
@@ -15,6 +15,7 @@
 #include <QPoint>
 #include <QVariant>
 
+class OptionsModel;
 class PlatformStyle;
 class WalletModel;
 
@@ -26,8 +27,8 @@ QT_BEGIN_NAMESPACE
 class QModelIndex;
 QT_END_NAMESPACE
 
-/** Dialog for requesting payment of xsns */
-class ReceiveCoinsDialog : public QDialog
+/** Dialog for requesting payment of bitcoins */
+class ReceiveCoinsDialog : public QWidget
 {
     Q_OBJECT
 
@@ -35,7 +36,7 @@ public:
     enum ColumnWidths {
         DATE_COLUMN_WIDTH = 130,
         LABEL_COLUMN_WIDTH = 120,
-        AMOUNT_MINIMUM_COLUMN_WIDTH = 180,
+        AMOUNT_MINIMUM_COLUMN_WIDTH = 160,
         MINIMUM_COLUMN_WIDTH = 130
     };
 
@@ -75,6 +76,7 @@ private Q_SLOTS:
     void copyLabel();
     void copyMessage();
     void copyAmount();
+    void onThemeChanged();
 };
 
 #endif // BITCOIN_QT_RECEIVECOINSDIALOG_H

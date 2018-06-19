@@ -1,14 +1,13 @@
-// Copyright (c) 2011-2017 The Bitcoin Core developers
+// Copyright (c) 2011-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <qt/bantablemodel.h>
+#include <bantablemodel.h>
 
-#include <qt/clientmodel.h>
-#include <qt/guiconstants.h>
-#include <qt/guiutil.h>
+#include <clientmodel.h>
+#include <guiconstants.h>
+#include <guiutil.h>
 
-#include <interfaces/node.h>
 #include <sync.h>
 #include <utiltime.h>
 
@@ -46,25 +45,26 @@ public:
     Qt::SortOrder sortOrder;
 
     /** Pull a full list of banned nodes from CNode into our cache */
-    void refreshBanlist(interfaces::Node& node)
+    void refreshBanlist()
     {
         banmap_t banMap;
-        node.getBanned(banMap);
+        if(g_connman)
+            g_connman->GetBanned(banMap);
 
         cachedBanlist.clear();
 #if QT_VERSION >= 0x040700
         cachedBanlist.reserve(banMap.size());
 #endif
-        for (const auto& entry : banMap)
+        for (banmap_t::iterator it = banMap.begin(); it != banMap.end(); it++)
         {
             CCombinedBan banEntry;
-            banEntry.subnet = entry.first;
-            banEntry.banEntry = entry.second;
+            banEntry.subnet = (*it).first;
+            banEntry.banEntry = (*it).second;
             cachedBanlist.append(banEntry);
         }
 
         if (sortColumn >= 0)
-            // sort cachedBanlist (use stable sort to prevent rows jumping around unnecessarily)
+            // sort cachedBanlist (use stable sort to prevent rows jumping around unneceesarily)
             qStableSort(cachedBanlist.begin(), cachedBanlist.end(), BannedNodeLessThan(sortColumn, sortOrder));
     }
 
@@ -82,9 +82,8 @@ public:
     }
 };
 
-BanTableModel::BanTableModel(interfaces::Node& node, ClientModel *parent) :
+BanTableModel::BanTableModel(ClientModel *parent) :
     QAbstractTableModel(parent),
-    m_node(node),
     clientModel(parent)
 {
     columns << tr("IP/Netmask") << tr("Banned Until");
@@ -169,7 +168,7 @@ QModelIndex BanTableModel::index(int row, int column, const QModelIndex &parent)
 void BanTableModel::refresh()
 {
     Q_EMIT layoutAboutToBeChanged();
-    priv->refreshBanlist(m_node);
+    priv->refreshBanlist();
     Q_EMIT layoutChanged();
 }
 
@@ -182,5 +181,7 @@ void BanTableModel::sort(int column, Qt::SortOrder order)
 
 bool BanTableModel::shouldShow()
 {
-    return priv->size() > 0;
+    if (priv->size() > 0)
+        return true;
+    return false;
 }
