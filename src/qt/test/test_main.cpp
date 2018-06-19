@@ -13,7 +13,7 @@
 #include <test/trafficgraphdatatests.h>
 
 #ifdef ENABLE_WALLET
-#include <paymentservertests.h>
+#include <test/paymentservertests.h>
 #endif
 
 #include <QCoreApplication>
