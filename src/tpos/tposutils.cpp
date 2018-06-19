@@ -39,8 +39,8 @@ bool TPoSUtils::GetTPoSPayments(const CWallet *wallet,
                                 const CWalletTx &wtx,
                                 CAmount &stakeAmount,
                                 CAmount &commissionAmount,
-                                CXSNAddress &tposAddress,
-                                CXSNAddress &merchantAddress)
+                                CBitcoinAddress &tposAddress,
+                                CBitcoinAddress &merchantAddress)
 {
     const auto &tx = wtx.tx;
     if(!tx->IsCoinStake())
@@ -63,7 +63,7 @@ bool TPoSUtils::GetTPoSPayments(const CWallet *wallet,
     commissionAmount = stakeAmount = 0;
     if(ExtractDestination(scriptKernel, address))
     {
-        CXSNAddress tmpAddress(address);
+        CBitcoinAddress tmpAddress(address);
 
         auto it = std::find_if(std::begin(tposContracts), std::end(tposContracts), [tmpAddress](const TPoSContract &entry) {
             return entry.tposAddress == tmpAddress;
@@ -113,8 +113,8 @@ bool TPoSUtils::IsTPoSOwnerContract(CWallet *wallet, const CTransactionRef &tx)
 
 std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
                                                             CReserveKey& reservekey,
-                                                            const CXSNAddress &tposAddress,
-                                                            const CXSNAddress &merchantAddress,
+                                                            const CBitcoinAddress &tposAddress,
+                                                            const CBitcoinAddress &merchantAddress,
                                                             int merchantCommission,
                                                             std::string &strError)
 {
@@ -342,7 +342,7 @@ bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contr
 bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &block, int nBlockHeight, CAmount expectedReward, CAmount actualReward)
 {
     auto contract = TPoSContract::FromTPoSContractTx(block.txTPoSContract);
-    CXSNAddress merchantAddress = contract.merchantAddress;
+    CBitcoinAddress merchantAddress = contract.merchantAddress;
     CScript scriptMerchantPubKey = GetScriptForDestination(merchantAddress.Get());
 
     const auto &coinstake = block.vtx[1];
@@ -355,7 +355,7 @@ bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &bl
 
         // ban him, something is incorrect completely
         return state.DoS(100, error("IsMerchantPaymentValid -- ERROR: coinstake is invalid expected: %s, actual %s\n",
-                                    contract.tposAddress.ToString().c_str(), CXSNAddress(dest).ToString().c_str()), REJECT_INVALID, "bad-merchant-payee");
+                                    contract.tposAddress.ToString().c_str(), CBitcoinAddress(dest).ToString().c_str()), REJECT_INVALID, "bad-merchant-payee");
     }
 
     CAmount merchantPayment = 0;
@@ -421,7 +421,7 @@ bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &bl
 
 #endif
 
-TPoSContract::TPoSContract(CTransactionRef tx, CXSNAddress merchantAddress, CXSNAddress tposAddress, short stakePercentage, std::vector<unsigned char> vchSignature)
+TPoSContract::TPoSContract(CTransactionRef tx, CBitcoinAddress merchantAddress, CBitcoinAddress tposAddress, short stakePercentage, std::vector<unsigned char> vchSignature)
 {
     this->rawTx = tx;
     this->merchantAddress = merchantAddress;
@@ -472,8 +472,8 @@ TPoSContract TPoSContract::FromTPoSContractTx(const CTransactionRef tx)
                         stringStream >> token;
                     }
 
-                    CXSNAddress tposAddress(ParseAddressFromMetadata(tokens[1]));
-                    CXSNAddress merchantAddress(ParseAddressFromMetadata(tokens[2]));
+                    CBitcoinAddress tposAddress(ParseAddressFromMetadata(tokens[1]));
+                    CBitcoinAddress merchantAddress(ParseAddressFromMetadata(tokens[2]));
                     int commission = std::stoi(tokens[3]);
                     std::vector<unsigned char> vchSignature = ParseHex(tokens[4]);
                     if(tokens[0] == GetOpName(OP_RETURN) && tposAddress.IsValid() && merchantAddress.IsValid() &&

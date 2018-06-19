@@ -537,7 +537,7 @@ UniValue getstakingstatus(const JSONRPCRequest& request)
                 return false;
             }
 
-            auto merchantnodePayee = CXSNAddress(activeMerchantnode.pubKeyMerchantnode.GetID());
+            auto merchantnodePayee = CBitcoinAddress(activeMerchantnode.pubKeyMerchantnode.GetID());
 
             if(contract.merchantAddress != merchantnodePayee)
             {

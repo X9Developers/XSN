@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <activemasternode.h>
-#include <base58.h>
+#include <key_io.h>
 #include <init.h>
 #include <netbase.h>
 #include <masternode.h>
@@ -418,7 +418,7 @@ bool CMasternodeBroadcast::Create(const COutPoint& outpoint, const CService& ser
     if (fImporting || fReindex) return false;
 
     LogPrint(BCLog::MASTERNODE, "CMasternodeBroadcast::Create -- pubKeyCollateralAddressNew = %s, pubKeyMasternodeNew.GetID() = %s\n",
-             CXSNAddress(pubKeyCollateralAddressNew.GetID()).ToString(),
+             CBitcoinAddress(pubKeyCollateralAddressNew.GetID()).ToString(),
              pubKeyMasternodeNew.GetID().ToString());
 
     auto Log = [&strErrorRet,&mnbRet](std::string sErr)->bool
@@ -670,7 +670,7 @@ bool CMasternodeBroadcast::CheckSignature(int& nDos)
                     pubKeyCollateralAddress.GetID().ToString() + pubKeyMasternode.GetID().ToString() +
                     boost::lexical_cast<std::string>(nProtocolVersion);
 
-    LogPrint(BCLog::MASTERNODE, "CMasternodeBroadcast::CheckSignature -- strMessage: %s  pubKeyCollateralAddress address: %s  sig: %s\n", strMessage, CXSNAddress(pubKeyCollateralAddress.GetID()).ToString(), EncodeBase64(&vchSig[0], vchSig.size()));
+    LogPrint(BCLog::MASTERNODE, "CMasternodeBroadcast::CheckSignature -- strMessage: %s  pubKeyCollateralAddress address: %s  sig: %s\n", strMessage, CBitcoinAddress(pubKeyCollateralAddress.GetID()).ToString(), EncodeBase64(&vchSig[0], vchSig.size()));
 
     if(!CMessageSigner::VerifyMessage(pubKeyCollateralAddress, vchSig, strMessage, strError)){
         LogPrintf("CMasternodeBroadcast::CheckSignature -- Got bad Masternode announce signature, error: %s\n", strError);

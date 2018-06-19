@@ -4,7 +4,7 @@
 
 #include <governance/governance-validators.h>
 
-#include <base58.h>
+#include <key_io.h>
 #include <utilstrencodings.h>
 
 #include <algorithm>
@@ -168,7 +168,7 @@ bool CProposalValidator::ValidatePaymentAddress()
         return false;
     }
 
-    CXSNAddress address(strPaymentAddress);
+    CBitcoinAddress address(strPaymentAddress);
     if(!address.IsValid()) {
         strErrorMessages += "payment_address is invalid;";
         return false;

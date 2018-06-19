@@ -433,7 +433,7 @@ void CSuperblockManager::CreateSuperblock(CMutableTransaction& txNewRet, int nBl
 
             CTxDestination address1;
             ExtractDestination(payment.script, address1);
-            CXSNAddress address2(address1);
+            CBitcoinAddress address2(address1);
 
             // TODO: PRINT NICE N.N XSN OUTPUT
 
@@ -576,7 +576,7 @@ void CSuperblock::ParsePaymentSchedule(std::string& strPaymentAddresses, std::st
 //    DBG( cout << "CSuperblock::ParsePaymentSchedule vecParsed1.size() = " << vecParsed1.size() << endl; );
 
     for (int i = 0; i < (int)vecParsed1.size(); i++) {
-        CXSNAddress address(vecParsed1[i]);
+        CBitcoinAddress address(vecParsed1[i]);
         if (!address.IsValid()) {
             std::ostringstream ostr;
             ostr << "CSuperblock::ParsePaymentSchedule -- Invalid XSN Address : " <<  vecParsed1[i];
@@ -714,7 +714,7 @@ bool CSuperblock::IsValid(const CTransactionRef& txNew, int nBlockHeight, CAmoun
 
             CTxDestination address1;
             ExtractDestination(payment.script, address1);
-            CXSNAddress address2(address1);
+            CBitcoinAddress address2(address1);
             LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid: %d payment %d to %s not found\n", i, payment.nAmount, address2.ToString());
 
             return false;
@@ -752,7 +752,7 @@ std::string CSuperblockManager::GetRequiredPaymentsString(int nBlockHeight)
 
             CTxDestination address1;
             ExtractDestination(payment.script, address1);
-            CXSNAddress address2(address1);
+            CBitcoinAddress address2(address1);
 
             // RETURN NICE OUTPUT FOR CONSOLE
 

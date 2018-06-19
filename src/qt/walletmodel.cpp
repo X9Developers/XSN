@@ -12,7 +12,7 @@
 #include <recentrequeststablemodel.h>
 #include <transactiontablemodel.h>
 
-#include <base58.h>
+#include <key_io.h>
 #include <keystore.h>
 #include <validation.h>
 #include <net.h> // for g_connman

@@ -8,7 +8,7 @@
 #include <guiutil.h>
 #include <walletmodel.h>
 
-#include <base58.h>
+#include <key_io.h>
 #include <wallet/wallet.h>
 
 #include <boost/foreach.hpp>

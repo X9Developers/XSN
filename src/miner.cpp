@@ -626,7 +626,7 @@ void static XSNMiner(const CChainParams& chainparams, CConnman& connman,
                     bool isValidForPayment = merchantnodeman.Get(activeMerchantnode.pubKeyMerchantnode, merchantNode);
 
                     isValidForPayment &= merchantNode.IsValidForPayment();
-                    auto merchantnodePayee = CXSNAddress(activeMerchantnode.pubKeyMerchantnode.GetID());
+                    auto merchantnodePayee = CBitcoinAddress(activeMerchantnode.pubKeyMerchantnode.GetID());
                     bool isValidContract = contract.merchantAddress == merchantnodePayee;
                     if(!isValidForPayment || !isValidContract)
                     {

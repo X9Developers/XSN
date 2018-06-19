@@ -6,7 +6,7 @@
 
 //#define ENABLE_XSN_DEBUG
 
-#include <base58.h>
+#include <key_io.h>
 #include <governance/governance.h>
 #include <key.h>
 #include <script/standard.h>
@@ -98,7 +98,7 @@ public:
          nAmount(0)
     {}
 
-    CGovernancePayment(CXSNAddress addrIn, CAmount nAmountIn)
+    CGovernancePayment(CBitcoinAddress addrIn, CAmount nAmountIn)
         :fValid(false),
          script(),
          nAmount(0)

@@ -26,4 +26,31 @@ CTxDestination DecodeDestination(const std::string& str);
 bool IsValidDestinationString(const std::string& str);
 bool IsValidDestinationString(const std::string& str, const CChainParams& params);
 
+class CBitcoinAddress {
+
+public:
+    bool Set(const CKeyID &id);
+    bool Set(const CScriptID &id);
+    bool Set(const CTxDestination &dest);
+    bool IsValid() const;
+    bool IsValid(const CChainParams &params) const;
+
+    CBitcoinAddress();
+    CBitcoinAddress(const CTxDestination &dest);
+    CBitcoinAddress(const std::string& strAddress);
+    CBitcoinAddress(const char* pszAddress);
+
+    CTxDestination Get() const;
+    bool GetKeyID(CKeyID &keyID) const;
+    bool GetIndexKey(uint160& hashBytes, int& type) const;
+    bool IsScript() const;
+    std::string ToString() const;
+
+    bool operator==(const CBitcoinAddress &rhs) const;
+    bool operator!=(const CBitcoinAddress &rhs) const;
+
+private:
+    CTxDestination txDest;
+};
+
 #endif // BITCOIN_KEY_IO_H

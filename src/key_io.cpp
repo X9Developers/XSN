@@ -3,7 +3,6 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <key_io.h>
-
 #include <base58.h>
 #include <bech32.h>
 #include <script/script.h>
@@ -224,4 +223,87 @@ bool IsValidDestinationString(const std::string& str, const CChainParams& params
 bool IsValidDestinationString(const std::string& str)
 {
     return IsValidDestinationString(str, Params());
+}
+
+CBitcoinAddress::CBitcoinAddress()
+{
+    Set(CNoDestination());
+}
+
+CBitcoinAddress::CBitcoinAddress(const CTxDestination &dest)
+{
+    txDest = dest;
+}
+
+CBitcoinAddress::CBitcoinAddress(const std::string &strAddress)
+{
+    Set(DecodeDestination(strAddress));
+}
+
+CBitcoinAddress::CBitcoinAddress(const char *pszAddress)
+{
+    Set(DecodeDestination(std::string(pszAddress)));
+}
+
+bool CBitcoinAddress::Set(const CKeyID &id)
+{
+    return Set(CTxDestination(id));
+}
+
+bool CBitcoinAddress::Set(const CScriptID &id)
+{
+    return Set(CTxDestination(id));
+}
+
+bool CBitcoinAddress::Set(const CTxDestination &dest)
+{
+    txDest = dest;
+    return IsValid();
+}
+
+
+bool CBitcoinAddress::IsValid() const
+{
+    return !boost::get<CNoDestination>(&txDest);
+}
+
+bool CBitcoinAddress::IsValid(const CChainParams &params) const
+{
+    return IsValidDestinationString(EncodeDestination(txDest), params);
+}
+
+std::string CBitcoinAddress::ToString() const
+{
+    return EncodeDestination(txDest);
+}
+
+bool CBitcoinAddress::operator==(const CBitcoinAddress &rhs) const
+{
+    return txDest == rhs.txDest;
+}
+
+bool CBitcoinAddress::operator!=(const CBitcoinAddress &rhs) const
+{
+    return txDest != rhs.txDest;
+}
+
+CTxDestination CBitcoinAddress::Get() const
+{
+    return txDest;
+}
+
+bool CBitcoinAddress::GetKeyID(CKeyID &keyID) const
+{
+    if(const CKeyID *pKeyID = boost::get<CKeyID>(&txDest))
+    {
+        keyID = *pKeyID;
+        return true;
+    }
+
+    return false;
+}
+
+bool CBitcoinAddress::IsScript() const
+{
+    return boost::get<CScriptID>(&txDest);
 }

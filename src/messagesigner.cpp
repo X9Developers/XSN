@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <messagesigner.h>
-#include <base58.h>
+#include <key_io.h>
 #include <hash.h>
 #include <validation.h> // For strMessageMagic
 #include <tinyformat.h>

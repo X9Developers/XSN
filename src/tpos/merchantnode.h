@@ -8,7 +8,6 @@
 #include <key.h>
 #include <validation.h>
 //#include <spork.h>
-#include <base58.h>
 
 class CMerchantnode;
 class CMerchantnodeBroadcast;

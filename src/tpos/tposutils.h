@@ -6,7 +6,7 @@
 #include <amount.h>
 #include <script/standard.h>
 #include <pubkey.h>
-#include <base58.h>
+#include <key_io.h>
 
 class CWallet;
 class CWalletTx;
@@ -18,8 +18,8 @@ struct TPoSContract
 {
     TPoSContract() = default;
     TPoSContract(CTransactionRef tx,
-                 CXSNAddress merchantAddress,
-                 CXSNAddress tposAddress,
+                 CBitcoinAddress merchantAddress,
+                 CBitcoinAddress tposAddress,
                  short stakePercentage,
                  std::vector<unsigned char> vchSignature);
 
@@ -28,8 +28,8 @@ struct TPoSContract
     static TPoSContract FromTPoSContractTx(const CTransactionRef tx);
 
     CTransactionRef rawTx;
-    CXSNAddress merchantAddress;
-    CXSNAddress tposAddress;
+    CBitcoinAddress merchantAddress;
+    CBitcoinAddress tposAddress;
     std::vector<unsigned char> vchSignature;
     int stakePercentage = 0;
 };
@@ -50,15 +50,15 @@ public:
                                 const CWalletTx& wtx,
                                 CAmount &stakeAmount,
                                 CAmount &commissionAmount,
-                                CXSNAddress &tposAddress, CXSNAddress &merchantAddress);
+                                CBitcoinAddress &tposAddress, CBitcoinAddress &merchantAddress);
 
     static bool IsTPoSOwnerContract(CWallet *wallet, const CTransactionRef &tx);
     static bool IsTPoSMerchantContract(CWallet *wallet, const CTransactionRef &tx);
 
     static std::unique_ptr<CWalletTx> CreateTPoSTransaction(CWallet *wallet,
                                                             CReserveKey &reserveKey,
-                                                            const CXSNAddress &tposAddress,
-                                                            const CXSNAddress &merchantAddress,
+                                                            const CBitcoinAddress &tposAddress,
+                                                            const CBitcoinAddress &merchantAddress,
                                                             int merchantCommission,
                                                             std::string &strError);
 

@@ -7,7 +7,7 @@
 
 #include <paymentrequest.pb.h>
 
-#include <base58.h>
+#include <key_io.h>
 
 #include <openssl/x509.h>
 
