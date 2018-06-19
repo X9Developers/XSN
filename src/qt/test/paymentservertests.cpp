@@ -5,7 +5,7 @@
 #include <test/paymentservertests.h>
 
 #include <optionsmodel.h>
-#include <paymentrequestdata.h>
+#include <test/paymentrequestdata.h>
 
 #include <amount.h>
 #include <random.h>
