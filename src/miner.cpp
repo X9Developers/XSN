@@ -264,9 +264,9 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(CWallet *wallet, 
     pblocktemplate->vTxSigOpsCost[0] = WITNESS_SCALE_FACTOR * GetLegacySigOpCount(*pblock->vtx[0]);
 
     CValidationState state;
-//    if (!TestBlockValidity(state, chainparams, *pblock, pindexPrev, false, false)) {
-//        throw std::runtime_error(strprintf("%s: TestBlockValidity failed: %s", __func__, FormatStateMessage(state)));
-//    }
+    //    if (!TestBlockValidity(state, chainparams, *pblock, pindexPrev, false, false)) {
+    //        throw std::runtime_error(strprintf("%s: TestBlockValidity failed: %s", __func__, FormatStateMessage(state)));
+    //    }
     int64_t nTime2 = GetTimeMicros();
 
     LogPrint(BCLog::BENCH, "CreateNewBlock() packages: %.2fms (%d packages, %d updated descendants), validity: %.2fms (total %.2fms)\n", 0.001 * (nTime1 - nTimeStart), nPackagesSelected, nDescendantsUpdated, 0.001 * (nTime2 - nTime1), 0.001 * (nTime2 - nTimeStart));
@@ -567,7 +567,7 @@ static bool ProcessBlockFound(const std::shared_ptr<const CBlock> &pblock, const
 
 // ***TODO*** that part changed in xsn, we are using a mix with old one here for now
 void static XSNMiner(const CChainParams& chainparams, CConnman& connman,
-                         CWallet* pwallet, bool fProofOfStake)
+                     CWallet* pwallet, bool fProofOfStake)
 {
     LogPrintf("XsnMiner -- started\n");
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
@@ -769,9 +769,9 @@ void static XSNMiner(const CChainParams& chainparams, CConnman& connman,
 }
 
 void GenerateXSNs(bool fGenerate,
-                      int nThreads,
-                      const CChainParams& chainparams,
-                      CConnman &connman)
+                  int nThreads,
+                  const CChainParams& chainparams,
+                  CConnman &connman)
 {
     static boost::thread_group* minerThreads = NULL;
 
