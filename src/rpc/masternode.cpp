@@ -20,6 +20,7 @@
 #include <util.h>
 #include <utilmoneystr.h>
 #include <key_io.h>
+#include <wallet/coincontrol.h>
 
 #include <fstream>
 #include <iomanip>
@@ -554,9 +555,10 @@ static UniValue masternode(const JSONRPCRequest& request)
     if (strCommand == "outputs") {
         // Find possible candidates
         std::vector<COutput> vPossibleCoins;
-        pwallet->AvailableCoins(vPossibleCoins, true, nullptr, 1,
-                                MAX_MONEY, MAX_MONEY, 0, 0, 9999999,
-                                ONLY_MASTERNODE_COLLATERAL);
+        CCoinControl coinControl;
+        coinControl.nCoinType = ONLY_MASTERNODE_COLLATERAL;
+        pwallet->AvailableCoins(vPossibleCoins, true, &coinControl, 1,
+                                MAX_MONEY, MAX_MONEY, 0, 0, 9999999);
 
         UniValue obj(UniValue::VOBJ);
         for(COutput& out : vPossibleCoins) {
