@@ -630,8 +630,9 @@ void static XSNMiner(const CChainParams& chainparams, CConnman& connman,
                     bool isValidContract = contract.merchantAddress == merchantnodePayee;
                     if(!isValidForPayment || !isValidContract)
                     {
-                        LogPrintf("Won't tpos, merchant node valid for payment: %d\n Contract address: %s, merchantnode address: \n", isValidForPayment,
-                                  contract.merchantAddress.ToString().c_str(), merchantnodePayee.ToString().c_str());
+                        LogPrintf("Won't tpos, merchant node valid for payment: %d isValidContract: %d\n Contract address: %s, merchantnode address: %s\n", isValidForPayment,
+                                  isValidContract, contract.merchantAddress.ToString().c_str(),
+                                  merchantnodePayee.ToString().c_str());
 
                         nLastCoinStakeSearchInterval = 0;
                         MilliSleep(10000);
