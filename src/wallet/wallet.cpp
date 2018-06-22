@@ -3702,6 +3702,8 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
             return error("Failed to select coins for staking");
         }
 
+        LogPrintf("Selected %d coins for staking\n", setStakeCoins.size());
+
         nLastStakeSetUpdate = GetTime();
     }
 
