@@ -126,7 +126,7 @@ static const MapSporkHandlers &GetMapGetDataHandlers()
                         if(governance.HaveObjectForHash(hash)) {
                             CGovernanceObject obj;
                             if(governance.SerializeObjectForHash(hash, obj)) {
-                                LogPrintf("SENDING GOVOBJ: %s\nHASH: %s\n", obj.GetDataAsHex(), obj.GetHash());
+                                LogPrintf("SENDING GOVOBJ: %s\nHASH: %s\n", obj.GetDataAsHex(), obj.GetHash().ToString());
                                 return msgMaker.Make(NetMsgType::MNGOVERNANCEOBJECT, obj);
                             }
                         }
