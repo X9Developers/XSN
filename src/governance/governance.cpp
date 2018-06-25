@@ -152,7 +152,7 @@ void CGovernanceManager::ProcessMessage(CNode* pfrom, const std::string& strComm
         CGovernanceObject govobj;
         vRecv >> govobj;
 
-        LogPrintf("GOT GOVOBJ: %s\n", govobj.GetDataAsString());
+        LogPrintf("GOT GOVOBJ: %s\n", govobj.GetDataAsHex());
 
         uint256 nHash = govobj.GetHash();
 
