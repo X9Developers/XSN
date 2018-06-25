@@ -401,6 +401,16 @@ std::string CGovernanceObject::GetDataAsString()
     return s;
 }
 
+string CGovernanceObject::ToString() const
+{
+    return strprintf("nHashParent: %s\n"
+                     "nRevision: %d\n"
+                     "nTime: %d\n"
+                     "strData: %s\n"
+                     "vinMasternode: %s\n"
+                     "vchSig: %s\n", nHashParent.ToString(), nRevision, nTime, strData, vinMasternode.ToString(), HexStr(vchSig));
+}
+
 void CGovernanceObject::UpdateLocalValidity()
 {
     LOCK(cs_main);
