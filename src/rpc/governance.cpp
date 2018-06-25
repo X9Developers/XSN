@@ -280,10 +280,6 @@ UniValue gobject(const JSONRPCRequest& request)
 
         std::string strHash = govobj.GetHash().ToString();
 
-        UniValue obj(UniValue::VOBJ);
-        obj.push_back(Pair("beforeHash", strHash));
-        obj.push_back(Pair("beforeObj", govobj.ToString()));
-
         std::string strError = "";
         bool fMissingMasternode;
         bool fMissingConfirmations;
@@ -311,12 +307,7 @@ UniValue gobject(const JSONRPCRequest& request)
             governance.AddGovernanceObject(govobj, *g_connman);
         }
 
-        obj.push_back(Pair("afterHash", govobj.GetHash().ToString()));
-        obj.push_back(Pair("after", govobj.ToString()));
-        obj.push_back(Pair("afterFromMapHash", governance.FindGovernanceObject(govobj.GetHash())->GetHash().ToString()));
-        obj.push_back(Pair("afterFromMap", governance.FindGovernanceObject(govobj.GetHash())->ToString()));
-        return obj;
-//        return govobj.GetHash().ToString();
+        return govobj.GetHash().ToString();
     }
 
     if(strCommand == "vote-conf")

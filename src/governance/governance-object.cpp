@@ -723,6 +723,8 @@ void CGovernanceObject::swap(CGovernanceObject& first, CGovernanceObject& second
     swap(first.nCollateralHash, second.nCollateralHash);
     swap(first.strData, second.strData);
     swap(first.nObjectType, second.nObjectType);
+    swap(first.vinMasternode, second.vinMasternode);
+    swap(first.vchSig, second.vchSig);
 
     // swap all cached valid flags
     swap(first.fCachedFunding, second.fCachedFunding);
