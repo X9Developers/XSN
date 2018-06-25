@@ -565,7 +565,7 @@ CGovernanceObject *CGovernanceManager::FindGovernanceObject(const uint256& nHash
     if(mapObjects.count(nHash))
         return &mapObjects[nHash];
 
-    return NULL;
+    return nullptr;
 }
 
 std::vector<CGovernanceVote> CGovernanceManager::GetMatchingVotes(const uint256& nParentHash)

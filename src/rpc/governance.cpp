@@ -263,7 +263,8 @@ UniValue gobject(const JSONRPCRequest& request)
                 (govobj.GetObjectType() == GOVERNANCE_OBJECT_WATCHDOG)) {
             if(fMnFound) {
                 govobj.SetMasternodeVin(activeMasternode.outpoint);
-                govobj.Sign(activeMasternode.keyMasternode, activeMasternode.pubKeyMasternode);
+                if(!govobj.Sign(activeMasternode.keyMasternode, activeMasternode.pubKeyMasternode))
+                    throw JSONRPCError(RPC_INVALID_PARAMETER, "Can't produce signature, only valid masternodes can submit this type of object");
             }
             else {
                 LogPrintf("gobject(submit) -- Object submission rejected because node is not a masternode\n");
