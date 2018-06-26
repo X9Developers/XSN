@@ -522,6 +522,8 @@ public:
         return (opcodetype)(OP_1+n-1);
     }
 
+    int FindAndDelete(const CScript& b) const;
+
     /**
      * Pre-version-0.6, XSN always counted CHECKMULTISIGs
      * as 20 sigops. With pay-to-script-hash, that changed:

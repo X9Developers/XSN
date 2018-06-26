@@ -59,6 +59,22 @@ BOOST_AUTO_TEST_CASE(key_io_valid_parse)
             BOOST_CHECK_MESSAGE(IsValidDestination(destination), "!IsValid:" + strTest);
             BOOST_CHECK_EQUAL(HexStr(script), HexStr(exp_payload));
 
+            BOOST_CHECK(CBitcoinAddress(destination) == CBitcoinAddress(exp_base58string));
+            BOOST_CHECK(CBitcoinAddress(destination).IsValid() == IsValidDestination(destination));
+            BOOST_CHECK(CBitcoinAddress(exp_base58string).Get() == destination);
+
+            if(auto keyID = boost::get<CKeyID>(&destination))
+            {
+                CKeyID testKeyID;
+                BOOST_CHECK(CBitcoinAddress(destination).GetKeyID(testKeyID));
+                BOOST_CHECK(*keyID == testKeyID);
+            }
+            else if(boost::get<CScriptID>(&destination))
+            {
+                BOOST_CHECK(CBitcoinAddress(destination).IsScript());
+            }
+
+
             // Try flipped case version
             for (char& c : exp_base58string) {
                 if (c >= 'a' && c <= 'z') {

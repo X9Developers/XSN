@@ -4,6 +4,7 @@
 #include <utilmoneystr.h>
 #include <policy/policy.h>
 #include <validation.h>
+#include <wallet/coincontrol.h>
 #include <tpos/merchantnode-sync.h>
 #include <tpos/merchantnodeman.h>
 #include <tpos/activemerchantnode.h>
@@ -118,8 +119,7 @@ std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
                                                             int merchantCommission,
                                                             std::string &strError)
 {
-#if 0
-    std::unique_ptr<CWalletTx> result(new CWalletTx);
+    std::unique_ptr<CWalletTx> result(new CWalletTx(wallet, MakeTransactionRef()));
     CWalletTx &wtxNew = *result;
 
     auto tposAddressAsStr = tposAddress.ToString();
@@ -185,7 +185,7 @@ std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
 
     auto txModifierBinded = std::bind(txModifier, std::placeholders::_1, vchSignature);
 
-    if (!wallet->CreateTransaction(vecSend, wtxNew, reservekey, nFeeRequired, nChangePos, strError, nullptr, true, ALL_COINS, false, txModifierBinded))
+    if (!wallet->CreateTransaction(vecSend, wtxNew.tx, reservekey, nFeeRequired, nChangePos, strError, {}, true, txModifierBinded))
     {
         if (TPOS_CONTRACT_COLATERAL + nFeeRequired > wallet->GetBalance())
             strError = strprintf("Error: This transaction requires a transaction fee of at least %s because of its amount, complexity, or use of recently received funds!", FormatMoney(nFeeRequired));
@@ -196,21 +196,8 @@ std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
     if(!strError.empty())
         return nullptr;
 
-
-
-    //    std::stringstream stringStream(it->scriptPubKey.ToString());
-    //    std::string tokens[5];
-
-    //    for(auto &token : tokens)
-    //    {
-    //        stringStream >> token;
-    //        std::cout << token << " ";
-    //    }
-
-    //    std::cout << std::endl;
-
     std::string reason;
-    if(!IsStandardTx(wtxNew, reason))
+    if(!IsStandardTx(*wtxNew.tx, reason))
     {
         strError = strprintf("Error: Not standard tx: %s\n", reason.c_str());
         LogPrintf(strError.c_str());
@@ -218,16 +205,11 @@ std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
     }
 
     return result;
-
-#endif
-
-    return nullptr;
 }
 
 std::unique_ptr<CWalletTx> TPoSUtils::CreateCancelContractTransaction(CWallet *wallet, CReserveKey &reserveKey, const TPoSContract &contract, string &strError)
 {
-#if 0
-    std::unique_ptr<CWalletTx> result(new CWalletTx);
+    std::unique_ptr<CWalletTx> result(new CWalletTx(wallet, MakeTransactionRef()));
     CWalletTx &wtxNew = *result;
 
     if(wallet->IsLocked())
@@ -250,24 +232,23 @@ std::unique_ptr<CWalletTx> TPoSUtils::CreateCancelContractTransaction(CWallet *w
         return nullptr;
     }
 
-    auto &prevOutput = contract.rawTx.vout.at(prevOutpoint.n);
+    auto &prevOutput = contract.rawTx->vout.at(prevOutpoint.n);
 
     CAmount nFeeRet;
     int nChangePosRet;
     CCoinControl coinControl;
-    coinControl.fUsePrivateSend = false;
+//    coinControl.fUsePrivateSend = false;
+    coinControl.nCoinType = ONLY_MERCHANTNODE_COLLATERAL;
     coinControl.Select(prevOutpoint);
-    if(!wallet->CreateTransaction({ { prevOutput.scriptPubKey, prevOutput.nValue, true } }, wtxNew,
+    if(!wallet->CreateTransaction({ { prevOutput.scriptPubKey, prevOutput.nValue, true } }, wtxNew.tx,
                               reserveKey, nFeeRet, nChangePosRet,
-                              strError, &coinControl, true, ONLY_MERCHANTNODE_COLLATERAL))
+                              strError, coinControl, true))
     {
         LogPrintf("Error() : %s\n", strError.c_str());
         return nullptr;
     }
 
     return result;
-#endif
-    return nullptr;
 }
 
 COutPoint TPoSUtils::GetContractCollateralOutpoint(const TPoSContract &contract)

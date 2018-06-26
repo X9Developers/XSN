@@ -2625,13 +2625,15 @@ static bool IsCorrectType(CAmount nAmount, AvailableCoinsType nCoinType)
     return found;
 }
 
-void CWallet::AvailableCoins(std::vector<COutput> &vCoins, bool fOnlySafe, const CCoinControl *coinControl, const CAmount &nMinimumAmount, const CAmount &nMaximumAmount, const CAmount &nMinimumSumAmount, const uint64_t nMaximumCount, const int nMinDepth, const int nMaxDepth, AvailableCoinsType nCoinType, bool fUseInstantSend) const
+void CWallet::AvailableCoins(std::vector<COutput> &vCoins, bool fOnlySafe, const CCoinControl *coinControl, const CAmount &nMinimumAmount, const CAmount &nMaximumAmount, const CAmount &nMinimumSumAmount, const uint64_t nMaximumCount, const int nMinDepth, const int nMaxDepth, bool fUseInstantSend) const
 {
     AssertLockHeld(cs_main);
     AssertLockHeld(cs_wallet);
 
     vCoins.clear();
     CAmount nTotal = 0;
+
+    auto nCoinType = coinControl ? coinControl->nCoinType : ALL_COINS;
 
     for (const auto& entry : mapWallet)
     {
@@ -3255,10 +3257,6 @@ bool CWallet::GetBudgetSystemCollateralTX(CWalletTx& tx, uint256 hash, CAmount a
     std::vector< CRecipient > vecSend;
     vecSend.push_back({scriptChange, amount, false});
 
-    const CCoinControl *coinControl = nullptr;
-#if 0
-    bool success = CreateTransaction(vecSend, tx.tx, reservekey, nFeeRet, nChangePosRet, strFail, coinControl, true, ALL_COINS, fUseInstantSend);
-#endif
     bool success = CreateTransaction(vecSend, tx.tx, reservekey, nFeeRet, nChangePosRet, strFail, {}, true);
     if(!success){
         LogPrintf("CWallet::GetBudgetSystemCollateralTX -- Error: %s\n", strFail);
@@ -3269,7 +3267,7 @@ bool CWallet::GetBudgetSystemCollateralTX(CWalletTx& tx, uint256 hash, CAmount a
 }
 
 bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CTransactionRef& tx, CReserveKey& reservekey, CAmount& nFeeRet,
-                                int& nChangePosInOut, std::string& strFailReason, const CCoinControl& coin_control, bool sign)
+                                int& nChangePosInOut, std::string& strFailReason, const CCoinControl& coin_control, bool sign, OnTransactionToBeSigned onTxToBeSigned)
 {
     CAmount nValue = 0;
     int nChangePosRequest = nChangePosInOut;
@@ -3597,6 +3595,9 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CTransac
             txNew.vin.push_back(CTxIn(coin.outpoint, CScript(), nSequence));
         }
 
+        if(onTxToBeSigned)
+            onTxToBeSigned(txNew);
+
         if (sign)
         {
             CTransaction txNewConst(txNew);
@@ -3700,6 +3701,8 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
         if (!SelectStakeCoins(setStakeCoins, nBalance /*- nReserveBalance*/, scriptPubKey)) {
             return error("Failed to select coins for staking");
         }
+
+        LogPrintf("Selected %d coins for staking\n", setStakeCoins.size());
 
         nLastStakeSetUpdate = GetTime();
     }
@@ -5209,7 +5212,9 @@ bool CWallet::GetMasternodeOutpointAndKeys(COutPoint& outpointRet, CPubKey& pubK
 
     // Find possible candidates
     std::vector<COutput> vPossibleCoins;
-    AvailableCoins(vPossibleCoins, true, nullptr, 1, MAX_MONEY, MAX_MONEY, 0, 0, 9999999, ONLY_MASTERNODE_COLLATERAL);
+    CCoinControl coinControl;
+    coinControl.nCoinType = ONLY_MASTERNODE_COLLATERAL;
+    AvailableCoins(vPossibleCoins, true, &coinControl, 1, MAX_MONEY, MAX_MONEY, 0, 0, 9999999);
     if(vPossibleCoins.empty()) {
         LogPrintf("CWallet::GetMasternodeOutpointAndKeys -- Could not locate any valid masternode vin\n");
         return false;

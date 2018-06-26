@@ -35,6 +35,8 @@ public:
     //! Fee estimation mode to control arguments to estimateSmartFee
     FeeEstimateMode m_fee_mode;
 
+    AvailableCoinsType nCoinType;
+
     CCoinControl()
     {
         SetNull();
@@ -51,6 +53,7 @@ public:
         fOverrideFeeRate = false;
         m_confirm_target.reset();
         m_signal_bip125_rbf.reset();
+        nCoinType = ALL_COINS;
         m_fee_mode = FeeEstimateMode::UNSET;
     }
 

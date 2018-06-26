@@ -300,6 +300,8 @@ public:
     std::string GetDataAsHex();
     std::string GetDataAsString();
 
+    std::string ToString() const;
+
     // SERIALIZER
 
     ADD_SERIALIZE_METHODS;

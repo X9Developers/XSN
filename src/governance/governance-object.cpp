@@ -401,6 +401,16 @@ std::string CGovernanceObject::GetDataAsString()
     return s;
 }
 
+string CGovernanceObject::ToString() const
+{
+    return strprintf("(CGovernanceObject): nHashParent: %s, "
+                     "nRevision: %d, "
+                     "nTime: %d, "
+                     "strData: %s, "
+                     "vinMasternode: %s, "
+                     "vchSig: %s", nHashParent.ToString(), nRevision, nTime, strData, vinMasternode.ToString(), HexStr(vchSig));
+}
+
 void CGovernanceObject::UpdateLocalValidity()
 {
     LOCK(cs_main);
@@ -543,12 +553,7 @@ bool CGovernanceObject::IsCollateralValid(std::string& strError, bool& fMissingC
 //             << ", o.nValue = " << o.nValue
 //             << ", o.scriptPubKey = " << ScriptToAsmStr( o.scriptPubKey, false )
 //             << endl; );
-        if(!o.scriptPubKey.IsPayToPublicKeyHash() && !o.scriptPubKey.IsUnspendable()) {
-            strError = strprintf("Invalid Script %s", txCollateral->ToString());
-            LogPrintf ("CGovernanceObject::IsCollateralValid -- %s\n", strError);
-            return false;
-        }
-        if(o.scriptPubKey == findScript && o.nValue >= nMinFee) {
+        if(o.scriptPubKey.IsUnspendable() && o.scriptPubKey == findScript && o.nValue >= nMinFee) {
 //            DBG( cout << "IsCollateralValid foundOpReturn = true" << endl; );
             foundOpReturn = true;
         }
@@ -718,6 +723,8 @@ void CGovernanceObject::swap(CGovernanceObject& first, CGovernanceObject& second
     swap(first.nCollateralHash, second.nCollateralHash);
     swap(first.strData, second.strData);
     swap(first.nObjectType, second.nObjectType);
+    swap(first.vinMasternode, second.vinMasternode);
+    swap(first.vchSig, second.vchSig);
 
     // swap all cached valid flags
     swap(first.fCachedFunding, second.fCachedFunding);

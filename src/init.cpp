@@ -1318,6 +1318,13 @@ bool AppInitLockDataDirectory()
 
 bool AppInitPrivateSend()
 {
+
+    if (gArgs.IsArgSet("-sporkkey")) // spork priv key
+    {
+        if (!sporkManager.SetPrivKey(gArgs.GetArg("-sporkkey", "")))
+            return InitError(_("Unable to sign spork message, wrong key?"));
+    }
+
     std::string strErr;
     if(!masternodeConfig.read(strErr)) {
         LogPrintf("Error reading masternode configuration file: %s\n", strErr.c_str());

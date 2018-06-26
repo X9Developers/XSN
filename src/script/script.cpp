@@ -161,6 +161,34 @@ const char* GetOpName(opcodetype opcode)
     }
 }
 
+int CScript::FindAndDelete(const CScript &b) const
+{
+    int nFound = 0;
+    if (b.empty())
+        return nFound;
+    CScript result;
+    auto pc = begin(), pc2 = begin();
+    opcodetype opcode;
+    do
+    {
+        result.insert(result.end(), pc2, pc);
+        while (static_cast<size_t>(end() - pc) >= b.size() && std::equal(b.begin(), b.end(), pc))
+        {
+            pc = pc + b.size();
+            ++nFound;
+        }
+        pc2 = pc;
+    }
+    while (GetOp(pc, opcode));
+
+    if (nFound > 0) {
+        result.insert(result.end(), pc2, end());
+        const_cast<CScript&>(*this) = result;
+    }
+
+    return nFound;
+}
+
 unsigned int CScript::GetSigOpCount(bool fAccurate) const
 {
     unsigned int n = 0;
