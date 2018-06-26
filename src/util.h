@@ -165,7 +165,7 @@ protected:
     std::set<std::string> m_network_only_args;
     std::map<OptionsCategory, std::map<std::string, Arg>> m_available_args;
 
-    void ReadConfigStream(std::istream& stream);
+    bool ReadConfigStream(std::istream& stream, std::string& error, bool ignore_invalid_keys = false);
 
 public:
     ArgsManager();
@@ -175,8 +175,8 @@ public:
      */
     void SelectConfigNetwork(const std::string& network);
 
-    void ParseParameters(int argc, const char*const argv[]);
-    void ReadConfigFile(const std::string& confPath);
+    bool ParseParameters(int argc, const char* const argv[], std::string& error);
+    bool ReadConfigFiles(std::string& error, bool ignore_invalid_keys = false);
 
     /**
      * Log warnings for options in m_section_only_args when
@@ -282,6 +282,11 @@ public:
     void ClearArgs() { m_available_args.clear(); }
 
     /**
+     * Get the help string
+     */
+    std::string GetHelpMessage();
+
+    /**
      * Check whether we know of this arg
      */
     bool IsArgKnown(const std::string& key, std::string& error);
@@ -361,7 +366,7 @@ std::unique_ptr<T> MakeUnique(Args&&... args)
  * CPU-intensive and non-interactive. See SCHED_BATCH in sched(7) for details.
  *
  * @return The return value of sched_setschedule(), or 1 on systems without
- * sched_setchedule().
+ * sched_setschedule().
  */
 int ScheduleBatchPriority(void);
 
