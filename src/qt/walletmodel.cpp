@@ -22,6 +22,7 @@
 #include <wallet/wallet.h>
 #include <wallet/walletdb.h> // for BackupWallet
 #include <tposaddressestablemodel.h>
+#include <interfaces/wallet.h>
 
 #include <instantx.h>
 #include <spork.h>
@@ -35,8 +36,8 @@
 
 #include <boost/foreach.hpp>
 
-WalletModel::WalletModel(const PlatformStyle *platformStyle, CWallet *wallet, OptionsModel *optionsModel, QObject *parent) :
-    QObject(parent), wallet(wallet), optionsModel(optionsModel), addressTableModel(0),
+WalletModel::WalletModel(std::unique_ptr<interfaces::Wallet> wallet, interfaces::Node& node, const PlatformStyle *platformStyle, OptionsModel *_optionsModel, QObject *parent) :
+    QObject(parent), m_wallet(std::move(wallet)), m_node(node), optionsModel(_optionsModel), addressTableModel(0),
     transactionTableModel(0),
     recentRequestsTableModel(0),
     cachedBalance(0),
@@ -710,6 +711,11 @@ bool WalletModel::isLockedCoin(uint256 hash, unsigned int n) const
     return wallet->IsLockedCoin(hash, n);
 }
 
+bool WalletModel::isWalletEnabled()
+{
+   return !gArgs.GetBoolArg("-disablewallet", DEFAULT_DISABLE_WALLET);
+}
+
 void WalletModel::lockCoin(COutPoint& output)
 {
     LOCK2(cs_main, wallet->cs_wallet);
@@ -720,6 +726,16 @@ void WalletModel::unlockCoin(COutPoint& output)
 {
     LOCK2(cs_main, wallet->cs_wallet);
     wallet->UnlockCoin(output);
+}
+
+QString WalletModel::getWalletName() const
+{
+    return QString::fromStdString(m_wallet->getWalletName());
+}
+
+bool WalletModel::isMultiwallet()
+{
+    return m_node.getWallets().size() > 1;
 }
 
 void WalletModel::listLockedCoins(std::vector<COutPoint>& vOutpts)
@@ -767,7 +783,3 @@ bool WalletModel::abandonTransaction(uint256 hash) const
     return wallet->AbandonTransaction(hash);
 }
 
-bool WalletModel::hdEnabled() const
-{
-    return wallet->IsHDEnabled();
-}

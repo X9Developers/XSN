@@ -8,6 +8,8 @@
 #include <functional>
 #include <QSplashScreen>
 
+#include <interfaces/wallet.h>
+
 #include <memory>
 
 class NetworkStyle;

@@ -147,7 +147,7 @@ void PaymentServer::LoadRootCAs(X509_STORE* _store)
     int nRootCerts = 0;
     const QDateTime currentTime = QDateTime::currentDateTime();
 
-    Q_FOREACH (const QSslCertificate& cert, certList) {
+    for (const QSslCertificate& cert : certList) {
         // Don't log NULL certificates
         if (cert.isNull())
             continue;
@@ -202,7 +202,7 @@ void PaymentServer::LoadRootCAs(X509_STORE* _store)
 // Warning: ipcSendCommandLine() is called early in init,
 // so don't use "Q_EMIT message()", but "QMessageBox::"!
 //
-void PaymentServer::ipcParseCommandLine(int argc, char* argv[])
+void PaymentServer::ipcParseCommandLine(interfaces::Node& node, int argc, char* argv[])
 {
     for (int i = 1; i < argc; i++)
     {

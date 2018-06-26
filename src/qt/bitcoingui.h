@@ -18,6 +18,9 @@
 #include <QPoint>
 #include <QPushButton>
 #include <QSystemTrayIcon>
+#include <QComboBox>
+#include <interfaces/node.h>
+#include <interfaces/handler.h>
 #include <memory>
 
 class ClientModel;
@@ -138,6 +141,9 @@ private:
     QAction *showHelpMessageAction;
     QAction *showPrivateSendHelpAction;
 
+    QLabel *m_wallet_selector_label;
+    QComboBox *m_wallet_selector;
+
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;
     QMenu *dockIconMenu;
@@ -210,6 +216,7 @@ public Q_SLOTS:
      @param[in] status            current hd enabled status
      @see WalletModel::EncryptionStatus
      */
+    bool setCurrentWallet(const QString& name);
     void setHDStatus(int hdEnabled);
 
     void setStakingStatus();
@@ -223,7 +230,7 @@ public Q_SLOTS:
     bool handlePaymentRequest(const SendCoinsRecipient& recipient);
 
     /** Show incoming transaction notification for new transactions. */
-    void incomingTransaction(const QString& date, int unit, const CAmount& amount, const QString& type, const QString& address, const QString& label);
+    void incomingTransaction(const QString& date, int unit, const CAmount& amount, const QString& type, const QString& address, const QString& label, const QString& walletName);
 #endif // ENABLE_WALLET
 
 private Q_SLOTS:

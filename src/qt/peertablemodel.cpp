@@ -91,7 +91,7 @@ public:
         // build index map
         mapNodeRows.clear();
         int row = 0;
-        Q_FOREACH (const CNodeCombinedStats& stats, cachedNodeStats)
+        for (const CNodeCombinedStats& stats : cachedNodeStats)
             mapNodeRows.insert(std::pair<NodeId, int>(stats.nodeStats.nodeid, row++));
     }
 
@@ -111,6 +111,7 @@ public:
 
 PeerTableModel::PeerTableModel(ClientModel *parent) :
     QAbstractTableModel(parent),
+    m_node(node),
     clientModel(parent),
     timer(0)
 {

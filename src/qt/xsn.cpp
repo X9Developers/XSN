@@ -29,6 +29,7 @@
 #include <init.h>
 #include <interfaces/handler.h>
 #include <interfaces/node.h>
+#include <interfaces/wallet.h>
 #include <rpc/server.h>
 #include <ui_interface.h>
 #include <uint256.h>
@@ -36,6 +37,8 @@
 #include <warnings.h>
 
 #include <walletinitinterface.h>
+#include <masternodeconfig.h>
+#include <tpos/merchantnodeconfig.h>
 
 #include <memory>
 #include <stdint.h>

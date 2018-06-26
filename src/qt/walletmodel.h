@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2015 The Bitcoin Core developers
+// Copyright (c) 2011-2017 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -33,6 +33,12 @@ class COutput;
 class CPubKey;
 class CWallet;
 class uint256;
+
+namespace interfaces {
+class Node;
+class Wallet;
+class Handler;
+} // namespace interfaces
 
 QT_BEGIN_NAMESPACE
 class QTimer;
@@ -73,7 +79,7 @@ public:
     ADD_SERIALIZE_METHODS;
 
     template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
+    inline void SerializationOp(Stream& s, Operation ser_action) {
         std::string sAddress = address.toStdString();
         std::string sLabel = label.toStdString();
         std::string sMessage = message.toStdString();
@@ -83,7 +89,6 @@ public:
         std::string sAuthenticatedMerchant = authenticatedMerchant.toStdString();
 
         READWRITE(this->nVersion);
-        nVersion = this->nVersion;
         READWRITE(sAddress);
         READWRITE(sLabel);
         READWRITE(amount);
@@ -109,7 +114,7 @@ class WalletModel : public QObject
     Q_OBJECT
 
 public:
-    explicit WalletModel(const PlatformStyle *platformStyle, CWallet *wallet, OptionsModel *optionsModel, QObject *parent = 0);
+    explicit WalletModel(std::unique_ptr<interfaces::Wallet> wallet, interfaces::Node& node, const PlatformStyle *platformStyle, OptionsModel *optionsModel, QObject *parent = 0);
     ~WalletModel();
 
     enum StatusCode // Returned by sendCoins
@@ -216,10 +221,25 @@ public:
     bool transactionCanBeAbandoned(uint256 hash) const;
     bool abandonTransaction(uint256 hash) const;
 
-    bool hdEnabled() const;
+    static bool isWalletEnabled();
 
+    interfaces::Node& node() const { return m_node; }
+    interfaces::Wallet& wallet() const { return *m_wallet; }
+
+    QString getWalletName() const;
+
+    bool isMultiwallet();
+
+    AddressTableModel* getAddressTableModel() const { return addressTableModel; }
 private:
-    CWallet *wallet;
+    //CWallet *wallet;
+    std::unique_ptr<interfaces::Wallet> m_wallet;
+    std::unique_ptr<interfaces::Handler> m_handler_status_changed;
+    std::unique_ptr<interfaces::Handler> m_handler_address_book_changed;
+    std::unique_ptr<interfaces::Handler> m_handler_transaction_changed;
+    std::unique_ptr<interfaces::Handler> m_handler_show_progress;
+    std::unique_ptr<interfaces::Handler> m_handler_watch_only_changed;
+    interfaces::Node& m_node;
     bool fHaveWatchOnly;
     bool fForceCheckBalanceChanged;
 
