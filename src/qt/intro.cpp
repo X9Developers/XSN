@@ -58,7 +58,7 @@ private:
     Intro *intro;
 };
 
-#include <intro.moc"
+#include <intro.moc>
 
 FreespaceChecker::FreespaceChecker(Intro *intro)
 {
@@ -119,7 +119,7 @@ Intro::Intro(QWidget *parent) :
     signalled(false)
 {
     ui->setupUi(this);
-    uint64_t pruneTarget = std::max<int64_t>(0, GetArg("-prune", 0));
+    uint64_t pruneTarget = std::max<int64_t>(0, gArgs.GetArg("-prune", 0));
     requiredSpace = BLOCK_CHAIN_SIZE;
     if (pruneTarget)
         requiredSpace = CHAIN_STATE_SIZE + std::ceil(pruneTarget * 1024 * 1024.0 / GB_BYTES);
@@ -166,7 +166,7 @@ void Intro::pickDataDirectory()
     QSettings settings;
     /* If data directory provided on command line, no need to look at settings
        or show a picking dialog */
-    if(!GetArg("-datadir", "").empty())
+    if(!gArgs.GetArg("-datadir", "").empty())
         return;
     /* 1) Default data directory for operating system */
     QString dataDirDefaultCurrent = getDefaultDataDirectory();
@@ -175,7 +175,7 @@ void Intro::pickDataDirectory()
     /* 3) Check to see if default datadir is the one we expect */
     QString dataDirDefaultSettings = settings.value("strDataDirDefault").toString();
 
-    if(!fs::exists(GUIUtil::qstringToBoostPath(dataDir)) || GetBoolArg("-choosedatadir", DEFAULT_CHOOSE_DATADIR) || dataDirDefaultCurrent != dataDirDefaultSettings)
+    if(!fs::exists(GUIUtil::qstringToBoostPath(dataDir)) || gArgs.GetBoolArg("-choosedatadir", DEFAULT_CHOOSE_DATADIR) || dataDirDefaultCurrent != dataDirDefaultSettings)
     {
         /* Let the user choose one */
         Intro intro;
@@ -208,7 +208,7 @@ void Intro::pickDataDirectory()
      * (to be consistent with xsnd behavior)
      */
     if(dataDir != dataDirDefaultCurrent)
-        SoftSetArg("-datadir", GUIUtil::qstringToBoostPath(dataDir).string()); // use OS locale for path setting
+        gArgs.SoftSetArg("-datadir", GUIUtil::qstringToBoostPath(dataDir).string()); // use OS locale for path setting
 }
 
 void Intro::setStatus(int status, const QString &message, quint64 bytesAvailable)

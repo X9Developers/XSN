@@ -5,9 +5,10 @@
 #include <vector>
 #include <QString>
 #include <string>
-#include "amount.h"
-#include "ui_interface.h"
-#include "base58.h"
+#include <amount.h>
+#include <ui_interface.h>
+#include <base58.h>
+#include <key_io.h>
 
 class CWallet;
 class OptionsModel;
