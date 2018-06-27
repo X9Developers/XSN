@@ -183,13 +183,36 @@ bool CPubKey::Verify(const uint256 &hash, const std::vector<unsigned char>& vchS
     return secp256k1_ecdsa_verify(secp256k1_context_verify, &sig, hash.begin(), &pubkey);
 }
 
-bool CPubKey::RecoverCompact(const uint256 &hash, const std::vector<unsigned char>& vchSig) {
+bool CPubKey::RecoverCompact(const uint256 &hash, const std::vector<unsigned char>& vchSig, InputScriptType &inputScriptType) {
     if (vchSig.size() != COMPACT_SIGNATURE_SIZE)
         return false;
-    int recid = (vchSig[0] - 27) & 3;
-    bool fComp = ((vchSig[0] - 27) & 4) != 0;
+
+    uint8_t recid = (vchSig[0] - 27) % 4;
+    bool fComp = vchSig[0] >= 31;
+
+
     secp256k1_pubkey pubkey;
     secp256k1_ecdsa_recoverable_signature sig;
+
+
+    // p2pkh
+    if (vchSig[0] >= 27 && vchSig[0] <= 34) {
+        inputScriptType = InputScriptType::SPENDP2PKH;
+    }
+    else
+    // segwit-in-p2sh
+    if (vchSig[0] >= 35 && vchSig[0] <= 38) {
+        inputScriptType = InputScriptType::SPENDP2SHWITNESS;
+    }
+    else
+    // segwit
+    if (vchSig[0] >= 39 && vchSig[0] <= 42) {
+        inputScriptType = InputScriptType::SPENDWITNESS;
+    }
+    else {
+        return false;
+    }
+
     if (!secp256k1_ecdsa_recoverable_signature_parse_compact(secp256k1_context_verify, &sig, &vchSig[1], recid)) {
         return false;
     }

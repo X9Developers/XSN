@@ -102,7 +102,8 @@ bool CBlockSigner::CheckBlockSignature() const
 
     auto hashMessage = refBlock.IsTPoSBlock() ? refBlock.GetTPoSHash() : refBlock.GetHash();
 
-    if(!recoveredKey.RecoverCompact(hashMessage, refBlock.vchBlockSig))
+    CPubKey::InputScriptType inputScriptType;
+    if(!recoveredKey.RecoverCompact(hashMessage, refBlock.vchBlockSig, inputScriptType))
         return error("CBlockSigner::CheckBlockSignature() : failed to recover public key from signature");
 
     if(refBlock.IsProofOfStake())

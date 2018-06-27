@@ -118,10 +118,11 @@ BOOST_AUTO_TEST_CASE(key_test1)
 
         CPubKey rkey1, rkey2, rkey1C, rkey2C;
 
-        BOOST_CHECK(rkey1.RecoverCompact (hashMsg, csign1));
-        BOOST_CHECK(rkey2.RecoverCompact (hashMsg, csign2));
-        BOOST_CHECK(rkey1C.RecoverCompact(hashMsg, csign1C));
-        BOOST_CHECK(rkey2C.RecoverCompact(hashMsg, csign2C));
+        CPubKey::InputScriptType inputScriptType;
+        BOOST_CHECK(rkey1.RecoverCompact (hashMsg, csign1, inputScriptType));
+        BOOST_CHECK(rkey2.RecoverCompact (hashMsg, csign2, inputScriptType));
+        BOOST_CHECK(rkey1C.RecoverCompact(hashMsg, csign1C, inputScriptType));
+        BOOST_CHECK(rkey2C.RecoverCompact(hashMsg, csign2C, inputScriptType));
 
         BOOST_CHECK(rkey1  == pubkey1);
         BOOST_CHECK(rkey2  == pubkey2);

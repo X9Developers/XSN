@@ -294,7 +294,8 @@ bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contr
         CPubKey recoveredKey;
         auto hashMessage = SerializeHash(tmpContract.rawTx->vin.front().prevout);
 
-        if(!recoveredKey.RecoverCompact(hashMessage, tmpContract.vchSignature))
+        CPubKey::InputScriptType inputScriptType;
+        if(!recoveredKey.RecoverCompact(hashMessage, tmpContract.vchSignature, inputScriptType))
             return error("CheckContract() : failed to recover public key from signature");
 
         CKeyID keyID;

@@ -15,12 +15,6 @@
 #include <stdexcept>
 #include <vector>
 
-enum class InputScriptType {
-    SPENDP2SHWITNESS,
-    SPENDWITNESS,
-    SPENDP2PKH
-}
-
 
 /**
  * secure_allocator is defined in allocators.h
@@ -129,7 +123,7 @@ public:
      *                  0x1D = second key with even y, 0x1E = second key with odd y,
      *                  add 0x04 for compressed keys.
      */
-    bool SignCompact(const uint256& hash, std::vector<unsigned char>& vchSig, InputScriptType scriptType = InputScriptType::SPENDP2PKH) const;
+    bool SignCompact(const uint256& hash, std::vector<unsigned char>& vchSig, CPubKey::InputScriptType scriptType = CPubKey::InputScriptType::SPENDP2PKH) const;
 
     //! Derive BIP32 child key.
     bool Derive(CKey& keyChild, ChainCode &ccChild, unsigned int nChild, const ChainCode& cc) const;

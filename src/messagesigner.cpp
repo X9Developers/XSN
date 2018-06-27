@@ -49,7 +49,8 @@ bool CHashSigner::SignHash(const uint256& hash, const CKey key, std::vector<unsi
 bool CHashSigner::VerifyHash(const uint256& hash, const CPubKey pubkey, const std::vector<unsigned char>& vchSig, std::string& strErrorRet)
 {
     CPubKey pubkeyFromSig;
-    if(!pubkeyFromSig.RecoverCompact(hash, vchSig)) {
+    CPubKey::InputScriptType inputScriptType;
+    if(!pubkeyFromSig.RecoverCompact(hash, vchSig, inputScriptType)) {
         strErrorRet = "Error recovering public key.";
         return false;
     }

@@ -218,7 +218,7 @@ bool CKey::VerifyPubKey(const CPubKey& pubkey) const {
     return pubkey.Verify(hash, vchSig);
 }
 
-bool CKey::SignCompact(const uint256 &hash, std::vector<unsigned char>& vchSig, InputScriptType scriptType) const {
+bool CKey::SignCompact(const uint256 &hash, std::vector<unsigned char>& vchSig, CPubKey::InputScriptType scriptType) const {
     if (!fValid)
         return false;
     vchSig.resize(CPubKey::COMPACT_SIGNATURE_SIZE);
@@ -231,8 +231,8 @@ bool CKey::SignCompact(const uint256 &hash, std::vector<unsigned char>& vchSig, 
     assert(rec != -1);
 
     switch(scriptType) {
-    case InputScriptType::SPENDP2SHWITNESS: vchSig[0] = 31 + rec + (fCompressed ? 4 : 0); break;
-    case InputScriptType::SPENDWITNESS: vchSig[0] = 35 + rec + (fCompressed ? 4 : 0); break;
+    case CPubKey::InputScriptType::SPENDP2SHWITNESS: vchSig[0] = 31 + rec + (fCompressed ? 4 : 0); break;
+    case CPubKey::InputScriptType::SPENDWITNESS: vchSig[0] = 35 + rec + (fCompressed ? 4 : 0); break;
     default:
         vchSig[0] = 27 + rec + (fCompressed ? 4 : 0); break;
     }
