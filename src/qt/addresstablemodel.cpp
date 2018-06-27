@@ -81,17 +81,15 @@ public:
     {
         cachedAddressTable.clear();
         {
-            LOCK(wallet->cs_wallet);
-            BOOST_FOREACH(const PAIRTYPE(CTxDestination, CAddressBookData)& item, wallet->mapAddressBook)
+            for (const auto& address : wallet.getAddresses())
             {
-                const CBitcoinAddress& address = item.first;
-                bool fMine = IsMine(*wallet, address.Get());
+                //const CBitcoinAddress& address = item.first;
+                //bool fMine = IsMine(*wallet, address.Get());
                 AddressTableEntry::Type addressType = translateTransactionType(
-                        QString::fromStdString(item.second.purpose), fMine);
-                const std::string& strName = item.second.name;
+                            QString::fromStdString(address.purpose), address.is_mine);
                 cachedAddressTable.append(AddressTableEntry(addressType,
-                                  QString::fromStdString(strName),
-                                  QString::fromStdString(address.ToString())));
+                                                            QString::fromStdString(address.name),
+                                                            QString::fromStdString(EncodeDestination(address.dest))));
             }
         }
         // qLowerBound() and qUpperBound() require our cachedAddressTable list to be sorted in asc order
@@ -104,9 +102,9 @@ public:
     {
         // Find address / label in model
         QList<AddressTableEntry>::iterator lower = qLowerBound(
-            cachedAddressTable.begin(), cachedAddressTable.end(), address, AddressTableEntryLessThan());
+                    cachedAddressTable.begin(), cachedAddressTable.end(), address, AddressTableEntryLessThan());
         QList<AddressTableEntry>::iterator upper = qUpperBound(
-            cachedAddressTable.begin(), cachedAddressTable.end(), address, AddressTableEntryLessThan());
+                    cachedAddressTable.begin(), cachedAddressTable.end(), address, AddressTableEntryLessThan());
         int lowerIndex = (lower - cachedAddressTable.begin());
         int upperIndex = (upper - cachedAddressTable.begin());
         bool inModel = (lower != upper);
@@ -170,7 +168,7 @@ AddressTableModel::AddressTableModel(CWallet *wallet, WalletModel *parent) :
 {
     columns << tr("Label") << tr("Address");
     priv = new AddressTablePriv(wallet, this);
-    priv->refreshAddressTable();
+    priv->refreshAddressTable(parent->wallet());
 }
 
 AddressTableModel::~AddressTableModel()
@@ -315,7 +313,7 @@ Qt::ItemFlags AddressTableModel::flags(const QModelIndex &index) const
     // Can edit address and label for sending addresses,
     // and only label for receiving addresses.
     if(rec->type == AddressTableEntry::Sending ||
-      (rec->type == AddressTableEntry::Receiving && index.column()==Label))
+            (rec->type == AddressTableEntry::Receiving && index.column()==Label))
     {
         retval |= Qt::ItemIsEditable;
     }
@@ -337,7 +335,7 @@ QModelIndex AddressTableModel::index(int row, int column, const QModelIndex &par
 }
 
 void AddressTableModel::updateEntry(const QString &address,
-        const QString &label, bool isMine, const QString &purpose, int status)
+                                    const QString &label, bool isMine, const QString &purpose, int status)
 {
     // Update address book model from XSN core
     priv->updateEntry(address, label, isMine, purpose, status);

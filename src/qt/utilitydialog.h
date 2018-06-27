@@ -8,12 +8,12 @@
 #include <QDialog>
 #include <QObject>
 
+class BitcoinGUI;
+class ClientModel;
+
 namespace interfaces {
     class Node;
 }
-
-class BitcoinGUI;
-class ClientModel;
 
 namespace Ui {
     class HelpMessageDialog;

@@ -45,8 +45,8 @@ public Q_SLOTS:
     /** Show message and progress */
     void showMessage(const QString &message, int alignment, const QColor &color);
 
-    /** Sets the break action */
-    void setBreakAction(const std::function<void(void)> &action);
+//    /** Sets the break action */
+//    void setBreakAction(const std::function<void(void)> &action);
 protected:
     bool eventFilter(QObject * obj, QEvent * ev);
 

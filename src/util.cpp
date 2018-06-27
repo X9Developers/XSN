@@ -370,10 +370,10 @@ static bool InterpretNegatedOption(std::string& key, std::string& val)
 
 ArgsManager::ArgsManager() :
     /* These options would cause cross-contamination if values for
-             * mainnet were used while running on regtest/testnet (or vice-versa).
-             * Setting them as section_only_args ensures that sharing a config file
-             * between mainnet and regtest/testnet won't cause problems due to these
-             * parameters by accident. */
+                             * mainnet were used while running on regtest/testnet (or vice-versa).
+                             * Setting them as section_only_args ensures that sharing a config file
+                             * between mainnet and regtest/testnet won't cause problems due to these
+                             * parameters by accident. */
     m_network_only_args{
         "-addnode", "-connect",
         "-port", "-bind",
@@ -568,47 +568,47 @@ std::string ArgsManager::GetHelpMessage()
     std::string usage = "";
     for (const auto& arg_map : m_available_args) {
         switch(arg_map.first) {
-            case OptionsCategory::OPTIONS:
-                usage += HelpMessageGroup("Options:");
-                break;
-            case OptionsCategory::CONNECTION:
-                usage += HelpMessageGroup("Connection options:");
-                break;
-            case OptionsCategory::ZMQ:
-                usage += HelpMessageGroup("ZeroMQ notification options:");
-                break;
-            case OptionsCategory::DEBUG_TEST:
-                usage += HelpMessageGroup("Debugging/Testing options:");
-                break;
-            case OptionsCategory::NODE_RELAY:
-                usage += HelpMessageGroup("Node relay options:");
-                break;
-            case OptionsCategory::BLOCK_CREATION:
-                usage += HelpMessageGroup("Block creation options:");
-                break;
-            case OptionsCategory::RPC:
-                usage += HelpMessageGroup("RPC server options:");
-                break;
-            case OptionsCategory::WALLET:
-                usage += HelpMessageGroup("Wallet options:");
-                break;
-            case OptionsCategory::WALLET_DEBUG_TEST:
-                if (show_debug) usage += HelpMessageGroup("Wallet debugging/testing options:");
-                break;
-            case OptionsCategory::CHAINPARAMS:
-                usage += HelpMessageGroup("Chain selection options:");
-                break;
-            case OptionsCategory::GUI:
-                usage += HelpMessageGroup("UI Options:");
-                break;
-            case OptionsCategory::COMMANDS:
-                usage += HelpMessageGroup("Commands:");
-                break;
-            case OptionsCategory::REGISTER_COMMANDS:
-                usage += HelpMessageGroup("Register Commands:");
-                break;
-            default:
-                break;
+        case OptionsCategory::OPTIONS:
+            usage += HelpMessageGroup("Options:");
+            break;
+        case OptionsCategory::CONNECTION:
+            usage += HelpMessageGroup("Connection options:");
+            break;
+        case OptionsCategory::ZMQ:
+            usage += HelpMessageGroup("ZeroMQ notification options:");
+            break;
+        case OptionsCategory::DEBUG_TEST:
+            usage += HelpMessageGroup("Debugging/Testing options:");
+            break;
+        case OptionsCategory::NODE_RELAY:
+            usage += HelpMessageGroup("Node relay options:");
+            break;
+        case OptionsCategory::BLOCK_CREATION:
+            usage += HelpMessageGroup("Block creation options:");
+            break;
+        case OptionsCategory::RPC:
+            usage += HelpMessageGroup("RPC server options:");
+            break;
+        case OptionsCategory::WALLET:
+            usage += HelpMessageGroup("Wallet options:");
+            break;
+        case OptionsCategory::WALLET_DEBUG_TEST:
+            if (show_debug) usage += HelpMessageGroup("Wallet debugging/testing options:");
+            break;
+        case OptionsCategory::CHAINPARAMS:
+            usage += HelpMessageGroup("Chain selection options:");
+            break;
+        case OptionsCategory::GUI:
+            usage += HelpMessageGroup("UI Options:");
+            break;
+        case OptionsCategory::COMMANDS:
+            usage += HelpMessageGroup("Commands:");
+            break;
+        case OptionsCategory::REGISTER_COMMANDS:
+            usage += HelpMessageGroup("Register Commands:");
+            break;
+        default:
+            break;
         }
 
         // When we get to the hidden options, stop
@@ -704,9 +704,11 @@ static fs::path pathCached;
 static fs::path pathCachedNetSpecific;
 static CCriticalSection csPathCached;
 
+static fs::path backupsDirCached;
+static CCriticalSection csBackupsDirCached;
+
 const fs::path &GetBlocksDir(bool fNetSpecific)
 {
-
     LOCK(csPathCached);
 
     fs::path &path = fNetSpecific ? g_blocks_path_cache_net_specific : g_blocks_path_cached;
@@ -735,7 +737,6 @@ const fs::path &GetBlocksDir(bool fNetSpecific)
 
 const fs::path &GetDataDir(bool fNetSpecific)
 {
-
     LOCK(csPathCached);
 
     fs::path &path = fNetSpecific ? pathCachedNetSpecific : pathCached;
@@ -763,6 +764,37 @@ const fs::path &GetDataDir(bool fNetSpecific)
     }
 
     return path;
+}
+
+const fs::path &GetBackupsDir(bool fNetSpecific)
+{
+    LOCK(csBackupsDirCached);
+
+    fs::path &path = backupsDirCached;
+
+    if (!path.empty())
+        return path;
+
+    if (gArgs.IsArgSet("-walletbackupsdir")) {
+        path = fs::system_complete(gArgs.GetArg("-walletbackupsdir", ""));
+        if (!fs::is_directory(path)) {
+            path = "";
+            return path;
+        }
+    } else {
+        path = GetDefaultDataDir();
+    }
+
+    if (fNetSpecific)
+        path /= BaseParams().DataDir();
+
+    if (fs::create_directories(path)) {
+        // This is the first run, create wallets subdirectory too
+        fs::create_directories(path / "backups");
+    }
+
+    return path;
+
 }
 
 void ClearDatadirCache()
