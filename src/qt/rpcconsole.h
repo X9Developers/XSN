@@ -7,6 +7,7 @@
 
 #include <qt/guiutil.h>
 #include <qt/peertablemodel.h>
+#include <trafficgraphdata.h>
 
 #include <net.h>
 

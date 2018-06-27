@@ -150,6 +150,7 @@ BitcoinGUI::BitcoinGUI(interfaces::Node& node, const PlatformStyle *_platformSty
     progressBar(0),
     progressDialog(0),
     appMenuBar(0),
+    appToolBar(0),
     overviewAction(0),
     historyAction(0),
     masternodeAction(0),
@@ -696,6 +697,7 @@ void BitcoinGUI::createToolBars(const NetworkStyle* networkStyle)
     if(walletFrame)
     {
         QToolBar *toolbar = new QToolBar(tr("Tabs toolbar"));
+        appToolBar = toolbar;
         toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
         toolbar->setStyleSheet("QToolBar { spacing: 1px; }");
         toolbar->setOrientation(Qt::Vertical);
