@@ -84,7 +84,7 @@ public:
     virtual bool shutdownRequested() = 0;
 
     //! Setup arguments
-    virtual bool setupServerArgs() = 0;
+    virtual void setupServerArgs() = 0;
 
     //! Map port.
     virtual void mapPort(bool use_upnp) = 0;

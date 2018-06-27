@@ -9,7 +9,7 @@
 #include "config/xsn-config.h"
 #endif
 
-#include "amount.h"
+#include <amount.h>
 
 #include <QLabel>
 #include <QMainWindow>
