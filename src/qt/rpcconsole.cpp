@@ -495,9 +495,6 @@ RPCConsole::RPCConsole(interfaces::Node& node, const PlatformStyle *_platformSty
     // set library version labels
 #ifdef ENABLE_WALLET
     ui->berkeleyDBVersion->setText(DbEnv::version(0, 0, 0));
-    std::string walletPath = GetDataDir().string();
-    walletPath += QDir::separator().toLatin1() + GetArg("-wallet", "wallet.dat");
-    ui->wallet_path->setText(QString::fromStdString(walletPath));
 #else
     ui->label_berkeleyDBVersion->hide();
     ui->berkeleyDBVersion->hide();
@@ -512,7 +509,6 @@ RPCConsole::RPCConsole(interfaces::Node& node, const PlatformStyle *_platformSty
 
     ui->peerHeading->setText(tr("Select a peer to view detailed information."));
 
-    QSettings settings;
     consoleFontSize = settings.value(fontSizeSettingsKey, QFontInfo(QFont()).pointSize()).toInt();
     clear();
 }
@@ -645,7 +641,7 @@ void RPCConsole::setClientModel(ClientModel *model)
         connect(model->getPeerTableModel(), SIGNAL(layoutChanged()), this, SLOT(peerLayoutChanged()));
         // peer table signal handling - cache selected node ids
         connect(model->getPeerTableModel(), SIGNAL(layoutAboutToBeChanged()), this, SLOT(peerLayoutAboutToChange()));
-        
+
         // set up ban table
         ui->banlistWidget->setModel(model->getBanTableModel());
         ui->banlistWidget->verticalHeader()->hide();
@@ -688,9 +684,13 @@ void RPCConsole::setClientModel(ClientModel *model)
         for (size_t i = 0; i < commandList.size(); ++i)
         {
             wordList << commandList[i].c_str();
+            wordList << ("help " + commandList[i]).c_str();
         }
 
+        wordList << "help-console";
+        wordList.sort();
         autoCompleter = new QCompleter(wordList, this);
+        autoCompleter->setModelSorting(QCompleter::CaseSensitivelySortedModel);
         ui->lineEdit->setCompleter(autoCompleter);
         autoCompleter->popup()->installEventFilter(this);
         // Start thread to execute RPC commands.
@@ -707,18 +707,18 @@ void RPCConsole::setClientModel(ClientModel *model)
 #ifdef ENABLE_WALLET
 void RPCConsole::addWallet(WalletModel * const walletModel)
 {
-    const QString name = walletModel->getWalletName();
-    // use name for text and internal data object (to allow to move to a wallet id later)
-    QString display_name = name.isEmpty() ? "["+tr("default wallet")+"]" : name;
-    ui->WalletSelector->addItem(display_name, name);
-    if (ui->WalletSelector->count() == 2 && !isVisible()) {
-        // First wallet added, set to default so long as the window isn't presently visible (and potentially in use)
-        ui->WalletSelector->setCurrentIndex(1);
-    }
-    if (ui->WalletSelector->count() > 2) {
-        ui->WalletSelector->setVisible(true);
-        ui->WalletSelectorLabel->setVisible(true);
-    }
+//    const QString name = walletModel->getWalletName();
+//    // use name for text and internal data object (to allow to move to a wallet id later)
+//    QString display_name = name.isEmpty() ? "["+tr("default wallet")+"]" : name;
+//    ui->WalletSelector->addItem(display_name, name);
+//    if (ui->WalletSelector->count() == 2 && !isVisible()) {
+//        // First wallet added, set to default so long as the window isn't presently visible (and potentially in use)
+//        ui->WalletSelector->setCurrentIndex(1);
+//    }
+//    if (ui->WalletSelector->count() > 2) {
+//        ui->WalletSelector->setVisible(true);
+//        ui->WalletSelectorLabel->setVisible(true);
+//    }
 }
 #endif
 
@@ -860,6 +860,7 @@ void RPCConsole::clear(bool clearHistory)
                 "td.message { font-family: %1; font-size: %2; white-space:pre-wrap; } "
                 "td.cmd-request { color: #006060; } "
                 "td.cmd-error { color: red; } "
+                ".secwarning { color: red; }"
                 "b { color: #006060; } "
             ).arg(fixedFontInfo.family(), QString("%1pt").arg(consoleFontSize))
         );
@@ -967,19 +968,19 @@ void RPCConsole::on_lineEdit_returnPressed()
 
         QString walletID;
 #ifdef ENABLE_WALLET
-        const int wallet_index = ui->WalletSelector->currentIndex();
-        if (wallet_index > 0) {
-            walletID = (QString)ui->WalletSelector->itemData(wallet_index).value<QString>();
-        }
+//        const int wallet_index = ui->WalletSelector->currentIndex();
+//        if (wallet_index > 0) {
+//            walletID = (QString)ui->WalletSelector->itemData(wallet_index).value<QString>();
+//        }
 
-        if (m_last_wallet_id != walletID) {
-            if (walletID.isNull()) {
-                message(CMD_REQUEST, tr("Executing command without any wallet"));
-            } else {
-                message(CMD_REQUEST, tr("Executing command using \"%1\" wallet").arg(walletID));
-            }
-            m_last_wallet_id = walletID;
-        }
+//        if (m_last_wallet_id != walletID) {
+//            if (walletID.isNull()) {
+//                message(CMD_REQUEST, tr("Executing command without any wallet"));
+//            } else {
+//                message(CMD_REQUEST, tr("Executing command using \"%1\" wallet").arg(walletID));
+//            }
+//            m_last_wallet_id = walletID;
+//        }
 #endif
 
         message(CMD_REQUEST, QString::fromStdString(strFilteredCmd));
