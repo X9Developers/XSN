@@ -24,6 +24,7 @@
 #include <QCloseEvent>
 #include <QDesktopWidget>
 #include <QPainter>
+#include <QPixmap>
 
 SplashScreen::SplashScreen(interfaces::Node& node, Qt::WindowFlags f, const NetworkStyle *networkStyle) :
     QWidget(0, f), curAlignment(0), m_node(node)
@@ -54,9 +55,9 @@ SplashScreen::SplashScreen(interfaces::Node& node, Qt::WindowFlags f, const Netw
     // networkstyle.cpp can't (yet) read themes, so we do it here to get the correct Splash-screen
     QString basePath = QString(":/images/res/images/other/%1/%2.png").arg(GUIUtil::getThemeName());
     QString splashScreenPath = basePath.arg("splash");
-    if(GetBoolArg("-regtest", false))
+    if(gArgs.GetBoolArg("-regtest", false))
         splashScreenPath = basePath.arg("splash");
-    if(GetBoolArg("-testnet", false))
+    if(gArgs.GetBoolArg("-testnet", false))
         splashScreenPath = basePath.arg("splash");
 
     QString font = QApplication::font().toString();
