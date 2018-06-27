@@ -5,9 +5,8 @@
 #ifndef BITCOIN_QT_RPCCONSOLE_H
 #define BITCOIN_QT_RPCCONSOLE_H
 
-#include <guiutil.h>
-#include <peertablemodel.h>
-#include <trafficgraphdata.h>
+#include <qt/guiutil.h>
+#include <qt/peertablemodel.h>
 
 #include <net.h>
 
@@ -41,6 +40,11 @@ class RPCConsole: public QWidget
 public:
     explicit RPCConsole(interfaces::Node& node, const PlatformStyle *platformStyle, QWidget *parent);
     ~RPCConsole();
+
+    static bool RPCParseCommandLine(interfaces::Node* node, std::string &strResult, const std::string &strCommand, bool fExecute, std::string * const pstrFilteredOut = nullptr, const std::string *walletID = nullptr);
+    static bool RPCExecuteCommandLine(interfaces::Node& node, std::string &strResult, const std::string &strCommand, std::string * const pstrFilteredOut = nullptr, const std::string *walletID = nullptr) {
+        return RPCParseCommandLine(&node, strResult, strCommand, true, pstrFilteredOut, walletID);
+    }
 
     void setClientModel(ClientModel *model);
     void addWallet(WalletModel * const walletModel);
@@ -162,6 +166,7 @@ private:
     ClientModel *clientModel = nullptr;
     QStringList history;
     int historyPtr = 0;
+    QString cmdBeforeBrowsing;
     QList<NodeId> cachedNodeids;
     const PlatformStyle* const platformStyle;
     RPCTimerInterface *rpcTimerInterface = nullptr;
@@ -170,6 +175,7 @@ private:
     int consoleFontSize = 0;
     QCompleter *autoCompleter = nullptr;
     QThread thread;
+    QString m_last_wallet_id;
 
     /** Update UI with latest network info from model. */
     void updateNetworkState();

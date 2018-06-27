@@ -38,6 +38,7 @@
 #include <interfaces/wallet.h>
 #include <ui_interface.h>
 #include <util.h>
+#include <miner.h>
 
 #include <iostream>
 
