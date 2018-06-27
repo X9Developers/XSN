@@ -9,7 +9,7 @@
 #include "config/xsn-config.h"
 #endif
 
-#include "amount.h"
+#include <amount.h>
 
 #include <QLabel>
 #include <QMainWindow>
@@ -105,6 +105,7 @@ private:
     QProgressDialog *progressDialog;
 
     QMenuBar *appMenuBar;
+    QToolBar *appToolBar;
     QAction *overviewAction;
     QAction *historyAction;
     QAction *masternodeAction;

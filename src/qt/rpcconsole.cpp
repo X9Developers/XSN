@@ -3,15 +3,19 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <rpcconsole.h>
-#include <ui_debugwindow.h>
+#if defined(HAVE_CONFIG_H)
+#include <config/xsn-config.h>
+#endif
 
-#include <bantablemodel.h>
-#include <clientmodel.h>
-#include <guiutil.h>
-#include <platformstyle.h>
+#include <qt/rpcconsole.h>
+#include <qt/forms/ui_debugwindow.h>
 
+#include <qt/bantablemodel.h>
+#include <qt/clientmodel.h>
+#include <qt/platformstyle.h>
+#include <qt/walletmodel.h>
 #include <chainparams.h>
+#include <interfaces/node.h>
 #include <netbase.h>
 #include <rpc/server.h>
 #include <rpc/client.h>
@@ -23,11 +27,14 @@
 
 #ifdef ENABLE_WALLET
 #include <db_cxx.h>
+#include <wallet/wallet.h>
 #endif
 
 #include <QDir>
+#include <QDesktopWidget>
 #include <QKeyEvent>
 #include <QMenu>
+#include <QMessageBox>
 #include <QScrollBar>
 #include <QSettings>
 #include <QSignalMapper>
@@ -45,6 +52,7 @@
 // TODO: receive errors and debug messages through ClientModel
 
 const int CONSOLE_HISTORY = 50;
+const int INITIAL_TRAFFIC_GRAPH_MINS = 30;
 const QSize FONT_RANGE(4, 40);
 const char fontSizeSettingsKey[] = "consoleFontSize";
 
@@ -74,12 +82,17 @@ const struct {
 class RPCExecutor : public QObject
 {
     Q_OBJECT
+public:
+    RPCExecutor(interfaces::Node& node) : m_node(node) {}
 
 public Q_SLOTS:
     void request(const QString &command, const QString &walletID);
 
 Q_SIGNALS:
     void reply(int category, const QString &command);
+
+private:
+    interfaces::Node& m_node;
 };
 
 /** Class for handling RPC timers
@@ -116,12 +129,14 @@ public:
 };
 
 
-#include <rpcconsole.moc"
+#include <qt/rpcconsole.moc>
 
 /**
- * Split shell command line into a list of arguments. Aims to emulate \c bash and friends.
+ * Split shell command line into a list of arguments and optionally execute the command(s).
+ * Aims to emulate \c bash and friends.
  *
- * - Arguments are delimited with whitespace
+ * - Command nesting is possible with parenthesis; for example: validateaddress(getnewaddress())
+ * - Arguments are delimited with whitespace or comma
  * - Extra whitespace at the beginning and end and between arguments will be ignored
  * - Text can be "double" or 'single' quoted
  * - The backslash \c \ is used as escape character
@@ -129,107 +144,291 @@ public:
  *   - Within double quotes, only escape \c " and backslashes before a \c " or another backslash
  *   - Within single quotes, no escaping is possible and no special interpretation takes place
  *
- * @param[out]   args        Parsed arguments will be appended to this list
+ * @param[in]    node    optional node to execute command on
+ * @param[out]   result      stringified Result from the executed command(chain)
  * @param[in]    strCommand  Command line to split
+ * @param[in]    fExecute    set true if you want the command to be executed
+ * @param[out]   pstrFilteredOut  Command line, filtered to remove any sensitive data
  */
-bool parseCommandLine(std::vector<std::string> &args, const std::string &strCommand)
+
+bool RPCConsole::RPCParseCommandLine(interfaces::Node* node, std::string &strResult, const std::string &strCommand, const bool fExecute, std::string * const pstrFilteredOut, const std::string *walletID)
 {
+    std::vector< std::vector<std::string> > stack;
+    stack.push_back(std::vector<std::string>());
+
     enum CmdParseState
     {
         STATE_EATING_SPACES,
+        STATE_EATING_SPACES_IN_ARG,
+        STATE_EATING_SPACES_IN_BRACKETS,
         STATE_ARGUMENT,
         STATE_SINGLEQUOTED,
         STATE_DOUBLEQUOTED,
         STATE_ESCAPE_OUTER,
-        STATE_ESCAPE_DOUBLEQUOTED
+        STATE_ESCAPE_DOUBLEQUOTED,
+        STATE_COMMAND_EXECUTED,
+        STATE_COMMAND_EXECUTED_INNER
     } state = STATE_EATING_SPACES;
     std::string curarg;
-    Q_FOREACH(char ch, strCommand)
+    UniValue lastResult;
+    unsigned nDepthInsideSensitive = 0;
+    size_t filter_begin_pos = 0, chpos;
+    std::vector<std::pair<size_t, size_t>> filter_ranges;
+
+    auto add_to_current_stack = [&](const std::string& strArg) {
+        if (stack.back().empty() && (!nDepthInsideSensitive) && historyFilter.contains(QString::fromStdString(strArg), Qt::CaseInsensitive)) {
+            nDepthInsideSensitive = 1;
+            filter_begin_pos = chpos;
+        }
+        // Make sure stack is not empty before adding something
+        if (stack.empty()) {
+            stack.push_back(std::vector<std::string>());
+        }
+        stack.back().push_back(strArg);
+    };
+
+    auto close_out_params = [&]() {
+        if (nDepthInsideSensitive) {
+            if (!--nDepthInsideSensitive) {
+                assert(filter_begin_pos);
+                filter_ranges.push_back(std::make_pair(filter_begin_pos, chpos));
+                filter_begin_pos = 0;
+            }
+        }
+        stack.pop_back();
+    };
+
+    std::string strCommandTerminated = strCommand;
+    if (strCommandTerminated.back() != '\n')
+        strCommandTerminated += "\n";
+    for (chpos = 0; chpos < strCommandTerminated.size(); ++chpos)
     {
+        char ch = strCommandTerminated[chpos];
         switch(state)
         {
-        case STATE_ARGUMENT: // In or after argument
-        case STATE_EATING_SPACES: // Handle runs of whitespace
-            switch(ch)
+            case STATE_COMMAND_EXECUTED_INNER:
+            case STATE_COMMAND_EXECUTED:
             {
-            case '"': state = STATE_DOUBLEQUOTED; break;
-            case '\'': state = STATE_SINGLEQUOTED; break;
-            case '\\': state = STATE_ESCAPE_OUTER; break;
-            case ' ': case '\n': case '\t':
-                if(state == STATE_ARGUMENT) // Space ends argument
+                bool breakParsing = true;
+                switch(ch)
                 {
-                    args.push_back(curarg);
-                    curarg.clear();
+                    case '[': curarg.clear(); state = STATE_COMMAND_EXECUTED_INNER; break;
+                    default:
+                        if (state == STATE_COMMAND_EXECUTED_INNER)
+                        {
+                            if (ch != ']')
+                            {
+                                // append char to the current argument (which is also used for the query command)
+                                curarg += ch;
+                                break;
+                            }
+                            if (curarg.size() && fExecute)
+                            {
+                                // if we have a value query, query arrays with index and objects with a string key
+                                UniValue subelement;
+                                if (lastResult.isArray())
+                                {
+                                    for(char argch: curarg)
+                                        if (!std::isdigit(argch))
+                                            throw std::runtime_error("Invalid result query");
+                                    subelement = lastResult[atoi(curarg.c_str())];
+                                }
+                                else if (lastResult.isObject())
+                                    subelement = find_value(lastResult, curarg);
+                                else
+                                    throw std::runtime_error("Invalid result query"); //no array or object: abort
+                                lastResult = subelement;
+                            }
+
+                            state = STATE_COMMAND_EXECUTED;
+                            break;
+                        }
+                        // don't break parsing when the char is required for the next argument
+                        breakParsing = false;
+
+                        // pop the stack and return the result to the current command arguments
+                        close_out_params();
+
+                        // don't stringify the json in case of a string to avoid doublequotes
+                        if (lastResult.isStr())
+                            curarg = lastResult.get_str();
+                        else
+                            curarg = lastResult.write(2);
+
+                        // if we have a non empty result, use it as stack argument otherwise as general result
+                        if (curarg.size())
+                        {
+                            if (stack.size())
+                                add_to_current_stack(curarg);
+                            else
+                                strResult = curarg;
+                        }
+                        curarg.clear();
+                        // assume eating space state
+                        state = STATE_EATING_SPACES;
                 }
-                state = STATE_EATING_SPACES;
+                if (breakParsing)
+                    break;
+            }
+            case STATE_ARGUMENT: // In or after argument
+            case STATE_EATING_SPACES_IN_ARG:
+            case STATE_EATING_SPACES_IN_BRACKETS:
+            case STATE_EATING_SPACES: // Handle runs of whitespace
+                switch(ch)
+            {
+                case '"': state = STATE_DOUBLEQUOTED; break;
+                case '\'': state = STATE_SINGLEQUOTED; break;
+                case '\\': state = STATE_ESCAPE_OUTER; break;
+                case '(': case ')': case '\n':
+                    if (state == STATE_EATING_SPACES_IN_ARG)
+                        throw std::runtime_error("Invalid Syntax");
+                    if (state == STATE_ARGUMENT)
+                    {
+                        if (ch == '(' && stack.size() && stack.back().size() > 0)
+                        {
+                            if (nDepthInsideSensitive) {
+                                ++nDepthInsideSensitive;
+                            }
+                            stack.push_back(std::vector<std::string>());
+                        }
+
+                        // don't allow commands after executed commands on baselevel
+                        if (!stack.size())
+                            throw std::runtime_error("Invalid Syntax");
+
+                        add_to_current_stack(curarg);
+                        curarg.clear();
+                        state = STATE_EATING_SPACES_IN_BRACKETS;
+                    }
+                    if ((ch == ')' || ch == '\n') && stack.size() > 0)
+                    {
+                        if (fExecute) {
+                            // Convert argument list to JSON objects in method-dependent way,
+                            // and pass it along with the method name to the dispatcher.
+                            UniValue params = RPCConvertValues(stack.back()[0], std::vector<std::string>(stack.back().begin() + 1, stack.back().end()));
+                            std::string method = stack.back()[0];
+                            std::string uri;
+#ifdef ENABLE_WALLET
+                            if (walletID) {
+                                QByteArray encodedName = QUrl::toPercentEncoding(QString::fromStdString(*walletID));
+                                uri = "/wallet/"+std::string(encodedName.constData(), encodedName.length());
+                            }
+#endif
+                            assert(node);
+                            lastResult = node->executeRpc(method, params, uri);
+                        }
+
+                        state = STATE_COMMAND_EXECUTED;
+                        curarg.clear();
+                    }
+                    break;
+                case ' ': case ',': case '\t':
+                    if(state == STATE_EATING_SPACES_IN_ARG && curarg.empty() && ch == ',')
+                        throw std::runtime_error("Invalid Syntax");
+
+                    else if(state == STATE_ARGUMENT) // Space ends argument
+                    {
+                        add_to_current_stack(curarg);
+                        curarg.clear();
+                    }
+                    if ((state == STATE_EATING_SPACES_IN_BRACKETS || state == STATE_ARGUMENT) && ch == ',')
+                    {
+                        state = STATE_EATING_SPACES_IN_ARG;
+                        break;
+                    }
+                    state = STATE_EATING_SPACES;
+                    break;
+                default: curarg += ch; state = STATE_ARGUMENT;
+            }
                 break;
-            default: curarg += ch; state = STATE_ARGUMENT;
-            }
-            break;
-        case STATE_SINGLEQUOTED: // Single-quoted string
-            switch(ch)
+            case STATE_SINGLEQUOTED: // Single-quoted string
+                switch(ch)
             {
-            case '\'': state = STATE_ARGUMENT; break;
-            default: curarg += ch;
+                case '\'': state = STATE_ARGUMENT; break;
+                default: curarg += ch;
             }
-            break;
-        case STATE_DOUBLEQUOTED: // Double-quoted string
-            switch(ch)
+                break;
+            case STATE_DOUBLEQUOTED: // Double-quoted string
+                switch(ch)
             {
-            case '"': state = STATE_ARGUMENT; break;
-            case '\\': state = STATE_ESCAPE_DOUBLEQUOTED; break;
-            default: curarg += ch;
+                case '"': state = STATE_ARGUMENT; break;
+                case '\\': state = STATE_ESCAPE_DOUBLEQUOTED; break;
+                default: curarg += ch;
             }
-            break;
-        case STATE_ESCAPE_OUTER: // '\' outside quotes
-            curarg += ch; state = STATE_ARGUMENT;
-            break;
-        case STATE_ESCAPE_DOUBLEQUOTED: // '\' in double-quoted text
-            if(ch != '"' && ch != '\\') curarg += '\\'; // keep '\' for everything but the quote and '\' itself
-            curarg += ch; state = STATE_DOUBLEQUOTED;
-            break;
+                break;
+            case STATE_ESCAPE_OUTER: // '\' outside quotes
+                curarg += ch; state = STATE_ARGUMENT;
+                break;
+            case STATE_ESCAPE_DOUBLEQUOTED: // '\' in double-quoted text
+                if(ch != '"' && ch != '\\') curarg += '\\'; // keep '\' for everything but the quote and '\' itself
+                curarg += ch; state = STATE_DOUBLEQUOTED;
+                break;
+        }
+    }
+    if (pstrFilteredOut) {
+        if (STATE_COMMAND_EXECUTED == state) {
+            assert(!stack.empty());
+            close_out_params();
+        }
+        *pstrFilteredOut = strCommand;
+        for (auto i = filter_ranges.rbegin(); i != filter_ranges.rend(); ++i) {
+            pstrFilteredOut->replace(i->first, i->second - i->first, "(…)");
         }
     }
     switch(state) // final state
     {
-    case STATE_EATING_SPACES:
-        return true;
-    case STATE_ARGUMENT:
-        args.push_back(curarg);
-        return true;
-    default: // ERROR to end in one of the other states
-        return false;
+        case STATE_COMMAND_EXECUTED:
+            if (lastResult.isStr())
+                strResult = lastResult.get_str();
+            else
+                strResult = lastResult.write(2);
+        case STATE_ARGUMENT:
+        case STATE_EATING_SPACES:
+            return true;
+        default: // ERROR to end in one of the other states
+            return false;
     }
 }
 
-void RPCExecutor::request(const QString &command)
+void RPCExecutor::request(const QString &command, const QString &walletID)
 {
-    std::vector<std::string> args;
-    if(!parseCommandLine(args, command.toStdString()))
-    {
-        Q_EMIT reply(RPCConsole::CMD_ERROR, QString("Parse error: unbalanced ' or \""));
-        return;
-    }
-    if(args.empty())
-        return; // Nothing to do
     try
     {
-        std::string strPrint;
-        // Convert argument list to JSON objects in method-dependent way,
-        // and pass it along with the method name to the dispatcher.
-        UniValue result = tableRPC.execute(
-            args[0],
-            RPCConvertValues(args[0], std::vector<std::string>(args.begin() + 1, args.end())));
+        std::string result;
+        std::string executableCommand = command.toStdString() + "\n";
 
-        // Format result reply
-        if (result.isNull())
-            strPrint = "";
-        else if (result.isStr())
-            strPrint = result.get_str();
-        else
-            strPrint = result.write(2);
+        // Catch the console-only-help command before RPC call is executed and reply with help text as-if a RPC reply.
+        if(executableCommand == "help-console\n")
+        {
+            Q_EMIT reply(RPCConsole::CMD_REPLY, QString(("\n"
+                "This console accepts RPC commands using the standard syntax.\n"
+                "   example:    getblockhash 0\n\n"
 
-        Q_EMIT reply(RPCConsole::CMD_REPLY, QString::fromStdString(strPrint));
+                "This console can also accept RPC commands using parenthesized syntax.\n"
+                "   example:    getblockhash(0)\n\n"
+
+                "Commands may be nested when specified with the parenthesized syntax.\n"
+                "   example:    getblock(getblockhash(0) 1)\n\n"
+
+                "A space or a comma can be used to delimit arguments for either syntax.\n"
+                "   example:    getblockhash 0\n"
+                "               getblockhash,0\n\n"
+
+                "Named results can be queried with a non-quoted key string in brackets.\n"
+                "   example:    getblock(getblockhash(0) true)[tx]\n\n"
+
+                "Results without keys can be queried using an integer in brackets.\n"
+                "   example:    getblock(getblockhash(0),true)[tx][0]\n\n")));
+            return;
+        }
+        std::string wallet_id = walletID.toStdString();
+        if (!RPCConsole::RPCExecuteCommandLine(m_node, result, executableCommand, nullptr, walletID.isNull() ? nullptr : &wallet_id))
+        {
+            Q_EMIT reply(RPCConsole::CMD_ERROR, QString("Parse error: unbalanced ' or \""));
+            return;
+        }
+
+        Q_EMIT reply(RPCConsole::CMD_REPLY, QString::fromStdString(result));
     }
     catch (UniValue& objError)
     {
@@ -254,17 +453,18 @@ RPCConsole::RPCConsole(interfaces::Node& node, const PlatformStyle *_platformSty
     QWidget(parent),
     m_node(node),
     ui(new Ui::RPCConsole),
-    platformStyle(_platformStyle),
-    clientModel(0),
-    historyPtr(0),
-    platformStyle(platformStyle),
-    peersTableContextMenu(0),
-    banTableContextMenu(0),
-    consoleFontSize(0)
+    platformStyle(_platformStyle)
 {
+    auto theme = GUIUtil::getThemeName();
     ui->setupUi(this);
-    GUIUtil::restoreWindowGeometry("nRPCConsoleWindow", this->size(), this);
-    QString theme = GUIUtil::getThemeName();
+    QSettings settings;
+    if (!restoreGeometry(settings.value("RPCConsoleWindowGeometry").toByteArray())) {
+        // Restore failed (perhaps missing setting), center the window
+        move(QApplication::desktop()->availableGeometry().center() - frameGeometry().center());
+    }
+
+    ui->openDebugLogfileButton->setToolTip(ui->openDebugLogfileButton->toolTip().arg(tr(PACKAGE_NAME)));
+
     if (platformStyle->getImagesOnButtons()) {
         ui->openDebugLogfileButton->setIcon(QIcon(":/icons/" + theme + "/export"));
     }
@@ -295,9 +495,6 @@ RPCConsole::RPCConsole(interfaces::Node& node, const PlatformStyle *_platformSty
     // set library version labels
 #ifdef ENABLE_WALLET
     ui->berkeleyDBVersion->setText(DbEnv::version(0, 0, 0));
-    std::string walletPath = GetDataDir().string();
-    walletPath += QDir::separator().toLatin1() + GetArg("-wallet", "wallet.dat");
-    ui->wallet_path->setText(QString::fromStdString(walletPath));
 #else
     ui->label_berkeleyDBVersion->hide();
     ui->berkeleyDBVersion->hide();
@@ -312,7 +509,6 @@ RPCConsole::RPCConsole(interfaces::Node& node, const PlatformStyle *_platformSty
 
     ui->peerHeading->setText(tr("Select a peer to view detailed information."));
 
-    QSettings settings;
     consoleFontSize = settings.value(fontSizeSettingsKey, QFontInfo(QFont()).pointSize()).toInt();
     clear();
 }
@@ -445,7 +641,7 @@ void RPCConsole::setClientModel(ClientModel *model)
         connect(model->getPeerTableModel(), SIGNAL(layoutChanged()), this, SLOT(peerLayoutChanged()));
         // peer table signal handling - cache selected node ids
         connect(model->getPeerTableModel(), SIGNAL(layoutAboutToBeChanged()), this, SLOT(peerLayoutAboutToChange()));
-        
+
         // set up ban table
         ui->banlistWidget->setModel(model->getBanTableModel());
         ui->banlistWidget->verticalHeader()->hide();
@@ -488,9 +684,13 @@ void RPCConsole::setClientModel(ClientModel *model)
         for (size_t i = 0; i < commandList.size(); ++i)
         {
             wordList << commandList[i].c_str();
+            wordList << ("help " + commandList[i]).c_str();
         }
 
+        wordList << "help-console";
+        wordList.sort();
         autoCompleter = new QCompleter(wordList, this);
+        autoCompleter->setModelSorting(QCompleter::CaseSensitivelySortedModel);
         ui->lineEdit->setCompleter(autoCompleter);
         autoCompleter->popup()->installEventFilter(this);
         // Start thread to execute RPC commands.
@@ -507,18 +707,18 @@ void RPCConsole::setClientModel(ClientModel *model)
 #ifdef ENABLE_WALLET
 void RPCConsole::addWallet(WalletModel * const walletModel)
 {
-    const QString name = walletModel->getWalletName();
-    // use name for text and internal data object (to allow to move to a wallet id later)
-    QString display_name = name.isEmpty() ? "["+tr("default wallet")+"]" : name;
-    ui->WalletSelector->addItem(display_name, name);
-    if (ui->WalletSelector->count() == 2 && !isVisible()) {
-        // First wallet added, set to default so long as the window isn't presently visible (and potentially in use)
-        ui->WalletSelector->setCurrentIndex(1);
-    }
-    if (ui->WalletSelector->count() > 2) {
-        ui->WalletSelector->setVisible(true);
-        ui->WalletSelectorLabel->setVisible(true);
-    }
+//    const QString name = walletModel->getWalletName();
+//    // use name for text and internal data object (to allow to move to a wallet id later)
+//    QString display_name = name.isEmpty() ? "["+tr("default wallet")+"]" : name;
+//    ui->WalletSelector->addItem(display_name, name);
+//    if (ui->WalletSelector->count() == 2 && !isVisible()) {
+//        // First wallet added, set to default so long as the window isn't presently visible (and potentially in use)
+//        ui->WalletSelector->setCurrentIndex(1);
+//    }
+//    if (ui->WalletSelector->count() > 2) {
+//        ui->WalletSelector->setVisible(true);
+//        ui->WalletSelectorLabel->setVisible(true);
+//    }
 }
 #endif
 
@@ -660,6 +860,7 @@ void RPCConsole::clear(bool clearHistory)
                 "td.message { font-family: %1; font-size: %2; white-space:pre-wrap; } "
                 "td.cmd-request { color: #006060; } "
                 "td.cmd-error { color: red; } "
+                ".secwarning { color: red; }"
                 "b { color: #006060; } "
             ).arg(fixedFontInfo.family(), QString("%1pt").arg(consoleFontSize))
         );
@@ -749,8 +950,44 @@ void RPCConsole::on_lineEdit_returnPressed()
 
     if(!cmd.isEmpty())
     {
-        message(CMD_REQUEST, cmd);
-        Q_EMIT cmdRequest(cmd);
+        std::string strFilteredCmd;
+        try {
+            std::string dummy;
+            if (!RPCParseCommandLine(nullptr, dummy, cmd.toStdString(), false, &strFilteredCmd)) {
+                // Failed to parse command, so we cannot even filter it for the history
+                throw std::runtime_error("Invalid command line");
+            }
+        } catch (const std::exception& e) {
+            QMessageBox::critical(this, "Error", QString("Error: ") + QString::fromStdString(e.what()));
+            return;
+        }
+
+        ui->lineEdit->clear();
+
+        cmdBeforeBrowsing = QString();
+
+        QString walletID;
+#ifdef ENABLE_WALLET
+//        const int wallet_index = ui->WalletSelector->currentIndex();
+//        if (wallet_index > 0) {
+//            walletID = (QString)ui->WalletSelector->itemData(wallet_index).value<QString>();
+//        }
+
+//        if (m_last_wallet_id != walletID) {
+//            if (walletID.isNull()) {
+//                message(CMD_REQUEST, tr("Executing command without any wallet"));
+//            } else {
+//                message(CMD_REQUEST, tr("Executing command using \"%1\" wallet").arg(walletID));
+//            }
+//            m_last_wallet_id = walletID;
+//        }
+#endif
+
+        message(CMD_REQUEST, QString::fromStdString(strFilteredCmd));
+        Q_EMIT cmdRequest(cmd, walletID);
+
+        cmd = QString::fromStdString(strFilteredCmd);
+
         // Remove command, if already in history
         history.removeOne(cmd);
         // Append command to history
@@ -760,6 +997,7 @@ void RPCConsole::on_lineEdit_returnPressed()
             history.removeFirst();
         // Set pointer to end of history
         historyPtr = history.size();
+
         // Scroll console view to end
         scrollToEnd();
     }
@@ -767,6 +1005,11 @@ void RPCConsole::on_lineEdit_returnPressed()
 
 void RPCConsole::browseHistory(int offset)
 {
+    // store current text when start browsing through the history
+    if (historyPtr == history.size()) {
+        cmdBeforeBrowsing = ui->lineEdit->text();
+    }
+
     historyPtr += offset;
     if(historyPtr < 0)
         historyPtr = 0;
@@ -775,6 +1018,9 @@ void RPCConsole::browseHistory(int offset)
     QString cmd;
     if(historyPtr < history.size())
         cmd = history.at(historyPtr);
+    else if (!cmdBeforeBrowsing.isNull()) {
+        cmd = cmdBeforeBrowsing;
+    }
     ui->lineEdit->setText(cmd);
 }
 
@@ -786,7 +1032,7 @@ void RPCConsole::startExecutor()
     // Replies from executor object must go to this object
     connect(executor, SIGNAL(reply(int,QString)), this, SLOT(message(int,QString)));
     // Requests from this object must go to executor
-    connect(this, SIGNAL(cmdRequest(QString)), executor, SLOT(request(QString)));
+    connect(this, SIGNAL(cmdRequest(QString, QString)), executor, SLOT(request(QString, QString)));
 
     // On stopExecutor signal
     // - quit the Qt event loop in the execution thread
@@ -938,8 +1184,8 @@ void RPCConsole::updateNodeDetail(const CNodeCombinedStats *stats)
     ui->peerServices->setText(GUIUtil::formatServicesStr(stats->nodeStats.nServices));
     ui->peerLastSend->setText(stats->nodeStats.nLastSend ? GUIUtil::formatDurationStr(GetSystemTimeInSeconds() - stats->nodeStats.nLastSend) : tr("never"));
     ui->peerLastRecv->setText(stats->nodeStats.nLastRecv ? GUIUtil::formatDurationStr(GetSystemTimeInSeconds() - stats->nodeStats.nLastRecv) : tr("never"));
-    ui->peerBytesSent->setText(FormatBytes(stats->nodeStats.nSendBytes));
-    ui->peerBytesRecv->setText(FormatBytes(stats->nodeStats.nRecvBytes));
+    ui->peerBytesSent->setText(GUIUtil::formatBytes(stats->nodeStats.nSendBytes));
+    ui->peerBytesRecv->setText(GUIUtil::formatBytes(stats->nodeStats.nRecvBytes));
     ui->peerConnTime->setText(GUIUtil::formatDurationStr(GetSystemTimeInSeconds() - stats->nodeStats.nTimeConnected));
     ui->peerPingTime->setText(GUIUtil::formatPingTime(stats->nodeStats.dPingTime));
     ui->peerPingWait->setText(GUIUtil::formatPingTime(stats->nodeStats.dPingWait));
@@ -1024,7 +1270,7 @@ void RPCConsole::disconnectSelectedNode()
     for(int i = 0; i < nodes.count(); i++)
     {
         // Get currently selected peer address
-        NodeId id = nodes.at(i).data().toInt();
+        NodeId id = nodes.at(i).data().toLongLong();
         // Find the node, disconnect it and clear the selected node
         if(m_node.disconnect(id))
             clearSelectedNode();
@@ -1035,13 +1281,13 @@ void RPCConsole::banSelectedNode(int bantime)
 {
     if (!clientModel)
         return;
-    
+
     // Get selected peer addresses
     QList<QModelIndex> nodes = GUIUtil::getEntryData(ui->peerWidget, PeerTableModel::NetNodeId);
     for(int i = 0; i < nodes.count(); i++)
     {
         // Get currently selected peer address
-        NodeId id = nodes.at(i).data().toInt();
+        NodeId id = nodes.at(i).data().toLongLong();
 
 	// Get currently selected peer address
 	int detailNodeRow = clientModel->getPeerTableModel()->getRowByNodeId(id);

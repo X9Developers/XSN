@@ -60,12 +60,17 @@ static bool AppInit(int argc, char* argv[])
     //
     // Parameters
     //
-    // If Qt is used, parameters/xsn.conf are parsed in qt/xsn.cpp's main()
-    gArgs.ParseParameters(argc, argv);
+    // If Qt is used, parameters/bitcoin.conf are parsed in qt/bitcoin.cpp's main()
+    SetupServerArgs();
+    std::string error;
+    if (!gArgs.ParseParameters(argc, argv, error)) {
+        fprintf(stderr, "Error parsing command line arguments: %s\n", error.c_str());
+        return false;
+    }
 
     // Process help and version before taking care about datadir
     if (HelpRequested(gArgs) || gArgs.IsArgSet("-version")) {
-        std::string strUsage = strprintf(_("%s Daemon"), _(PACKAGE_NAME)) + " " + _("version") + " " + FormatFullVersion() + "\n";
+        std::string strUsage = strprintf("%s Daemon", PACKAGE_NAME) + " version " + FormatFullVersion() + "\n";
 
         if (gArgs.IsArgSet("-version"))
         {
@@ -73,10 +78,10 @@ static bool AppInit(int argc, char* argv[])
         }
         else
         {
-            strUsage += "\n" + _("Usage:") + "\n" +
-                  "  xsnd [options]                     " + strprintf(_("Start %s Daemon"), _(PACKAGE_NAME)) + "\n";
+            strUsage += "\nUsage:\n"
+                  "  xsnd [options]                     " + strprintf("Start %s Daemon", PACKAGE_NAME) + "\n";
 
-            strUsage += "\n" + HelpMessage(HelpMessageMode::BITCOIND);
+            strUsage += "\n" + gArgs.GetHelpMessage();
         }
 
         fprintf(stdout, "%s", strUsage.c_str());
@@ -90,12 +95,9 @@ static bool AppInit(int argc, char* argv[])
             fprintf(stderr, "Error: Specified data directory \"%s\" does not exist.\n", gArgs.GetArg("-datadir", "").c_str());
             return false;
         }
-        try
-        {
-            gArgs.ReadConfigFile(gArgs.GetArg("-conf", BITCOIN_CONF_FILENAME));
-        } catch (const std::exception& e) {
-            fprintf(stderr,"Error reading configuration file: %s\n", e.what());
-            return false;
+        if (!gArgs.ReadConfigFiles(error, true)) {
+            fprintf(stderr, "Error reading configuration file: %s\n", error.c_str());
+            return EXIT_FAILURE;
         }
         // Check for -testnet or -regtest parameter (Params() calls are only valid after this clause)
         try {
