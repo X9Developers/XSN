@@ -75,8 +75,8 @@ HelpMessageDialog::HelpMessageDialog(interfaces::Node &node, QWidget *parent, He
         cursor.insertText(header);
         cursor.insertBlock();
 
-        std::string strUsage = HelpMessage(HMM_BITCOIN_QT);
-        const bool showDebug = GetBoolArg("-help-debug", false);
+        std::string strUsage = gArgs.GetHelpMessage();// HelpMessage(HMM_BITCOIN_QT);
+        const bool showDebug = gArgs.GetBoolArg("-help-debug", false);
         strUsage += HelpMessageGroup(tr("UI Options:").toStdString());
         if (showDebug) {
             strUsage += HelpMessageOpt("-allowselfsignedrootcertificates", strprintf("Allow self signed root certificates (default: %u)", DEFAULT_SELFSIGNED_ROOTCERTS));

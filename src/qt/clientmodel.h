@@ -52,6 +52,7 @@ public:
     explicit ClientModel(interfaces::Node& node, OptionsModel *optionsModel, QObject *parent = 0);
     ~ClientModel();
 
+    interfaces::Node& node() const { return m_node; }
     OptionsModel *getOptionsModel();
     PeerTableModel *getPeerTableModel();
     BanTableModel *getBanTableModel();

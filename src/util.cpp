@@ -370,10 +370,10 @@ static bool InterpretNegatedOption(std::string& key, std::string& val)
 
 ArgsManager::ArgsManager() :
     /* These options would cause cross-contamination if values for
-                 * mainnet were used while running on regtest/testnet (or vice-versa).
-                 * Setting them as section_only_args ensures that sharing a config file
-                 * between mainnet and regtest/testnet won't cause problems due to these
-                 * parameters by accident. */
+                             * mainnet were used while running on regtest/testnet (or vice-versa).
+                             * Setting them as section_only_args ensures that sharing a config file
+                             * between mainnet and regtest/testnet won't cause problems due to these
+                             * parameters by accident. */
     m_network_only_args{
         "-addnode", "-connect",
         "-port", "-bind",
@@ -704,9 +704,11 @@ static fs::path pathCached;
 static fs::path pathCachedNetSpecific;
 static CCriticalSection csPathCached;
 
+static fs::path backupsDirCached;
+static CCriticalSection csBackupsDirCached;
+
 const fs::path &GetBlocksDir(bool fNetSpecific)
 {
-
     LOCK(csPathCached);
 
     fs::path &path = fNetSpecific ? g_blocks_path_cache_net_specific : g_blocks_path_cached;
@@ -735,7 +737,6 @@ const fs::path &GetBlocksDir(bool fNetSpecific)
 
 const fs::path &GetDataDir(bool fNetSpecific)
 {
-
     LOCK(csPathCached);
 
     fs::path &path = fNetSpecific ? pathCachedNetSpecific : pathCached;
@@ -763,6 +764,37 @@ const fs::path &GetDataDir(bool fNetSpecific)
     }
 
     return path;
+}
+
+const fs::path &GetBackupsDir(bool fNetSpecific)
+{
+    LOCK(csBackupsDirCached);
+
+    fs::path &path = backupsDirCached;
+
+    if (!path.empty())
+        return path;
+
+    if (gArgs.IsArgSet("-walletbackupsdir")) {
+        path = fs::system_complete(gArgs.GetArg("-walletbackupsdir", ""));
+        if (!fs::is_directory(path)) {
+            path = "";
+            return path;
+        }
+    } else {
+        path = GetDefaultDataDir();
+    }
+
+    if (fNetSpecific)
+        path /= BaseParams().DataDir();
+
+    if (fs::create_directories(path)) {
+        // This is the first run, create wallets subdirectory too
+        fs::create_directories(path / "backups");
+    }
+
+    return path;
+
 }
 
 void ClearDatadirCache()
@@ -1242,29 +1274,4 @@ int ScheduleBatchPriority(void)
 #else
     return 1;
 #endif
-}
-
-const boost::filesystem::path &GetBackupsDir()
-{
-    namespace fs = boost::filesystem;
-
-    LOCK(csBackupsDirCached);
-
-    fs::path &backupsDir = backupsDirCached;
-
-    if (!backupsDir.empty())
-        return backupsDir;
-
-    if (mapArgs.count("-walletbackupsdir")) {
-        backupsDir = fs::absolute(mapArgs["-walletbackupsdir"]);
-        // Path must exist
-        if (fs::is_directory(backupsDir)) return backupsDir;
-        // Fallback to default path if it doesn't
-        LogPrintf("%s: Warning: incorrect parameter -walletbackupsdir, path must exist! Using default path.\n", __func__);
-        strMiscWarning = _("Warning: incorrect parameter -walletbackupsdir, path must exist! Using default path.");
-    }
-    // Default path
-    backupsDir = GetDataDir() / "backups";
-
-    return backupsDir;
 }

@@ -44,6 +44,10 @@ SplashScreen::SplashScreen(interfaces::Node& node, Qt::WindowFlags f, const Netw
     int titleCopyrightVSpace    = 32;
 
     float fontFactor            = 1.0;
+    float devicePixelRatio      = 1.0;
+#if QT_VERSION > 0x050100
+    devicePixelRatio = static_cast<QGuiApplication*>(QCoreApplication::instance())->devicePixelRatio();
+#endif
 
     // define text to place
     QString titleText       = tr("XSN Core");
@@ -155,11 +159,6 @@ static void ShowProgress(SplashScreen *splash, const std::string &title, int nPr
             (resume_possible ? _("(press q to shutdown and continue later)")
                                 : _("press q to shutdown")) +
             strprintf("\n%d", nProgress) + "%");
-}
-
-void SplashScreen::setBreakAction(const std::function<void(void)> &action)
-{
-    breakAction = action;
 }
 
 static void SetProgressBreakAction(SplashScreen *splash, const std::function<void(void)> &action)
