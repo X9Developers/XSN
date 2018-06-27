@@ -30,6 +30,7 @@
 #include <qt/macdockiconhandler.h>
 #endif
 
+#include <masternode-sync.h>
 #include <chainparams.h>
 #include <init.h>
 #include <interfaces/handler.h>
