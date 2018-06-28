@@ -439,13 +439,13 @@ void CoinControlDialog::viewItemChanged(QTreeWidgetItem* item, int column)
             item->setCheckState(COLUMN_CHECKBOX, Qt::Unchecked);
         else {
             coinControl->Select(outpt);
-            int nRounds = pwalletMain->GetOutpointPrivateSendRounds(outpt);
-            if (coinControl->fUsePrivateSend && nRounds < privateSendClient.nPrivateSendRounds) {
-                QMessageBox::warning(this, windowTitle(),
-                                     tr("Non-anonymized input selected. <b>PrivateSend will be disabled.</b><br><br>If you still want to use PrivateSend, please deselect all non-nonymized inputs first and then check PrivateSend checkbox again."),
-                                     QMessageBox::Ok, QMessageBox::Ok);
-                coinControl->fUsePrivateSend = false;
-            }
+//            int nRounds = pwalletMain->GetOutpointPrivateSendRounds(outpt);
+//            if (coinControl->fUsePrivateSend && nRounds < privateSendClient.nPrivateSendRounds) {
+//                QMessageBox::warning(this, windowTitle(),
+//                                     tr("Non-anonymized input selected. <b>PrivateSend will be disabled.</b><br><br>If you still want to use PrivateSend, please deselect all non-nonymized inputs first and then check PrivateSend checkbox again."),
+//                                     QMessageBox::Ok, QMessageBox::Ok);
+//                coinControl->fUsePrivateSend = false;
+//            }
         }
 
         // selection changed -> update labels

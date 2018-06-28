@@ -64,7 +64,7 @@ bool CBlockSigner::SignBlock()
             }
         }
     }
-
+//?
     return CHashSigner::SignHash(refBlock.IsTPoSBlock() ? refBlock.GetTPoSHash() : refBlock.GetHash(), keySecret, scriptType, refBlock.vchBlockSig);
 }
 
