@@ -429,20 +429,18 @@ bool CWallet::CreateCoinStakeKernel(CScript &kernelScript,const CScript &stakeSc
 
             kernelScript.clear();
             if(!contract.IsValid()) {
-                std::vector<std::vector<unsigned char>> vSolutions;
-                txnouttype whichType;
-                if (!Solver(stakeScript, whichType, vSolutions)) {//check the solver here
-                    return error("CreateCoinStakeKernel : failed to parse kernel\n");
-                }
 
                 if (gArgs.GetBoolArg("-printcoinstake", false))
                     LogPrintf("CreateCoinStakeKernel : parsed kernel type=%d\n", whichType);
 
-                if (whichType != TX_PUBKEY && whichType != TX_PUBKEYHASH) {
-                    if (gArgs.GetBoolArg("-printcoinstake", false))
-                        LogPrintf("CreateCoinStakeKernel : no support for kernel type=%d\n", whichType);
-                    // only support pay to public key and pay to address
-                    return error("CreateCoinStakeKernel : no support for kernel type=%d TX_PUBKEY=%d TX_PUBKEYHASH=%d\n", whichType, TX_PUBKEY, TX_PUBKEYHASH);
+                CTxDestination dest;
+                if(!ExtractDestination(stakeScript, dest))
+                    return false;
+
+                // this will return true only if it's P2SH_SEGWIT, SEGWIT, P2PKH(LEGACY)
+                if(GetKeyForDestination(*this, dest).IsNull())
+                {
+                    return error("CreateCoinStakeKernel : no support for kernel %s\n", EncodeDestination(dest));
                 }
             }
 

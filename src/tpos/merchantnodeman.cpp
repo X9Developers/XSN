@@ -816,14 +816,14 @@ void CMerchantnodeMan::SendVerifyReply(CNode* pnode, CMerchantnodeVerification& 
 
     std::string strMessage = strprintf("%s%d%s", activeMerchantnode.service.ToString(false), mnv.nonce, blockHash.ToString());
 
-    if(!CMessageSigner::SignMessage(strMessage, mnv.vchSig1, activeMerchantnode.keyMerchantnode)) {
+    if(!CMessageSigner::SignMessage(strMessage, mnv.vchSig1, activeMerchantnode.keyMerchantnode, CPubKey::InputScriptType::SPENDP2PKH)) {
         LogPrintf("MerchantnodeMan::SendVerifyReply -- SignMessage() failed\n");
         return;
     }
 
     std::string strError;
 
-    if(!CMessageSigner::VerifyMessage(activeMerchantnode.pubKeyMerchantnode, mnv.vchSig1, strMessage, strError)) {
+    if(!CMessageSigner::VerifyMessage(activeMerchantnode.pubKeyMerchantnode.GetID(), mnv.vchSig1, strMessage, strError)) {
         LogPrintf("MerchantnodeMan::SendVerifyReply -- VerifyMessage() failed, error: %s\n", strError);
         return;
     }
@@ -900,14 +900,14 @@ void CMerchantnodeMan::ProcessVerifyReply(CNode* pnode, CMerchantnodeVerificatio
                     std::string strMessage2 = strprintf("%s%d%s%s%s", mnv.addr.ToString(false), mnv.nonce, blockHash.ToString(),
                                                         HexStr(mnv.pubKeyMerchantnode1.Raw()), HexStr(mnv.pubKeyMerchantnode2.Raw()));
                     // ... and sign it
-                    if(!CMessageSigner::SignMessage(strMessage2, mnv.vchSig2, activeMerchantnode.keyMerchantnode)) {
+                    if(!CMessageSigner::SignMessage(strMessage2, mnv.vchSig2, activeMerchantnode.keyMerchantnode, CPubKey::InputScriptType::SPENDP2PKH)) {
                         LogPrintf("MerchantnodeMan::ProcessVerifyReply -- SignMessage() failed\n");
                         return;
                     }
 
                     std::string strError;
 
-                    if(!CMessageSigner::VerifyMessage(activeMerchantnode.pubKeyMerchantnode, mnv.vchSig2, strMessage2, strError)) {
+                    if(!CMessageSigner::VerifyMessage(activeMerchantnode.pubKeyMerchantnode.GetID(), mnv.vchSig2, strMessage2, strError)) {
                         LogPrintf("MerchantnodeMan::ProcessVerifyReply -- VerifyMessage() failed, error: %s\n", strError);
                         return;
                     }

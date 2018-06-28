@@ -250,12 +250,12 @@ bool CGovernanceVote::Sign(CKey& keyMasternode, CPubKey& pubKeyMasternode)
     std::string strMessage = vinMasternode.prevout.ToStringShort() + "|" + nParentHash.ToString() + "|" +
         boost::lexical_cast<std::string>(nVoteSignal) + "|" + boost::lexical_cast<std::string>(nVoteOutcome) + "|" + boost::lexical_cast<std::string>(nTime);
 
-    if(!CMessageSigner::SignMessage(strMessage, vchSig, keyMasternode)) {
+    if(!CMessageSigner::SignMessage(strMessage, vchSig, keyMasternode, CPubKey::InputScriptType::SPENDP2PKH)) {
         LogPrintf("CGovernanceVote::Sign -- SignMessage() failed\n");
         return false;
     }
 
-    if(!CMessageSigner::VerifyMessage(pubKeyMasternode, vchSig, strMessage, strError)) {
+    if(!CMessageSigner::VerifyMessage(pubKeyMasternode.GetID(), vchSig, strMessage, strError)) {
         LogPrintf("CGovernanceVote::Sign -- VerifyMessage() failed, error: %s\n", strError);
         return false;
     }

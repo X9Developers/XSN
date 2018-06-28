@@ -433,12 +433,12 @@ bool CMasternodePaymentVote::Sign()
             boost::lexical_cast<std::string>(nBlockHeight) +
             ScriptToAsmStr(payee);
 
-    if(!CMessageSigner::SignMessage(strMessage, vchSig, activeMasternode.keyMasternode)) {
+    if(!CMessageSigner::SignMessage(strMessage, vchSig, activeMasternode.keyMasternode, CPubKey::InputScriptType::SPENDP2PKH)) {
         LogPrintf("CMasternodePaymentVote::Sign -- SignMessage() failed\n");
         return false;
     }
 
-    if(!CMessageSigner::VerifyMessage(activeMasternode.pubKeyMasternode, vchSig, strMessage, strError)) {
+    if(!CMessageSigner::VerifyMessage(activeMasternode.pubKeyMasternode.GetID(), vchSig, strMessage, strError)) {
         LogPrintf("CMasternodePaymentVote::Sign -- VerifyMessage() failed, error: %s\n", strError);
         return false;
     }

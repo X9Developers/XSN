@@ -236,12 +236,12 @@ bool CGovernanceObject::Sign(CKey& keyMasternode, CPubKey& pubKeyMasternode)
 
     LOCK(cs);
 
-    if(!CMessageSigner::SignMessage(strMessage, vchSig, keyMasternode)) {
+    if(!CMessageSigner::SignMessage(strMessage, vchSig, keyMasternode, CPubKey::InputScriptType::SPENDP2PKH)) {
         LogPrintf("CGovernanceObject::Sign -- SignMessage() failed\n");
         return false;
     }
 
-    if(!CMessageSigner::VerifyMessage(pubKeyMasternode, vchSig, strMessage, strError)) {
+    if(!CMessageSigner::VerifyMessage(pubKeyMasternode.GetID(), vchSig, strMessage, strError)) {
         LogPrintf("CGovernanceObject::Sign -- VerifyMessage() failed, error: %s\n", strError);
         return false;
     }
