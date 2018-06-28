@@ -36,7 +36,8 @@ public:
     enum class InputScriptType {
         SPENDP2SHWITNESS,
         SPENDWITNESS,
-        SPENDP2PKH
+        SPENDP2PKH,
+        SPENDUNKNOWN
     };
 
     /**

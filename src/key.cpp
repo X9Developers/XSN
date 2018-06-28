@@ -233,8 +233,9 @@ bool CKey::SignCompact(const uint256 &hash, std::vector<unsigned char>& vchSig, 
     switch(scriptType) {
     case CPubKey::InputScriptType::SPENDP2SHWITNESS: vchSig[0] = 31 + rec + (fCompressed ? 4 : 0); break;
     case CPubKey::InputScriptType::SPENDWITNESS: vchSig[0] = 35 + rec + (fCompressed ? 4 : 0); break;
+    case CPubKey::InputScriptType::SPENDP2PKH: vchSig[0] = 27 + rec + (fCompressed ? 4 : 0); break;
     default:
-        vchSig[0] = 27 + rec + (fCompressed ? 4 : 0); break;
+        return false;
     }
 
     return true;

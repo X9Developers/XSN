@@ -439,12 +439,12 @@ bool CMerchantnodeBroadcast::Sign(const CKey& keyCollateralAddress)
             pubKeyMerchantnode.GetID().ToString() +
             boost::lexical_cast<std::string>(nProtocolVersion);
 
-    if(!CMessageSigner::SignMessage(strMessage, vchSig, keyCollateralAddress)) {
+    if(!CMessageSigner::SignMessage(strMessage, vchSig, keyCollateralAddress, CPubKey::InputScriptType::SPENDP2PKH)) {
         LogPrintf("CMerchantnodeBroadcast::Sign -- SignMessage() failed\n");
         return false;
     }
 
-    if(!CMessageSigner::VerifyMessage(pubKeyMerchantnode, vchSig, strMessage, strError)) {
+    if(!CMessageSigner::VerifyMessage(pubKeyMerchantnode.GetID(), vchSig, strMessage, strError)) {
         LogPrintf("CMerchantnodeBroadcast::Sign -- VerifyMessage() failed, error: %s\n", strError);
         return false;
     }
@@ -507,12 +507,12 @@ bool CMerchantnodePing::Sign(const CKey& keyMerchantnode, const CPubKey& pubKeyM
     sigTime = GetAdjustedTime();
     std::string strMessage = merchantPubKey.GetID().ToString() + blockHash.ToString() + boost::lexical_cast<std::string>(sigTime);
 
-    if(!CMessageSigner::SignMessage(strMessage, vchSig, keyMerchantnode)) {
+    if(!CMessageSigner::SignMessage(strMessage, vchSig, keyMerchantnode, CPubKey::InputScriptType::SPENDP2PKH)) {
         LogPrintf("CMerchantnodePing::Sign -- SignMessage() failed\n");
         return false;
     }
 
-    if(!CMessageSigner::VerifyMessage(pubKeyMerchantnode, vchSig, strMessage, strError)) {
+    if(!CMessageSigner::VerifyMessage(pubKeyMerchantnode.GetID(), vchSig, strMessage, strError)) {
         LogPrintf("CMerchantnodePing::Sign -- VerifyMessage() failed, error: %s\n", strError);
         return false;
     }
