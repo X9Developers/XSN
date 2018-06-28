@@ -81,7 +81,7 @@ public:
     {
         cachedAddressTable.clear();
         {
-            for (const auto& address : wallet.getAddresses())
+            for (const auto& address : wallet->getAddresses())
             {
                 //const CBitcoinAddress& address = item.first;
                 //bool fMine = IsMine(*wallet, address.Get());
