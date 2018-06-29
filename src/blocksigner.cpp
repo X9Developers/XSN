@@ -67,7 +67,7 @@ bool CBlockSigner::SignBlock()
             scriptType = GetScriptTypeFromDestination(destination);
         }
     }
-
+//?
     return CHashSigner::SignHash(refBlock.IsTPoSBlock() ? refBlock.GetTPoSHash() : refBlock.GetHash(), keySecret, scriptType, refBlock.vchBlockSig);
 }
 

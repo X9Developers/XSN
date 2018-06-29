@@ -18,6 +18,7 @@
 #include <init.h>
 #include <validation.h> // For minRelayTxFee
 #include <wallet/wallet.h>
+#include <util.h>
 
 #include <instantx.h>
 #include <privatesend/privatesend-client.h>
@@ -54,9 +55,9 @@ CoinControlDialog::CoinControlDialog(const PlatformStyle *platformStyle, QWidget
     QAction *copyAddressAction = new QAction(tr("Copy address"), this);
     QAction *copyLabelAction = new QAction(tr("Copy label"), this);
     QAction *copyAmountAction = new QAction(tr("Copy amount"), this);
-             copyTransactionHashAction = new QAction(tr("Copy transaction ID"), this);  // we need to enable/disable this
-             lockAction = new QAction(tr("Lock unspent"), this);                        // we need to enable/disable this
-             unlockAction = new QAction(tr("Unlock unspent"), this);                    // we need to enable/disable this
+    copyTransactionHashAction = new QAction(tr("Copy transaction ID"), this);  // we need to enable/disable this
+    lockAction = new QAction(tr("Lock unspent"), this);                        // we need to enable/disable this
+    unlockAction = new QAction(tr("Unlock unspent"), this);                    // we need to enable/disable this
 
     // context menu
     contextMenu = new QMenu(this);
@@ -205,8 +206,8 @@ void CoinControlDialog::buttonSelectAllClicked()
     }
     ui->treeWidget->setEnabled(false);
     for (int i = 0; i < ui->treeWidget->topLevelItemCount(); i++)
-            if (ui->treeWidget->topLevelItem(i)->checkState(COLUMN_CHECKBOX) != state)
-                ui->treeWidget->topLevelItem(i)->setCheckState(COLUMN_CHECKBOX, state);
+        if (ui->treeWidget->topLevelItem(i)->checkState(COLUMN_CHECKBOX) != state)
+            ui->treeWidget->topLevelItem(i)->setCheckState(COLUMN_CHECKBOX, state);
     ui->treeWidget->setEnabled(true);
     if (state == Qt::Unchecked)
         coinControl->UnSelectAll(); // just to be sure
@@ -438,13 +439,13 @@ void CoinControlDialog::viewItemChanged(QTreeWidgetItem* item, int column)
             item->setCheckState(COLUMN_CHECKBOX, Qt::Unchecked);
         else {
             coinControl->Select(outpt);
-            int nRounds = pwalletMain->GetOutpointPrivateSendRounds(outpt);
-            if (coinControl->fUsePrivateSend && nRounds < privateSendClient.nPrivateSendRounds) {
-                QMessageBox::warning(this, windowTitle(),
-                    tr("Non-anonymized input selected. <b>PrivateSend will be disabled.</b><br><br>If you still want to use PrivateSend, please deselect all non-nonymized inputs first and then check PrivateSend checkbox again."),
-                    QMessageBox::Ok, QMessageBox::Ok);
-                coinControl->fUsePrivateSend = false;
-            }
+//            int nRounds = pwalletMain->GetOutpointPrivateSendRounds(outpt);
+//            if (coinControl->fUsePrivateSend && nRounds < privateSendClient.nPrivateSendRounds) {
+//                QMessageBox::warning(this, windowTitle(),
+//                                     tr("Non-anonymized input selected. <b>PrivateSend will be disabled.</b><br><br>If you still want to use PrivateSend, please deselect all non-nonymized inputs first and then check PrivateSend checkbox again."),
+//                                     QMessageBox::Ok, QMessageBox::Ok);
+//                coinControl->fUsePrivateSend = false;
+//            }
         }
 
         // selection changed -> update labels
@@ -470,8 +471,8 @@ void CoinControlDialog::updateLabelLocked()
     model->listLockedCoins(vOutpts);
     if (vOutpts.size() > 0)
     {
-       ui->labelLocked->setText(tr("(%1 locked)").arg(vOutpts.size()));
-       ui->labelLocked->setVisible(true);
+        ui->labelLocked->setText(tr("(%1 locked)").arg(vOutpts.size()));
+        ui->labelLocked->setVisible(true);
     }
     else ui->labelLocked->setVisible(false);
 }
@@ -485,7 +486,7 @@ void CoinControlDialog::updateLabels(WalletModel *model, QWidget* dialog)
     CAmount nPayAmount = 0;
     bool fDust = false;
     CMutableTransaction txDummy;
-    Q_FOREACH(const CAmount &amount, CoinControlDialog::payAmounts)
+    for (const CAmount &amount : CoinControlDialog::payAmounts)
     {
         nPayAmount += amount;
 
@@ -494,7 +495,7 @@ void CoinControlDialog::updateLabels(WalletModel *model, QWidget* dialog)
             CTxOut txout(amount, (CScript)std::vector<unsigned char>(24, 0));
             txDummy.vout.push_back(txout);
             if (txout.IsDust(::minRelayTxFee))
-               fDust = true;
+                fDust = true;
         }
     }
 
@@ -515,7 +516,8 @@ void CoinControlDialog::updateLabels(WalletModel *model, QWidget* dialog)
     coinControl->ListSelected(vCoinControl);
     model->getOutputs(vCoinControl, vOutputs);
 
-    BOOST_FOREACH(const COutput& out, vOutputs) {
+
+    for(const COutput& out : vOutputs){
         // unselect already spent, very unlikely scenario, this could happen
         // when selected are spent elsewhere, like rpc or another computer
         uint256 txhash = out.tx->GetHash();
@@ -651,7 +653,7 @@ void CoinControlDialog::updateLabels(WalletModel *model, QWidget* dialog)
     l5->setText(((nBytes > 0) ? ASYMP_UTF8 : "") + QString::number(nBytes));        // Bytes
     l7->setText(fDust ? tr("yes") : tr("no"));                               // Dust
     l8->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, nChange));        // Change
-    if (nPayFee > 0 && (coinControl->nMinimumTotalFee < nPayFee))
+    if (nPayFee > 0)
     {
         l3->setText(ASYMP_UTF8 + l3->text());
         l4->setText(ASYMP_UTF8 + l4->text());
@@ -697,7 +699,7 @@ void CoinControlDialog::updateView()
 
     bool treeMode = ui->radioTreeMode->isChecked();
     QString theme = GUIUtil::getThemeName();
-    
+
     ui->treeWidget->clear();
     ui->treeWidget->setEnabled(false); // performance, otherwise updateLabels would be called for every checked checkbox
     ui->treeWidget->setAlternatingRowColors(!treeMode);
@@ -706,13 +708,10 @@ void CoinControlDialog::updateView()
 
     int nDisplayUnit = model->getOptionsModel()->getDisplayUnit();
 
-    std::map<QString, std::vector<COutput> > mapCoins;
-    model->listCoins(mapCoins);
-
-    BOOST_FOREACH(const PAIRTYPE(QString, std::vector<COutput>)& coins, mapCoins) {
-        QTreeWidgetItem *itemWalletAddress = new QTreeWidgetItem();
+    for (const auto& coins : model->wallet().listCoins()) {
+        CCoinControlWidgetItem *itemWalletAddress = new CCoinControlWidgetItem();
         itemWalletAddress->setCheckState(COLUMN_CHECKBOX, Qt::Unchecked);
-        QString sWalletAddress = coins.first;
+        QString sWalletAddress = QString::fromStdString(EncodeDestination(coins.first));
         QString sWalletLabel = model->getAddressTableModel()->labelForAddress(sWalletAddress);
         if (sWalletLabel.isEmpty())
             sWalletLabel = tr("(no label)");
@@ -736,8 +735,10 @@ void CoinControlDialog::updateView()
 
         CAmount nSum = 0;
         int nChildren = 0;
-        BOOST_FOREACH(const COutput& out, coins.second) {
-            nSum += out.tx->vout[out.i].nValue;
+        for (const auto& outpair : coins.second) {
+            const COutPoint& output = std::get<0>(outpair);
+            const interfaces::WalletTxOut& out = std::get<1>(outpair);
+            nSum += out.txout.nValue;
             nChildren++;
 
             QTreeWidgetItem *itemOutput;
@@ -804,7 +805,7 @@ void CoinControlDialog::updateView()
             // vout index
             itemOutput->setText(COLUMN_VOUT_INDEX, QString::number(out.i));
 
-             // disable locked coins
+            // disable locked coins
             if (model->isLockedCoin(txhash, out.i))
             {
                 COutPoint outpt(txhash, out.i);
