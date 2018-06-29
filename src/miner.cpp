@@ -793,7 +793,7 @@ void GenerateXSNs(bool fGenerate,
 
     minerThreads = new boost::thread_group();
     for (int i = 0; i < nThreads; i++)
-        minerThreads->create_thread(boost::bind(&XSNMiner, boost::cref(chainparams), boost::ref(connman), nullptr, false));
+        minerThreads->create_thread(boost::bind(&XSNMiner, boost::cref(chainparams), boost::ref(connman), GetWallets().front(), false));
 }
 
 void ThreadStakeMinter(const CChainParams &chainparams, CConnman &connman, CWallet *pwallet)
