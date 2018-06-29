@@ -96,6 +96,7 @@ bool CBlockSigner::CheckBlockSignature() const
         if(refBlock.IsTPoSBlock())
         {
             destination = refContract.merchantAddress.Get();
+            CKeyID signatureKeyID;
             if(!refContract.merchantAddress.GetKeyID(signatureKeyID))
                 return error("CBlockSigner::CheckBlockSignature() : merchant address is not P2PKH, critical error, can't accept.");
         }
