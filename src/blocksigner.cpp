@@ -52,6 +52,8 @@ bool CBlockSigner::SignBlock()
             if(merchantKeyID != activeMerchantnode.pubKeyMerchantnode.GetID())
                 return error("CBlockSigner::SignBlock() : contract address is different from merchantnode address, won't sign.");
 
+            scriptType = CPubKey::InputScriptType::SPENDP2PKH;
+
             keySecret = activeMerchantnode.keyMerchantnode;
         }
         else
@@ -94,8 +96,8 @@ bool CBlockSigner::CheckBlockSignature() const
         if(refBlock.IsTPoSBlock())
         {
             destination = refContract.merchantAddress.Get();
-//            if(!refContract.merchantAddress.GetKeyID(signatureKeyID))
-//                return error("CBlockSigner::CheckBlockSignature() : merchant address is not P2PKH, critical error, can't accept.");
+            if(!refContract.merchantAddress.GetKeyID(signatureKeyID))
+                return error("CBlockSigner::CheckBlockSignature() : merchant address is not P2PKH, critical error, can't accept.");
         }
     }
     else
