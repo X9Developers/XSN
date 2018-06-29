@@ -430,9 +430,6 @@ bool CWallet::CreateCoinStakeKernel(CScript &kernelScript,const CScript &stakeSc
             kernelScript.clear();
             if(!contract.IsValid()) {
 
-                if (gArgs.GetBoolArg("-printcoinstake", false))
-                    LogPrintf("CreateCoinStakeKernel : parsed kernel type=%d\n", whichType);
-
                 CTxDestination dest;
                 if(!ExtractDestination(stakeScript, dest))
                     return false;
@@ -2908,7 +2905,13 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, c
         CScript scriptPubKeyKernel;
         scriptPubKeyKernel = out.tx->tx->vout[out.i].scriptPubKey;
 
-        if(scriptPubKeyKernel.IsPayToScriptHash())
+        CTxDestination dest;
+        if(!ExtractDestination(scriptPubKeyKernel, dest))
+            continue;
+
+        // for staking we support P2PKH, Native Segwit, P2SH Segwit
+        if(!boost::get<CKeyID>(&dest) && !boost::get<WitnessV0KeyHash>(&dest) &&
+                !boost::get<CScriptID>(&dest))
             continue;
 
         //        LogPrintf("scriptPubKeyKernel is good\n");

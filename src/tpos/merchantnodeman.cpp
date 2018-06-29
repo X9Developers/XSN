@@ -883,7 +883,7 @@ void CMerchantnodeMan::ProcessVerifyReply(CNode* pnode, CMerchantnodeVerificatio
         std::string strMessage1 = strprintf("%s%d%s", pnode->addr.ToString(false), mnv.nonce, blockHash.ToString());
         for (auto& mnpair : mapMerchantnodes) {
             if(CAddress(mnpair.second.addr, NODE_NETWORK) == pnode->addr) {
-                if(CMessageSigner::VerifyMessage(mnpair.second.pubKeyMerchantnode, mnv.vchSig1, strMessage1, strError)) {
+                if(CMessageSigner::VerifyMessage(mnpair.second.pubKeyMerchantnode.GetID(), mnv.vchSig1, strMessage1, strError)) {
                     // found it!
                     prealMerchantnode = &mnpair.second;
                     if(!mnpair.second.IsPoSeVerified()) {
@@ -1018,12 +1018,12 @@ void CMerchantnodeMan::ProcessVerifyBroadcast(CNode* pnode, const CMerchantnodeV
             return;
         }
 
-        if(!CMessageSigner::VerifyMessage(pmn1->pubKeyMerchantnode, mnv.vchSig1, strMessage1, strError)) {
+        if(!CMessageSigner::VerifyMessage(pmn1->pubKeyMerchantnode.GetID(), mnv.vchSig1, strMessage1, strError)) {
             LogPrintf("CMerchantnodeMan::ProcessVerifyBroadcast -- VerifyMessage() for merchantnode1 failed, error: %s\n", strError);
             return;
         }
 
-        if(!CMessageSigner::VerifyMessage(pmn2->pubKeyMerchantnode, mnv.vchSig2, strMessage2, strError)) {
+        if(!CMessageSigner::VerifyMessage(pmn2->pubKeyMerchantnode.GetID(), mnv.vchSig2, strMessage2, strError)) {
             LogPrintf("CMerchantnodeMan::ProcessVerifyBroadcast -- VerifyMessage() for merchantnode2 failed, error: %s\n", strError);
             return;
         }

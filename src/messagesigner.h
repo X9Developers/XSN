@@ -6,7 +6,7 @@
 #define MESSAGESIGNER_H
 
 #include <key.h>
-#include <standard.h>
+#include <script/standard.h>
 
 /** Helper class for signing messages and checking their signatures
  */

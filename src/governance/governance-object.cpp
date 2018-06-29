@@ -260,7 +260,7 @@ bool CGovernanceObject::CheckSignature(CPubKey& pubKeyMasternode)
     std::string strMessage = GetSignatureMessage();
 
     LOCK(cs);
-    if(!CMessageSigner::VerifyMessage(pubKeyMasternode, vchSig, strMessage, strError)) {
+    if(!CMessageSigner::VerifyMessage(pubKeyMasternode.GetID(), vchSig, strMessage, strError)) {
         LogPrintf("CGovernance::CheckSignature -- VerifyMessage() failed, error: %s\n", strError);
         return false;
     }

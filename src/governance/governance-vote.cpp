@@ -296,7 +296,7 @@ bool CGovernanceVote::IsValid(bool fSignatureCheck) const
     std::string strMessage = vinMasternode.prevout.ToStringShort() + "|" + nParentHash.ToString() + "|" +
         boost::lexical_cast<std::string>(nVoteSignal) + "|" + boost::lexical_cast<std::string>(nVoteOutcome) + "|" + boost::lexical_cast<std::string>(nTime);
 
-    if(!CMessageSigner::VerifyMessage(infoMn.pubKeyMasternode, vchSig, strMessage, strError)) {
+    if(!CMessageSigner::VerifyMessage(infoMn.pubKeyMasternode.GetID(), vchSig, strMessage, strError)) {
         LogPrintf("CGovernanceVote::IsValid -- VerifyMessage() failed, error: %s\n", strError);
         return false;
     }

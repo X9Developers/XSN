@@ -464,7 +464,7 @@ bool CMerchantnodeBroadcast::CheckSignature(int& nDos)
 
     LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeBroadcast::CheckSignature -- strMessage: %s  pubKeyMerchantnode address: %s  sig: %s\n", strMessage, CBitcoinAddress(pubKeyMerchantnode.GetID()).ToString(), EncodeBase64(&vchSig[0], vchSig.size()));
 
-    if(!CMessageSigner::VerifyMessage(pubKeyMerchantnode, vchSig, strMessage, strError)){
+    if(!CMessageSigner::VerifyMessage(pubKeyMerchantnode.GetID(), vchSig, strMessage, strError)){
         LogPrintf("CMerchantnodeBroadcast::CheckSignature -- Got bad Merchantnode announce signature, error: %s\n", strError);
         nDos = 100;
         return false;
@@ -527,7 +527,7 @@ bool CMerchantnodePing::CheckSignature(CPubKey& pubKeyMerchantnode, int &nDos)
     std::string strError = "";
     nDos = 0;
 
-    if(!CMessageSigner::VerifyMessage(pubKeyMerchantnode, vchSig, strMessage, strError)) {
+    if(!CMessageSigner::VerifyMessage(pubKeyMerchantnode.GetID(), vchSig, strMessage, strError)) {
         LogPrintf("CMerchantnodePing::CheckSignature -- Got bad Merchantnode ping signature, merchantnode=%s, error: %s\n",
                   merchantPubKey.GetID().ToString(), strError);
         nDos = 33;

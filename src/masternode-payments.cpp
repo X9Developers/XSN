@@ -870,7 +870,7 @@ bool CMasternodePaymentVote::CheckSignature(const CPubKey& pubKeyMasternode, int
             ScriptToAsmStr(payee);
 
     std::string strError = "";
-    if (!CMessageSigner::VerifyMessage(pubKeyMasternode, vchSig, strMessage, strError)) {
+    if (!CMessageSigner::VerifyMessage(pubKeyMasternode.GetID(), vchSig, strMessage, strError)) {
         // Only ban for future block vote when we are already synced.
         // Otherwise it could be the case when MN which signed this vote is using another key now
         // and we have no idea about the old one.

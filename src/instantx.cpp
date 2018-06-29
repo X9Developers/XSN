@@ -1071,7 +1071,7 @@ bool CTxLockVote::CheckSignature() const
         return false;
     }
 
-    if(!CMessageSigner::VerifyMessage(infoMn.pubKeyMasternode, vchMasternodeSignature, strMessage, strError)) {
+    if(!CMessageSigner::VerifyMessage(infoMn.pubKeyMasternode.GetID(), vchMasternodeSignature, strMessage, strError)) {
         LogPrintf("CTxLockVote::CheckSignature -- VerifyMessage() failed, error: %s\n", strError);
         return false;
     }

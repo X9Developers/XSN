@@ -1187,7 +1187,7 @@ void CMasternodeMan::ProcessVerifyReply(CNode* pnode, CMasternodeVerification& m
         std::string strMessage1 = strprintf("%s%d%s", pnode->addr.ToString(false), mnv.nonce, blockHash.ToString());
         for (auto& mnpair : mapMasternodes) {
             if(CAddress(mnpair.second.addr, NODE_NETWORK) == pnode->addr) {
-                if(CMessageSigner::VerifyMessage(mnpair.second.pubKeyMasternode, mnv.vchSig1, strMessage1, strError)) {
+                if(CMessageSigner::VerifyMessage(mnpair.second.pubKeyMasternode.GetID(), mnv.vchSig1, strMessage1, strError)) {
                     // found it!
                     prealMasternode = &mnpair.second;
                     if(!mnpair.second.IsPoSeVerified()) {
@@ -1211,7 +1211,7 @@ void CMasternodeMan::ProcessVerifyReply(CNode* pnode, CMasternodeVerification& m
 
                     std::string strError;
 
-                    if(!CMessageSigner::VerifyMessage(activeMasternode.pubKeyMasternode.GetHash(), mnv.vchSig2, strMessage2, strError)) {
+                    if(!CMessageSigner::VerifyMessage(activeMasternode.pubKeyMasternode.GetID(), mnv.vchSig2, strMessage2, strError)) {
                         LogPrintf("MasternodeMan::ProcessVerifyReply -- VerifyMessage() failed, error: %s\n", strError);
                         return;
                     }
@@ -1318,12 +1318,12 @@ void CMasternodeMan::ProcessVerifyBroadcast(CNode* pnode, const CMasternodeVerif
             return;
         }
 
-        if(!CMessageSigner::VerifyMessage(pmn1->pubKeyMasternode, mnv.vchSig1, strMessage1, strError)) {
+        if(!CMessageSigner::VerifyMessage(pmn1->pubKeyMasternode.GetID(), mnv.vchSig1, strMessage1, strError)) {
             LogPrintf("CMasternodeMan::ProcessVerifyBroadcast -- VerifyMessage() for masternode1 failed, error: %s\n", strError);
             return;
         }
 
-        if(!CMessageSigner::VerifyMessage(pmn2->pubKeyMasternode, mnv.vchSig2, strMessage2, strError)) {
+        if(!CMessageSigner::VerifyMessage(pmn2->pubKeyMasternode.GetID(), mnv.vchSig2, strMessage2, strError)) {
             LogPrintf("CMasternodeMan::ProcessVerifyBroadcast -- VerifyMessage() for masternode2 failed, error: %s\n", strError);
             return;
         }

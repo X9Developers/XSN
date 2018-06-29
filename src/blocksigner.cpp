@@ -31,6 +31,7 @@ CBlockSigner::CBlockSigner(CBlock &block, const CKeyStore *keystore, const TPoSC
 bool CBlockSigner::SignBlock()
 {
     CKey keySecret;
+    CPubKey::InputScriptType scriptType;
 
     if(refBlock.IsProofOfStake())
     {
@@ -62,6 +63,8 @@ bool CBlockSigner::SignBlock()
             if (!refKeystore->GetKey(keyid, keySecret)) {
                 return error("CBlockSigner::SignBlock() : Private key for address %s not known", EncodeDestination(destination));
             }
+
+            scriptType = GetScriptTypeFromDestination(destination);
         }
     }
 

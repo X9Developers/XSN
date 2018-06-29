@@ -415,6 +415,7 @@ bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned 
     // to secure the network when proof-of-stake difficulty is low
     int64_t nTimeWeight = std::min<int64_t>(nTimeTx - txPrevTime, nStakeMaxAge - nStakeMinAge);
     arith_uint256 bnCoinDayWeight = nValueIn * nTimeWeight / COIN / 200;
+
     // Calculate hash
     CDataStream ss(SER_GETHASH, 0);
     uint64_t nStakeModifier = 0;

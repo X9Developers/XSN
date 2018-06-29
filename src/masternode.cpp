@@ -672,7 +672,7 @@ bool CMasternodeBroadcast::CheckSignature(int& nDos)
 
     LogPrint(BCLog::MASTERNODE, "CMasternodeBroadcast::CheckSignature -- strMessage: %s  pubKeyCollateralAddress address: %s  sig: %s\n", strMessage, CBitcoinAddress(pubKeyCollateralAddress.GetID()).ToString(), EncodeBase64(&vchSig[0], vchSig.size()));
 
-    if(!CMessageSigner::VerifyMessage(pubKeyCollateralAddress, vchSig, strMessage, strError)){
+    if(!CMessageSigner::VerifyMessage(pubKeyCollateralAddress.GetID(), vchSig, strMessage, strError)){
         LogPrintf("CMasternodeBroadcast::CheckSignature -- Got bad Masternode announce signature, error: %s\n", strError);
         nDos = 100;
         return false;
@@ -735,7 +735,7 @@ bool CMasternodePing::CheckSignature(CPubKey& pubKeyMasternode, int &nDos)
     std::string strError = "";
     nDos = 0;
 
-    if(!CMessageSigner::VerifyMessage(pubKeyMasternode, vchSig, strMessage, strError)) {
+    if(!CMessageSigner::VerifyMessage(pubKeyMasternode.GetID(), vchSig, strMessage, strError)) {
         LogPrintf("CMasternodePing::CheckSignature -- Got bad Masternode ping signature, masternode=%s, error: %s\n", vin.prevout.ToString(), strError);
         nDos = 33;
         return false;

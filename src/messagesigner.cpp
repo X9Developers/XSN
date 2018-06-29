@@ -56,10 +56,10 @@ bool CHashSigner::VerifyHash(const uint256& hash, const CTxDestination &address,
     }
 
 
-    auto GetDestForKey = [](const CKeyID &keyID, CPubKey::InputScriptType type) {
+    auto GetDestForKey = [](const CKeyID &keyID, CPubKey::InputScriptType type) -> CTxDestination {
         switch(type) {
         case CPubKey::InputScriptType::SPENDP2PKH: return keyID;
-        case CPubKey::InputScriptType::SPENDP2SHWITNESS: return CScript(GetScriptForDestination(WitnessV0KeyHash(keyID)));
+        case CPubKey::InputScriptType::SPENDP2SHWITNESS: return CScriptID(GetScriptForDestination(WitnessV0KeyHash(keyID)));
         case CPubKey::InputScriptType::SPENDWITNESS: return WitnessV0KeyHash(keyID);
         default:
             break;

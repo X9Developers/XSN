@@ -275,7 +275,7 @@ bool CSporkMessage::CheckSignature()
     std::string strMessage = boost::lexical_cast<std::string>(nSporkID) + boost::lexical_cast<std::string>(nValue) + boost::lexical_cast<std::string>(nTimeSigned);
     CPubKey pubkey(ParseHex(Params().SporkPubKey()));
 
-    if(!CMessageSigner::VerifyMessage(pubkey, vchSig, strMessage, strError)) {
+    if(!CMessageSigner::VerifyMessage(pubkey.GetID(), vchSig, strMessage, strError)) {
         LogPrintf("%s failed, error: %s\n", __func__, strError);
         return false;
     }
