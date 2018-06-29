@@ -21,7 +21,7 @@
 #include <instantx.h>
 #include <darksendconfig.h>
 #include <masternode-sync.h>
-#include <privatesend-client.h>
+#include <privatesend/privatesend-client.h>
 
 #include <QAbstractItemDelegate>
 #include <QPainter>
@@ -119,7 +119,7 @@ public:
     const PlatformStyle *platformStyle;
 
 };
-#include <overviewpage.moc"
+#include <overviewpage.moc>
 
 OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) :
     QWidget(parent),
