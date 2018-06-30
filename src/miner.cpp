@@ -240,18 +240,18 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(CWallet *wallet, 
     int nDescendantsUpdated = 0;
     addPackageTxs(nPackagesSelected, nDescendantsUpdated);
 
-
-    coinbaseTx.vin[0].scriptSig = CScript() << nHeight << OP_0;
-    pblock->vtx[0] = MakeTransactionRef(std::move(coinbaseTx));
-    pblocktemplate->vchCoinbaseCommitment = GenerateCoinbaseCommitment(*pblock, pindexPrev, chainparams.GetConsensus());
-    pblocktemplate->vTxFees[0] = -nFees;
-
     if(pblock->IsProofOfStake())
     {
         CMutableTransaction mutableTx(*pblock->vtx[1]);
         SignInputsInCoinstake(*wallet, mutableTx, vwtxPrev);
         pblock->vtx[1] = MakeTransactionRef(std::move(mutableTx));
     }
+
+    coinbaseTx.vin[0].scriptSig = CScript() << nHeight << OP_0;
+    pblock->vtx[0] = MakeTransactionRef(std::move(coinbaseTx));
+    pblocktemplate->vchCoinbaseCommitment = GenerateCoinbaseCommitment(*pblock, pindexPrev, chainparams.GetConsensus());
+    pblocktemplate->vTxFees[0] = -nFees;
+
 
     LogPrintf("CreateNewBlock(): block weight: %u txs: %u fees: %ld sigops %d\n", GetBlockWeight(*pblock), nBlockTx, nFees, nBlockSigOpsCost);
 

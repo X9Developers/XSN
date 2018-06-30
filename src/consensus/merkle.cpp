@@ -171,11 +171,6 @@ uint256 BlockWitnessMerkleRoot(const CBlock& block, bool* mutated)
     leaves.resize(block.vtx.size());
     leaves[0].SetNull(); // The witness hash of the coinbase is 0.
     size_t s = 1;
-    if(block.IsProofOfStake())
-    {
-        ++s;
-        leaves[1].SetNull();
-    }
     for (; s < block.vtx.size(); s++) {
         leaves[s] = block.vtx[s]->GetWitnessHash();
     }
