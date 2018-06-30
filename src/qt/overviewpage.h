@@ -5,6 +5,7 @@
 #ifndef BITCOIN_QT_OVERVIEWPAGE_H
 #define BITCOIN_QT_OVERVIEWPAGE_H
 
+#include <interfaces/wallet.h>
 #include <amount.h>
 
 #include <QWidget>
@@ -51,6 +52,7 @@ private:
     Ui::OverviewPage *ui;
     ClientModel *clientModel;
     WalletModel *walletModel;
+    interfaces::WalletBalances m_balances;
     CAmount currentBalance;
     CAmount currentUnconfirmedBalance;
     CAmount currentImmatureBalance;
