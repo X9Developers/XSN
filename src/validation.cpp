@@ -3409,11 +3409,7 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationSta
  * We will hack here in order to get correct hash without commitment.
  */
 static uint256 WitnessComittmentForPoSBlock(const CBlock &block, int commitpos, bool &malleated)
-{
-
-    return BlockWitnessMerkleRoot(block, &malleated);
-
-    /*
+{   
     if(!block.IsProofOfStake())
         return BlockWitnessMerkleRoot(block, &malleated);
 
@@ -3424,9 +3420,7 @@ static uint256 WitnessComittmentForPoSBlock(const CBlock &block, int commitpos, 
     vout.erase(std::begin(vout) + commitpos);
     tmpBlock.vtx[1] = MakeTransactionRef(std::move(tempTx));
     auto value = BlockWitnessMerkleRoot(tmpBlock, &malleated);
-    LogPrintf("%s hash: %s\n%s\n", __func__, tmpBlock.ToString(), value.ToString());
     return value;
-    */
 }
 
 /** NOTE: This function is not currently invoked by ConnectBlock(), so we

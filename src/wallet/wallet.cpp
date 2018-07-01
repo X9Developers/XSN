@@ -439,6 +439,9 @@ bool CWallet::CreateCoinStakeKernel(CScript &kernelScript,const CScript &stakeSc
                 {
                     return error("CreateCoinStakeKernel : no support for kernel %s\n", EncodeDestination(dest));
                 }
+
+//                if(!boost::get<CKeyID>(&dest))
+//                    return false;
             }
 
             kernelScript = stakeScript;
