@@ -439,9 +439,6 @@ bool CWallet::CreateCoinStakeKernel(CScript &kernelScript,const CScript &stakeSc
                 {
                     return error("CreateCoinStakeKernel : no support for kernel %s\n", EncodeDestination(dest));
                 }
-
-//                if(!boost::get<CKeyID>(&dest))
-//                    return false;
             }
 
             kernelScript = stakeScript;
@@ -2915,6 +2912,9 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, c
         // for staking we support P2PKH, Native Segwit, P2SH Segwit
         if(!boost::get<CKeyID>(&dest) && !boost::get<WitnessV0KeyHash>(&dest) &&
                 !boost::get<CScriptID>(&dest))
+            continue;
+
+        if(!boost::get<CKeyID>(&dest))
             continue;
 
         //        LogPrintf("scriptPubKeyKernel is good\n");
