@@ -35,9 +35,9 @@ static QString FormatAmount(int displayUnit, CAmount amount, BitcoinUnits::Separ
                                 separators);
 }
 
-TPoSAddressesTableModel::TPoSAddressesTableModel(CWallet *wallet, OptionsModel *optionsModel, QObject *parent)
+TPoSAddressesTableModel::TPoSAddressesTableModel(WalletModel *parent, OptionsModel *optionsModel)
     : QAbstractTableModel(parent),
-      wallet(wallet),
+      walletModel(parent),
       optionsModel(optionsModel),
       tposContracts(wallet->tposOwnerContracts)
 

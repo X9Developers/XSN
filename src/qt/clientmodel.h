@@ -11,13 +11,10 @@
 #include <atomic>
 #include <memory>
 
-class AddressTableModel;
 class BanTableModel;
 class OptionsModel;
 class PeerTableModel;
-class TransactionTableModel;
 
-class CWallet;
 class CBlockIndex;
 
 namespace interfaces {
@@ -29,11 +26,11 @@ QT_BEGIN_NAMESPACE
 class QTimer;
 QT_END_NAMESPACE
 
-enum BlockSource {
-    BLOCK_SOURCE_NONE,
-    BLOCK_SOURCE_REINDEX,
-    BLOCK_SOURCE_DISK,
-    BLOCK_SOURCE_NETWORK
+enum class BlockSource {
+    NONE,
+    REINDEX,
+    DISK,
+    NETWORK
 };
 
 enum NumConnections {
@@ -43,7 +40,7 @@ enum NumConnections {
     CONNECTIONS_ALL  = (CONNECTIONS_IN | CONNECTIONS_OUT),
 };
 
-/** Model for XSN network client. */
+/** Model for Bitcoin network client. */
 class ClientModel : public QObject
 {
     Q_OBJECT
@@ -59,38 +56,21 @@ public:
 
     //! Return number of connections, default is in- and outbound (total)
     int getNumConnections(unsigned int flags = CONNECTIONS_ALL) const;
-    QString getMasternodeCountString() const;
-    int getNumBlocks() const;
     int getHeaderTipHeight() const;
     int64_t getHeaderTipTime() const;
-    //! Return number of transactions in the mempool
-    long getMempoolSize() const;
-    //! Return the dynamic memory usage of the mempool
-    size_t getMempoolDynamicUsage() const;
-    
-    quint64 getTotalBytesRecv() const;
-    quint64 getTotalBytesSent() const;
 
-    //double getVerificationProgress(const CBlockIndex *tip) const;
-    QDateTime getLastBlockDate() const;
-
-    //! Return true if core is doing initial block download
-    bool inInitialBlockDownload() const;
     //! Returns enum BlockSource of the current importing/syncing state
     enum BlockSource getBlockSource() const;
-    //! Return true if network activity in core is enabled
-    bool getNetworkActive() const;
-    //! Toggle network activity state in core
-    void setNetworkActive(bool active);
     //! Return warnings to be displayed in status bar
     QString getStatusBarWarnings() const;
 
     QString formatFullVersion() const;
     QString formatSubVersion() const;
     bool isReleaseVersion() const;
-    QString clientName() const;
     QString formatClientStartupTime() const;
     QString dataDir() const;
+
+    bool getProxyInfo(std::string& ip_port) const;
 
     // caches for the best header
     mutable std::atomic<int> cachedBestHeaderHeight;
@@ -107,20 +87,16 @@ private:
     std::unique_ptr<interfaces::Handler> m_handler_notify_header_tip;
     OptionsModel *optionsModel;
     PeerTableModel *peerTableModel;
-    QString cachedMasternodeCountString;
     BanTableModel *banTableModel;
 
     QTimer *pollTimer;
-    QTimer *pollMnTimer;
 
     void subscribeToCoreSignals();
     void unsubscribeFromCoreSignals();
 
 Q_SIGNALS:
     void numConnectionsChanged(int count);
-    void strMasternodesChanged(const QString &strMasternodes);
     void numBlocksChanged(int count, const QDateTime& blockDate, double nVerificationProgress, bool header);
-    void additionalDataSyncProgressChanged(double nSyncProgress);
     void mempoolSizeChanged(long count, size_t mempoolSizeInBytes);
     void networkActiveChanged(bool networkActive);
     void alertsChanged(const QString &warnings);
@@ -134,11 +110,9 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     void updateTimer();
-    void updateMnTimer();
     void updateNumConnections(int numConnections);
     void updateNetworkActive(bool networkActive);
     void updateAlert();
-//    void updateAlert(const QString &hash, int status);
     void updateBanlist();
 };
 

@@ -1,5 +1,4 @@
-// Copyright (c) 2011-2013 The Bitcoin Core developers
-// Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2011-2017 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -26,10 +25,6 @@ EditAddressDialog::EditAddressDialog(Mode _mode, QWidget *parent) :
 
     switch(mode)
     {
-    case NewReceivingAddress:
-        setWindowTitle(tr("New receiving address"));
-        ui->addressEdit->setEnabled(false);
-        break;
     case NewSendingAddress:
         setWindowTitle(tr("New sending address"));
         break;
@@ -74,13 +69,12 @@ bool EditAddressDialog::saveCurrentRow()
 
     switch(mode)
     {
-    case NewReceivingAddress:
     case NewSendingAddress:
         address = model->addRow(
-                mode == NewSendingAddress ? AddressTableModel::Send : AddressTableModel::Receive,
+                AddressTableModel::Send,
                 ui->labelEdit->text(),
                 ui->addressEdit->text(),
-        model->GetDefaultAddressType());
+                model->GetDefaultAddressType());
         break;
     case EditReceivingAddress:
     case EditSendingAddress:
@@ -110,7 +104,7 @@ void EditAddressDialog::accept()
             break;
         case AddressTableModel::INVALID_ADDRESS:
             QMessageBox::warning(this, windowTitle(),
-                tr("The entered address \"%1\" is not a valid XSN address.").arg(ui->addressEdit->text()),
+                tr("The entered address \"%1\" is not a valid Bitcoin address.").arg(ui->addressEdit->text()),
                 QMessageBox::Ok, QMessageBox::Ok);
             break;
         case AddressTableModel::DUPLICATE_ADDRESS:

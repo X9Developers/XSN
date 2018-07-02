@@ -1,11 +1,11 @@
-// Copyright (c) 2011-2015 The Bitcoin Core developers
+// Copyright (c) 2011-2017 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <qvalidatedlineedit.h>
+#include <qt/qvalidatedlineedit.h>
 
-#include <bitcoinaddressvalidator.h>
-#include <guiconstants.h>
+#include <qt/bitcoinaddressvalidator.h>
+#include <qt/guiconstants.h>
 
 QValidatedLineEdit::QValidatedLineEdit(QWidget *parent) :
     QLineEdit(parent),
@@ -15,14 +15,14 @@ QValidatedLineEdit::QValidatedLineEdit(QWidget *parent) :
     connect(this, SIGNAL(textChanged(QString)), this, SLOT(markValid()));
 }
 
-void QValidatedLineEdit::setValid(bool valid)
+void QValidatedLineEdit::setValid(bool _valid)
 {
-    if(valid == this->valid)
+    if(_valid == this->valid)
     {
         return;
     }
 
-    if(valid)
+    if(_valid)
     {
         setStyleSheet("");
     }
@@ -30,7 +30,7 @@ void QValidatedLineEdit::setValid(bool valid)
     {
         setStyleSheet(STYLE_INVALID);
     }
-    this->valid = valid;
+    this->valid = _valid;
 }
 
 void QValidatedLineEdit::focusInEvent(QFocusEvent *evt)

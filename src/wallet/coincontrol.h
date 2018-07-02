@@ -34,6 +34,7 @@ public:
     boost::optional<bool> m_signal_bip125_rbf;
     //! Fee estimation mode to control arguments to estimateSmartFee
     FeeEstimateMode m_fee_mode;
+    bool fUseInstantSend;
 
     AvailableCoinsType nCoinType;
 
@@ -55,6 +56,7 @@ public:
         m_signal_bip125_rbf.reset();
         nCoinType = ALL_COINS;
         m_fee_mode = FeeEstimateMode::UNSET;
+        fUseInstantSend = false;
     }
 
     bool HasSelected() const

@@ -9,7 +9,7 @@
 
 #include <interfaces/node.h>
 #include <key_io.h>
-#include <interfaces/wallet.h>
+#include <wallet/wallet.h>
 
 #include <QFont>
 #include <QDebug>

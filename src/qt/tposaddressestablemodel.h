@@ -13,15 +13,15 @@
 class CWallet;
 class OptionsModel;
 class TPoSContract;
+class WalletModel;
 
 class TPoSAddressesTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 
 public:
-    explicit TPoSAddressesTableModel(CWallet* wallet,
-                                     OptionsModel *optionsModel,
-                                     QObject *parent = nullptr);
+    explicit TPoSAddressesTableModel(WalletModel *parent,
+                                     OptionsModel *optionsModel);
 
     ~TPoSAddressesTableModel();
 
@@ -65,7 +65,7 @@ private:
 
 private:
 
-    CWallet *wallet;
+    WalletModel *walletModel;
     OptionsModel *optionsModel;
     const std::map<uint256, TPoSContract> &tposContracts;
     std::map<CBitcoinAddress, Entry> amountsMap;
