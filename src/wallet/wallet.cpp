@@ -400,17 +400,37 @@ CAmount GetStakeReward(CAmount blockReward, unsigned int percentage)
     return (blockReward / 100) * percentage;
 }
 
-bool CWallet::CreateCoinStakeKernel(CScript &kernelScript,const CScript &stakeScript,
+bool CWallet::CreateCoinStakeKernel(CScript &kernelScript, const CScript &stakeScript,
                                     unsigned int nBits, const CBlock &blockFrom,
                                     unsigned int nTxPrevOffset, const CTransactionRef &txPrev,
                                     const COutPoint &prevout, unsigned int &nTimeTx,
-                                    const TPoSContract &contract, bool fPrintProofOfStake) const
+                                    const TPoSContract &contract, bool fGenerateSegwit, bool fPrintProofOfStake) const
 {
     unsigned int nTryTime = 0;
     uint256 hashProofOfStake;
 
     if (blockFrom.GetBlockTime() + Params().GetConsensus().nStakeMinAge + nHashDrift > nTimeTx) // Min age requirement
         return false;
+
+
+    if(!contract.IsValid()) {
+
+        CTxDestination dest;
+        if(!ExtractDestination(stakeScript, dest))
+            return false;
+
+        // this will return true only if it's P2SH_SEGWIT, SEGWIT, P2PKH(LEGACY)
+        if(GetKeyForDestination(*this, dest).IsNull())
+        {
+            return error("CreateCoinStakeKernel : no support for kernel %s\n", EncodeDestination(dest));
+        }
+
+        if(!fGenerateSegwit && !boost::get<CKeyID>(&dest))
+        {
+            return false;
+        }
+    }
+
 
     for(unsigned int i = 0; i < nHashDrift; ++i)
     {
@@ -428,18 +448,7 @@ bool CWallet::CreateCoinStakeKernel(CScript &kernelScript,const CScript &stakeSc
                 LogPrintf("CreateCoinStakeKernel : kernel found\n");
 
             kernelScript.clear();
-            if(!contract.IsValid()) {
 
-                CTxDestination dest;
-                if(!ExtractDestination(stakeScript, dest))
-                    return false;
-
-                // this will return true only if it's P2SH_SEGWIT, SEGWIT, P2PKH(LEGACY)
-                if(GetKeyForDestination(*this, dest).IsNull())
-                {
-                    return error("CreateCoinStakeKernel : no support for kernel %s\n", EncodeDestination(dest));
-                }
-            }
 
             kernelScript = stakeScript;
             nTimeTx = nTryTime;
@@ -3667,7 +3676,8 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
                               CMutableTransaction &txNew,
                               unsigned int &nTxNewTime,
                               const TPoSContract &tposContract,
-                              std::vector<const CWalletTx*> &vwtxPrev)
+                              std::vector<const CWalletTx*> &vwtxPrev,
+                              bool fGenerateSegwit)
 {
     // The following split & combine thresholds are important to security
     // Should not be adjusted if you don't understand the consequences
@@ -3750,7 +3760,7 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
         auto stakeScript = pcoin.first->tx->vout[pcoin.second].scriptPubKey;
         fKernelFound = CreateCoinStakeKernel(kernelScript, stakeScript, nBits,
                                              block, sizeof(CBlock), pcoin.first->tx,
-                                             prevoutStake, nTxNewTime, tposContract, false);
+                                             prevoutStake, nTxNewTime, tposContract, fGenerateSegwit, false);
 
         if(fKernelFound)
         {
@@ -4741,10 +4751,10 @@ bool CWallet::Verify(std::string wallet_file, bool salvage_wallet, std::string& 
           (path_type == fs::symlink_file && fs::is_directory(wallet_path)) ||
           (path_type == fs::regular_file && fs::path(wallet_file).filename() == wallet_file))) {
         error_string = strprintf(
-              "Invalid -wallet path '%s'. -wallet path should point to a directory where wallet.dat and "
-              "database/log.?????????? files can be stored, a location where such a directory could be created, "
-              "or (for backwards compatibility) the name of an existing data file in -walletdir (%s)",
-              wallet_file, GetWalletDir());
+                    "Invalid -wallet path '%s'. -wallet path should point to a directory where wallet.dat and "
+                    "database/log.?????????? files can be stored, a location where such a directory could be created, "
+                    "or (for backwards compatibility) the name of an existing data file in -walletdir (%s)",
+                    wallet_file, GetWalletDir());
         return false;
     }
 

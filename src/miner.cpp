@@ -210,7 +210,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(CWallet *wallet, 
             unsigned int nTxNewTime = 0;
             if (wallet->CreateCoinStake(pblock->nBits, blockReward,
                                         coinstakeTx, nTxNewTime,
-                                        tposContract, vwtxPrev))
+                                        tposContract, vwtxPrev, fIncludeWitness))
             {
                 pblock->nTime = nTxNewTime;
                 coinbaseTx.vout[0].SetEmpty();
