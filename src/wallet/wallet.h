@@ -790,7 +790,7 @@ private:
                                unsigned int nBits, const CBlock& blockFrom,
                                unsigned int nTxPrevOffset, const CTransactionRef &txPrev,
                                const COutPoint& prevout, unsigned int &nTimeTx,
-                               const TPoSContract &contract, bool fPrintProofOfStake) const;
+                               const TPoSContract &contract, bool fGenerateSegwit, bool fPrintProofOfStake) const;
 
     void FillCoinStakePayments(CMutableTransaction &transaction,
                                const TPoSContract &tposContract,
@@ -1044,7 +1044,8 @@ public:
                            std::string& strFailReason, const CCoinControl& coin_control, bool sign = true, OnTransactionToBeSigned onTxToBeSigned = OnTransactionToBeSigned());
     bool CreateCoinStake(unsigned int nBits, CAmount blockReward,
                          CMutableTransaction& txNew, unsigned int& nTxNewTime,
-                         const TPoSContract &tposContract, std::vector<const CWalletTx *> &vwtxPrev);
+                         const TPoSContract &tposContract, std::vector<const CWalletTx *> &vwtxPrev,
+                         bool fGenerateSegwit);
     bool CommitTransaction(CTransactionRef tx, mapValue_t mapValue, std::vector<std::pair<std::string, std::string>> orderForm, std::string fromAccount, CReserveKey& reservekey, CConnman* connman, CValidationState& state);
 
     void ListAccountCreditDebit(const std::string& strAccount, std::list<CAccountingEntry>& entries);

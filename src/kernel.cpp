@@ -517,22 +517,12 @@ bool CheckProofOfStake(const CBlock &block, uint256& hashProofOfStake)
     if (!GetTransaction(txin.prevout.hash, txPrev, cons, hashBlock, false, pindexSlow))
         return error("CheckProofOfStake() : INFO: read txPrev failed");
 
-
-    CMutableTransaction mutableCoinStakeTx(*tx);
-    int commitmentIndex = GetWitnessCommitmentIndex(block);
-    if(commitmentIndex != -1)
-    {
-        // we need to do this because when we have signed coinstake we didn't had commitment in place
-        // so we check signature of the coinstake in the same way it was signed
-        mutableCoinStakeTx.vout.erase(std::begin(mutableCoinStakeTx.vout) + commitmentIndex);
-    }
-
     CTxOut prevTxOut = txPrev->vout[txin.prevout.n];
     //verify signature and script, don't check script if it's tpos block, signature check will happen in different place
     if (!block.IsTPoSBlock() &&
             !VerifyScript(txin.scriptSig, prevTxOut.scriptPubKey,
                           &txin.scriptWitness, STANDARD_SCRIPT_VERIFY_FLAGS,
-                          MutableTransactionSignatureChecker(&mutableCoinStakeTx, 0, prevTxOut.nValue)))
+                          TransactionSignatureChecker(tx.get(), 0, prevTxOut.nValue)))
     {
         return error("CheckProofOfStake() : VerifySignature failed on coinstake %s", tx->GetHash().ToString().c_str());
     }

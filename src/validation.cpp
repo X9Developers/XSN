@@ -3223,10 +3223,6 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
             return state.DoS(100, false, REJECT_INVALID, "bad-cb-multiple", false, "more than one coinbase");
 
     if (block.IsProofOfStake()) {
-        // Coinbase output should be empty if proof-of-stake block
-        if (block.vtx[0]->vout.size() != 1 || !block.vtx[0]->vout[0].IsEmpty())
-            return state.DoS(100, error("CheckBlock() : coinbase output not empty for proof-of-stake block"));
-
         // Second transaction must be coinstake, the rest must not be
         if (block.vtx.empty() || !block.vtx[1]->IsCoinStake())
             return state.DoS(100, error("CheckBlock() : second tx is not coinstake"));
@@ -3301,11 +3297,11 @@ bool IsNullDummyEnabled(const CBlockIndex* pindexPrev, const Consensus::Params& 
 
 // Compute at which vout of the block's coinbase transaction the witness
 // commitment occurs, or -1 if not found.
-int GetWitnessCommitmentIndex(const CBlock& block)
+static int GetWitnessCommitmentIndex(const CBlock& block)
 {
     int commitpos = -1;
     if (!block.vtx.empty()) {
-        const auto &commitmentTx = block.vtx[block.IsProofOfStake() ? 1 : 0];
+        const auto &commitmentTx = block.vtx[0];
         for (size_t o = 0; o < commitmentTx->vout.size(); o++) {
             if (commitmentTx->vout[o].scriptPubKey.size() >= 38 && commitmentTx->vout[o].scriptPubKey[0] == OP_RETURN && commitmentTx->vout[o].scriptPubKey[1] == 0x24 && commitmentTx->vout[o].scriptPubKey[2] == 0xaa && commitmentTx->vout[o].scriptPubKey[3] == 0x21 && commitmentTx->vout[o].scriptPubKey[4] == 0xa9 && commitmentTx->vout[o].scriptPubKey[5] == 0xed) {
                 commitpos = o;
@@ -3347,9 +3343,9 @@ std::vector<unsigned char> GenerateCoinbaseCommitment(CBlock& block, const CBloc
             out.scriptPubKey[5] = 0xed;
             memcpy(&out.scriptPubKey[6], witnessroot.begin(), 32);
             commitment = std::vector<unsigned char>(out.scriptPubKey.begin(), out.scriptPubKey.end());
-            CMutableTransaction tx(*block.vtx[block.IsProofOfStake() ? 1 : 0]);
+            CMutableTransaction tx(*block.vtx[0]);
             tx.vout.push_back(out);
-            block.vtx[block.IsProofOfStake() ? 1 : 0] = MakeTransactionRef(std::move(tx));
+            block.vtx[0] = MakeTransactionRef(std::move(tx));
         }
     }
     UpdateUncommittedBlockStructures(block, pindexPrev, consensusParams);
@@ -3410,17 +3406,17 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationSta
  */
 static uint256 WitnessComittmentForPoSBlock(const CBlock &block, int commitpos, bool &malleated)
 {   
-    if(!block.IsProofOfStake())
+//    if(!block.IsProofOfStake())
         return BlockWitnessMerkleRoot(block, &malleated);
 
-    CBlock tmpBlock = block;
-    CMutableTransaction tempTx(*tmpBlock.vtx[1]);
+//    CBlock tmpBlock = block;
+//    CMutableTransaction tempTx(*tmpBlock.vtx[1]);
 
-    auto &vout = tempTx.vout;
-    vout.erase(std::begin(vout) + commitpos);
-    tmpBlock.vtx[1] = MakeTransactionRef(std::move(tempTx));
-    auto value = BlockWitnessMerkleRoot(tmpBlock, &malleated);
-    return value;
+//    auto &vout = tempTx.vout;
+//    vout.erase(std::begin(vout) + commitpos);
+//    tmpBlock.vtx[1] = MakeTransactionRef(std::move(tempTx));
+//    auto value = BlockWitnessMerkleRoot(tmpBlock, &malleated);
+//    return value;
 }
 
 /** NOTE: This function is not currently invoked by ConnectBlock(), so we
@@ -3482,11 +3478,21 @@ static bool ContextualCheckBlock(const CBlock& block, CValidationState& state, c
                 return state.DoS(100, false, REJECT_INVALID, "bad-witness-nonce-size", true, strprintf("%s : invalid witness reserved value size", __func__));
             }
             CHash256().Write(hashWitness.begin(), 32).Write(&block.vtx[0]->vin[0].scriptWitness.stack[0][0], 32).Finalize(hashWitness.begin());
-            if (memcmp(hashWitness.begin(), &block.vtx[block.IsProofOfStake() ? 1 : 0]->vout[commitpos].scriptPubKey[6], 32)) {
+            if (memcmp(hashWitness.begin(), &block.vtx[0]->vout[commitpos].scriptPubKey[6], 32)) {
                 return state.DoS(100, false, REJECT_INVALID, "bad-witness-merkle-match", true, strprintf("%s : witness merkle commitment mismatch", __func__));
             }
             fHaveWitness = true;
         }
+    }
+
+    if(block.IsProofOfStake())
+    {
+        if(!fHaveWitness && block.vtx[0]->vout.size() != 1)
+            return state.DoS(100, error("CheckBlock() : wrong number of outputs in coinbase for proof-of-stake block"));
+
+        // Coinbase output should be empty if proof-of-stake block
+        if (!block.vtx[0]->vout[0].IsEmpty())
+            return state.DoS(100, error("CheckBlock() : coinbase output not empty for proof-of-stake block"));
     }
 
     // No witness data is allowed in blocks that don't commit to witness data, as this would otherwise leave room for spam
