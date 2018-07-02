@@ -120,6 +120,16 @@ namespace GUIUtil
     // Open the config file
     bool openBitcoinConf();
 
+    // Open xsn.conf
+    void openConfigfile();
+
+    // Open masternode.conf
+    void openMNConfigfile();
+
+    // Browse backup folder
+    void showBackups();
+
+
     // Replace invalid default fonts with known good ones
     void SubstituteFonts(const QString& language);
 
@@ -182,6 +192,21 @@ namespace GUIUtil
 
     bool GetStartOnSystemStartup();
     bool SetStartOnSystemStartup(bool fAutoStart);
+
+    /** Modify Qt network specific settings on migration */
+    void migrateQtSettings();
+
+
+    /** Save window size and position */
+    void saveWindowGeometry(const QString& strSetting, QWidget *parent);
+    /** Restore window size and position */
+    void restoreWindowGeometry(const QString& strSetting, const QSize &defaultSize, QWidget *parent);
+
+    /** Load global CSS theme */
+    QString loadStyleSheet();
+
+    /** Return name of current CSS theme */
+    QString getThemeName();
 
     /* Convert QString to OS specific boost path through UTF-8 */
     fs::path qstringToBoostPath(const QString &path);

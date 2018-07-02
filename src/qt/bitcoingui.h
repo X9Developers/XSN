@@ -6,7 +6,7 @@
 #define BITCOIN_QT_BITCOINGUI_H
 
 #if defined(HAVE_CONFIG_H)
-#include "config/xsn-config.h"
+#include <config/bitcoin-config.h>
 #endif
 
 #include <amount.h>
@@ -220,6 +220,8 @@ public Q_SLOTS:
     bool setCurrentWallet(const QString& name);
     void setHDStatus(int hdEnabled);
 
+    void updateWalletStatus();
+
     void setStakingStatus();
 
     /** Set the encryption status as shown in the UI.
@@ -264,7 +266,7 @@ private Q_SLOTS:
     void aboutClicked();
     /** Show debug window */
     void showDebugWindow();
-/** Show debug window and set focus to the console */
+    /** Show debug window and set focus to the console */
     void showDebugWindowActivateConsole();
 
     /** Show debug window and set focus to the appropriate tab */
