@@ -9,6 +9,7 @@
 #include <tpos/merchantnodeman.h>
 #include <tpos/activemerchantnode.h>
 #include <consensus/validation.h>
+#include <messagesigner.h>
 #include <spork.h>
 #include <sstream>
 #include <numeric>
@@ -237,12 +238,12 @@ std::unique_ptr<CWalletTx> TPoSUtils::CreateCancelContractTransaction(CWallet *w
     CAmount nFeeRet;
     int nChangePosRet;
     CCoinControl coinControl;
-//    coinControl.fUsePrivateSend = false;
+    //    coinControl.fUsePrivateSend = false;
     coinControl.nCoinType = ONLY_MERCHANTNODE_COLLATERAL;
     coinControl.Select(prevOutpoint);
     if(!wallet->CreateTransaction({ { prevOutput.scriptPubKey, prevOutput.nValue, true } }, wtxNew.tx,
-                              reserveKey, nFeeRet, nChangePosRet,
-                              strError, coinControl, true))
+                                  reserveKey, nFeeRet, nChangePosRet,
+                                  strError, coinControl, true))
     {
         LogPrintf("Error() : %s\n", strError.c_str());
         return nullptr;
@@ -291,21 +292,12 @@ bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contr
 
     if(fCheckSignature)
     {
-        CPubKey recoveredKey;
         auto hashMessage = SerializeHash(tmpContract.rawTx->vin.front().prevout);
-
-        CPubKey::InputScriptType inputScriptType;
-        if(!recoveredKey.RecoverCompact(hashMessage, tmpContract.vchSignature, inputScriptType))
-            return error("CheckContract() : failed to recover public key from signature");
-
-        CKeyID keyID;
-        if(!tmpContract.tposAddress.GetKeyID(keyID))
+        std::string strError;
+        if(!CHashSigner::VerifyHash(hashMessage, tmpContract.tposAddress.Get(), tmpContract.vchSignature, strError))
         {
-            return error("CheckContract() : TPoS address is not P2PKH");
+            return error("CheckContract() : TPoS contract signature is invalid %s", strError);
         }
-
-        if(keyID != recoveredKey.GetID())
-            return error("CheckContract() : TPoS contract signature is invalid");
     }
 
     if(fCheckContractOutpoint)
@@ -343,7 +335,7 @@ bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &bl
     CAmount merchantPayment = 0;
     merchantPayment = std::accumulate(std::begin(coinstake->vout) + 2, std::end(coinstake->vout), CAmount(0), [scriptMerchantPubKey](CAmount accum, const CTxOut &txOut) {
             return txOut.scriptPubKey == scriptMerchantPubKey ? accum + txOut.nValue : accum;
-    });
+});
 
     if(merchantPayment > 0)
     {
@@ -361,8 +353,8 @@ bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &bl
     if(!merchantnodeSync.IsSynced())
     {
         //there is no merchant node info to check anything, let's just accept the longest chain
-//        if(fDebug)
-            LogPrintf("IsMerchantPaymentValid -- WARNING: Client not synced, skipping block payee checks\n");
+        //        if(fDebug)
+        LogPrintf("IsMerchantPaymentValid -- WARNING: Client not synced, skipping block payee checks\n");
 
         return true;
     }
@@ -415,7 +407,7 @@ TPoSContract::TPoSContract(CTransactionRef tx, CBitcoinAddress merchantAddress, 
 bool TPoSContract::IsValid() const
 {
     return rawTx && !rawTx->IsNull() && merchantAddress.IsValid() && tposAddress.IsValid() &&
-           stakePercentage > 0 && stakePercentage < 100;
+            stakePercentage > 0 && stakePercentage < 100;
 }
 
 TPoSContract TPoSContract::FromTPoSContractTx(const CTransactionRef tx)

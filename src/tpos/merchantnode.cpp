@@ -345,7 +345,7 @@ bool CMerchantnodeBroadcast::SimpleCheck(int& nDos)
         nActiveState = MERCHANTNODE_EXPIRED;
     }
 
-    if(nProtocolVersion < PROTOCOL_VERSION) {
+    if(nProtocolVersion < PRESEGWIT_PROTO_VERSION) {
         LogPrintf("CMerchantnodeBroadcast::SimpleCheck -- ignoring outdated Merchantnode: merchantnode=%s  nProtocolVersion=%d\n",
                   pubKeyMerchantnode.GetID().ToString(), nProtocolVersion);
         return false;
