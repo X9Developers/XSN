@@ -12,6 +12,7 @@
 #include <masternodeman.h>
 #include <messagesigner.h>
 #include <util.h>
+#include <txdb.h>
 
 #include <univalue.h>
 
@@ -522,10 +523,7 @@ bool CGovernanceObject::IsCollateralValid(std::string& strError, bool& fMissingC
 
     // RETRIEVE TRANSACTION IN QUESTION
 
-    const Coin& coin = AccessByTxid(*pcoinsTip, nCollateralHash);
-    auto pindexSlow = chainActive[coin.nHeight];
-
-    if(!GetTransaction(nCollateralHash, txCollateral, Params().GetConsensus(), nBlockHash, true, pindexSlow)){
+    if(!GetTransaction(nCollateralHash, txCollateral, Params().GetConsensus(), nBlockHash, true)){
         strError = strprintf("Can't find collateral tx %s", nCollateralHash.ToString());
         LogPrintf("CGovernanceObject::IsCollateralValid -- %s\n", strError);
         return false;
