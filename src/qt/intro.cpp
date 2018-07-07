@@ -141,9 +141,9 @@ Intro::Intro(QWidget *parent) :
             requiredSpace = prunedGBs;
             storageRequiresMsg = tr("Approximately %1 GB of data will be stored in this directory.");
         }
-      //  ui->lblExplanation3->setVisible(true);
+        ui->lblExplanation3->setVisible(true);
     } else {
-       // ui->lblExplanation3->setVisible(false);
+        ui->lblExplanation3->setVisible(false);
     }
     requiredSpace += CHAIN_STATE_SIZE;
     ui->sizeWarningLabel->setText(

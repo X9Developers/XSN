@@ -199,6 +199,17 @@ void WalletView::gotoSendCoinsPage(QString addr)
         sendCoinsPage->setAddress(addr);
 }
 
+void WalletView::gotoMasternodePage()
+{
+     setCurrentWidget(masternodeListPage);
+}
+
+void WalletView::gotoTPoSPage()
+{
+    setCurrentWidget(tposPage);
+    tposPage->refresh();
+}
+
 void WalletView::gotoSignMessageTab(QString addr)
 {
     // calls show() in showTab_SM()

@@ -16,6 +16,7 @@ class ClientModel;
 class PlatformStyle;
 class SendCoinsEntry;
 class SendCoinsRecipient;
+class QButtonGroup;
 
 namespace Ui {
     class SendCoinsDialog;
@@ -60,6 +61,8 @@ private:
     Ui::SendCoinsDialog *ui;
     ClientModel *clientModel;
     WalletModel *model;
+    QButtonGroup *groupFee = nullptr;
+
     bool fNewRecipientAllowed;
     bool fFeeMinimized;
     const PlatformStyle *platformStyle;

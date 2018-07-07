@@ -12,6 +12,13 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <widget class="QLineEdit" name="searchLineEdit">
+     <property name="placeholderText">
+      <string>Enter address or label to search</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QLabel" name="labelExplanation">
      <property name="textFormat">
       <enum>Qt::PlainText</enum>
@@ -136,8 +143,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../xsn.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
