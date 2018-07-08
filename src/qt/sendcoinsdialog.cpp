@@ -48,7 +48,7 @@ int getIndexForConfTarget(int target) {
 }
 
 SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, QWidget *parent) :
-    QDialog(parent),
+    QWidget(parent),
     ui(new Ui::SendCoinsDialog),
     clientModel(0),
     model(0),
@@ -208,6 +208,8 @@ void SendCoinsDialog::setModel(WalletModel *_model)
         else
             ui->confTargetSelector->setCurrentIndex(getIndexForConfTarget(settings.value("nConfTarget").toInt()));
     }
+
+    onThemeChanged();
 }
 
 SendCoinsDialog::~SendCoinsDialog()
@@ -223,6 +225,15 @@ SendCoinsDialog::~SendCoinsDialog()
 
     delete ui;
 }
+
+void SendCoinsDialog::onThemeChanged()
+{
+    auto themeName = GUIUtil::getThemeName();
+    ui->label->setPixmap(QPixmap(
+                             QString(
+                                 ":/images/res/images/pages/send/%1/send-header.png").arg(themeName)));
+}
+
 
 void SendCoinsDialog::on_sendButton_clicked()
 {

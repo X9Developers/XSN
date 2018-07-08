@@ -23,7 +23,7 @@
 #include <QTextDocument>
 
 ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *_platformStyle, QWidget *parent) :
-    QDialog(parent),
+    QWidget(parent),
     ui(new Ui::ReceiveCoinsDialog),
     columnResizingFixer(0),
     model(0),
@@ -100,11 +100,21 @@ void ReceiveCoinsDialog::setModel(WalletModel *_model)
             ui->useBech32->setCheckState(Qt::Unchecked);
         }
     }
+
+    onThemeChanged();
 }
 
 ReceiveCoinsDialog::~ReceiveCoinsDialog()
 {
     delete ui;
+}
+
+void ReceiveCoinsDialog::onThemeChanged()
+{
+    auto themeName = GUIUtil::getThemeName();
+    ui->label_8->setPixmap(QPixmap(
+                             QString(
+                                 ":/images/res/images/pages/receive/%1/receive-header.png").arg(themeName)));
 }
 
 void ReceiveCoinsDialog::clear()
@@ -226,7 +236,7 @@ void ReceiveCoinsDialog::keyPressEvent(QKeyEvent *event)
         }
     }
 
-    this->QDialog::keyPressEvent(event);
+    this->QWidget::keyPressEvent(event);
 }
 
 QModelIndex ReceiveCoinsDialog::selectedRow()

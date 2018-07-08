@@ -1303,6 +1303,12 @@
             </item>
             <item>
              <widget class="QCheckBox" name="checkUseInstantSend">
+              <property name="maximumSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="text">
                <string>Use Flash TX</string>
               </property>
@@ -1310,6 +1316,12 @@
             </item>
             <item>
              <widget class="QCheckBox" name="checkUsePrivateSend">
+              <property name="maximumSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="text">
                <string>Stealth Mode</string>
               </property>

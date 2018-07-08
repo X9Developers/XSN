@@ -27,7 +27,7 @@ class QModelIndex;
 QT_END_NAMESPACE
 
 /** Dialog for requesting payment of bitcoins */
-class ReceiveCoinsDialog : public QDialog
+class ReceiveCoinsDialog : public QWidget
 {
     Q_OBJECT
 
@@ -75,6 +75,7 @@ private Q_SLOTS:
     void copyLabel();
     void copyMessage();
     void copyAmount();
+    void onThemeChanged();
 };
 
 #endif // BITCOIN_QT_RECEIVECOINSDIALOG_H

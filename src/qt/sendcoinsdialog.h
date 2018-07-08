@@ -27,7 +27,7 @@ class QUrl;
 QT_END_NAMESPACE
 
 /** Dialog for sending bitcoins */
-class SendCoinsDialog : public QDialog
+class SendCoinsDialog : public QWidget
 {
     Q_OBJECT
 
@@ -56,6 +56,9 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void coinsSent(const uint256& txid);
+
+private Q_SLOTS:
+    void onThemeChanged();
 
 private:
     Ui::SendCoinsDialog *ui;

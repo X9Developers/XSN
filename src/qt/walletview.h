@@ -21,6 +21,7 @@ class TransactionView;
 class WalletModel;
 class AddressBookPage;
 class TPosPage;
+class TransactionsDialog;
 
 QT_BEGIN_NAMESPACE
 class QModelIndex;
@@ -71,6 +72,7 @@ private:
 //    TPoSPage* tposPage;
 
 
+    TransactionsDialog* transactionsDialog;
     TransactionView *transactionView;
 
     QProgressDialog *progressDialog;
