@@ -11,6 +11,8 @@ base58.cpp
 base58.h
 bech32.cpp
 bech32.h
+index/txindex.cpp
+index/txindex.h
 qt/forms/addressbookpage.ui
 qt/forms/askpassphrasedialog.ui
 qt/forms/coincontroldialog.ui
