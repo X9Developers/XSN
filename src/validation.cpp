@@ -3487,7 +3487,8 @@ static bool ContextualCheckBlock(const CBlock& block, CValidationState& state, c
 
     if(block.IsProofOfStake())
     {
-        if(!fHaveWitness && block.vtx[0]->vout.size() != 1)
+        bool isWitnessBlock = GetWitnessCommitmentIndex(block) != -1;
+        if(!isWitnessBlock && block.vtx[0]->vout.size() != 1)
             return state.DoS(100, error("CheckBlock() : wrong number of outputs in coinbase for proof-of-stake block"));
 
         // Coinbase output should be empty if proof-of-stake block
