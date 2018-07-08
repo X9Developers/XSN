@@ -1372,6 +1372,20 @@
              </widget>
             </item>
             <item>
+             <widget class="QLabel" name="label_2">
+              <property name="text">
+               <string>Balance:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="labelBalance">
+              <property name="text">
+               <string>123.456 XSN</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QPushButton" name="sendButton">
               <property name="text">
                <string>Send XSN</string>
