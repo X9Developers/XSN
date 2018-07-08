@@ -1,11 +1,13 @@
 #include "tposaddressestablemodel.h"
-#include "wallet/wallet.h"
-#include "amount.h"
-#include "init.h"
-#include "optionsmodel.h"
-#include "bitcoinunits.h"
-#include "tpos/tposutils.h"
-#include "validation.h"
+#include <amount.h>
+#include <init.h>
+#include <optionsmodel.h>
+#include <bitcoinunits.h>
+#include <tpos/tposutils.h>
+#include <validation.h>
+#include <walletmodel.h>
+#include <interfaces/wallet.h>
+#include <interfaces/handler.h>
 #include <numeric>
 #include <QFile>
 
@@ -13,7 +15,7 @@ static QString GetCommisionAmountColumnTitle(int unit)
 {
     QString amountTitle = QObject::tr("Commission");
     if (BitcoinUnits::valid(unit)) {
-        amountTitle += " (" + BitcoinUnits::name(unit) + ")";
+        amountTitle += " (" + BitcoinUnits::longName(unit) + ")";
     }
     return amountTitle;
 }
@@ -22,7 +24,7 @@ static QString GetStakeAmountColumnTitle(int unit)
 {
     QString amountTitle = QObject::tr("Reward");
     if (BitcoinUnits::valid(unit)) {
-        amountTitle += " (" + BitcoinUnits::name(unit) + ")";
+        amountTitle += " (" + BitcoinUnits::longName(unit) + ")";
     }
     return amountTitle;
 }
@@ -52,12 +54,13 @@ TPoSAddressesTableModel::TPoSAddressesTableModel(WalletModel *parent, OptionsMod
             this, &TPoSAddressesTableModel::updateDisplayUnit);
     refreshModel();
 
-    wallet->NotifyTransactionChanged.connect(boost::bind(&TPoSAddressesTableModel::NotifyTransactionChanged, this, _1, _2, _3));
+    transactionChangedHandler = walletModel->wallet().handleTransactionChanged(
+                std::bind(&TPoSAddressesTableModel::NotifyTransactionChanged, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 TPoSAddressesTableModel::~TPoSAddressesTableModel()
 {
-    wallet->NotifyTransactionChanged.disconnect(boost::bind(&TPoSAddressesTableModel::NotifyTransactionChanged, this, _1, _2, _3));
+    transactionChangedHandler->disconnect();
 }
 
 QVariant TPoSAddressesTableModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -153,7 +156,7 @@ void TPoSAddressesTableModel::updateAmountColumnTitle()
     Q_EMIT headerDataChanged(Qt::Horizontal, Amount, Amount);
 }
 
-void TPoSAddressesTableModel::NotifyTransactionChanged(CWallet* wallet, const uint256& hash, ChangeType status)
+void TPoSAddressesTableModel::NotifyTransactionChanged(const uint256& hash, ChangeType status)
 {
     // this needs work
     return;
@@ -166,12 +169,10 @@ void TPoSAddressesTableModel::NotifyTransactionChanged(CWallet* wallet, const ui
     };
 
     // Find transaction in wallet
-    std::map<uint256, CWalletTx>::iterator mi = wallet->mapWallet.find(hash);
     // Determine whether to show transaction or not (determine this here so that no relocking is needed in GUI thread)
-    if(mi != wallet->mapWallet.end())
+    if(auto transaction = walletModel->wallet().getTx(hash))
     {
-        const CWalletTx &wtx = mi->second;
-        maybeUpdate(wtx.GetHash());
+        maybeUpdate(transaction->GetHash());
     }
 }
 
@@ -188,31 +189,30 @@ TPoSAddressesTableModel::Entry TPoSAddressesTableModel::GetAmountForAddress(CBit
     if (!address.IsValid())
         return result;
 
+    auto &walletInterface = walletModel->wallet();
+
     CScript scriptPubKey = GetScriptForDestination(address.Get());
 
-    // Minimum confirmations
-    int nMinDepth = 1;
-
     // this loop can be optimized
-    for (auto &&it : pwalletMain->mapWallet)
+    for (auto &&walletTx : walletInterface.getWalletTxs())
     {
-        const CWalletTx& wtx = it.second;
-        if (wtx.IsCoinBase() || !CheckFinalTx(wtx))
+        const auto& tx = *walletTx.tx;
+        if (tx.IsCoinBase() || !CheckFinalTx(tx))
             continue;
 
-        for(size_t i = 0; i < wtx.vout.size(); ++i)
+        for(size_t i = 0; i < tx.vout.size(); ++i)
         {
-            const CTxOut& txout = wtx.vout[i];
+            const CTxOut& txout = tx.vout[i];
             if (txout.scriptPubKey == scriptPubKey)
             {
-                if (wtx.GetDepthInMainChain() >= nMinDepth && !wallet->IsSpent(it.first, i))
+                if (!walletInterface.txoutIsSpent(tx.GetHash(), i))
                 {
                     result.totalAmount += txout.nValue;
                 }
             }
         }
 
-        if(wtx.IsCoinStake())
+        if(tx.IsCoinStake())
         {
             CAmount stakeAmount = 0;
             CAmount commissionAmount = 0;

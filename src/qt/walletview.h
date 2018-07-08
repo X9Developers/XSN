@@ -6,8 +6,7 @@
 #define BITCOIN_QT_WALLETVIEW_H
 
 #include <amount.h>
-#include "masternodelist.h"
-#include "tpospage.h"
+#include <masternodelist.h>
 
 #include <QStackedWidget>
 
@@ -69,7 +68,7 @@ private:
     AddressBookPage *usedSendingAddressesPage;
     AddressBookPage *usedReceivingAddressesPage;
     MasternodeList *masternodeListPage;
-    TPoSPage* tposPage;
+//    TPoSPage* tposPage;
 
 
     TransactionView *transactionView;

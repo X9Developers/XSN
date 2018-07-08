@@ -55,12 +55,13 @@ public:
     static bool IsTPoSOwnerContract(CWallet *wallet, const CTransactionRef &tx);
     static bool IsTPoSMerchantContract(CWallet *wallet, const CTransactionRef &tx);
 
-    static std::unique_ptr<CWalletTx> CreateTPoSTransaction(CWallet *wallet,
-                                                            CReserveKey &reserveKey,
-                                                            const CBitcoinAddress &tposAddress,
-                                                            const CBitcoinAddress &merchantAddress,
-                                                            int merchantCommission,
-                                                            std::string &strError);
+    static bool CreateTPoSTransaction(CWallet *wallet,
+                                      CTransactionRef transactionOut,
+                                      CReserveKey &reserveKey,
+                                      const CBitcoinAddress &tposAddress,
+                                      const CBitcoinAddress &merchantAddress,
+                                      int merchantCommission,
+                                      std::string &strError);
 
     static std::unique_ptr<CWalletTx> CreateCancelContractTransaction(CWallet *wallet,
                                                                       CReserveKey &reserveKey,

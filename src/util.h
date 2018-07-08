@@ -93,7 +93,7 @@ bool TryCreateDirectories(const fs::path& p);
 fs::path GetDefaultDataDir();
 const fs::path &GetBlocksDir(bool fNetSpecific = true);
 const fs::path &GetDataDir(bool fNetSpecific = true);
-const fs::path &GetBackupsDir();
+const fs::path &GetBackupsDir(bool fNetSpecific = true);
 void ClearDatadirCache();
 fs::path GetConfigFile(const std::string& confPath);
 fs::path GetMasternodeConfigFile();

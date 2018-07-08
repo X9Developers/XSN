@@ -694,7 +694,7 @@ void SendCoinsDialog::updateCoinControlState(CCoinControl& ctrl)
     }
     // Avoid using global defaults when sending money from the GUI
     // Either custom fee will be used or if not selected, the confirmation target from dropdown box
-    ctrl.m_confirm_target = getConfTargetForIndex(ui->sliderSmartFee->currentIndex());
+    ctrl.m_confirm_target = getConfTargetForIndex(ui->confTargetSelector->currentIndex());
     ctrl.m_signal_bip125_rbf = ui->checkBoxFreeTx->isChecked();
 }
 

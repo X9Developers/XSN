@@ -108,15 +108,11 @@ void MasternodeList::StartAlias(std::string strAlias)
     for(CMasternodeConfig::CMasternodeEntry mne : masternodeConfig.getEntries()) {
         if(mne.getAlias() == strAlias) {
             std::string strError;
-            CMasternodeBroadcast mnb;
 
-            bool fSuccess = CMasternodeBroadcast::Create(mne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), strError, mnb);
+            bool fSuccess = walletModel->wallet().startMasternode(mne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), strError);
 
             if(fSuccess) {
                 strStatusHtml += "<br>Successfully started masternode.";
-                mnodeman.UpdateMasternodeList(mnb, *g_connman);
-                mnb.Relay(*g_connman);
-                mnodeman.NotifyMasternodeUpdates(*g_connman);
             } else {
                 strStatusHtml += "<br>Failed to start masternode.<br>Error: " + strError;
             }
@@ -151,19 +147,15 @@ void MasternodeList::StartAll(std::string strCommand)
 
         if(strCommand == "start-missing" && mnodeman.Has(outpoint)) continue;
 
-        bool fSuccess = CMasternodeBroadcast::Create(mne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), strError, mnb);
+        bool fSuccess = walletModel->wallet().startMasternode(mne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), strError);
 
         if(fSuccess) {
             nCountSuccessful++;
-            mnodeman.UpdateMasternodeList(mnb, *g_connman);
-            mnb.Relay(*g_connman);
-            mnodeman.NotifyMasternodeUpdates(*g_connman);
         } else {
             nCountFailed++;
             strFailedHtml += "\nFailed to start " + mne.getAlias() + ". Error: " + strError;
         }
     }
-    pwalletMain->Lock();
 
     std::string returnObj;
     returnObj = strprintf("Successfully started %d masternodes, failed to start %d, total %d", nCountSuccessful, nCountFailed, nCountFailed + nCountSuccessful);
@@ -347,7 +339,7 @@ void MasternodeList::on_startButton_clicked()
 
     WalletModel::EncryptionStatus encStatus = walletModel->getEncryptionStatus();
 
-    if(encStatus == walletModel->Locked || encStatus == walletModel->UnlockedForMixingOnly) {
+    if(encStatus == walletModel->Locked) {
         WalletModel::UnlockContext ctx(walletModel->requestUnlock());
 
         if(!ctx.isValid()) return; // Unlock wallet was cancelled
@@ -371,7 +363,7 @@ void MasternodeList::on_startAllButton_clicked()
 
     WalletModel::EncryptionStatus encStatus = walletModel->getEncryptionStatus();
 
-    if(encStatus == walletModel->Locked || encStatus == walletModel->UnlockedForMixingOnly) {
+    if(encStatus == walletModel->Locked) {
         WalletModel::UnlockContext ctx(walletModel->requestUnlock());
 
         if(!ctx.isValid()) return; // Unlock wallet was cancelled
@@ -403,7 +395,7 @@ void MasternodeList::on_startMissingButton_clicked()
 
     WalletModel::EncryptionStatus encStatus = walletModel->getEncryptionStatus();
 
-    if(encStatus == walletModel->Locked || encStatus == walletModel->UnlockedForMixingOnly) {
+    if(encStatus == walletModel->Locked) {
         WalletModel::UnlockContext ctx(walletModel->requestUnlock());
 
         if(!ctx.isValid()) return; // Unlock wallet was cancelled

@@ -113,16 +113,14 @@ bool TPoSUtils::IsTPoSOwnerContract(CWallet *wallet, const CTransactionRef &tx)
             IsMine(*wallet, contract.tposAddress.Get()) == ISMINE_SPENDABLE;
 }
 
-std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
-                                                            CReserveKey& reservekey,
-                                                            const CBitcoinAddress &tposAddress,
-                                                            const CBitcoinAddress &merchantAddress,
-                                                            int merchantCommission,
-                                                            std::string &strError)
+bool TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
+                                      CTransactionRef transactionOut,
+                                      CReserveKey& reservekey,
+                                      const CBitcoinAddress &tposAddress,
+                                      const CBitcoinAddress &merchantAddress,
+                                      int merchantCommission,
+                                      std::string &strError)
 {
-    std::unique_ptr<CWalletTx> result(new CWalletTx(wallet, MakeTransactionRef()));
-    CWalletTx &wtxNew = *result;
-
     auto tposAddressAsStr = tposAddress.ToString();
     auto merchantAddressAsStr = merchantAddress.ToString();
 
@@ -136,7 +134,7 @@ std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
     if(wallet->IsLocked())
     {
         strError = "Error: Wallet is locked";
-        return nullptr;
+        return false;
     }
 
     CKey key;
@@ -144,12 +142,12 @@ std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
     if(!tposAddress.GetKeyID(keyID))
     {
         strError = "Error: TPoS Address is not P2PKH";
-        return nullptr;
+        return false;
     }
     if (!wallet->GetKey(keyID, key))
     {
         strError = "Error: Failed to get private key associated with TPoS address";
-        return nullptr;
+        return false;
     }
     std::vector<unsigned char> vchSignature;
     key.SignCompact(SerializeHash(COutPoint()), vchSignature);
@@ -186,26 +184,26 @@ std::unique_ptr<CWalletTx> TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
 
     auto txModifierBinded = std::bind(txModifier, std::placeholders::_1, vchSignature);
 
-    if (!wallet->CreateTransaction(vecSend, wtxNew.tx, reservekey, nFeeRequired, nChangePos, strError, {}, true, txModifierBinded))
+    if (!wallet->CreateTransaction(vecSend, transactionOut, reservekey, nFeeRequired, nChangePos, strError, {}, true, txModifierBinded))
     {
         if (TPOS_CONTRACT_COLATERAL + nFeeRequired > wallet->GetBalance())
             strError = strprintf("Error: This transaction requires a transaction fee of at least %s because of its amount, complexity, or use of recently received funds!", FormatMoney(nFeeRequired));
         LogPrintf("Error() : %s\n", strError);
-        return nullptr;
+        return false;
     }
 
     if(!strError.empty())
-        return nullptr;
+        return false;
 
     std::string reason;
-    if(!IsStandardTx(*wtxNew.tx, reason))
+    if(!IsStandardTx(*transactionOut, reason))
     {
         strError = strprintf("Error: Not standard tx: %s\n", reason.c_str());
         LogPrintf(strError.c_str());
-        return nullptr;
+        return false;
     }
 
-    return result;
+    return true;
 }
 
 std::unique_ptr<CWalletTx> TPoSUtils::CreateCancelContractTransaction(CWallet *wallet, CReserveKey &reserveKey, const TPoSContract &contract, string &strError)

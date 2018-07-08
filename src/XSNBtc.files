@@ -36,6 +36,10 @@ qt/forms/stealthmodepage.ui
 qt/forms/tpospage.ui
 qt/forms/transactiondescdialog.ui
 qt/forms/transactionsdialog.ui
+qt/tposaddressestablemodel.cpp
+qt/tposaddressestablemodel.h
+qt/tpospage.cpp
+qt/tpospage.h
 xsn-cli.cpp
 xsn-tx.cpp
 xsnd.cpp

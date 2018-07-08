@@ -139,6 +139,12 @@ public:
         CAmount& fee,
         std::string& fail_reason) = 0;
 
+    //! Create transaction.
+    virtual std::unique_ptr<PendingWalletTx> createTPoSContractTransaction(CTxDestination tpos_address,
+        CTxDestination merchant_address,
+        int merchant_commission,
+        std::string& fail_reason) = 0;
+
     //! Return whether transaction can be abandoned.
     virtual bool transactionCanBeAbandoned(const uint256& txid) = 0;
 
@@ -207,6 +213,8 @@ public:
     //! Return whether transaction output belongs to wallet.
     virtual isminetype txoutIsMine(const CTxOut& txout) = 0;
 
+    virtual bool txoutIsSpent(const uint256 &hash, unsigned int outputIndex) = 0;
+
     //! Return debit amount if transaction input belongs to wallet.
     virtual CAmount getDebit(const CTxIn& txin, isminefilter filter) = 0;
 
@@ -265,6 +273,8 @@ public:
     //! Register handler for watchonly changed messages.
     using WatchOnlyChangedFn = std::function<void(bool have_watch_only)>;
     virtual std::unique_ptr<Handler> handleWatchOnlyChanged(WatchOnlyChangedFn fn) = 0;
+
+    virtual bool startMasternode(std::string strService, std::string strKeyMasternode, std::string strTxHash, std::string strOutputIndex, std::string& strErrorRet) = 0;
 };
 
 //! Tracking object returned by CreateTransaction and passed to CommitTransaction.

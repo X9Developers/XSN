@@ -24,6 +24,8 @@
 #include <wallet/feebumper.h>
 #include <wallet/fees.h>
 #include <wallet/wallet.h>
+//#include <masternode.h>
+//#include <masternodeman.h>
 
 namespace interfaces {
 namespace {
@@ -232,6 +234,15 @@ public:
         }
         return std::move(pending);
     }
+    std::unique_ptr<PendingWalletTx> createTPoSContractTransaction(CTxDestination tpos_address,
+            CTxDestination merchant_address,
+            int merchant_commission,
+            std::string& fail_reason) override
+    {
+        LOCK2(cs_main, m_wallet.cs_wallet);
+        auto pending = MakeUnique<PendingWalletTxImpl>(m_wallet);
+        TPoSUtils::CreateTPoSTransaction(&m_wallet, pending->m_tx, pending->m_key, tpos_address, merchant_address, merchant_commission, fail_reason);
+    }
     bool transactionCanBeAbandoned(const uint256& txid) override { return m_wallet.TransactionCanBeAbandoned(txid); }
     bool abandonTransaction(const uint256& txid) override
     {
@@ -372,6 +383,13 @@ public:
         LOCK2(::cs_main, m_wallet.cs_wallet);
         return m_wallet.IsMine(txout);
     }
+
+    bool txoutIsSpent(const uint256 &hash, unsigned int outputIndex) override
+    {
+        LOCK2(::cs_main, m_wallet.cs_wallet);
+        return m_wallet.IsSpent(hash, outputIndex);
+    }
+
     CAmount getDebit(const CTxIn& txin, isminefilter filter) override
     {
         LOCK2(::cs_main, m_wallet.cs_wallet);
@@ -451,6 +469,20 @@ public:
     std::unique_ptr<Handler> handleWatchOnlyChanged(WatchOnlyChangedFn fn) override
     {
         return MakeHandler(m_wallet.NotifyWatchonlyChanged.connect(fn));
+    }
+
+    bool startMasternode(std::string strService, std::string strKeyMasternode, std::string strTxHash, std::string strOutputIndex, std::string& strErrorRet) override
+    {
+//        CMasternodeBroadcast mnb;
+//        bool fSuccess = CMasternodeBroadcast::Create(&m_wallet, strService, strKeyMasternode, strTxHash, strOutputIndex, strErrorRet, mnb);
+//        if(fSuccess)
+//        {
+//            mnodeman.UpdateMasternodeList(mnb, *g_connman);
+//            mnb.Relay(*g_connman);
+//            mnodeman.NotifyMasternodeUpdates(*g_connman);
+//        }
+
+        return true;
     }
 
     CWallet& m_wallet;

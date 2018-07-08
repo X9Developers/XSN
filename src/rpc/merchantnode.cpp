@@ -448,7 +448,7 @@ UniValue merchantsentinelping(const JSONRPCRequest& request)
                     );
     }
 
-//    activeMerchantnode.UpdateSentinelPing(StringVersionToInt(request.params[0].get_str()));
+    //    activeMerchantnode.UpdateSentinelPing(StringVersionToInt(request.params[0].get_str()));
     return true;
 }
 
@@ -529,13 +529,13 @@ UniValue tposcontract(const JSONRPCRequest& request)
         CReserveKey reserveKey(pwallet);
 
         std::string strError;
-        auto walletTx = TPoSUtils::CreateTPoSTransaction(pwallet, reserveKey,
-                                                         tposAddress, merchantAddress,
-                                                         commission, strError);
+        auto transaction = MakeTransactionRef();
 
-        if(walletTx)
+        if(TPoSUtils::CreateTPoSTransaction(pwallet, transaction,
+                                            reserveKey, tposAddress,
+                                            merchantAddress, commission, strError))
         {
-            return EncodeHexTx(*walletTx->tx);
+            return EncodeHexTx(*transaction);
         }
         else
         {
@@ -567,12 +567,12 @@ UniValue tposcontract(const JSONRPCRequest& request)
 static const CRPCCommand commands[] =
 { //  category              name                      actor (function)         argNames
   //  --------------------- ------------------------  -----------------------  ----------
-    { "merchantnode",            "merchantnode",            &merchantnode,            {"command"} }, /* uses wallet if enabled */
-    { "merchantnode",            "merchantnodelist",        &merchantnodelist,        {"mode", "filter"} },
-#ifdef ENABLE_WALLET
-    { "merchantnode",            "tposcontract",            &tposcontract,            {"command"} },
-#endif
-    { "merchantnode",            "merchantsync",            &merchantsync,            {"command"} },
+  { "merchantnode",            "merchantnode",            &merchantnode,            {"command"} }, /* uses wallet if enabled */
+  { "merchantnode",            "merchantnodelist",        &merchantnodelist,        {"mode", "filter"} },
+  #ifdef ENABLE_WALLET
+  { "merchantnode",            "tposcontract",            &tposcontract,            {"command"} },
+  #endif
+  { "merchantnode",            "merchantsync",            &merchantsync,            {"command"} },
 };
 
 void RegisterMerchantnodeCommands(CRPCTable &t)

@@ -19,6 +19,7 @@
 #include <util.h> // for GetBoolArg
 #include <wallet/coincontrol.h>
 #include <wallet/wallet.h>
+#include <masternodelist.h>
 
 #include <stdint.h>
 

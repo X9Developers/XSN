@@ -17,25 +17,13 @@
 #include <init.h>
 #include <validation.h>
 #include <tpos/tposutils.h>
+#include <utiltime.h>
 
 #include <numeric>
-#include <boost/date_time.hpp>
 
 #define PRI64x  "llx"
 
 using namespace std;
-
-bool fTestNet = false; //Params().NetworkID() == CBaseChainParams::TESTNET;
-
-static std::string DateTimeStrFormat(const char* pszFormat, int64_t nTime)
-{
-    // std::locale takes ownership of the pointer
-    std::locale loc(std::locale::classic(), new boost::posix_time::time_facet(pszFormat));
-    std::stringstream ss;
-    ss.imbue(loc);
-    ss << boost::posix_time::from_time_t(nTime);
-    return ss.str();
-}
 
 // Modifier interval: time to elapse before new modifier is computed
 // Set to 3-hour for production network and 20-minute for test network
@@ -572,7 +560,6 @@ unsigned int GetStakeModifierChecksum(const CBlockIndex* pindex)
 // Check stake modifier hard checkpoints
 bool CheckStakeModifierCheckpoints(int nHeight, unsigned int nStakeModifierChecksum)
 {
-    if (fTestNet) return true; // Testnet has no checkpoints
     if (mapStakeModifierCheckpoints.count(nHeight))
         return nStakeModifierChecksum == mapStakeModifierCheckpoints[nHeight];
     return true;

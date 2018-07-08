@@ -68,6 +68,7 @@ static bool CreateContractTransaction(QWidget *widget,
     {
         return false;
     }
+
     if(auto walletTx = TPoSUtils::CreateTPoSTransaction(pwalletMain, reserveKey, tposAddress, merchantAddress, merchantCommission, strError))
     {
         wtxContract = *walletTx;
@@ -211,7 +212,6 @@ void TPoSPage::onStakeClicked()
     try
     {
         auto worker = [this]() {
-            CReserveKey reserveKey(pwalletMain);
             CBitcoinAddress tposAddress = GetNewAddress();
             if(!tposAddress.IsValid())
             {
@@ -224,9 +224,9 @@ void TPoSPage::onStakeClicked()
             }
             auto merchantCommission = ui->merchantCut->value();
             CWalletTx wtxContract;
-            if(CreateContractTransaction(this, reserveKey, tposAddress, merchantAddress, merchantCommission, wtxContract))
+            if(CreateContractTransaction(this, tposAddress, merchantAddress, merchantCommission, wtxContract))
             {
-                SendRawTransaction(wtxContract, reserveKey);
+                SendRawTransaction(wtxContract);
                 sendToTPoSAddress(tposAddress);
             }
         };

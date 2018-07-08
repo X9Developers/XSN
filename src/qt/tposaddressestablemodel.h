@@ -10,10 +10,14 @@
 #include <base58.h>
 #include <key_io.h>
 
-class CWallet;
 class OptionsModel;
 class TPoSContract;
 class WalletModel;
+
+namespace interfaces {
+class Handler;
+class Wallet;
+}
 
 class TPoSAddressesTableModel : public QAbstractTableModel
 {
@@ -58,13 +62,13 @@ private:
 private:
     void refreshModel();
     void updateAmountColumnTitle();
-    void NotifyTransactionChanged(CWallet* wallet, const uint256& hash, ChangeType status);
+    void NotifyTransactionChanged(const uint256& hash, ChangeType status);
     QString formatCommissionAmount(CAmount commissionAmount, int percentage) const;
     QString formatAmount(CAmount amountAsStr) const;
     Entry GetAmountForAddress(CBitcoinAddress address);
 
 private:
-
+    std::unique_ptr<interfaces::Handler> transactionChangedHandler;
     WalletModel *walletModel;
     OptionsModel *optionsModel;
     const std::map<uint256, TPoSContract> &tposContracts;
