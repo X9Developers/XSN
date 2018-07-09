@@ -241,7 +241,20 @@ public:
     {
         LOCK2(cs_main, m_wallet.cs_wallet);
         auto pending = MakeUnique<PendingWalletTxImpl>(m_wallet);
-        TPoSUtils::CreateTPoSTransaction(&m_wallet, pending->m_tx, pending->m_key, tpos_address, merchant_address, merchant_commission, fail_reason);
+        if(!TPoSUtils::CreateTPoSTransaction(&m_wallet, pending->m_tx, pending->m_key, tpos_address, merchant_address, merchant_commission, fail_reason)) {
+            return {};
+        }
+        return std::move(pending);
+    }
+    std::unique_ptr<PendingWalletTx> createCancelContractTransaction(const TPoSContract &contract,
+            std::string& fail_reason) override
+    {
+        LOCK2(cs_main, m_wallet.cs_wallet);
+        auto pending = MakeUnique<PendingWalletTxImpl>(m_wallet);
+        if(!TPoSUtils::CreateCancelContractTransaction(&m_wallet, pending->m_tx, pending->m_key, contract, fail_reason)) {
+            return {};
+        }
+        return std::move(pending);
     }
     bool transactionCanBeAbandoned(const uint256& txid) override { return m_wallet.TransactionCanBeAbandoned(txid); }
     bool abandonTransaction(const uint256& txid) override
@@ -470,7 +483,6 @@ public:
     {
         return MakeHandler(m_wallet.NotifyWatchonlyChanged.connect(fn));
     }
-
     bool startMasternode(std::string strService, std::string strKeyMasternode, std::string strTxHash, std::string strOutputIndex, std::string& strErrorRet) override
     {
         CMasternodeBroadcast mnb;
