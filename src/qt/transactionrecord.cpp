@@ -25,7 +25,7 @@ bool TransactionRecord::showTransaction()
 /*
  * Decompose CWallet transaction to model transaction records.
  */
-QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interfaces::WalletTx& wtx)
+QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interfaces::WalletTx& wtx, interfaces::Wallet& wallet)
 {
     QList<TransactionRecord> parts;
     int64_t nTime = wtx.time;
@@ -38,8 +38,6 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interface
 
     if(wtx.tx->IsCoinStake())
     {
-
-
         TransactionRecord sub(hash, nTime);
         CTxDestination address;
         if (!ExtractDestination(wtx.tx->vout[1].scriptPubKey, address))
@@ -51,18 +49,19 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interface
             // this might be masternode reward, or tpos block reward.
 
             // if last output was ours, it means that it's tpos reward
-            //            CAmount stakeAmount = 0;
-            //            CAmount commissionAmount = 0;
-            //            CBitcoinAddress tposAddress;
-            //            if(TPoSUtils::GetTPoSPayments(wallet, wtx, stakeAmount, commissionAmount, tposAddress))
-            //            {
-            //                //stake reward
-            //                sub.involvesWatchAddress = false;
-            //                sub.type = TransactionRecord::StakeMintTPoS;
-            //                sub.address = tposAddress.ToString();
-            //                sub.credit = stakeAmount;
-            //            }
-            //            else
+            CAmount stakeAmount = 0;
+            CAmount commissionAmount = 0;
+            CTxDestination tposAddress;
+            CTxDestination merchantAddress;
+            if(wallet.getTPoSPayments(wtx.tx, stakeAmount, commissionAmount, tposAddress, merchantAddress))
+            {
+                //stake reward
+                sub.involvesWatchAddress = false;
+                sub.type = TransactionRecord::StakeMintTPoS;
+                sub.address = EncodeDestination(tposAddress);
+                sub.credit = stakeAmount;
+            }
+            else
             {
                 for (unsigned int i = 1; i < wtx.tx->vout.size(); i++) {
                     CTxDestination outAddress;
@@ -85,10 +84,9 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interface
             //stake reward
             CAmount stakeAmount = 0;
             CAmount commissionAmount = 0;
-            CBitcoinAddress tposAddress;
-            CBitcoinAddress merchantAddress;
-            //            bool isTPoSBlock = TPoSUtils::GetTPoSPayments(wallet, wtx, stakeAmount, commissionAmount, tposAddress, merchantAddress);
-            bool isTPoSBlock = false;
+            CTxDestination tposAddress;
+            CTxDestination merchantAddress;
+            bool isTPoSBlock = wallet.getTPoSPayments(wtx.tx, stakeAmount, commissionAmount, tposAddress, merchantAddress);
             isminetype mine = wtx.txout_is_mine[1];
             sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
 
@@ -97,13 +95,13 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interface
                 if(sub.involvesWatchAddress)
                 {
                     sub.type = TransactionRecord::StakeMintTPoSCommission;
-                    sub.address = merchantAddress.ToString();
+                    sub.address = EncodeDestination(merchantAddress);
                     sub.credit = commissionAmount;
                 }
                 else
                 {
                     sub.type = TransactionRecord::StakeMintTPoS;
-                    sub.address = tposAddress.ToString();
+                    sub.address = EncodeDestination(tposAddress);
                     sub.credit = stakeAmount;
                 }
             }

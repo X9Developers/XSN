@@ -47,10 +47,10 @@ public:
 
 #ifdef ENABLE_WALLET
     static bool GetTPoSPayments(const CWallet *wallet,
-                                const CWalletTx& wtx,
+                                const CTransactionRef &tx,
                                 CAmount &stakeAmount,
                                 CAmount &commissionAmount,
-                                CBitcoinAddress &tposAddress, CBitcoinAddress &merchantAddress);
+                                CTxDestination &tposAddress, CTxDestination &merchantAddress);
 
     static bool IsTPoSOwnerContract(CWallet *wallet, const CTransactionRef &tx);
     static bool IsTPoSMerchantContract(CWallet *wallet, const CTransactionRef &tx);

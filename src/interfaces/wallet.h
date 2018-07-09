@@ -200,6 +200,9 @@ public:
         int& num_blocks,
         int64_t& adjusted_time) = 0;
 
+    virtual bool getTPoSPayments(const CTransactionRef &tx, CAmount &stakeAmount, CAmount &commissionAmount,
+                                 CTxDestination &tposAddress, CTxDestination &merchantAddress) = 0;
+
     //! Get balances.
     virtual WalletBalances getBalances() = 0;
 

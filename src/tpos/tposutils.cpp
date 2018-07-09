@@ -38,18 +38,17 @@ bool TPoSUtils::IsTPoSContract(const CTransactionRef &tx)
 #ifdef ENABLE_WALLET
 
 bool TPoSUtils::GetTPoSPayments(const CWallet *wallet,
-                                const CWalletTx &wtx,
+                                const CTransactionRef &tx,
                                 CAmount &stakeAmount,
                                 CAmount &commissionAmount,
-                                CBitcoinAddress &tposAddress,
-                                CBitcoinAddress &merchantAddress)
+                                CTxDestination &tposAddress,
+                                CTxDestination &merchantAddress)
 {
-    const auto &tx = wtx.tx;
     if(!tx->IsCoinStake())
         return false;
 
-    CAmount nCredit = wtx.GetCredit(ISMINE_ALL);
-    CAmount nDebit = wtx.GetDebit(ISMINE_ALL);
+    CAmount nCredit = wallet->GetCredit(*tx, ISMINE_ALL);
+    CAmount nDebit = wallet->GetDebit(*tx, ISMINE_ALL);
     CAmount nNet = nCredit - nDebit;
 
     std::vector<TPoSContract> tposContracts;
@@ -82,8 +81,8 @@ bool TPoSUtils::GetTPoSPayments(const CWallet *wallet,
             {
                 stakeAmount = nNet;
                 commissionAmount = commissionIt->nValue;
-                tposAddress = tmpAddress;
-                merchantAddress = it->merchantAddress;
+                tposAddress = tmpAddress.Get();
+                merchantAddress = it->merchantAddress.Get();
 
                 return true;
             }
@@ -98,10 +97,10 @@ bool TPoSUtils::IsTPoSMerchantContract(CWallet *wallet, const CTransactionRef &t
 {
     TPoSContract contract = TPoSContract::FromTPoSContractTx(tx);
 
-    bool IsMerchantNode = GetScriptForDestination(contract.merchantAddress.Get()) ==
+    bool isMerchantNode = GetScriptForDestination(contract.merchantAddress.Get()) ==
             GetScriptForDestination(activeMerchantnode.pubKeyMerchantnode.GetID());
 
-    return contract.IsValid() && (IsMerchantNode ||
+    return contract.IsValid() && (isMerchantNode ||
                                   IsMine(*wallet, contract.merchantAddress.Get()) == ISMINE_SPENDABLE);
 }
 

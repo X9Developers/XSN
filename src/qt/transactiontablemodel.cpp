@@ -80,7 +80,7 @@ public:
         {
             for (const auto& wtx : wallet.getWalletTxs()) {
                 if (TransactionRecord::showTransaction()) {
-                    cachedWallet.append(TransactionRecord::decomposeTransaction(wtx));
+                    cachedWallet.append(TransactionRecord::decomposeTransaction(wtx, wallet));
                 }
             }
         }
@@ -135,7 +135,7 @@ public:
                 }
                 // Added -- insert at the right position
                 QList<TransactionRecord> toInsert =
-                        TransactionRecord::decomposeTransaction(wtx);
+                        TransactionRecord::decomposeTransaction(wtx, wallet);
                 if(!toInsert.isEmpty()) /* only if something to insert */
                 {
                     parent->beginInsertRows(QModelIndex(), lowerIndex, lowerIndex+toInsert.size()-1);

@@ -355,6 +355,15 @@ public:
         }
         return {};
     }
+
+    bool getTPoSPayments(const CTransactionRef &tx, CAmount &stakeAmount, CAmount &commissionAmount,
+                                     CTxDestination &tposAddress, CTxDestination &merchantAddress) override
+    {
+        LOCK2(::cs_main, m_wallet.cs_wallet);
+        return TPoSUtils::GetTPoSPayments(&m_wallet, tx, stakeAmount, commissionAmount, tposAddress, merchantAddress);
+    }
+
+
     WalletBalances getBalances() override
     {
         WalletBalances result;
