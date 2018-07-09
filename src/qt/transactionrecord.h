@@ -79,11 +79,15 @@ public:
     {
         Other,
         Generated,
+        StakeMint,
+        StakeMintTPoS,
+        StakeMintTPoSCommission,
         SendToAddress,
         SendToOther,
         RecvWithAddress,
         RecvFromOther,
-        SendToSelf
+        SendToSelf,
+        MNReward
     };
 
     /** Number of confirmation recommended for accepting a transaction */
