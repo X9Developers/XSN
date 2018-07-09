@@ -159,7 +159,6 @@ bool TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
 
 
     CAmount nFeeRequired;
-    int nChangePos;
 
     // this delegate will be executed right before signing. This will allow us to tweak transaction and do
     // some tpos specific thing, like signing contract.
@@ -183,6 +182,7 @@ bool TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
 
     auto txModifierBinded = std::bind(txModifier, std::placeholders::_1, vchSignature);
 
+    int nChangePos = -1;
     if (!wallet->CreateTransaction(vecSend, transactionOut, reservekey, nFeeRequired, nChangePos, strError, {}, true, txModifierBinded))
     {
         if (TPOS_CONTRACT_COLATERAL + nFeeRequired > wallet->GetBalance())
