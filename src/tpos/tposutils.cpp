@@ -113,7 +113,7 @@ bool TPoSUtils::IsTPoSOwnerContract(CWallet *wallet, const CTransactionRef &tx)
 }
 
 bool TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
-                                      CTransactionRef transactionOut,
+                                      CTransactionRef &transactionOut,
                                       CReserveKey& reservekey,
                                       const CBitcoinAddress &tposAddress,
                                       const CBitcoinAddress &merchantAddress,
@@ -205,7 +205,7 @@ bool TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
     return true;
 }
 
-bool TPoSUtils::CreateCancelContractTransaction(CWallet *wallet, CTransactionRef txOut, CReserveKey &reserveKey, const TPoSContract &contract, string &strError)
+bool TPoSUtils::CreateCancelContractTransaction(CWallet *wallet, CTransactionRef &txOut, CReserveKey &reserveKey, const TPoSContract &contract, string &strError)
 {
     if(wallet->IsLocked())
     {

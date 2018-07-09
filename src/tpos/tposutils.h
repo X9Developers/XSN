@@ -56,7 +56,7 @@ public:
     static bool IsTPoSMerchantContract(CWallet *wallet, const CTransactionRef &tx);
 
     static bool CreateTPoSTransaction(CWallet *wallet,
-                                      CTransactionRef transactionOut,
+                                      CTransactionRef &transactionOut,
                                       CReserveKey &reserveKey,
                                       const CBitcoinAddress &tposAddress,
                                       const CBitcoinAddress &merchantAddress,
@@ -64,7 +64,7 @@ public:
                                       std::string &strError);
 
     static bool CreateCancelContractTransaction(CWallet *wallet,
-                                                CTransactionRef txOut,
+                                                CTransactionRef &txOut,
                                                 CReserveKey &reserveKey,
                                                 const TPoSContract &contract,
                                                 std::string &strError);
