@@ -2900,7 +2900,7 @@ bool CWallet::MintableCoins()
     return false;
 }
 
-bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, const CScript &scriptFilterPubKey) const
+bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, bool fSelectWitness, const CScript &scriptFilterPubKey) const
 {
     std::vector<COutput> vCoins;
     AvailableCoins(vCoins, scriptFilterPubKey.empty());
@@ -2923,7 +2923,7 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, c
                 !boost::get<CScriptID>(&dest))
             continue;
 
-        if(!boost::get<CKeyID>(&dest))
+        if(!fSelectWitness && !boost::get<CKeyID>(&dest))
             continue;
 
         //        LogPrintf("scriptPubKeyKernel is good\n");
@@ -3713,7 +3713,7 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
             LogPrint(BCLog::KERNEL, "finding tpos, contract tposAddress: %s\n", tposContract.tposAddress.ToString().c_str());
         }
 
-        if (!SelectStakeCoins(setStakeCoins, nBalance /*- nReserveBalance*/, scriptPubKey)) {
+        if (!SelectStakeCoins(setStakeCoins, nBalance /*- nReserveBalance*/, fGenerateSegwit, scriptPubKey)) {
             return error("Failed to select coins for staking");
         }
 
