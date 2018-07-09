@@ -24,8 +24,8 @@
 #include <wallet/feebumper.h>
 #include <wallet/fees.h>
 #include <wallet/wallet.h>
-//#include <masternode.h>
-//#include <masternodeman.h>
+#include <masternode.h>
+#include <masternodeman.h>
 
 namespace interfaces {
 namespace {
@@ -473,14 +473,14 @@ public:
 
     bool startMasternode(std::string strService, std::string strKeyMasternode, std::string strTxHash, std::string strOutputIndex, std::string& strErrorRet) override
     {
-//        CMasternodeBroadcast mnb;
-//        bool fSuccess = CMasternodeBroadcast::Create(&m_wallet, strService, strKeyMasternode, strTxHash, strOutputIndex, strErrorRet, mnb);
-//        if(fSuccess)
-//        {
-//            mnodeman.UpdateMasternodeList(mnb, *g_connman);
-//            mnb.Relay(*g_connman);
-//            mnodeman.NotifyMasternodeUpdates(*g_connman);
-//        }
+        CMasternodeBroadcast mnb;
+        bool fSuccess = CMasternodeBroadcast::Create(&m_wallet, strService, strKeyMasternode, strTxHash, strOutputIndex, strErrorRet, mnb);
+        if(fSuccess)
+        {
+            mnodeman.UpdateMasternodeList(mnb, *g_connman);
+            mnb.Relay(*g_connman);
+            mnodeman.NotifyMasternodeUpdates(*g_connman);
+        }
 
         return true;
     }
