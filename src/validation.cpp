@@ -3450,8 +3450,11 @@ static bool ContextualCheckBlock(const CBlock& block, CValidationState& state, c
     if (nHeight >= consensusParams.BIP34Height)
     {
         CScript expect = CScript() << nHeight;
+        bool firstCheck = block.vtx[0]->vin[0].scriptSig.size() < expect.size();
+        bool secondCheck = std::equal(expect.begin(), expect.end(), block.vtx[0]->vin[0].scriptSig.begin());
         if (block.vtx[0]->vin[0].scriptSig.size() < expect.size() ||
                 !std::equal(expect.begin(), expect.end(), block.vtx[0]->vin[0].scriptSig.begin())) {
+            LogPrintf("BIP34Height: %d %d\n", firstCheck, secondCheck);
             return state.DoS(100, false, REJECT_INVALID, "bad-cb-height", false, "block height mismatch in coinbase");
         }
     }
