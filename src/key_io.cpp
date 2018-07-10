@@ -287,6 +287,11 @@ bool CBitcoinAddress::operator!=(const CBitcoinAddress &rhs) const
     return txDest != rhs.txDest;
 }
 
+bool CBitcoinAddress::operator<(const CBitcoinAddress &rhs) const
+{
+    return txDest < rhs.txDest;
+}
+
 CTxDestination CBitcoinAddress::Get() const
 {
     return txDest;

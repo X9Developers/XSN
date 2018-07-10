@@ -48,6 +48,7 @@ public:
 
     bool operator==(const CBitcoinAddress &rhs) const;
     bool operator!=(const CBitcoinAddress &rhs) const;
+    bool operator<(const CBitcoinAddress &rhs) const;
 
 private:
     CTxDestination txDest;

@@ -29,6 +29,7 @@ class PlatformStyle;
 class RecentRequestsTableModel;
 class TransactionTableModel;
 class WalletModelTransaction;
+class TPoSAddressesTableModel;
 
 class CCoinControl;
 class CKeyID;
@@ -225,6 +226,7 @@ private:
     AddressTableModel *addressTableModel;
     TransactionTableModel *transactionTableModel;
     RecentRequestsTableModel *recentRequestsTableModel;
+    TPoSAddressesTableModel *tposTableModel;
 
     // Cache some values to be able to detect changes
     interfaces::WalletBalances m_cached_balances;

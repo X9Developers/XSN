@@ -11,6 +11,7 @@
 #include <script/standard.h>           // For CTxDestination
 #include <support/allocators/secure.h> // For SecureString
 #include <ui_interface.h>              // For ChangeType
+#include <tpos/tposutils.h>            // For TPoSContract
 
 #include <functional>
 #include <map>
@@ -25,7 +26,6 @@ class CCoinControl;
 class CFeeRate;
 class CKey;
 class CWallet;
-class TPoSContract;
 enum class FeeReason;
 enum class OutputType;
 struct CRecipient;
@@ -185,6 +185,10 @@ public:
 
     //! Get list of all wallet transactions.
     virtual std::vector<WalletTx> getWalletTxs() = 0;
+
+    virtual const std::map<uint256, TPoSContract> &getOwnerContracts() const = 0;
+
+    virtual CAmount getStakeSplitThreshold() const = 0;
 
     //! Try to get updated status for a particular transaction, if possible without blocking.
     virtual bool tryGetTxStatus(const uint256& txid,

@@ -279,15 +279,13 @@ void TPoSPage::onCancelClicked()
     {
         if (_walletModel->getEncryptionStatus() == WalletModel::Locked)
         {
-            WalletModel::UnlockContext ctx(_walletModel->requestUnlock(false));
+            WalletModel::UnlockContext ctx(_walletModel->requestUnlock());
             if (!ctx.isValid())
             {
                 //unlock was cancelled
                 QMessageBox::warning(this, tr("TPoS"),
                                      tr("Wallet is locked and user declined to unlock. Can't redeem from TPoS address."),
                                      QMessageBox::Ok, QMessageBox::Ok);
-                if (fDebug)
-                    LogPrintf("Wallet is locked and user declined to unlock. Can't redeem from TPoS address.\n");
 
                 return;
             }
@@ -349,8 +347,9 @@ void TPoSPage::sendToTPoSAddress(const CBitcoinAddress &tposAddress)
 {
     CAmount amount = ui->stakingAmount->value();
     int numberOfSplits = 1;
-    if(amount > pwalletMain->nStakeSplitThreshold * COIN)
-        numberOfSplits = std::min<unsigned int>(500, amount / (pwalletMain->nStakeSplitThreshold * COIN));
+    auto nStakeSplitThreshold = _walletModel->wallet().getStakeSplitThreshold();
+    if(amount > nStakeSplitThreshold * COIN)
+        numberOfSplits = std::min<unsigned int>(500, amount / (nStakeSplitThreshold * COIN));
     SendToAddress(tposAddress.Get(), amount, numberOfSplits);
 }
 

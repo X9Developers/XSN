@@ -41,7 +41,7 @@ TPoSAddressesTableModel::TPoSAddressesTableModel(WalletModel *parent, OptionsMod
     : QAbstractTableModel(parent),
       walletModel(parent),
       optionsModel(optionsModel),
-      tposContracts(wallet->tposOwnerContracts)
+      tposContracts(walletModel->wallet().getOwnerContracts())
 
 {
     auto displayUnit = optionsModel->getDisplayUnit();
@@ -216,10 +216,10 @@ TPoSAddressesTableModel::Entry TPoSAddressesTableModel::GetAmountForAddress(CBit
         {
             CAmount stakeAmount = 0;
             CAmount commissionAmount = 0;
-            CBitcoinAddress tposAddress;
-            CBitcoinAddress merchantAddress;
-            if(TPoSUtils::GetTPoSPayments(wallet, wtx, stakeAmount, commissionAmount, tposAddress, merchantAddress) &&
-                    tposAddress == address)
+            CTxDestination tposAddress;
+            CTxDestination merchantAddress;
+            if(walletInterface.getTPoSPayments(walletTx.tx, stakeAmount, commissionAmount, tposAddress, merchantAddress) &&
+                    tposAddress == address.Get())
             {
                 // at this moment nNet contains net stake reward
                 // commission was sent to merchant address, so it was base of tx

@@ -314,6 +314,17 @@ public:
         }
         return result;
     }
+
+    const std::map<uint256, TPoSContract> &getOwnerContracts() const override
+    {
+        return m_wallet.tposOwnerContracts;
+    }
+
+    CAmount getStakeSplitThreshold() const override
+    {
+        return m_wallet.nStakeSplitThreshold;
+    }
+
     bool tryGetTxStatus(const uint256& txid,
         interfaces::WalletTxStatus& tx_status,
         int& num_blocks,

@@ -11,6 +11,7 @@
 #include <qt/recentrequeststablemodel.h>
 #include <qt/sendcoinsdialog.h>
 #include <qt/transactiontablemodel.h>
+#include <qt/tposaddressestablemodel.h>
 
 #include <interfaces/handler.h>
 #include <interfaces/node.h>
@@ -42,6 +43,7 @@ WalletModel::WalletModel(std::unique_ptr<interfaces::Wallet> wallet, interfaces:
     addressTableModel = new AddressTableModel(this);
     transactionTableModel = new TransactionTableModel(platformStyle, this);
     recentRequestsTableModel = new RecentRequestsTableModel(this);
+    tposTableModel = new TPoSAddressesTableModel(this, optionsModel);
 
     // This timer will be fired repeatedly to update the balance
     pollTimer = new QTimer(this);
@@ -313,6 +315,12 @@ RecentRequestsTableModel *WalletModel::getRecentRequestsTableModel()
 {
     return recentRequestsTableModel;
 }
+
+TPoSAddressesTableModel *WalletModel::getTPoSAddressModel() const
+{
+    return tposTableModel;
+}
+
 
 WalletModel::EncryptionStatus WalletModel::getEncryptionStatus() const
 {
