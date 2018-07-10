@@ -20,7 +20,6 @@
 #include <instantx.h>
 #include <darksendconfig.h>
 #include <masternode-sync.h>
-#include <privatesend/privatesend-client.h>
 
 #include <QAbstractItemDelegate>
 #include <QPainter>

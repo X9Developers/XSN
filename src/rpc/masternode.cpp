@@ -12,10 +12,8 @@
 #include <masternodeconfig.h>
 #include <masternodeman.h>
 #ifdef ENABLE_WALLET
-//#include <privatesend-client.h>
 #include <wallet/wallet.h>
 #endif // ENABLE_WALLET
-//#include <privatesend-server.h>
 #include <rpc/server.h>
 #include <util.h>
 #include <utilmoneystr.h>

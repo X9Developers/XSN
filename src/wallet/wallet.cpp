@@ -30,7 +30,6 @@
 #include <wallet/fees.h>
 #include <tpos/tposutils.h>
 #include <kernel.h>
-#include <privatesend/privatesend-client.h>
 #include <masternode-payments.h>
 #include <instantx.h>
 #include <wallet/walletutil.h>
