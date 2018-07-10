@@ -42,7 +42,8 @@ QT_FORMS_UI = \
   qt/forms/sendcoinsentry.ui \
   qt/forms/signverifymessagedialog.ui \
   qt/forms/transactiondescdialog.ui \
-  qt/forms/transactionsdialog.ui
+  qt/forms/transactionsdialog.ui \
+  qt/forms/tpospage.ui 
 
 QT_MOC_CPP = \
   qt/moc_addressbookpage.cpp \
@@ -162,6 +163,7 @@ BITCOIN_QT_H = \
   qt/trafficgraphwidget.h \
   qt/transactiondesc.h \
   qt/transactionsdialog.h \
+  qt/tpospage.h \
   qt/transactiondescdialog.h \
   qt/transactionfilterproxy.h \
   qt/transactionrecord.h \
@@ -344,6 +346,7 @@ BITCOIN_QT_CPP += \
   qt/signverifymessagedialog.cpp \
   qt/transactiondesc.cpp \
   qt/transactionsdialog.cpp \
+  qt/tpospage.cpp \
   qt/transactiondescdialog.cpp \
   qt/transactionfilterproxy.cpp \
   qt/transactionrecord.cpp \

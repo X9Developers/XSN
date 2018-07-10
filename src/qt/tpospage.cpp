@@ -50,12 +50,10 @@ static QString PrepareCreateContractQuestionString(const CBitcoinAddress &tposAd
     return questionString;
 }
 
-static bool CreateContractTransaction(QWidget *widget,
-                                      CReserveKey &reserveKey,
-                                      const CBitcoinAddress &tposAddress,
-                                      const CBitcoinAddress &merchantAddress,
-                                      int merchantCommission,
-                                      CWalletTx &wtxContract)
+std::unique_ptr<interfaces::PendingWalletTx> TPoSPage::CreateContractTransaction(QWidget *widget,
+                                                                                 const CBitcoinAddress &tposAddress,
+                                                                                 const CBitcoinAddress &merchantAddress,
+                                                                                 int merchantCommission)
 {
     std::string strError;
     auto questionString = PrepareCreateContractQuestionString(tposAddress, merchantAddress, merchantCommission);
@@ -66,22 +64,18 @@ static bool CreateContractTransaction(QWidget *widget,
                                                                QMessageBox::Cancel);
     if(retval != QMessageBox::Yes)
     {
-        return false;
+        return {};
     }
-
-    if(auto walletTx = TPoSUtils::CreateTPoSTransaction(pwalletMain, reserveKey, tposAddress, merchantAddress, merchantCommission, strError))
-    {
-        wtxContract = *walletTx;
-        return true;
+    if(auto walletTx =  _walletModel->wallet().createTPoSContractTransaction(tposAddress, merchantAddress, merchantCommission, strError))  {
+        //wtxContract = *walletTx;
+        return walletTx;
     }
 
     throw std::runtime_error(QString("Failed to create tpos transaction: %1").arg(QString::fromStdString(strError)).toStdString());
 }
 
-static bool CreateCancelContractTransaction(QWidget *widget,
-                                            CReserveKey &reserveKey,
-                                            const TPoSContract &contract,
-                                            CWalletTx &wtxCancelContractTx)
+std::unique_ptr<interfaces::PendingWalletTx> TPoSPage::CreateCancelContractTransaction(QWidget *widget,
+                                                                                       const TPoSContract &contract)
 {
     std::string strError;
     auto questionString = QString("Are you sure you want to cancel contract with address: <b>%1</b>").arg(contract.tposAddress.ToString().c_str());
@@ -92,13 +86,12 @@ static bool CreateCancelContractTransaction(QWidget *widget,
                                                                QMessageBox::Cancel);
     if(retval != QMessageBox::Yes)
     {
-        return false;
+        return {};
     }
 
-    if(auto walletTx = TPoSUtils::CreateCancelContractTransaction(pwalletMain, reserveKey, contract, strError))
+    if(auto walletTx = _walletModel->wallet().createCancelContractTransaction(contract, strError))
     {
-        wtxCancelContractTx = *walletTx;
-        return true;
+        return walletTx;
     }
 
     throw std::runtime_error(QString("Failed to create tpos transaction: %1").arg(QString::fromStdString(strError)).toStdString());
@@ -110,9 +103,9 @@ static void SendRawTransaction(CWalletTx &walletTx, CReserveKey &reserveKey)
         throw std::runtime_error("Error: The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.");
 }
 
-static void SendToAddress(const CTxDestination &address, CAmount nValue, int splitCount)
+void TPoSPage::SendToAddress(const CTxDestination &address, CAmount nValue, int splitCount)
 {
-    CAmount curBalance = pwalletMain->GetBalance();
+    CAmount curBalance = _walletModel->wallet().getBalance();
 
     // Check amount
     if (nValue <= 0)
@@ -128,7 +121,7 @@ static void SendToAddress(const CTxDestination &address, CAmount nValue, int spl
     CScript scriptPubKey = GetScriptForDestination(address);
 
     // Create and send the transaction
-    CReserveKey reservekey(pwalletMain);
+//    CReserveKey reservekey(pwalletMain);
     CAmount nFeeRequired;
     std::string strError;
     std::vector<CRecipient> vecSend;
@@ -147,29 +140,33 @@ static void SendToAddress(const CTxDestination &address, CAmount nValue, int spl
         }
     }
 
-    CWalletTx wtxNew;
-    if (!pwalletMain->CreateTransaction(vecSend, wtxNew, reservekey, nFeeRequired, nChangePosRet,
-                                        strError, nullptr, true, ALL_COINS, false))
+    //CWalletTx wtxNew;
+    //    if (!pwalletMain->CreateTransaction(vecSend, wtxNew, reservekey, nFeeRequired, nChangePosRet,
+    //                                        strError, nullptr, true, ALL_COINS, false))
+
+    if(auto penWalletTx = _walletModel->wallet().createTransaction(vecSend, nullptr, true, nChangePosRet, nFeeRequired, strError))
     {
-        if (nValue + nFeeRequired > pwalletMain->GetBalance())
+        if (nValue + nFeeRequired > _walletModel->wallet().getBalance())
             strError = strprintf("Error: This transaction requires a transaction fee of at least %s because of its amount, complexity, or use of recently received funds!", FormatMoney(nFeeRequired));
         throw std::runtime_error(strError);
     }
-    SendRawTransaction(wtxNew, reservekey);
+    //    SendRawTransaction(wtxNew, reservekey);
 }
 
-static CBitcoinAddress GetNewAddress()
+CBitcoinAddress TPoSPage::GetNewAddress()
 {
-    if (!pwalletMain->IsLocked(true))
+    if (!_walletModel->wallet().isLocked())
         pwalletMain->TopUpKeyPool();
 
     // Generate a new key that is added to wallet
     CPubKey newKey;
-    if (!pwalletMain->GetKeyFromPool(newKey, false))
+    if (!_walletModel->wallet().getKeyFromPool(false, newKey))
         throw std::runtime_error("Error: Keypool ran out, please call keypoolrefill first");
     CKeyID keyID = newKey.GetID();
 
-    pwalletMain->SetAddressBook(keyID, std::string(), "tpos address");
+
+    _walletModel->wallet().setAddressBook(keyID, std::string(), "tpos address");
+    //pwalletMain->SetAddressBook(keyID, std::string(), "tpos address");
 
     return CBitcoinAddress(keyID).ToString();
 }
@@ -212,6 +209,7 @@ void TPoSPage::onStakeClicked()
     try
     {
         auto worker = [this]() {
+            //            CReserveKey reserveKey(pwalletMain);
             CBitcoinAddress tposAddress = GetNewAddress();
             if(!tposAddress.IsValid())
             {
@@ -223,17 +221,18 @@ void TPoSPage::onStakeClicked()
                 throw std::runtime_error("Critical error, merchant address is empty");
             }
             auto merchantCommission = ui->merchantCut->value();
-            CWalletTx wtxContract;
-            if(CreateContractTransaction(this, tposAddress, merchantAddress, merchantCommission, wtxContract))
+            //            CWalletTx wtxContract;
+            if(auto penWalletTx = CreateContractTransaction(this, tposAddress, merchantAddress, merchantCommission))
             {
-                SendRawTransaction(wtxContract);
-                sendToTPoSAddress(tposAddress);
+                //commit();
+                //                SendRawTransaction(wtxContract, reserveKey);
+                //                sendToTPoSAddress(tposAddress);
             }
         };
 
         if (_walletModel->getEncryptionStatus() == WalletModel::Locked)
         {
-            WalletModel::UnlockContext ctx(_walletModel->requestUnlock(false));
+            WalletModel::UnlockContext ctx(_walletModel->requestUnlock());
             if (!ctx.isValid())
             {
                 //unlock was cancelled
@@ -266,12 +265,13 @@ void TPoSPage::onCancelClicked()
         return;
 
     auto worker = [this, &selectedIndexes] {
-        CReserveKey reserveKey(pwalletMain);
+        //CReserveKey reserveKey(pwalletMain);
         auto contract = _addressesTableModel->contractByIndex(selectedIndexes.first().row());
-        CWalletTx wtxNew;
-        if(CreateCancelContractTransaction(this, reserveKey, contract, wtxNew))
+        //CWalletTx wtxNew;
+        if(auto penWalletTx = CreateCancelContractTransaction(this, contract))
         {
-            SendRawTransaction(wtxNew, reserveKey);
+            //commit();
+            //SendRawTransaction(wtxNew, reserveKey);
         }
     };
 
@@ -286,6 +286,8 @@ void TPoSPage::onCancelClicked()
                 QMessageBox::warning(this, tr("TPoS"),
                                      tr("Wallet is locked and user declined to unlock. Can't redeem from TPoS address."),
                                      QMessageBox::Ok, QMessageBox::Ok);
+                if (fDebug)
+                    LogPrintf("Wallet is locked and user declined to unlock. Can't redeem from TPoS address.\n");
 
                 return;
             }
@@ -347,9 +349,8 @@ void TPoSPage::sendToTPoSAddress(const CBitcoinAddress &tposAddress)
 {
     CAmount amount = ui->stakingAmount->value();
     int numberOfSplits = 1;
-    auto nStakeSplitThreshold = _walletModel->wallet().getStakeSplitThreshold();
-    if(amount > nStakeSplitThreshold * COIN)
-        numberOfSplits = std::min<unsigned int>(500, amount / (nStakeSplitThreshold * COIN));
+    if(amount > _walletModel->wallet().getStakeSplitThreshold() * COIN)
+        numberOfSplits = std::min<unsigned int>(500, amount / (_walletModel->wallet().getStakeSplitThreshold() * COIN));
     SendToAddress(tposAddress.Get(), amount, numberOfSplits);
 }
 
