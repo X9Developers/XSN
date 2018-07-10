@@ -19,6 +19,7 @@
 #include <qt/transactionview.h>
 #include <qt/walletmodel.h>
 #include <qt/transactionsdialog.h>
+#include <qt/tpospage.h>
 
 #include <interfaces/node.h>
 #include <ui_interface.h>
@@ -59,6 +60,7 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     receiveCoinsPage = new ReceiveCoinsDialog(platformStyle);
     sendCoinsPage = new SendCoinsDialog(platformStyle);
     masternodeListPage = new MasternodeList(platformStyle, this);
+    tposPage = new TPoSPage(this);
 
     usedSendingAddressesPage = new AddressBookPage(platformStyle, AddressBookPage::ForEditing, AddressBookPage::SendingTab, this);
     usedReceivingAddressesPage = new AddressBookPage(platformStyle, AddressBookPage::ForEditing, AddressBookPage::ReceivingTab, this);
@@ -68,6 +70,7 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     addWidget(receiveCoinsPage);
     addWidget(sendCoinsPage);
     addWidget(masternodeListPage);
+    addWidget(tposPage);
 
     // Clicking on a transaction on the overview pre-selects the transaction on the transaction history page
     connect(overviewPage, SIGNAL(transactionClicked(QModelIndex)), transactionView, SLOT(focusTransaction(QModelIndex)));
@@ -135,6 +138,7 @@ void WalletView::setWalletModel(WalletModel *_walletModel)
     receiveCoinsPage->setModel(_walletModel);
     sendCoinsPage->setModel(_walletModel);
     masternodeListPage->setWalletModel(_walletModel);
+    tposPage->setWalletModel(_walletModel);
     usedReceivingAddressesPage->setModel(_walletModel ? _walletModel->getAddressTableModel() : nullptr);
     usedSendingAddressesPage->setModel(_walletModel ? _walletModel->getAddressTableModel() : nullptr);
 
@@ -212,8 +216,8 @@ void WalletView::gotoMasternodePage()
 
 void WalletView::gotoTPoSPage()
 {
-//    setCurrentWidget(tposPage);
-//    tposPage->refresh();
+    setCurrentWidget(tposPage);
+    tposPage->refresh();
 }
 
 void WalletView::gotoSignMessageTab(QString addr)

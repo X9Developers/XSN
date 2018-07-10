@@ -20,7 +20,7 @@ class SendCoinsRecipient;
 class TransactionView;
 class WalletModel;
 class AddressBookPage;
-class TPosPage;
+class TPoSPage;
 class TransactionsDialog;
 
 QT_BEGIN_NAMESPACE
@@ -69,7 +69,7 @@ private:
     AddressBookPage *usedSendingAddressesPage;
     AddressBookPage *usedReceivingAddressesPage;
     MasternodeList *masternodeListPage;
-//    TPoSPage* tposPage;
+    TPoSPage* tposPage;
 
 
     TransactionsDialog* transactionsDialog;

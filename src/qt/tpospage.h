@@ -12,7 +12,6 @@
 class WalletModel;
 class CBitcoinAddress;
 class TPoSAddressesTableModel;
-class PendingWalletTx;
 
 namespace Ui {
 class TPoSPage;

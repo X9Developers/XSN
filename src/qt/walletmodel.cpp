@@ -321,7 +321,6 @@ TPoSAddressesTableModel *WalletModel::getTPoSAddressModel() const
     return tposTableModel;
 }
 
-
 WalletModel::EncryptionStatus WalletModel::getEncryptionStatus() const
 {
     if(!m_wallet->isCrypted())

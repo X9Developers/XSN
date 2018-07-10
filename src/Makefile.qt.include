@@ -94,7 +94,9 @@ QT_MOC_CPP = \
   qt/moc_utilitydialog.cpp \
   qt/moc_walletframe.cpp \
   qt/moc_walletmodel.cpp \
-  qt/moc_walletview.cpp
+  qt/moc_walletview.cpp \
+  qt/moc_tposaddressestablemodel.cpp \
+  qt/moc_tpospage.cpp
 
 BITCOIN_MM = \
   qt/macdockiconhandler.mm \
@@ -163,6 +165,7 @@ BITCOIN_QT_H = \
   qt/trafficgraphwidget.h \
   qt/transactiondesc.h \
   qt/transactionsdialog.h \
+  qt/tposaddressestablemodel.h \
   qt/tpospage.h \
   qt/transactiondescdialog.h \
   qt/transactionfilterproxy.h \
@@ -346,6 +349,7 @@ BITCOIN_QT_CPP += \
   qt/signverifymessagedialog.cpp \
   qt/transactiondesc.cpp \
   qt/transactionsdialog.cpp \
+  qt/tposaddressestablemodel.cpp \
   qt/tpospage.cpp \
   qt/transactiondescdialog.cpp \
   qt/transactionfilterproxy.cpp \
