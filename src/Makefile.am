@@ -157,15 +157,12 @@ BITCOIN_CORE_H = \
   rpc/blockchain.h \
   rpc/client.h \
   rpc/mining.h \
-  rpc/masternode.h \
-  rpc/merchantnode.h \
   rpc/protocol.h \
   rpc/safemode.h \
   rpc/server.h \
   rpc/rawtransaction.h \
   rpc/register.h \
   rpc/util.h \
-  rpc/xsnmisc.h \
   scheduler.h \
   script/ismine.h \
   script/sigcache.h \
