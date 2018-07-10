@@ -6,11 +6,13 @@
 #include <functional>
 #include <QPointer>
 #include "primitives/transaction.h"
+#include "interfaces/wallet.h"
 
 
 class WalletModel;
 class CBitcoinAddress;
 class TPoSAddressesTableModel;
+class PendingWalletTx;
 
 namespace Ui {
 class TPoSPage;
@@ -45,7 +47,19 @@ private:
     void init();
     void connectSignals();
     void onStakeError();
+    void SendToAddress(const CTxDestination &address, CAmount nValue, int splitCount);
     void sendToTPoSAddress(const CBitcoinAddress &tposAddress);
+    CBitcoinAddress GetNewAddress();
+
+    std::unique_ptr<interfaces::PendingWalletTx> CreateContractTransaction(QWidget *widget,
+                                          const CBitcoinAddress &tposAddress,
+                                          const CBitcoinAddress &merchantAddress,
+                                          int merchantCommission);
+
+    std::unique_ptr<interfaces::PendingWalletTx> CreateCancelContractTransaction(QWidget *widget,
+                                                const TPoSContract &contract);
+
+
 
 private:
     Ui::TPoSPage *ui;

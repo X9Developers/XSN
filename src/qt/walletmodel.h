@@ -140,6 +140,7 @@ public:
     AddressTableModel *getAddressTableModel();
     TransactionTableModel *getTransactionTableModel();
     RecentRequestsTableModel *getRecentRequestsTableModel();
+    TPoSAddressesTableModel *getTPoSAddressModel() const;
 
     EncryptionStatus getEncryptionStatus() const;
 
