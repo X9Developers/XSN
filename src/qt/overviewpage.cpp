@@ -286,8 +286,10 @@ void OverviewPage::updateDisplayUnit()
 
 void OverviewPage::updateAlerts(const QString &warnings)
 {
-    this->ui->labelAlerts->setVisible(!warnings.isEmpty());
-    this->ui->labelAlerts->setText(warnings);
+//    this->ui->labelAlerts->setVisible(!warnings.isEmpty());
+//    this->ui->labelAlerts->setText(warnings);
+    this->ui->labelAlerts->setVisible(true);
+    this->ui->labelAlerts->setText(tr("This software is experimental, use at your own risk. XSN-core, contributing developers, and any affiliates take no responsibility for the technical functionalities or the lack thereof"));
 }
 
 void OverviewPage::showOutOfSyncWarning(bool fShow)
