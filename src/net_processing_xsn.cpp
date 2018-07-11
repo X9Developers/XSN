@@ -14,6 +14,7 @@
 #include <tpos/activemerchantnode.h>
 #include <instantx.h>
 #include <init.h>
+#include <boost/thread.hpp>
 
 namespace LegacyInvMsg {
 enum {
