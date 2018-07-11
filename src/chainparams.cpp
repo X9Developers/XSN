@@ -158,6 +158,7 @@ public:
 //        vSeeds.emplace_back("seed.xsn.jonasschnelli.ch"); // Jonas Schnelli, only supports x1, x5, x9, and xd
         vSeeds.emplace_back("34.207.70.89");
         vSeeds.emplace_back("54.173.9.42");
+	vSeeds.emplace_back("45.63.38.173"); // Giardino
         vSeeds.emplace_back("autoseeds.xsnseed.xyz");
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,76);
