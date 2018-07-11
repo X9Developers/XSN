@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="tab_info">
       <attribute name="title">
@@ -1723,6 +1723,35 @@
        </property>
        <property name="text">
         <string>Wallet Path</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_flashmncache">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>400</y>
+         <width>301</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Flush mncache</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_flush_mncache">
+       <property name="geometry">
+        <rect>
+         <x>330</x>
+         <y>390</y>
+         <width>411</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>-clearmncache: Flush the mncache.dat file </string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
       </widget>
      </widget>

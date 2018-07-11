@@ -95,6 +95,17 @@ public Q_SLOTS:
     void fontBigger();
     void fontSmaller();
     void setFontSize(int newSize);
+
+    /** Wallet repair options */
+    void walletSalvage();
+    void walletRescan();
+    void walletZaptxes1();
+    void walletZaptxes2();
+    void walletUpgrade();
+    void walletReindex();
+    void walletClearMNCache();
+
+
     /** Append the message to the message widget */
     void message(int category, const QString &message, bool html = false);
     /** Set number of connections shown in the UI */
@@ -128,10 +139,14 @@ Q_SIGNALS:
     // For RPC command executor
     void stopExecutor();
     void cmdRequest(const QString &command, const QString &walletID);
+    void handleRestart(QStringList args);
+
 
 private:
     void startExecutor();
     void setTrafficGraphRange(int mins);
+    /** Build parameter list for restart */
+    void buildParameterlist(QString arg);
     /** show detailed information on ui about selected node */
     void updateNodeDetail(const CNodeCombinedStats *stats);
 
