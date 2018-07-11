@@ -1,5 +1,5 @@
 ---
-name: "xsn-osx-0.17"
+name: "xsn-osx"
 enable_cache: true
 suites:
 - "trusty"
@@ -28,14 +28,14 @@ packages:
 - "python-setuptools"
 - "fonts-tuffy"
 remotes:
-- "url": "https://github.com/xsn/xsn.git"
+- "url": "https://github.com/X9Developers/XSN.git"
   "dir": "xsn"
 files:
-- "MacOSX10.11.sdk.tar.gz"
+- "MacOSX10.9.sdk.tar.xz"
 script: |
   WRAP_DIR=$HOME/wrapped
   HOSTS="x86_64-apple-darwin11"
-  CONFIGFLAGS="--enable-reduce-exports --disable-bench --disable-gui-tests GENISOIMAGE=$WRAP_DIR/genisoimage"
+  CONFIGFLAGS="--enable-reduce-exports --disable-bench --disable-tests --disable-gui-tests GENISOIMAGE=$WRAP_DIR/genisoimage"
   FAKETIME_HOST_PROGS=""
   FAKETIME_PROGS="ar ranlib date dmg genisoimage"
 
