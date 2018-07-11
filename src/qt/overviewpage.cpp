@@ -18,7 +18,6 @@
 #include <init.h>
 
 #include <instantx.h>
-#include <darksendconfig.h>
 #include <masternode-sync.h>
 
 #include <QAbstractItemDelegate>
