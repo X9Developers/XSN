@@ -118,8 +118,8 @@ enum class OutputType {
     CHANGE_AUTO,
 };
 
-//! Default for -addresstype
-constexpr OutputType DEFAULT_ADDRESS_TYPE{OutputType::P2SH_SEGWIT};
+//! Default for -addresstype, after segwit is activate default becomes P2SH_SEGWIT
+constexpr OutputType DEFAULT_ADDRESS_TYPE{OutputType::LEGACY};
 
 //! Default for -changetype
 constexpr OutputType DEFAULT_CHANGE_TYPE{OutputType::CHANGE_AUTO};

@@ -1572,6 +1572,8 @@ void CWallet::TransactionRemovedFromMempool(const CTransactionRef &ptx) {
 }
 
 void CWallet::BlockConnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex *pindex, const std::vector<CTransactionRef>& vtxConflicted) {
+    bool witnessEnabled = IsWitnessEnabled(pindex, Params().GetConsensus());
+
     LOCK2(cs_main, cs_wallet);
     // TODO: Temporarily ensure that mempool removals are notified before
     // connected transactions.  This shouldn't matter, but the abandoned
@@ -1580,6 +1582,10 @@ void CWallet::BlockConnected(const std::shared_ptr<const CBlock>& pblock, const 
     // notification of a connected conflict might cause an outside process
     // to abandon a transaction and then have it inadvertently cleared by
     // the notification that the conflicted transaction was evicted.
+
+    if(witnessEnabled && m_default_address_type != OutputType::P2SH_SEGWIT)
+        m_default_address_type = OutputType::P2SH_SEGWIT;
+
 
     for (const CTransactionRef& ptx : vtxConflicted) {
         SyncTransaction(ptx);
