@@ -29,6 +29,7 @@
 #include <warnings.h>
 #include <privatesend/privatesend.h>
 #include <masternodeman.h>
+#include <merchantnodeman.h>
 
 #if defined(HAVE_CONFIG_H)
 #include <config/xsn-config.h>
@@ -168,11 +169,8 @@ class NodeImpl : public Node
     }
     MasternodeCountInfo getNumMasternodes() override
     {
-
         MasternodeCountInfo mnCount(mnodeman.size(), mnodeman.CountEnabled(MIN_PRIVATESEND_PEER_PROTO_VERSION), mnodeman.CountEnabled());
-
         return mnCount;
-
     }
     int64_t getLastBlockTime() override
     {

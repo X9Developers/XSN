@@ -43,6 +43,8 @@ ClientModel::ClientModel(interfaces::Node& node, OptionsModel *_optionsModel, QO
     QObject(parent),
     m_node(node),
     optionsModel(_optionsModel),
+    cachedMasternodeCountString(""),
+    cachedMerchantnodeCountString(""),
     peerTableModel(0),
     banTableModel(0),
     pollTimer(0)
@@ -93,6 +95,11 @@ QString ClientModel::getMasternodeCountString() const
             // .arg(QString::number((int)mnodeman.CountByIP(NET_IPV4)))
             // .arg(QString::number((int)mnodeman.CountByIP(NET_IPV6)))
             // .arg(QString::number((int)mnodeman.CountByIP(NET_TOR)));
+
+}
+
+QString ClientModel::getMerchantnodeCountString() const
+{
 
 }
 

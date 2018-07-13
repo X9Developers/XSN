@@ -558,6 +558,20 @@ UniValue tposcontract(const JSONRPCRequest& request)
         pwallet->ScanForWalletTransactions(chainActive.Genesis(), chainActive.Tip(), reserver, true);
         pwallet->ReacceptWalletTransactions();
     }
+    else if(strCommand == "cleanup")
+    {
+        if(request.params.size() < 2)
+            throw JSONRPCError(RPC_INVALID_PARAMETER,
+                               "Expected format: tposcontract refres tposcontract_id");
+
+        auto tposContractHashID = ParseHashV(request.params[1], "tposcontractid");
+
+        auto it = pwallet->tposMerchantContracts.find(tposContractHashID);
+        if(it == std::end(pwallet->tposMerchantContracts))
+            return "No merchant tpos contract found";
+
+
+    }
 
     return NullUniValue;
 }
