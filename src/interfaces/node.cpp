@@ -168,12 +168,12 @@ class NodeImpl : public Node
     }
     MasternodeMerchantnodeCountInfo getNumMasternodes() override
     {
-        MasternodeMerchantnodeCountInfo mnCount(mnodeman.size(), mnodeman.CountEnabled(MIN_PRIVATESEND_PEER_PROTO_VERSION), mnodeman.CountEnabled());
+        MasternodeMerchantnodeCountInfo mnCount(mnodeman.size(), mnodeman.CountEnabled(PROTOCOL_VERSION), mnodeman.CountEnabled());
         return mnCount;
     }
     MasternodeMerchantnodeCountInfo getNumMerchantnodes() override
     {
-        MasternodeMerchantnodeCountInfo mnCount(merchantnodeman.size(), merchantnodeman.CountEnabled(MIN_PRIVATESEND_PEER_PROTO_VERSION), merchantnodeman.CountEnabled());
+        MasternodeMerchantnodeCountInfo mnCount(merchantnodeman.size(), merchantnodeman.CountEnabled(PROTOCOL_VERSION), merchantnodeman.CountEnabled());
         return mnCount;
     }
     int64_t getLastBlockTime() override
