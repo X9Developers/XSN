@@ -738,7 +738,7 @@ private:
 
     /* Used by TransactionAddedToMemorypool/BlockConnected/Disconnected.
      * Should be called with pindexBlock and posInBlock if this is for a transaction that is included in a block. */
-    void SyncTransaction(const CTransactionRef& tx, const CBlockIndex *pindex = nullptr, int posInBlock = 0);
+    void SyncTransaction(const CTransactionRef& tx, const CBlockIndex *pindex = nullptr, int posInBlock = 0) EXCLUSIVE_LOCKS_REQUIRED(cs_wallet);
 
     /* the HD chain data model (external chain counters) */
     CHDChain hdChain;
