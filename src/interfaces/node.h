@@ -33,13 +33,13 @@ namespace interfaces {
 class Handler;
 class Wallet;
 
-struct MasternodeCountInfo
+struct MasternodeMerchantnodeCountInfo
 {
     int64_t size;
     int64_t countEnabledProtVersion;
     int64_t countEnabled;
 
-    MasternodeCountInfo(int64_t sz, int64_t cept, int64_t ce){
+    MasternodeMerchantnodeCountInfo(int64_t sz, int64_t cept, int64_t ce){
         size = sz;
         countEnabledProtVersion = cept;
         countEnabled = ce;
@@ -144,7 +144,10 @@ public:
     virtual int getNumBlocks() = 0;
 
     //! Get num of masternodes
-    virtual MasternodeCountInfo getNumMasternodes() = 0;
+    virtual MasternodeMerchantnodeCountInfo getNumMasternodes() = 0;
+
+    //! Get num of masternodes
+    virtual MasternodeMerchantnodeCountInfo getNumMerchantnodes() = 0;
 
     //! Get last block time.
     virtual int64_t getLastBlockTime() = 0;
