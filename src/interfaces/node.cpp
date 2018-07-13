@@ -27,7 +27,6 @@
 #include <util.h>
 #include <validation.h>
 #include <warnings.h>
-#include <privatesend/privatesend.h>
 #include <masternodeman.h>
 #include <tpos/merchantnodeman.h>
 
