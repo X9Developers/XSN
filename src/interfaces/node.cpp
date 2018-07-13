@@ -27,6 +27,9 @@
 #include <util.h>
 #include <validation.h>
 #include <warnings.h>
+#include <privatesend/privatesend.h>
+#include <masternodeman.h>
+#include <tpos/merchantnodeman.h>
 
 #if defined(HAVE_CONFIG_H)
 #include <config/xsn-config.h>
@@ -163,6 +166,16 @@ class NodeImpl : public Node
     {
         LOCK(::cs_main);
         return ::chainActive.Height();
+    }
+    MasternodeMerchantnodeCountInfo getNumMasternodes() override
+    {
+        MasternodeMerchantnodeCountInfo mnCount(mnodeman.size(), mnodeman.CountEnabled(MIN_PRIVATESEND_PEER_PROTO_VERSION), mnodeman.CountEnabled());
+        return mnCount;
+    }
+    MasternodeMerchantnodeCountInfo getNumMerchantnodes() override
+    {
+        MasternodeMerchantnodeCountInfo mnCount(merchantnodeman.size(), merchantnodeman.CountEnabled(MIN_PRIVATESEND_PEER_PROTO_VERSION), merchantnodeman.CountEnabled());
+        return mnCount;
     }
     int64_t getLastBlockTime() override
     {
