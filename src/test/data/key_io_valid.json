@@ -459,8 +459,8 @@
         }
     ],
     [
-        "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4",
-        "0014751e76e8199196d454941c45d1b3a323f1433bd6",
+        "xc1qwuh9jev4n3x6rdtgmwz5tnl45653rzug9a33u4",
+        "0014772e5965959c4da1b568db8545cff5a6a9118b88",
         {
             "isPrivkey": false,
             "chain": "main",
@@ -486,26 +486,8 @@
         }
     ],
     [
-        "bc1pw508d6qejxtdg4y5r3zarvary0c5xw7kw508d6qejxtdg4y5r3zarvary0c5xw7k7grplx",
-        "5128751e76e8199196d454941c45d1b3a323f1433bd6751e76e8199196d454941c45d1b3a323f1433bd6",
-        {
-            "isPrivkey": false,
-            "chain": "main",
-            "tryCaseFlip": true
-        }
-    ],
-    [
-        "bc1sw50qa3jx3s",
-        "6002751e",
-        {
-            "isPrivkey": false,
-            "chain": "main",
-            "tryCaseFlip": true
-        }
-    ],
-    [
-        "bc1zw508d6qejxtdg4y5r3zarvaryvg6kdaj",
-        "5210751e76e8199196d454941c45d1b3a323",
+        "xc1qwwtdkagjw8mry5vu8rdlkaj4pae9ptfv8lraj2",
+        "00147396db751271f632519c38dbfb76550f7250ad2c",
         {
             "isPrivkey": false,
             "chain": "main",
