@@ -43,6 +43,8 @@ ClientModel::ClientModel(interfaces::Node& node, OptionsModel *_optionsModel, QO
     QObject(parent),
     m_node(node),
     optionsModel(_optionsModel),
+    cachedMasternodeCountString(""),
+    cachedMerchantnodeCountString(""),
     peerTableModel(0),
     banTableModel(0),
     pollTimer(0)
@@ -54,6 +56,12 @@ ClientModel::ClientModel(interfaces::Node& node, OptionsModel *_optionsModel, QO
     pollTimer = new QTimer(this);
     connect(pollTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
     pollTimer->start(MODEL_UPDATE_DELAY);
+
+    pollMnTimer = new QTimer(this);
+    connect(pollMnTimer, SIGNAL(timeout()), this, SLOT(updateMnTimer()));
+    // no need to update as frequent as data for balances/txes/blocks
+    pollMnTimer->start(MODEL_UPDATE_DELAY * 4);
+
 
     subscribeToCoreSignals();
 }
@@ -75,6 +83,31 @@ int ClientModel::getNumConnections(unsigned int flags) const
         connections = CConnman::CONNECTIONS_ALL;
 
     return m_node.getNodeCount(connections);
+}
+
+QString ClientModel::getMasternodeCountString() const
+{
+    // return tr("Total: %1 (PS compatible: %2 / Enabled: %3) (IPv4: %4, IPv6: %5, TOR: %6)").arg(QString::number((int)mnodeman.size()))
+    return tr("Total: %1 (PS compatible: %2 / Enabled: %3)")
+            .arg(QString::number((int)m_node.getNumMasternodes().size))
+            .arg(QString::number((int)m_node.getNumMasternodes().countEnabledProtVersion))
+            .arg(QString::number((int)m_node.getNumMasternodes().countEnabled));
+            // .arg(QString::number((int)mnodeman.CountByIP(NET_IPV4)))
+            // .arg(QString::number((int)mnodeman.CountByIP(NET_IPV6)))
+            // .arg(QString::number((int)mnodeman.CountByIP(NET_TOR)));
+
+}
+
+QString ClientModel::getMerchantnodeCountString() const
+{
+    // return tr("Total: %1 (PS compatible: %2 / Enabled: %3) (IPv4: %4, IPv6: %5, TOR: %6)").arg(QString::number((int)merchantnodeman.size()))
+    return tr("Total: %1 (PS compatible: %2 / Enabled: %3)")
+                .arg(QString::number((int)m_node.getNumMerchantnodes().size))
+                .arg(QString::number((int)m_node.getNumMerchantnodes().countEnabledProtVersion))
+                .arg(QString::number((int)m_node.getNumMerchantnodes().countEnabled));
+            // .arg(QString::number((int)merchantnodeman.CountByIP(NET_IPV4)))
+            // .arg(QString::number((int)merchantnodeman.CountByIP(NET_IPV6)))
+    // .arg(QString::number((int)merchantnodeman.CountByIP(NET_TOR)));
 }
 
 int ClientModel::getHeaderTipHeight() const
@@ -111,6 +144,26 @@ void ClientModel::updateTimer()
     // the following calls will acquire the required lock
     Q_EMIT mempoolSizeChanged(m_node.getMempoolSize(), m_node.getMempoolDynamicUsage());
     Q_EMIT bytesChanged(m_node.getTotalBytesRecv(), m_node.getTotalBytesSent());
+}
+
+void ClientModel::updateMnTimer()
+{
+    QString newMasternodeCountString = getMasternodeCountString();
+    QString newMerchantnodeCountString = getMerchantnodeCountString();
+
+    if (cachedMasternodeCountString != newMasternodeCountString)
+    {
+        cachedMasternodeCountString = newMasternodeCountString;
+
+        Q_EMIT strMasternodesChanged(cachedMasternodeCountString);
+    }
+
+    if (cachedMerchantnodeCountString != newMerchantnodeCountString)
+    {
+        cachedMerchantnodeCountString = newMerchantnodeCountString;
+
+        Q_EMIT strMerchantnodesChanged(cachedMerchantnodeCountString);
+    }
 }
 
 void ClientModel::updateNumConnections(int numConnections)

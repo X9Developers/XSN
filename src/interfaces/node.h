@@ -26,11 +26,25 @@ class Coin;
 class RPCTimerInterface;
 class UniValue;
 class proxyType;
+
 struct CNodeStateStats;
 
 namespace interfaces {
 class Handler;
 class Wallet;
+
+struct MasternodeMerchantnodeCountInfo
+{
+    int64_t size;
+    int64_t countEnabledProtVersion;
+    int64_t countEnabled;
+
+    MasternodeMerchantnodeCountInfo(int64_t sz, int64_t cept, int64_t ce){
+        size = sz;
+        countEnabledProtVersion = cept;
+        countEnabled = ce;
+    }
+};
 
 //! Top-level interface for a xsn node (xsnd process).
 class Node
@@ -128,6 +142,12 @@ public:
 
     //! Get num blocks.
     virtual int getNumBlocks() = 0;
+
+    //! Get num of masternodes
+    virtual MasternodeMerchantnodeCountInfo getNumMasternodes() = 0;
+
+    //! Get num of masternodes
+    virtual MasternodeMerchantnodeCountInfo getNumMerchantnodes() = 0;
 
     //! Get last block time.
     virtual int64_t getLastBlockTime() = 0;
