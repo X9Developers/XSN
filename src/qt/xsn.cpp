@@ -55,6 +55,7 @@
 #include <QTimer>
 #include <QTranslator>
 #include <QSslConfiguration>
+#include <QProcess>
 
 #if defined(QT_STATICPLUGIN)
 #include <QtPlugin>
@@ -187,6 +188,7 @@ public:
 public Q_SLOTS:
     void initialize();
     void shutdown();
+    void restart(QStringList args);
 
 Q_SIGNALS:
     void initializeResult(bool success);
@@ -198,6 +200,8 @@ private:
     void handleRunawayException(const std::exception *e);
 
     interfaces::Node& m_node;
+    /// Flag indicating a restart
+    bool execute_restart = false;
 };
 
 /** Main Bitcoin application object */
@@ -282,6 +286,7 @@ void BitcoinCore::handleRunawayException(const std::exception *e)
 
 void BitcoinCore::initialize()
 {
+    execute_restart = true;
     try
     {
         qDebug() << __func__ << ": Running initialization in thread";
@@ -306,6 +311,25 @@ void BitcoinCore::shutdown()
         handleRunawayException(&e);
     } catch (...) {
         handleRunawayException(nullptr);
+    }
+}
+
+void BitcoinCore::restart(QStringList args)
+{
+    if(execute_restart) { // Only restart 1x, no matter how often a user clicks on a restart-button
+        execute_restart = false;
+        try
+        {
+            QApplication::quit();
+            qDebug() << __func__ << ": Running Restart in thread";
+            m_node.appShutdown();
+            QProcess::startDetached(QApplication::applicationFilePath(), args);
+            qDebug() << __func__ << ": Restart initiated...";
+        } catch (std::exception& e) {
+            handleRunawayException(&e);
+        } catch (...) {
+            handleRunawayException(NULL);
+        }
     }
 }
 
@@ -409,6 +433,7 @@ void BitcoinApplication::startThread()
     /*  make sure executor object is deleted in its own thread */
     connect(this, SIGNAL(stopThread()), executor, SLOT(deleteLater()));
     connect(this, SIGNAL(stopThread()), coreThread, SLOT(quit()));
+    connect(window, SIGNAL(requestedRestart(QStringList)), executor, SLOT(restart(QStringList)));
 
     coreThread->start();
 }

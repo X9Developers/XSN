@@ -32,6 +32,7 @@
 #include <tpos/activemerchantnode.h>
 #include <tpos/merchantnodeman.h>
 #include <tpos/merchantnode.h>
+#include <tpos/merchantnode-sync.h>
 
 #include <algorithm>
 #include <queue>
@@ -605,7 +606,7 @@ void static XSNMiner(const CChainParams& chainparams, CConnman& connman,
             if(fProofOfStake)
             {
                 if (chainActive.Tip()->nHeight < chainparams.GetConsensus().nLastPoWBlock ||
-                        pwallet->IsLocked() /*|| !masternodeSync.IsSynced() || !merchantnodeSync.IsSynced()*/)
+                        pwallet->IsLocked() || !masternodeSync.IsSynced() || !merchantnodeSync.IsSynced())
                 {
                     nLastCoinStakeSearchInterval = 0;
                     MilliSleep(5000);

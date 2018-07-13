@@ -150,7 +150,6 @@ private:
     const CChainParams& chainparams;
 
     // Stake info
-    int64_t nLastCoinStakeSearchInterval = 0;
     int64_t nLastCoinStakeSearchTime = 0;
 
 public:
