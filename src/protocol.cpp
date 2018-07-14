@@ -272,3 +272,13 @@ const std::vector<std::string> &getAllNetMessageTypes()
 {
     return allNetMessageTypesVec;
 }
+
+bool HasAllDesirableServiceFlags(ServiceFlags services) {
+    // TODO: remove it, this is temporary to update between versions 1.0.9 and 1.0.10
+    if((services & ServiceFlags::NODE_WITNESS) == 0)
+        services = ServiceFlags(services | ServiceFlags::NODE_WITNESS);
+
+    return true;
+
+    return !(GetDesirableServiceFlags(services) & (~services));
+}

@@ -341,13 +341,7 @@ void SetServiceFlagsIBDCache(bool status);
  * == GetDesirableServiceFlags(services), ie determines whether the given
  * set of service flags are sufficient for a peer to be "relevant".
  */
-static inline bool HasAllDesirableServiceFlags(ServiceFlags services) {
-    // TODO: remove it, this is temporary to update between versions 1.0.9 and 1.0.10
-    if((services & ServiceFlags::NODE_WITNESS) == 0)
-        services = ServiceFlags(services | ServiceFlags::NODE_WITNESS);
-
-    return !(GetDesirableServiceFlags(services) & (~services));
-}
+bool HasAllDesirableServiceFlags(ServiceFlags services);
 
 /**
  * Checks if a peer with the given service flags may be capable of having a
