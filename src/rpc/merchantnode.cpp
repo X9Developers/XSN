@@ -281,7 +281,7 @@ static UniValue merchantnode(const JSONRPCRequest& request)
 
     if (strCommand == "list-conf")
     {
-        UniValue resultObj(UniValue::VOBJ);
+        UniValue resultObj(UniValue::VARR);
 
         for(auto &&mne : merchantnodeConfig.getEntries())
         {
@@ -297,7 +297,7 @@ static UniValue merchantnode(const JSONRPCRequest& request)
             mnObj.push_back(Pair("address", mne.getIp()));
             mnObj.push_back(Pair("privateKey", mne.getMerchantPrivKey()));
             mnObj.push_back(Pair("status", strStatus));
-            resultObj.push_back(Pair("merchantnode", mnObj));
+            resultObj.push_back(mnObj);
         }
 
         return resultObj;

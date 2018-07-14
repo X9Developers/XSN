@@ -527,7 +527,7 @@ static UniValue masternode(const JSONRPCRequest& request)
 
     if (strCommand == "list-conf")
     {
-        UniValue resultObj(UniValue::VOBJ);
+        UniValue resultObj(UniValue::VARR);
 
         for(CMasternodeConfig::CMasternodeEntry mne : masternodeConfig.getEntries()) {
             COutPoint outpoint = COutPoint(uint256S(mne.getTxHash()), uint32_t(atoi(mne.getOutputIndex().c_str())));
@@ -543,7 +543,7 @@ static UniValue masternode(const JSONRPCRequest& request)
             mnObj.push_back(Pair("txHash", mne.getTxHash()));
             mnObj.push_back(Pair("outputIndex", mne.getOutputIndex()));
             mnObj.push_back(Pair("status", strStatus));
-            resultObj.push_back(Pair("masternode", mnObj));
+            resultObj.push_back(mnObj);
         }
 
         return resultObj;
