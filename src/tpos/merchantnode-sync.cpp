@@ -230,7 +230,7 @@ void CMerchantnodeSync::ProcessTick(CConnman& connman)
                 if(netfulfilledman.HasFulfilledRequest(pnode->addr, "merchantnode-list-sync")) continue;
                 netfulfilledman.AddFulfilledRequest(pnode->addr, "merchantnode-list-sync");
 
-                if (pnode->nVersion < PROTOCOL_VERSION) continue;
+//                if (pnode->nVersion < PROTOCOL_VERSION) continue;
                 nRequestedMerchantnodeAttempt++;
 
                 merchantnodeman.DsegUpdate(pnode, connman);
