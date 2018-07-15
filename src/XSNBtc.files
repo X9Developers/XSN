@@ -13,6 +13,7 @@ bech32.cpp
 bech32.h
 index/txindex.cpp
 index/txindex.h
+logging.cpp
 qt/bitcoingui.cpp
 qt/bitcoingui.h
 qt/forms/addressbookpage.ui

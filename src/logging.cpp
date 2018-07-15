@@ -33,23 +33,7 @@ static int FileWriteStr(const std::string &str, FILE *fp)
 bool BCLog::Logger::OpenDebugLog()
 {
     std::lock_guard<std::mutex> scoped_lock(m_file_mutex);
-
-    assert(m_fileout == nullptr);
-    assert(!m_file_path.empty());
-
-    m_fileout = fsbridge::fopen(m_file_path, "a");
-    if (!m_fileout) {
-        return false;
-    }
-
-    setbuf(m_fileout, nullptr); // unbuffered
-    // dump buffered messages from before we opened the log
-    while (!m_msgs_before_open.empty()) {
-        FileWriteStr(m_msgs_before_open.front(), m_fileout);
-        m_msgs_before_open.pop_front();
-    }
-
-    return true;
+    return OpenDebugLogHelper();
 }
 
 void BCLog::Logger::EnableCategory(BCLog::LogFlags flag)
@@ -205,6 +189,50 @@ std::string BCLog::Logger::LogTimestampStr(const std::string &str)
     return strStamped;
 }
 
+bool BCLog::Logger::OpenDebugLogHelper()
+{
+    assert(m_fileout == nullptr);
+    assert(!m_file_path.empty());
+
+    m_fileout = fsbridge::fopen(m_file_path, "a");
+    if (!m_fileout) {
+        return false;
+    }
+
+    setbuf(m_fileout, nullptr); // unbuffered
+    // dump buffered messages from before we opened the log
+    while (!m_msgs_before_open.empty()) {
+        FileWriteStr(m_msgs_before_open.front(), m_fileout);
+        m_msgs_before_open.pop_front();
+    }
+
+    return true;
+}
+
+void BCLog::Logger::RotateLogs()
+{
+    static constexpr size_t MAX_LOG_SIZE = 1024 * 1024 * 500; // 500  MB
+    boost::system::error_code ec;
+    auto fileSize = fs::file_size(m_file_path, ec);
+    if(fileSize > MAX_LOG_SIZE)
+    {
+        if(m_fileout)
+        {
+            fclose(m_fileout);
+            m_fileout = nullptr;
+            auto rotatedPath = m_file_path;
+            rotatedPath += ".old";
+            if(fs::exists(rotatedPath)) // if we already have rotated log
+            {
+                fs::remove(rotatedPath, ec);
+            }
+            fs::rename(m_file_path, rotatedPath, ec);
+
+            OpenDebugLogHelper();
+        }
+    }
+}
+
 void BCLog::Logger::LogPrintStr(const std::string &str)
 {
     std::string strTimestamped = LogTimestampStr(str);
@@ -223,6 +251,9 @@ void BCLog::Logger::LogPrintStr(const std::string &str)
         }
         else
         {
+
+            RotateLogs();
+
             // reopen the log file, if requested
             if (m_reopen_file) {
                 m_reopen_file = false;

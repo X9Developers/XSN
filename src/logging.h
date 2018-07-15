@@ -83,6 +83,8 @@ namespace BCLog {
         std::atomic<uint32_t> m_categories{0};
 
         std::string LogTimestampStr(const std::string& str);
+        bool OpenDebugLogHelper();
+        void RotateLogs();
 
     public:
         bool m_print_to_console = false;
