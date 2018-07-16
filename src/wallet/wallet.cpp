@@ -2910,6 +2910,7 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, b
     std::vector<COutput> vCoins;
     CCoinControl coinControl;
     coinControl.fAllowWatchOnly = !scriptFilterPubKey.empty();
+    LogPrintf("Selecting staking coins: %s, allowing watch only: %d\n", scriptFilterPubKey.ToString(), coinControl.fAllowWatchOnly);
     AvailableCoins(vCoins, !scriptFilterPubKey.empty(), &coinControl);
     CAmount nAmountSelected = 0;
 
