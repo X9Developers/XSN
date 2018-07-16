@@ -2910,17 +2910,18 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, b
     std::vector<COutput> vCoins;
     CCoinControl coinControl;
     coinControl.fAllowWatchOnly = !scriptFilterPubKey.empty();
-    LogPrintf("Selecting staking coins: %s, allowing watch only: %d\n", scriptFilterPubKey.ToString(), coinControl.fAllowWatchOnly);
     AvailableCoins(vCoins, !scriptFilterPubKey.empty(), &coinControl);
     CAmount nAmountSelected = 0;
 
     std::set<CScript> rejectCache;
 
-
     for (const COutput& out : vCoins) {
         //make sure not to outrun target amount
         CScript scriptPubKeyKernel;
         scriptPubKeyKernel = out.tx->tx->vout[out.i].scriptPubKey;
+
+        if(!coinControl.fAllowWatchOnly && !out.fSpendable)
+            continue;
 
         CTxDestination dest;
         if(!ExtractDestination(scriptPubKeyKernel, dest))

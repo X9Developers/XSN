@@ -116,7 +116,7 @@ void CMerchantnodeSync::ProcessMessage(CNode* pfrom, const std::string& strComma
         int nCount;
         vRecv >> nItemID >> nCount;
 
-        LogPrintf("MERCHANTSYNCSTATUSCOUNT -- got inventory count: nItemID=%d  nCount=%d  peer=%d\n", nItemID, nCount, pfrom->GetId());
+        LogPrint(BCLog::MNSYNC, "MERCHANTSYNCSTATUSCOUNT -- got inventory count: nItemID=%d  nCount=%d  peer=%d\n", nItemID, nCount, pfrom->GetId());
     }
 }
 
