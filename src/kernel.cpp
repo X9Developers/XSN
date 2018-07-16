@@ -499,10 +499,7 @@ bool CheckProofOfStake(const CBlock &block, uint256& hashProofOfStake)
 
     const auto &cons = Params().GetConsensus();
 
-    const Coin& coin = AccessByTxid(*pcoinsTip, txin.prevout.hash);
-    auto pindexSlow = chainActive[coin.nHeight];
-
-    if (!GetTransaction(txin.prevout.hash, txPrev, cons, hashBlock, false, pindexSlow))
+    if (!GetTransaction(txin.prevout.hash, txPrev, cons, hashBlock, true))
         return error("CheckProofOfStake() : INFO: read txPrev failed");
 
     CTxOut prevTxOut = txPrev->vout[txin.prevout.n];
