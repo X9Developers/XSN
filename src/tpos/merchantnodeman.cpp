@@ -125,7 +125,7 @@ void CMerchantnodeMan::CheckAndRemove(CConnman& connman)
 {
     if(!merchantnodeSync.IsMerchantnodeListSynced()) return;
 
-    LogPrintf("CMerchantnodeMan::CheckAndRemove\n");
+    LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckAndRemove\n");
     {
         // Need LOCK2 here to ensure consistent locking order because code below locks cs_main
         // in CheckMnbAndUpdateMerchantnodeList()
@@ -273,7 +273,7 @@ void CMerchantnodeMan::CheckAndRemove(CConnman& connman)
             }
         }
 
-        LogPrintf("CMerchantnodeMan::CheckAndRemove -- %s\n", ToString());
+        LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckAndRemove -- %s\n", ToString());
     }
 }
 
