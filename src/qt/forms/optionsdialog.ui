@@ -19,8 +19,11 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QTabWidget" name="tabWidget">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabMain">
       <attribute name="title">
@@ -160,36 +163,6 @@
             </property>
             <property name="text">
              <string>Show Masternodes Tab</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="showAdvancedPSUI">
-            <property name="toolTip">
-             <string>Show additional information and buttons for PrivateSend on overview screen.</string>
-            </property>
-            <property name="text">
-             <string>Enable advanced PrivateSend interface</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="lowKeysWarning">
-            <property name="toolTip">
-             <string>Show warning dialog when PrivateSend detects that wallet has very low number of keys left.</string>
-            </property>
-            <property name="text">
-             <string>Warn if PrivateSend is running out of keys</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="privateSendMultiSession">
-            <property name="toolTip">
-             <string>Whether to use experimental PrivateSend mode with multiple mixing sessions per block.&lt;br/&gt;Note: You must use this feature carefully.&lt;br/&gt;Make sure you always have recent wallet (auto)backup in a safe place!</string>
-            </property>
-            <property name="text">
-             <string>Enable PrivateSend &amp;multi-session</string>
             </property>
            </widget>
           </item>
