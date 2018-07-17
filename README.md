@@ -1,7 +1,7 @@
 XSN Core integration/staging tree
 =====================================
 
-[![Build Status](https://travis-ci.org/xsn/xsn.svg?branch=master)](https://travis-ci.org/xsn/xsn)
+[![Build Status](https://travis-ci.org/xsn/xsn.svg?branch=master)](https://travis-ci.org/X9Developers/XSN)
 
 https://xsncore.org
 
