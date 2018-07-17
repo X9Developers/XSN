@@ -2111,6 +2111,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
         return state.DoS(0, error("ConnectBlock(XSN): couldn't find masternode or superblock payments"),
                          REJECT_INVALID, "bad-cb-payee");
     }
+
     // END XSN
 
     if (!control.Wait())
