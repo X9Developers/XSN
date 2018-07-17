@@ -570,7 +570,6 @@ UniValue tposcontract(const JSONRPCRequest& request)
         if(it == std::end(pwallet->tposMerchantContracts))
             return "No merchant tpos contract found";
 
-
     }
 
     return NullUniValue;

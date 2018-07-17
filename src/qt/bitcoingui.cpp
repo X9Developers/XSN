@@ -664,7 +664,6 @@ void BitcoinGUI::createToolBarWidgets(QToolBar *toolbar)
     //    std::tie(label, merchantAction) = CreateWidgetHelper("merchant", tr("Merchant"));
 
     QSettings settings;
-    settings.setValue("fShowMasternodesTab", true);
     if (settings.value("fShowMasternodesTab").toBool()) {
         shortcut = CreateShortcut(Qt::Key_8);
         std::tie(label, masternodeAction) = CreateWidgetHelper("masternodes", tr("Browse masternodes"));
