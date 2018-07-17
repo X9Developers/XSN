@@ -25,8 +25,8 @@ class HelpMessageDialog : public QDialog
 
 public:
     enum HelpMode {
-        about,
         cmdline,
+        about,
         pshelp
     };
 

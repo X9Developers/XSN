@@ -31,6 +31,12 @@
 #include <QTextCursor>
 #include <QVBoxLayout>
 
+static const QString DisclaimerInfo()
+{
+    static const QString result(QObject::tr("This software is experimental, use at your own risk. XSN-core, contributing developers, and any affiliates take no responsibility for the technical functionalities or the lack thereof"));
+    return result;
+}
+
 /** "Help message" or "About" dialog box */
 HelpMessageDialog::HelpMessageDialog(interfaces::Node& node, QWidget *parent, bool about) :
     QDialog(parent),
@@ -65,13 +71,13 @@ HelpMessageDialog::HelpMessageDialog(interfaces::Node& node, QWidget *parent, bo
         ui->aboutMessage->setTextFormat(Qt::RichText);
         ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         text = version + "\n" + licenseInfo;
-        ui->aboutMessage->setText(version + "<br><br>" + licenseInfoHTML);
+        ui->aboutMessage->setText(version + "<br><br>" + licenseInfoHTML + "<br><br>" + DisclaimerInfo());
         ui->aboutMessage->setWordWrap(true);
         ui->helpMessage->setVisible(false);
     } else {
         setWindowTitle(tr("Command-line options"));
         QString header = "Usage:\n"
-            "  bitcoin-qt [command-line options]                     \n";
+            "  xsn-qt [command-line options]                     \n";
         QTextCursor cursor(ui->helpMessage->document());
         cursor.insertText(version);
         cursor.insertBlock();

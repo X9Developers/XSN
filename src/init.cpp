@@ -1765,6 +1765,14 @@ bool AppInitMain()
                         break;
                     }
 
+                    // ********************************************************* Step 8: start indexers
+                    // we need to do this here, because we relly on txindex during VerifyDb
+                    if (gArgs.GetBoolArg("-txindex", DEFAULT_TXINDEX)) {
+                        auto txindex_db = MakeUnique<TxIndexDB>(nTxIndexCache, false, fReindex);
+                        g_txindex = MakeUnique<TxIndex>(std::move(txindex_db));
+                        g_txindex->Start();
+                    }
+
                     if (!CVerifyDB().VerifyDB(chainparams, pcoinsdbview.get(), gArgs.GetArg("-checklevel", DEFAULT_CHECKLEVEL),
                                               gArgs.GetArg("-checkblocks", DEFAULT_CHECKBLOCKS))) {
                         strLoadError = _("Corrupted block database detected");
@@ -1819,12 +1827,6 @@ bool AppInitMain()
         ::feeEstimator.Read(est_filein);
     fFeeEstimatesInitialized = true;
 
-    // ********************************************************* Step 8: start indexers
-    if (gArgs.GetBoolArg("-txindex", DEFAULT_TXINDEX)) {
-        auto txindex_db = MakeUnique<TxIndexDB>(nTxIndexCache, false, fReindex);
-        g_txindex = MakeUnique<TxIndex>(std::move(txindex_db));
-        g_txindex->Start();
-    }
 
     // ********************************************************* Step 9: load wallet
     if (!g_wallet_init_interface.Open()) return false;

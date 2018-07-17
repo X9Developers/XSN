@@ -91,7 +91,7 @@ void CMerchantnodeMan::AskForMN(CNode* pnode, const CPubKey &pubKeyMerchantnode,
         }
     } else {
         // we never asked any node for this outpoint
-        LogPrintf("CMerchantnodeMan::AskForMN -- Asking peer %s for missing merchantnode entry for the first time: %s\n", pnode->addr.ToString(), pubKeyMerchantnode.GetID().ToString());
+        LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::AskForMN -- Asking peer %s for missing merchantnode entry for the first time: %s\n", pnode->addr.ToString(), pubKeyMerchantnode.GetID().ToString());
     }
     mWeAskedForMerchantnodeListEntry[pubKeyMerchantnode][pnode->addr] = GetTime() + DSEG_UPDATE_SECONDS;
 
