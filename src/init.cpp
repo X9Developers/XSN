@@ -609,6 +609,10 @@ void SetupServerArgs()
     gArgs.AddArg("-mnconflock=<n>", "Lock masternodes from masternode configuration file (default: %u)", false, OptionsCategory::MASTERNODE);
     gArgs.AddArg("-masternodeprivkey=<n>", "Set the masternode private key", false, OptionsCategory::MASTERNODE);
 
+    gArgs.AddArg("-merchantnode=<n>", "Enable the client to act as a merchantnode (0-1, default: false", false, OptionsCategory::MERCHANTNODE);
+    gArgs.AddArg("-merchantnodeprivkey=<n>", "Set the masternode private key", false, OptionsCategory::MERCHANTNODE);
+    gArgs.AddArg("-merchantnodeconf=<file>", "Specify merchantnode configuration file (default: merchantnode.conf)", false, OptionsCategory::MERCHANTNODE);
+
 #if HAVE_DECL_DAEMON
     gArgs.AddArg("-daemon", "Run in the background as a daemon and accept commands", false, OptionsCategory::OPTIONS);
 #else

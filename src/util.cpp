@@ -605,10 +605,11 @@ std::string ArgsManager::GetHelpMessage()
             usage += HelpMessageGroup("Commands:");
             break;
         case OptionsCategory::REGISTER_COMMANDS:
-            usage += HelpMessageGroup("Register Commands:");
+            usage += HelpMessageGroup("Register Commands:"); break;
         case OptionsCategory::MASTERNODE:
-            usage += HelpMessageGroup("Masternodes:");
-            break;
+            usage += HelpMessageGroup("Masternodes options:"); break;
+        case OptionsCategory::MERCHANTNODE:
+            usage += HelpMessageGroup("Merchantnode options:"); break;
         default:
             break;
         }
