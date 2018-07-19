@@ -201,9 +201,6 @@ void Interrupt()
     InterruptMapPort();
     if (g_connman)
         g_connman->Interrupt();
-    if (g_txindex) {
-        g_txindex->Interrupt();
-    }
 }
 
 static bool LoadExtensionsDataCaches()
@@ -1634,6 +1631,7 @@ bool AppInitMain()
     fReindex = gArgs.GetBoolArg("-reindex", false);
     bool fReindexChainState = gArgs.GetBoolArg("-reindex-chainstate", false);
 
+
     // cache size calculations
     int64_t nTotalCache = (gArgs.GetArg("-dbcache", nDefaultDbCache) << 20);
     nTotalCache = std::max(nTotalCache, nMinDbCache << 20); // total cache cannot be less than nMinDbCache
@@ -1654,6 +1652,13 @@ bool AppInitMain()
     }
     LogPrintf("* Using %.1fMiB for chain state database\n", nCoinDBCache * (1.0 / 1024 / 1024));
     LogPrintf("* Using %.1fMiB for in-memory UTXO set (plus up to %.1fMiB of unused mempool space)\n", nCoinCacheUsage * (1.0 / 1024 / 1024), nMempoolSizeMax * (1.0 / 1024 / 1024));
+
+    // ********************************************************* Step 8: start indexers
+    // we need to do this here, because we relly on txindex during VerifyDb
+    if (gArgs.GetBoolArg("-txindex", DEFAULT_TXINDEX)) {
+        auto txindex_db = MakeUnique<TxIndexDB>(nTxIndexCache, false, fReindex);
+        g_txindex = MakeUnique<TxIndex>(std::move(txindex_db));
+    }
 
     bool fLoaded = false;
     while (!fLoaded && !fRequestShutdown) {
@@ -1773,14 +1778,6 @@ bool AppInitMain()
                                          "This may be due to your computer's date and time being set incorrectly. "
                                          "Only rebuild the block database if you are sure that your computer's date and time are correct");
                         break;
-                    }
-
-                    // ********************************************************* Step 8: start indexers
-                    // we need to do this here, because we relly on txindex during VerifyDb
-                    if (gArgs.GetBoolArg("-txindex", DEFAULT_TXINDEX)) {
-                        auto txindex_db = MakeUnique<TxIndexDB>(nTxIndexCache, false, fReindex);
-                        g_txindex = MakeUnique<TxIndex>(std::move(txindex_db));
-                        g_txindex->Start();
                     }
 
                     if (!CVerifyDB().VerifyDB(chainparams, pcoinsdbview.get(), gArgs.GetArg("-checklevel", DEFAULT_CHECKLEVEL),

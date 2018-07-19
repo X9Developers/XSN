@@ -16,6 +16,7 @@
 #include <rpc/server.h>
 #include <rpc/register.h>
 #include <script/sigcache.h>
+#include <index/txindex.h>
 
 void CConnmanTest::AddNode(CNode& node)
 {
@@ -79,6 +80,8 @@ TestingSetup::TestingSetup(const std::string& chainName) : BasicTestingSetup(cha
     pblocktree.reset(new CBlockTreeDB(1 << 20, true));
     pcoinsdbview.reset(new CCoinsViewDB(1 << 23, true));
     pcoinsTip.reset(new CCoinsViewCache(pcoinsdbview.get()));
+    auto txindex_db = MakeUnique<TxIndexDB>(1 << 20, false, false);
+    g_txindex = MakeUnique<TxIndex>(std::move(txindex_db));
     if (!LoadGenesisBlock(chainparams)) {
         throw std::runtime_error("LoadGenesisBlock failed.");
     }

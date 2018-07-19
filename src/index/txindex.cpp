@@ -29,14 +29,16 @@ static void FatalError(const char* fmt, const Args&... args)
 }
 
 TxIndex::TxIndex(std::unique_ptr<TxIndexDB> db) :
-    m_db(std::move(db)), m_synced(false), m_best_block_index(nullptr)
+    m_db(std::move(db))//, m_synced(false), m_best_block_index(nullptr)
 {}
 
 TxIndex::~TxIndex()
 {
-    Interrupt();
-    Stop();
+//    Interrupt();
+//    Stop();
 }
+
+#if 0
 
 bool TxIndex::Init()
 {
@@ -254,11 +256,13 @@ bool TxIndex::BlockUntilSyncedToCurrentChain()
     return true;
 }
 
+#endif
+
 bool TxIndex::FindTx(const uint256& tx_hash, uint256& block_hash, CTransactionRef& tx) const
 {
     CDiskTxPos postx;
     if (!m_db->ReadTxPos(tx_hash, postx)) {
-        return false;
+        return error("%s: failed to read tx pos", __func__);
     }
 
     CAutoFile file(OpenBlockFile(postx, true), SER_DISK, CLIENT_VERSION);
@@ -280,30 +284,35 @@ bool TxIndex::FindTx(const uint256& tx_hash, uint256& block_hash, CTransactionRe
     return true;
 }
 
-void TxIndex::Interrupt()
+bool TxIndex::WriteIndex(const std::vector<TxIndex::IndexEntry> &list)
 {
-    m_interrupt();
+    return m_db->WriteTxs(list);
 }
 
-void TxIndex::Start()
-{
-    // Need to register this ValidationInterface before running Init(), so that
-    // callbacks are not missed if Init sets m_synced to true.
-    RegisterValidationInterface(this);
-    if (!Init()) {
-        FatalError("%s: txindex failed to initialize", __func__);
-        return;
-    }
+//void TxIndex::Interrupt()
+//{
+//    m_interrupt();
+//}
 
-    m_thread_sync = std::thread(&TraceThread<std::function<void()>>, "txindex",
-                                std::bind(&TxIndex::ThreadSync, this));
-}
+//void TxIndex::Start()
+//{
+//    // Need to register this ValidationInterface before running Init(), so that
+//    // callbacks are not missed if Init sets m_synced to true.
+//    RegisterValidationInterface(this);
+//    if (!Init()) {
+//        FatalError("%s: txindex failed to initialize", __func__);
+//        return;
+//    }
 
-void TxIndex::Stop()
-{
-    UnregisterValidationInterface(this);
+//    m_thread_sync = std::thread(&TraceThread<std::function<void()>>, "txindex",
+//                                std::bind(&TxIndex::ThreadSync, this));
+//}
 
-    if (m_thread_sync.joinable()) {
-        m_thread_sync.join();
-    }
-}
+//void TxIndex::Stop()
+//{
+//    UnregisterValidationInterface(this);
+
+//    if (m_thread_sync.joinable()) {
+//        m_thread_sync.join();
+//    }
+//}
