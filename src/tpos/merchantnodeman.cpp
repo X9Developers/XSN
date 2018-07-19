@@ -1089,9 +1089,6 @@ void CMerchantnodeMan::UpdateMerchantnodeList(CMerchantnodeBroadcast mnb, CConnm
 
 bool CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList(CNode* pfrom, CMerchantnodeBroadcast mnb, int& nDos, CConnman& connman)
 {
-    // Need to lock cs_main here to ensure consistent locking order because the SimpleCheck call below locks cs_main
-    LOCK(cs_main);
-
     {
         LOCK(cs);
         nDos = 0;
@@ -1137,10 +1134,14 @@ bool CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList(CNode* pfrom, CMerchant
         LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- merchantnode=%s new\n",
                  mnb.pubKeyMerchantnode.GetID().ToString());
 
-        if(!mnb.SimpleCheck(nDos)) {
-            LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- SimpleCheck() failed, merchantnode=%s\n",
-                     mnb.pubKeyMerchantnode.GetID().ToString());
-            return false;
+        {
+            // Need to lock cs_main here to ensure consistent locking order because the SimpleCheck call below locks cs_main
+            LOCK(cs_main);
+            if(!mnb.SimpleCheck(nDos)) {
+                LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- SimpleCheck() failed, merchantnode=%s\n",
+                         mnb.pubKeyMerchantnode.GetID().ToString());
+                return false;
+            }
         }
 
         // search Merchantnode list
