@@ -111,7 +111,8 @@ TestingSetup::~TestingSetup()
     pcoinsTip.reset();
     pcoinsdbview.reset();
     pblocktree.reset();
-    fs::remove_all(pathTemp);
+    boost::system::error_code ec;
+    fs::remove_all(pathTemp, ec);
 }
 
 TestChain100Setup::TestChain100Setup() : TestingSetup(CBaseChainParams::REGTEST)
