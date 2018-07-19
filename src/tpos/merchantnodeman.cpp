@@ -511,7 +511,7 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, const std::string& strComman
         LogPrint(BCLog::MERCHANTNODE, "MERCHANTNODEPING -- Merchantnode ping, merchantnode=%s\n", mnp.merchantPubKey.GetID().ToString());
 
         // Need LOCK2 here to ensure consistent locking order because the CheckAndUpdate call below locks cs_main
-        LOCK2(cs_main, cs);
+        LOCK2(cs, cs_main);
 
         if(mapSeenMerchantnodePing.count(nHash)) return; //seen
         mapSeenMerchantnodePing.insert(std::make_pair(nHash, mnp));

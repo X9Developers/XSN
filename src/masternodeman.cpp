@@ -814,7 +814,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, const std::string& strCommand,
         LogPrint(BCLog::MASTERNODE, "MNPING -- Masternode ping, masternode=%s\n", mnp.vin.prevout.ToString());
 
         // Need LOCK2 here to ensure consistent locking order because the CheckAndUpdate call below locks cs_main
-        LOCK2(cs_main, cs);
+        LOCK2(cs, cs_main);
 
         if(mapSeenMasternodePing.count(nHash)) return; //seen
         mapSeenMasternodePing.insert(std::make_pair(nHash, mnp));
