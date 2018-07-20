@@ -112,7 +112,8 @@ bool CMerchantnodeMan::PoSeBan(const CPubKey &pubKeyMerchantnode)
 
 void CMerchantnodeMan::Check()
 {
-    LOCK(cs);
+    // we need to lock in this order because function that called us uses same order, bad practice, but no other choice because of recursive mutexes.
+    LOCK2(cs_main, cs);
 
     LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::Check -- nLastWatchdogVoteTime=%d, IsWatchdogActive()=%d\n", nLastWatchdogVoteTime, IsWatchdogActive());
 
@@ -511,7 +512,7 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, const std::string& strComman
         LogPrint(BCLog::MERCHANTNODE, "MERCHANTNODEPING -- Merchantnode ping, merchantnode=%s\n", mnp.merchantPubKey.GetID().ToString());
 
         // Need LOCK2 here to ensure consistent locking order because the CheckAndUpdate call below locks cs_main
-        LOCK2(cs, cs_main);
+        LOCK2(cs_main, cs);
 
         if(mapSeenMerchantnodePing.count(nHash)) return; //seen
         mapSeenMerchantnodePing.insert(std::make_pair(nHash, mnp));
@@ -1090,7 +1091,8 @@ void CMerchantnodeMan::UpdateMerchantnodeList(CMerchantnodeBroadcast mnb, CConnm
 bool CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList(CNode* pfrom, CMerchantnodeBroadcast mnb, int& nDos, CConnman& connman)
 {
     {
-        LOCK(cs);
+        // we need to lock in this order because function that called us uses same order, bad practice, but no other choice because of recursive mutexes.
+        LOCK2(cs_main, cs);
         nDos = 0;
         LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- merchantnode=%s\n", mnb.pubKeyMerchantnode.GetID().ToString());
 
@@ -1136,7 +1138,7 @@ bool CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList(CNode* pfrom, CMerchant
 
         {
             // Need to lock cs_main here to ensure consistent locking order because the SimpleCheck call below locks cs_main
-            LOCK(cs_main);
+//            LOCK(cs_main);
             if(!mnb.SimpleCheck(nDos)) {
                 LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- SimpleCheck() failed, merchantnode=%s\n",
                          mnb.pubKeyMerchantnode.GetID().ToString());

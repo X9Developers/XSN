@@ -569,8 +569,11 @@ bool CMerchantnodePing::CheckAndUpdate(CMerchantnode* pmn, bool fFromNewBroadcas
     // don't ban by default
     nDos = 0;
 
-    if (!SimpleCheck(nDos)) {
-        return false;
+    {
+        LOCK(cs_main);
+        if (!SimpleCheck(nDos)) {
+            return false;
+        }
     }
 
     if (pmn == NULL) {

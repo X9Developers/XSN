@@ -984,7 +984,7 @@ bool CGovernanceManager::ProcessVote(CNode* pfrom, const CGovernanceVote& vote, 
 
 void CGovernanceManager::CheckMasternodeOrphanVotes(CConnman& connman)
 {
-    LOCK2(cs_main, cs);
+    LOCK(cs);
 
     ScopedLockBool guard(cs, fRateChecksEnabled, false);
 
@@ -995,7 +995,7 @@ void CGovernanceManager::CheckMasternodeOrphanVotes(CConnman& connman)
 
 void CGovernanceManager::CheckMasternodeOrphanObjects(CConnman& connman)
 {
-    LOCK2(cs_main, cs);
+    LOCK(cs);
     int64_t nNow = GetAdjustedTime();
     ScopedLockBool guard(cs, fRateChecksEnabled, false);
     object_info_m_it it = mapMasternodeOrphanObjects.begin();
@@ -1165,7 +1165,7 @@ int CGovernanceManager::RequestGovernanceObjectVotes(const std::vector<CNode*>& 
     }
 
     {
-        LOCK2(cs_main, cs);
+        LOCK(cs);
 
         if(mapObjects.empty()) return -2;
 

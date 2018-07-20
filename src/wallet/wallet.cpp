@@ -2911,7 +2911,10 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, b
     std::vector<COutput> vCoins;
     CCoinControl coinControl;
     coinControl.fAllowWatchOnly = !scriptFilterPubKey.empty();
-    AvailableCoins(vCoins, !scriptFilterPubKey.empty(), &coinControl);
+    {
+        LOCK2(cs_main, cs_wallet);
+        AvailableCoins(vCoins, !scriptFilterPubKey.empty(), &coinControl);
+    }
     CAmount nAmountSelected = 0;
 
     std::set<CScript> rejectCache;

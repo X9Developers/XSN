@@ -19,6 +19,7 @@ CMasternodeMan mnodeman;
 
 static bool GetBlockHash(uint256 &hash, int nBlockHeight)
 {
+    LOCK(cs_main);
     if(auto index = chainActive[nBlockHeight])
     {
         hash = index->GetBlockHash();
@@ -182,7 +183,7 @@ bool CMasternodeMan::PoSeBan(const COutPoint &outpoint)
 
 void CMasternodeMan::Check()
 {
-    LOCK(cs);
+    LOCK2(cs_main, cs);
 
     LogPrint(BCLog::MASTERNODE, "CMasternodeMan::Check -- nLastWatchdogVoteTime=%d, IsWatchdogActive()=%d\n", nLastWatchdogVoteTime, IsWatchdogActive());
 
@@ -814,7 +815,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, const std::string& strCommand,
         LogPrint(BCLog::MASTERNODE, "MNPING -- Masternode ping, masternode=%s\n", mnp.vin.prevout.ToString());
 
         // Need LOCK2 here to ensure consistent locking order because the CheckAndUpdate call below locks cs_main
-        LOCK2(cs, cs_main);
+        LOCK2(cs_main, cs);
 
         if(mapSeenMasternodePing.count(nHash)) return; //seen
         mapSeenMasternodePing.insert(std::make_pair(nHash, mnp));
@@ -1386,7 +1387,7 @@ void CMasternodeMan::UpdateMasternodeList(CMasternodeBroadcast mnb, CConnman& co
 bool CMasternodeMan::CheckMnbAndUpdateMasternodeList(CNode* pfrom, CMasternodeBroadcast mnb, int& nDos, CConnman& connman)
 {
     {
-        LOCK(cs);
+        LOCK2(cs_main, cs);
         nDos = 0;
         LogPrint(BCLog::MASTERNODE, "CMasternodeMan::CheckMnbAndUpdateMasternodeList -- masternode=%s\n", mnb.vin.prevout.ToString());
 
@@ -1428,7 +1429,7 @@ bool CMasternodeMan::CheckMnbAndUpdateMasternodeList(CNode* pfrom, CMasternodeBr
 
         {
             // Need to lock cs_main here to ensure consistent locking order because the SimpleCheck call below locks cs_main
-            LOCK(cs_main);
+//            LOCK(cs_main);
             if(!mnb.SimpleCheck(nDos)) {
                 LogPrint(BCLog::MASTERNODE, "CMasternodeMan::CheckMnbAndUpdateMasternodeList -- SimpleCheck() failed, masternode=%s\n", mnb.vin.prevout.ToString());
                 return false;
@@ -1479,7 +1480,7 @@ bool CMasternodeMan::CheckMnbAndUpdateMasternodeList(CNode* pfrom, CMasternodeBr
 
 void CMasternodeMan::UpdateLastPaid(const CBlockIndex* pindex)
 {
-    LOCK(cs);
+    LOCK2(cs_main, cs);
 
     if(fLiteMode || !masternodeSync.IsWinnersListSynced() || mapMasternodes.empty()) return;
 
