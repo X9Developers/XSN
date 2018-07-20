@@ -135,7 +135,7 @@ CMasternode::CollateralStatus CMasternode::CheckCollateral(const COutPoint& outp
 
 void CMasternode::Check(bool fForce)
 {
-    LOCK(cs);
+    LOCK2(cs_main, cs);
 
     if(ShutdownRequested()) return;
 

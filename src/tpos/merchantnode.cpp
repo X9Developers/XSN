@@ -85,7 +85,7 @@ bool CMerchantnode::UpdateFromNewBroadcast(CMerchantnodeBroadcast& mnb, CConnman
 
 void CMerchantnode::Check(bool fForce)
 {
-    LOCK(cs);
+    LOCK2(cs_main, cs);
 
     if(ShutdownRequested()) return;
 
