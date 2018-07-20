@@ -96,9 +96,6 @@ void CMerchantnode::Check(bool fForce)
 
     int nHeight = 0;
     if(!fUnitTest) {
-        TRY_LOCK(cs_main, lockMain);
-        if(!lockMain) return;
-
         nHeight = chainActive.Height();
     }
 
