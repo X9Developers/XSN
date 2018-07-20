@@ -1211,7 +1211,7 @@ bool CMerchantnodeMan::IsWatchdogActive()
 
 void CMerchantnodeMan::CheckMerchantnode(const CPubKey& pubKeyMerchantnode, bool fForce)
 {
-    LOCK(cs);
+    LOCK2(cs_main, cs);
     for (auto& mnpair : mapMerchantnodes) {
         if (mnpair.second.pubKeyMerchantnode == pubKeyMerchantnode) {
             mnpair.second.Check(fForce);
