@@ -159,8 +159,12 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(CWallet *wallet, 
     pblocktemplate->vTxFees.push_back(-1); // updated at end
     pblocktemplate->vTxSigOpsCost.push_back(-1); // updated at end
 
-    LOCK2(cs_main, mempool.cs);
-    CBlockIndex* pindexPrev = chainActive.Tip();
+    CBlockIndex* pindexPrev = nullptr;
+    {
+        LOCK(cs_main);
+        pindexPrev = chainActive.Tip();
+    }
+
     assert(pindexPrev != nullptr);
     nHeight = pindexPrev->nHeight + 1;
 
@@ -239,7 +243,10 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(CWallet *wallet, 
 
     int nPackagesSelected = 0;
     int nDescendantsUpdated = 0;
-    addPackageTxs(nPackagesSelected, nDescendantsUpdated);
+    {
+        LOCK(mempool.cs);
+        addPackageTxs(nPackagesSelected, nDescendantsUpdated);
+    }
 
     if(pblock->IsProofOfStake())
     {

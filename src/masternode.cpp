@@ -135,7 +135,7 @@ CMasternode::CollateralStatus CMasternode::CheckCollateral(const COutPoint& outp
 
 void CMasternode::Check(bool fForce)
 {
-    LOCK(cs);
+    LOCK2(cs_main, cs);
 
     if(ShutdownRequested()) return;
 
@@ -149,9 +149,6 @@ void CMasternode::Check(bool fForce)
 
     int nHeight = 0;
     if(!fUnitTest) {
-        TRY_LOCK(cs_main, lockMain);
-        if(!lockMain) return;
-
         CollateralStatus err = CheckCollateral(vin.prevout);
         if (err == COLLATERAL_UTXO_NOT_FOUND) {
             nActiveState = MASTERNODE_OUTPOINT_SPENT;
@@ -773,8 +770,11 @@ bool CMasternodePing::CheckAndUpdate(CMasternode* pmn, bool fFromNewBroadcast, i
     // don't ban by default
     nDos = 0;
 
-    if (!SimpleCheck(nDos)) {
-        return false;
+    {
+        LOCK(cs_main);
+        if (!SimpleCheck(nDos)) {
+            return false;
+        }
     }
 
     if (pmn == NULL) {

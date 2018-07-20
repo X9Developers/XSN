@@ -1620,6 +1620,11 @@ DisconnectResult CChainState::DisconnectBlock(const CBlock& block, const CBlockI
                 Coin coin;
                 bool is_spent = view.SpendCoin(out, &coin);
                 if (!is_spent || tx.vout[o] != coin.out || pindex->nHeight != coin.nHeight || is_coinbase != coin.fCoinBase) {
+                    LogPrintf("(%d, %d) %d (%s, %s) == %d, (%d, %d) == %d, (%d, %d) == %d\n",
+                              i, o, is_spent, tx.vout[o].ToString(), coin.out.ToString(), tx.vout[o] != coin.out,
+                              pindex->nHeight, coin.nHeight, pindex->nHeight != coin.nHeight,
+                              is_coinbase, coin.fCoinBase, is_coinbase != coin.fCoinBase);
+
                     fClean = false; // transaction output mismatch
                 }
             }
@@ -2006,6 +2011,9 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     CAmount nFees = 0;
     int nInputs = 0;
     int64_t nSigOpsCost = 0;
+    CDiskTxPos pos(pindex->GetBlockPos(), GetSizeOfCompactSize(block.vtx.size()));
+    std::vector<std::pair<uint256, CDiskTxPos>> vPos;
+    vPos.reserve(block.vtx.size());
     blockundo.vtxundo.reserve(block.vtx.size() - 1);
     std::vector<PrecomputedTransactionData> txdata;
     txdata.reserve(block.vtx.size()); // Required so that pointers to individual PrecomputedTransactionData don't get invalidated
@@ -2074,6 +2082,9 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
             blockundo.vtxundo.push_back(CTxUndo());
         }
         UpdateCoins(tx, view, i == 0 ? undoDummy : blockundo.vtxundo.back(), pindex->nHeight);
+
+        vPos.push_back(std::make_pair(tx.GetHash(), pos));
+        pos.nTxOffset += ::GetSerializeSize(tx, SER_DISK, CLIENT_VERSION);
     }
 
     // ppcoin: track money supply and mint amount info
@@ -2128,6 +2139,12 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     if (!pindex->IsValid(BLOCK_VALID_SCRIPTS)) {
         pindex->RaiseValidity(BLOCK_VALID_SCRIPTS);
         setDirtyBlockIndex.insert(pindex);
+    }
+
+    if(g_txindex) {
+        if(!g_txindex->WriteIndex(vPos)) {
+            return AbortNode(state, "Failed to write transaction index");
+        }
     }
 
     assert(pindex->phashBlock);

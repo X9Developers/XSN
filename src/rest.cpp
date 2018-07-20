@@ -351,10 +351,6 @@ static bool rest_tx(HTTPRequest* req, const std::string& strURIPart)
     if (!ParseHashStr(hashStr, hash))
         return RESTERR(req, HTTP_BAD_REQUEST, "Invalid hash: " + hashStr);
 
-    if (g_txindex) {
-        g_txindex->BlockUntilSyncedToCurrentChain();
-    }
-
     CTransactionRef tx;
     uint256 hashBlock = uint256();
     if (!GetTransaction(hash, tx, Params().GetConsensus(), hashBlock, true))

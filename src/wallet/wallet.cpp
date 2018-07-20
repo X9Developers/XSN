@@ -1190,7 +1190,7 @@ bool CWallet::AddToWallet(const CWalletTx& wtxIn, bool fFlushOnClose)
         wtxOrdered.insert(std::make_pair(wtx.nOrderPos, TxPair(&wtx, nullptr)));
         wtx.nTimeSmart = ComputeTimeSmart(wtx);
         AddToSpends(hash);
-        for(int i = 0; i < wtx.tx->vout.size(); ++i) {
+        for(size_t i = 0; i < wtx.tx->vout.size(); ++i) {
             if (IsMine(wtx.tx->vout[i]) && !IsSpent(hash, i)) {
                 setWalletUTXO.insert(COutPoint(hash, i));
             }
@@ -1231,6 +1231,7 @@ bool CWallet::AddToWallet(const CWalletTx& wtxIn, bool fFlushOnClose)
             wtx.SetTx(wtxIn.tx);
             fUpdated = true;
         }
+
     }
 
     //// debug print
@@ -2910,7 +2911,10 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, b
     std::vector<COutput> vCoins;
     CCoinControl coinControl;
     coinControl.fAllowWatchOnly = !scriptFilterPubKey.empty();
-    AvailableCoins(vCoins, !scriptFilterPubKey.empty(), &coinControl);
+    {
+        LOCK2(cs_main, cs_wallet);
+        AvailableCoins(vCoins, !scriptFilterPubKey.empty(), &coinControl);
+    }
     CAmount nAmountSelected = 0;
 
     std::set<CScript> rejectCache;

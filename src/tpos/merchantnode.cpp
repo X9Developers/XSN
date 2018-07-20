@@ -85,7 +85,7 @@ bool CMerchantnode::UpdateFromNewBroadcast(CMerchantnodeBroadcast& mnb, CConnman
 
 void CMerchantnode::Check(bool fForce)
 {
-    LOCK(cs);
+    LOCK2(cs_main, cs);
 
     if(ShutdownRequested()) return;
 
@@ -96,9 +96,6 @@ void CMerchantnode::Check(bool fForce)
 
     int nHeight = 0;
     if(!fUnitTest) {
-        TRY_LOCK(cs_main, lockMain);
-        if(!lockMain) return;
-
         nHeight = chainActive.Height();
     }
 
@@ -569,8 +566,11 @@ bool CMerchantnodePing::CheckAndUpdate(CMerchantnode* pmn, bool fFromNewBroadcas
     // don't ban by default
     nDos = 0;
 
-    if (!SimpleCheck(nDos)) {
-        return false;
+    {
+        LOCK(cs_main);
+        if (!SimpleCheck(nDos)) {
+            return false;
+        }
     }
 
     if (pmn == NULL) {

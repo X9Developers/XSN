@@ -170,8 +170,8 @@ static UniValue getrawtransaction(const JSONRPCRequest& request)
     }
 
     bool f_txindex_ready = false;
-    if (g_txindex && !blockindex) {
-        f_txindex_ready = g_txindex->BlockUntilSyncedToCurrentChain();
+    if (g_txindex) {
+        f_txindex_ready = true;
     }
 
     CTransactionRef tx;
@@ -258,12 +258,6 @@ static UniValue gettxoutproof(const JSONRPCRequest& request)
                 break;
             }
         }
-    }
-
-
-    // Allow txindex to catch up if we need to query it and before we acquire cs_main.
-    if (g_txindex && !pblockindex) {
-        g_txindex->BlockUntilSyncedToCurrentChain();
     }
 
     LOCK(cs_main);

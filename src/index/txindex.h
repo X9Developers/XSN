@@ -27,35 +27,35 @@ private:
     /// Whether the index is in sync with the main chain. The flag is flipped
     /// from false to true once, after which point this starts processing
     /// ValidationInterface notifications to stay in sync.
-    std::atomic<bool> m_synced;
+//    std::atomic<bool> m_synced;
 
     /// The last block in the chain that the TxIndex is in sync with.
-    std::atomic<const CBlockIndex*> m_best_block_index;
+//    std::atomic<const CBlockIndex*> m_best_block_index;
 
-    std::thread m_thread_sync;
-    CThreadInterrupt m_interrupt;
+//    std::thread m_thread_sync;
+//    CThreadInterrupt m_interrupt;
 
     /// Initialize internal state from the database and block index.
-    bool Init();
+//    bool Init();
 
     /// Sync the tx index with the block index starting from the current best
     /// block. Intended to be run in its own thread, m_thread_sync, and can be
     /// interrupted with m_interrupt. Once the txindex gets in sync, the
     /// m_synced flag is set and the BlockConnected ValidationInterface callback
     /// takes over and the sync thread exits.
-    void ThreadSync();
+//    void ThreadSync();
 
     /// Write update index entries for a newly connected block.
-    bool WriteBlock(const CBlock& block, const CBlockIndex* pindex);
+//    bool WriteBlock(const CBlock& block, const CBlockIndex* pindex);
 
     /// Write the current chain block locator to the DB.
-    bool WriteBestBlock(const CBlockIndex* block_index);
+//    bool WriteBestBlock(const CBlockIndex* block_index);
 
 protected:
-    void BlockConnected(const std::shared_ptr<const CBlock>& block, const CBlockIndex* pindex,
-                        const std::vector<CTransactionRef>& txn_conflicted) override;
+//    void BlockConnected(const std::shared_ptr<const CBlock>& block, const CBlockIndex* pindex,
+//                        const std::vector<CTransactionRef>& txn_conflicted) override;
 
-    void ChainStateFlushed(const CBlockLocator& locator) override;
+//    void ChainStateFlushed(const CBlockLocator& locator) override;
 
 public:
     /// Constructs the TxIndex, which becomes available to be queried.
@@ -68,7 +68,7 @@ public:
     /// the current state of the block chain. This only blocks if the index has gotten in sync once
     /// and only needs to process blocks in the ValidationInterface queue. If the index is catching
     /// up from far behind, this method does not block and immediately returns false.
-    bool BlockUntilSyncedToCurrentChain();
+//    bool BlockUntilSyncedToCurrentChain();
 
     /// Look up a transaction by hash.
     ///
@@ -77,15 +77,17 @@ public:
     /// @param[out]  tx  The transaction itself.
     /// @return  true if transaction is found, false otherwise
     bool FindTx(const uint256& tx_hash, uint256& block_hash, CTransactionRef& tx) const;
+    using IndexEntry = std::pair<uint256, CDiskTxPos>;
+    bool WriteIndex(const std::vector<IndexEntry> &list);
 
-    void Interrupt();
+//    void Interrupt();
 
     /// Start initializes the sync state and registers the instance as a
     /// ValidationInterface so that it stays in sync with blockchain updates.
-    void Start();
+//    void Start();
 
     /// Stops the instance from staying in sync with blockchain updates.
-    void Stop();
+//    void Stop();
 };
 
 /// The global transaction index, used in GetTransaction. May be null.
