@@ -555,6 +555,7 @@ static UniValue masternode(const JSONRPCRequest& request)
         std::vector<COutput> vPossibleCoins;
         CCoinControl coinControl;
         coinControl.nCoinType = ONLY_MASTERNODE_COLLATERAL;
+        LOCK2(cs_main, pwallet->cs_wallet);
         pwallet->AvailableCoins(vPossibleCoins, true, &coinControl, 1,
                                 MAX_MONEY, MAX_MONEY, 0, 0, 9999999);
 
