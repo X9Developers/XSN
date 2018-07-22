@@ -2893,6 +2893,7 @@ bool CWallet::MintableCoins()
     //        return false;
 
     std::vector<COutput> vCoins;
+    LOCK2(cs_main, cs_wallet);
     AvailableCoins(vCoins, true);
 
     for (const COutput& out : vCoins)
