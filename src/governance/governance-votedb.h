@@ -23,7 +23,7 @@
 class CGovernanceObjectVoteFile
 {
 public: // Types
-    typedef std::vector<CGovernanceVote> vote_l_t;
+    typedef std::list<CGovernanceVote> vote_l_t;
 
     typedef vote_l_t::iterator vote_l_it;
 
