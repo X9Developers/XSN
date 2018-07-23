@@ -89,7 +89,7 @@ bool CActiveMerchantnode::SendMerchantnodePing(CConnman& connman)
     }
 
     if(!merchantnodeman.Has(pubKeyMerchantnode)) {
-        strNotCapableReason = "Merchantnode not in masternode list";
+        strNotCapableReason = "Merchantnode not in merchantnode list";
         nState = ACTIVE_MERCHANTNODE_NOT_CAPABLE;
         LogPrintf("CActiveMerchantnode::SendMerchantnodePing -- %s: %s\n", GetStateString(), strNotCapableReason);
         return false;
