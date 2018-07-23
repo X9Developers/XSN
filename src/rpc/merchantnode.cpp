@@ -570,6 +570,19 @@ UniValue tposcontract(const JSONRPCRequest& request)
         if(it == std::end(pwallet->tposMerchantContracts))
             return "No merchant tpos contract found";
 
+        CTransactionRef tx;
+        uint256 hashBlock;
+        if(!GetTransaction(tposContractHashID, tx, Params().GetConsensus(), hashBlock, true))
+        {
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Failed to get transaction for tpos contract ");
+        }
+
+        TPoSContract tmpContract = TPoSContract::FromTPoSContractTx(tx);
+
+        if(!tmpContract.IsValid())
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Contract is invalid");
+
+            pwallet->RemoveWatchOnly(GetScriptForDestination(tmpContract.tposAddress.Get()));
     }
 
     return NullUniValue;
