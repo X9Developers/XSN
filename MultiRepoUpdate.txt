@@ -1,12 +1,23 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/b6a98d1ffa1969c3ff9705e785ffdccbe6878600
+commit b6a98d1ffa1969c3ff9705e785ffdccbe6878600
+Author: Mario Mejia <mario128mex@gmail.com>
+Date:   Mon Jul 23 14:09:35 2018 -0500
+
+    web-ui: improvements on block details view (#19)
+    
+    transactions for the block are now retrieved separately, the
+    transactions table is paginated and shows more info and
+    finally the view now is mobile friendly
+
 https://github.com/X9Developers/block-explorer/commit/13ea8da0be50cb5073e3c2c5ea9bf6f247411fde
 commit 13ea8da0be50cb5073e3c2c5ea9bf6f247411fde
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Sun Sep 2 11:08:51 2018 -0600
 
     Update README.md
-    
+
 https://github.com/X9Developers/block-explorer/commit/113ac97c8bb6909c7cb2bf044e6521369fd4885f
 commit 113ac97c8bb6909c7cb2bf044e6521369fd4885f
 Author: Alexis Hernandez <alexis22229@gmail.com>
