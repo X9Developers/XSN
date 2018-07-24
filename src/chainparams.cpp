@@ -73,6 +73,7 @@ class CMainParams : public CChainParams {
 public:
     CMainParams() {
         strNetworkID = "main";
+        consensus.nLastPoWBlock = 75;
         consensus.nFirstBlocksEmpty = 20000;
         consensus.nSubsidyHalvingInterval = 43200; // Note: actual number of blocks per calendar year with DGW v3 is ~200700 (for example 449750 - 249050)
         consensus.nMasternodePaymentsStartBlock = 20100; // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
@@ -102,7 +103,6 @@ public:
         consensus.nStakeMaxAge = 60 * 60 * 24; // one day
         consensus.nCoinbaseMaturity = 20;
         consensus.nTPoSContractSignatureDeploymentTime = 1523127600;
-        consensus.nLastPoWBlock = 75;
         consensus.nPowKGWHeight = 15200;
         consensus.nPowDGWHeight = 24;
         consensus.fPowAllowMinDifficultyBlocks = false;
@@ -204,6 +204,7 @@ class CTestNetParams : public CChainParams {
 public:
     CTestNetParams() {
         strNetworkID = "test";
+        consensus.nLastPoWBlock = 75;
         consensus.nSubsidyHalvingInterval = 10000;
         consensus.nFirstBlocksEmpty = 20;
         consensus.nMasternodePaymentsStartBlock = 4010; // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
@@ -233,7 +234,6 @@ public:
         consensus.fPowNoRetargeting = false;
         consensus.nPowKGWHeight = 4001; // nPowKGWHeight >= nPowDGWHeight means "no KGW"
         consensus.nPowDGWHeight = 4001;
-        consensus.nLastPoWBlock = 75;
         consensus.nStakeMinAge = 60 * 60;
         consensus.nStakeMaxAge = 60 * 60 * 24; // one day
         consensus.nCoinbaseMaturity = 20;

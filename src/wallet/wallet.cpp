@@ -152,6 +152,7 @@ public:
 
 void CWallet::LoadContractsFromDB()
 {
+    LOCK(cs_wallet);
     for(auto &&contractTx : std::move(tposContractsTxLoadedFromDB))
     {
         if(!LoadTPoSContract(contractTx))

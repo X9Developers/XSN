@@ -197,7 +197,7 @@ TPoSAddressesTableModel::Entry TPoSAddressesTableModel::GetAmountForAddress(CBit
     for (auto &&walletTx : walletInterface.getWalletTxs())
     {
         const auto& tx = *walletTx.tx;
-        if (tx.IsCoinBase() || !CheckFinalTx(tx))
+        if (tx.IsCoinBase())
             continue;
 
         for(size_t i = 0; i < tx.vout.size(); ++i)
