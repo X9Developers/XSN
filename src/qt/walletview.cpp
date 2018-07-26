@@ -147,7 +147,6 @@ void WalletView::setWalletModel(WalletModel *_walletModel)
     overviewPage->setWalletModel(_walletModel);
     receiveCoinsPage->setModel(_walletModel);
     sendCoinsPage->setModel(_walletModel);
-    masternodeListPage->setWalletModel(_walletModel);
     tposPage->setWalletModel(_walletModel);
     QSettings settings;
     if (settings.value("fShowMasternodesTab").toBool()) {
