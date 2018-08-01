@@ -546,15 +546,18 @@ UniValue tposcontract(const JSONRPCRequest& request)
     {
         if(request.params.size() < 2)
             throw JSONRPCError(RPC_INVALID_PARAMETER,
-                               "Expected format: tposcontract refres tposcontract_id");
+                               "Expected format: tposcontract refresh tposcontract_id");
 
-        auto tposContractHashID = ParseHashV(request.params[1], "tposcontractid");
-
-        auto it = pwallet->tposMerchantContracts.find(tposContractHashID);
+        auto it = pwallet->tposMerchantContracts.find(ParseHashV(request.params[1], "tposcontractid"));
         if(it == std::end(pwallet->tposMerchantContracts))
-            return "No merchant tpos contract found";
+            return JSONRPCError(RPC_INVALID_PARAMETER, "No merchant tpos contract found");
 
         WalletRescanReserver reserver(pwallet);
+
+        if (!reserver.reserve()) {
+            throw JSONRPCError(RPC_WALLET_ERROR, "Wallet is currently rescanning. Abort existing rescan or wait.");
+        }
+
         pwallet->ScanForWalletTransactions(chainActive.Genesis(), chainActive.Tip(), reserver, true);
         pwallet->ReacceptWalletTransactions();
     }
