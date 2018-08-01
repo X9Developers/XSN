@@ -284,7 +284,7 @@ bool CBitcoinAddress::operator==(const CBitcoinAddress &rhs) const
 
 bool CBitcoinAddress::operator!=(const CBitcoinAddress &rhs) const
 {
-    return txDest != rhs.txDest;
+    return !(txDest == rhs.txDest);
 }
 
 bool CBitcoinAddress::operator<(const CBitcoinAddress &rhs) const
