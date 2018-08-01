@@ -76,7 +76,8 @@ bool CHashSigner::VerifyHash(const uint256& hash, const CTxDestination &address,
         return false;
     }
 
-    if(address != recoveredAddress) {
+    // not all classes in CTxDestination support operator!= on some compilers
+    if(!(address == recoveredAddress)) {
         strErrorRet = strprintf("Addresses don't match: address=%s, addressFromSig=%s, hash=%s, vchSig=%s",
                     EncodeDestination(address), EncodeDestination(recoveredAddress), hash.ToString(),
                     EncodeBase64(&vchSig[0], vchSig.size()));
