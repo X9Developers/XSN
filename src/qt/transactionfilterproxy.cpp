@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2017 The Bitcoin Core developers
+ // Copyright (c) 2011-2017 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -6,6 +6,7 @@
 
 #include <qt/transactiontablemodel.h>
 #include <qt/transactionrecord.h>
+#include "logging.h"
 
 #include <cstdlib>
 
@@ -36,6 +37,8 @@ bool TransactionFilterProxy::filterAcceptsRow(int sourceRow, const QModelIndex &
         return false;
 
     int type = index.data(TransactionTableModel::TypeRole).toInt();
+
+    uint32_t ntype = type;
     if (!(TYPE(type) & typeFilter))
         return false;
 
