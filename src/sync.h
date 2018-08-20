@@ -12,7 +12,7 @@
 #include <thread>
 #include <mutex>
 
-#define DEBUG_LOCKORDER
+// #define DEBUG_LOCKORDER
 
 ////////////////////////////////////////////////
 //                                            //
