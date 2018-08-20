@@ -461,7 +461,7 @@ UniValue tposcontract(const JSONRPCRequest& request)
         strCommand = request.params[0].get_str();
     }
 
-    if (request.fHelp  || (strCommand != "list" && strCommand != "create" && strCommand != "refresh"))
+    if (request.fHelp  || (strCommand != "list" && strCommand != "create" && strCommand != "refresh" && strCommand != "cleanup"))
         throw std::runtime_error(
                 "tposcontract \"command\"...\n"
                 "Set of commands to execute merchantnode related actions\n"

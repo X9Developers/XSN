@@ -56,6 +56,7 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "getbalance", 2, "include_watchonly" },
     { "getblockhash", 0, "height" },
     { "setstakesplitthreshold", 0, "value"},
+    { "sendtoaddress", 4, "amount_of_splits"},
     { "waitforblockheight", 0, "height" },
     { "waitforblockheight", 1, "timeout" },
     { "waitforblock", 1, "timeout" },

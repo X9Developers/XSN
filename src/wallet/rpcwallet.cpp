@@ -445,7 +445,7 @@ static UniValue getaddressesbyaccount(const JSONRPCRequest& request)
     return ret;
 }
 
-static CTransactionRef SendMoney(CWallet * const pwallet, const CTxDestination &address, CAmount nValue, bool fSubtractFeeFromAmount, const CCoinControl& coin_control, mapValue_t mapValue, std::string fromAccount)
+static CTransactionRef SendMoney(CWallet * const pwallet, const CTxDestination &address, CAmount nValue, bool fSubtractFeeFromAmount, int splitCount,const CCoinControl& coin_control, mapValue_t mapValue, std::string fromAccount)
 {
     CAmount curBalance = pwallet->GetBalance();
 
@@ -469,14 +469,28 @@ static CTransactionRef SendMoney(CWallet * const pwallet, const CTxDestination &
     std::string strError;
     std::vector<CRecipient> vecSend;
     int nChangePosRet = -1;
-    CRecipient recipient = {scriptPubKey, nValue, fSubtractFeeFromAmount};
-    vecSend.push_back(recipient);
     CTransactionRef tx;
+
+    for (int i = 0; i < splitCount; ++i)
+    {
+        if (i == splitCount - 1)
+        {
+            uint64_t nRemainder = nValue % splitCount;
+            vecSend.push_back({scriptPubKey, static_cast<CAmount>(nValue / splitCount + nRemainder), fSubtractFeeFromAmount});
+        }
+        else
+        {
+            vecSend.push_back({scriptPubKey, static_cast<CAmount>(nValue / splitCount), fSubtractFeeFromAmount});
+        }
+    }
+
+
     if (!pwallet->CreateTransaction(vecSend, tx, reservekey, nFeeRequired, nChangePosRet, strError, coin_control)) {
         if (!fSubtractFeeFromAmount && nValue + nFeeRequired > curBalance)
             strError = strprintf("Error: This transaction requires a transaction fee of at least %s", FormatMoney(nFeeRequired));
         throw JSONRPCError(RPC_WALLET_ERROR, strError);
     }
+
     CValidationState state;
     if (!pwallet->CommitTransaction(tx, std::move(mapValue), {} /* orderForm */, std::move(fromAccount), reservekey, g_connman.get(), state)) {
         strError = strprintf("Error: The transaction was rejected! Reason given: %s", FormatStateMessage(state));
@@ -492,7 +506,7 @@ static UniValue sendtoaddress(const JSONRPCRequest& request)
         return NullUniValue;
     }
 
-    if (request.fHelp || request.params.size() < 2 || request.params.size() > 8)
+    if (request.fHelp || request.params.size() < 2 || request.params.size() > 9)
         throw std::runtime_error(
                 "sendtoaddress \"address\" amount ( \"comment\" \"comment_to\" subtractfeefromamount replaceable conf_target \"estimate_mode\")\n"
                 "\nSend an amount to a given address.\n"
@@ -505,11 +519,12 @@ static UniValue sendtoaddress(const JSONRPCRequest& request)
                                                                                                            "4. \"comment_to\"         (string, optional) A comment to store the name of the person or organization \n"
                                                                                                            "                             to which you're sending the transaction. This is not part of the \n"
                                                                                                            "                             transaction, just kept in your wallet.\n"
-                                                                                                           "5. subtractfeefromamount  (boolean, optional, default=false) The fee will be deducted from the amount being sent.\n"
+                                                                                                           "5. \"amount of splits\"     (numeric, optional) amount of UTXO splits. \n"
+                                                                                                           "6. subtractfeefromamount  (boolean, optional, default=false) The fee will be deducted from the amount being sent.\n"
                                                                                                            "                             The recipient will receive less xsns than you enter in the amount field.\n"
-                                                                                                           "6. replaceable            (boolean, optional) Allow this transaction to be replaced by a transaction with higher fees via BIP 125\n"
-                                                                                                           "7. conf_target            (numeric, optional) Confirmation target (in blocks)\n"
-                                                                                                           "8. \"estimate_mode\"      (string, optional, default=UNSET) The fee estimate mode, must be one of:\n"
+                                                                                                           "7. replaceable            (boolean, optional) Allow this transaction to be replaced by a transaction with higher fees via BIP 125\n"
+                                                                                                           "8. conf_target            (numeric, optional) Confirmation target (in blocks)\n"
+                                                                                                           "9. \"estimate_mode\"      (string, optional, default=UNSET) The fee estimate mode, must be one of:\n"
                                                                                                            "       \"UNSET\"\n"
                                                                                                            "       \"ECONOMICAL\"\n"
                                                                                                            "       \"CONSERVATIVE\"\n"
@@ -540,27 +555,35 @@ static UniValue sendtoaddress(const JSONRPCRequest& request)
 
     // Wallet comments
     mapValue_t mapValue;
+
+
     if (!request.params[2].isNull() && !request.params[2].get_str().empty())
         mapValue["comment"] = request.params[2].get_str();
     if (!request.params[3].isNull() && !request.params[3].get_str().empty())
         mapValue["to"] = request.params[3].get_str();
 
+    int amountOfSplits = 1;
+    if (!request.params[4].isNull())
+    {
+        amountOfSplits = request.params[4].get_int();
+    }
+
     bool fSubtractFeeFromAmount = false;
-    if (!request.params[4].isNull()) {
-        fSubtractFeeFromAmount = request.params[4].get_bool();
+    if (!request.params[5].isNull()) {
+        fSubtractFeeFromAmount = request.params[5].get_bool();
     }
 
     CCoinControl coin_control;
-    if (!request.params[5].isNull()) {
-        coin_control.m_signal_bip125_rbf = request.params[5].get_bool();
-    }
-
     if (!request.params[6].isNull()) {
-        coin_control.m_confirm_target = ParseConfirmTarget(request.params[6]);
+        coin_control.m_signal_bip125_rbf = request.params[6].get_bool();
     }
 
     if (!request.params[7].isNull()) {
-        if (!FeeModeFromString(request.params[7].get_str(), coin_control.m_fee_mode)) {
+        coin_control.m_confirm_target = ParseConfirmTarget(request.params[7]);
+    }
+
+    if (!request.params[8].isNull()) {
+        if (!FeeModeFromString(request.params[8].get_str(), coin_control.m_fee_mode)) {
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid estimate_mode parameter");
         }
     }
@@ -568,7 +591,7 @@ static UniValue sendtoaddress(const JSONRPCRequest& request)
 
     EnsureWalletIsUnlocked(pwallet);
 
-    CTransactionRef tx = SendMoney(pwallet, dest, nAmount, fSubtractFeeFromAmount, coin_control, std::move(mapValue), {} /* fromAccount */);
+    CTransactionRef tx = SendMoney(pwallet, dest, nAmount, fSubtractFeeFromAmount, amountOfSplits, coin_control, std::move(mapValue), {} /* fromAccount */);
     return tx->GetHash().GetHex();
 }
 
@@ -1055,7 +1078,7 @@ static UniValue sendfrom(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Account has insufficient funds");
 
     CCoinControl no_coin_control; // This is a deprecated API
-    CTransactionRef tx = SendMoney(pwallet, dest, nAmount, false, no_coin_control, std::move(mapValue), std::move(strAccount));
+    CTransactionRef tx = SendMoney(pwallet, dest, nAmount, false, 1, no_coin_control, std::move(mapValue), std::move(strAccount));
     return tx->GetHash().GetHex();
 }
 
