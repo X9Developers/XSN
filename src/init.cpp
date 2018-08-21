@@ -601,6 +601,7 @@ void SetupServerArgs()
     gArgs.AddArg("-server", "Accept command line and JSON-RPC commands", false, OptionsCategory::RPC);
 
     gArgs.AddArg("-sporkkey", "Private key to send spork messages", false, OptionsCategory::OPTIONS);
+    gArgs.AddArg("-staking", "Enable staking while working with wallet, default is 1", false, OptionsCategory::OPTIONS);
     gArgs.AddArg("-masternode=<n>", "Enable the client to act as a masternode (0-1, default: false", false, OptionsCategory::MASTERNODE);
     gArgs.AddArg("-mnconf=<file>", "Specify masternode configuration file (default: masternode.conf)", false, OptionsCategory::MASTERNODE);
     gArgs.AddArg("-mnconflock=<n>", "Lock masternodes from masternode configuration file (default: %u)", false, OptionsCategory::MASTERNODE);
@@ -2004,7 +2005,7 @@ bool AppInitMain()
     uiInterface.InitMessage(_("Done loading"));
 
     g_wallet_init_interface.Start(scheduler);
-    if(GetWallets().front())
+    if(GetWallets().front() && gArgs.GetBoolArg("-staking", true))
     {
         threadGroup.create_thread(std::bind(&ThreadStakeMinter, boost::ref(chainparams), boost::ref(connman), GetWallets().front()));
     }

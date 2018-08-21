@@ -288,7 +288,7 @@
        <item row="11" column="0">
         <widget class="QLabel" name="merchantnodeCountLabel">
          <property name="text">
-          <string>Number of Merchantodes</string>
+          <string>Number of Merchantnodes</string>
          </property>
         </widget>
        </item>
