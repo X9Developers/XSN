@@ -1,0 +1,13 @@
+This text file will track changes from other XSN Repos.
+
+https://github.com/X9Developers/block-explorer/commit/8bb3ff26e02c05b1da98a1410e86474a6dba6ad1
+commit 8bb3ff26e02c05b1da98a1410e86474a6dba6ad1
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Aug 22 11:13:09 2018 -0600
+
+    server: Disable address checks (#45)
+    
+    In order to keep the database in sync, the address
+    checks are being disabled, this is a partial solution
+    to let the explorer continue working until the actual
+    validations are added.
