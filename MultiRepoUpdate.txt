@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/13ea8da0be50cb5073e3c2c5ea9bf6f247411fde
+commit 13ea8da0be50cb5073e3c2c5ea9bf6f247411fde
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Sep 2 11:08:51 2018 -0600
+
+    Update README.md
+    
 https://github.com/X9Developers/block-explorer/commit/113ac97c8bb6909c7cb2bf044e6521369fd4885f
 commit 113ac97c8bb6909c7cb2bf044e6521369fd4885f
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Sun Sep 2 09:03:16 2018 -0600
 
     infra: Update the xsn.conf
-    
+
 https://github.com/X9Developers/block-explorer/commit/4280ecc27da629b1f194d85b011d10b7e00662d4
 commit 4280ecc27da629b1f194d85b011d10b7e00662d4
 Author: Alexis Hernandez <alexis22229@gmail.com>
