@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/4280ecc27da629b1f194d85b011d10b7e00662d4
+commit 4280ecc27da629b1f194d85b011d10b7e00662d4
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Sep 2 08:58:48 2018 -0600
+
+    server: Allow CORS from https://cloud.stakenet.io
+
 https://github.com/X9Developers/block-explorer/commit/393b737df3e94653d2be2c8c8a15b846efea2319
 commit 393b737df3e94653d2be2c8c8a15b846efea2319
 Author: Alexis Hernandez <alexis22229@gmail.com>
