@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/11e25da4a4957008907d329d745d2f4b3ce690bd
+commit 11e25da4a4957008907d329d745d2f4b3ce690bd
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Sep 30 09:10:10 2018 -0600
+
+    server: Add getByBlockhash method to the TransactionDataHandler (#19)
+    
 https://github.com/X9Developers/ledger-app-btc/commit/143a0f3a6e8f61abd3e61affa5a4c83500d40103
 commit 143a0f3a6e8f61abd3e61affa5a4c83500d40103
 Author: Yura Oleksyshyn <yuraolex@gmail.com>
 Date:   Mon Sep 17 16:01:47 2018 +0300
 
     Added support for XSN
-    
+
 https://github.com/X9Developers/block-explorer/commit/b6a98d1ffa1969c3ff9705e785ffdccbe6878600
 commit b6a98d1ffa1969c3ff9705e785ffdccbe6878600
 Author: Mario Mejia <mario128mex@gmail.com>
