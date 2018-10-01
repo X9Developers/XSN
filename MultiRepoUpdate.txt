@@ -1,5 +1,17 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/fe5d3b004a57e14b54b184fd9ae593138acc4425
+commit fe5d3b004a57e14b54b184fd9ae593138acc4425
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Sep 30 22:49:01 2018 -0600
+
+    web-ui: Improve the block details component (#19)
+    
+    - A message is displayed when the transaction list is not available.
+    - The transaction list is loaded after the block data.
+    - When the paginated transactions aren't available, the transaction
+      list from the block data is displayed.
+      
 https://github.com/X9Developers/block-explorer/commit/b4a4577186a3978dfe76a2d681cc9f1bc8cea96a
 commit b4a4577186a3978dfe76a2d681cc9f1bc8cea96a
 Author: Alexis Hernandez <alexis22229@gmail.com>
