@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/lnd/commit/a5189bb071099c94dbe71c6d8be7f1e7dedb467e
+commit a5189bb071099c94dbe71c6d8be7f1e7dedb467e
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Wed Oct 3 14:17:49 2018 +0300
+
+    updated xsn integration patch with latest changes
+
 https://github.com/X9Developers/lnd/commit/85a2af3f7af2a916e207ca3146f69291d295808e
 commit 85a2af3f7af2a916e207ca3146f69291d295808e
 Merge: 7d42f842 a3edcf9c
@@ -7,7 +14,7 @@ Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
 Date:   Wed Oct 3 13:58:56 2018 +0300
 
     Merge branch 'master' of https://github.com/lightningnetwork/lnd
-    
+
 https://github.com/X9Developers/lnd/commit/7d42f8424ec0e65ba143d9cfc007314485bd0da8
 commit 7d42f8424ec0e65ba143d9cfc007314485bd0da8
 Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
