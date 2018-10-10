@@ -1,12 +1,21 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/35deff6b5e9a0b9fef7cf836f0b23d57a60653fb
+commit 35deff6b5e9a0b9fef7cf836f0b23d57a60653fb
+Author: Rishabh Chakrabarti <rishabh.chakrabarti@protonmail.com>
+Date:   Wed Oct 10 08:44:59 2018 +0530
+
+    server: Add root-cause-exception-first logging to logback.xml (#57)
+    
+    This change helps identify the root cause in the stack trace of exceptions.
+    
 https://github.com/X9Developers/block-explorer/commit/1680b7b85272f1b0d04b063a698664c3009bf499
 commit 1680b7b85272f1b0d04b063a698664c3009bf499
 Author: Rishabh Chakrabarti <rishabh.chakrabarti@protonmail.com>
 Date:   Tue Oct 9 22:21:51 2018 +0530
 
     server: Integrated sbt-errors-plugin
-    
+
 https://github.com/X9Developers/lnd/commit/a5189bb071099c94dbe71c6d8be7f1e7dedb467e
 commit a5189bb071099c94dbe71c6d8be7f1e7dedb467e
 Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
