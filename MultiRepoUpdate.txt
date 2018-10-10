@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/swap-resolver/commit/038f39f7ebcee872be21b8fa9e4d4e7d31fe0655
+commit 038f39f7ebcee872be21b8fa9e4d4e7d31fe0655
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Wed Oct 10 17:05:31 2018 +0300
+
+    Added xsn support for swap-resolver
+
 https://github.com/X9Developers/swap-resolver/commit/364a629a4d07c3afe8c66521d73c0f609b1a54fe
 commit 364a629a4d07c3afe8c66521d73c0f609b1a54fe
 Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
 Date:   Wed Oct 10 16:47:59 2018 +0300
 
     Added instructions for lightning swaps
-    
+
 https://github.com/X9Developers/block-explorer/commit/35deff6b5e9a0b9fef7cf836f0b23d57a60653fb
 commit 35deff6b5e9a0b9fef7cf836f0b23d57a60653fb
 Author: Rishabh Chakrabarti <rishabh.chakrabarti@protonmail.com>
