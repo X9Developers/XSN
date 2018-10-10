@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/swap-resolver/commit/364a629a4d07c3afe8c66521d73c0f609b1a54fe
+commit 364a629a4d07c3afe8c66521d73c0f609b1a54fe
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Wed Oct 10 16:47:59 2018 +0300
+
+    Added instructions for lightning swaps
+    
 https://github.com/X9Developers/block-explorer/commit/35deff6b5e9a0b9fef7cf836f0b23d57a60653fb
 commit 35deff6b5e9a0b9fef7cf836f0b23d57a60653fb
 Author: Rishabh Chakrabarti <rishabh.chakrabarti@protonmail.com>
@@ -8,7 +15,7 @@ Date:   Wed Oct 10 08:44:59 2018 +0530
     server: Add root-cause-exception-first logging to logback.xml (#57)
     
     This change helps identify the root cause in the stack trace of exceptions.
-    
+
 https://github.com/X9Developers/block-explorer/commit/1680b7b85272f1b0d04b063a698664c3009bf499
 commit 1680b7b85272f1b0d04b063a698664c3009bf499
 Author: Rishabh Chakrabarti <rishabh.chakrabarti@protonmail.com>
