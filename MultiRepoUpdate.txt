@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/swap-resolver/commit/40096d448815eb0cf13d17c4d8bae427b5d3bcb5
+commit 40096d448815eb0cf13d17c4d8bae427b5d3bcb5
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Thu Oct 11 17:14:56 2018 +0300
+
+    Delete README.bitcoin.md
+    
 https://github.com/X9Developers/swap-resolver/commit/4cdd6b781e3eb05f6d405fc4686bf260b1a47522
 commit 4cdd6b781e3eb05f6d405fc4686bf260b1a47522
 Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
 Date:   Thu Oct 11 15:54:23 2018 +0300
 
     Update LIGHTNING-04-swap.md
-    
+
 https://github.com/X9Developers/swap-resolver/commit/744a763f63ebd803b18384dcc51b345f159dd45c
 commit 744a763f63ebd803b18384dcc51b345f159dd45c
 Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
