@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/swap-resolver/commit/1a16fd2254d85e5f14fc35891ad46f9322516ba2
+commit 1a16fd2254d85e5f14fc35891ad46f9322516ba2
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Fri Oct 12 16:39:56 2018 +0300
+
+    Added additional xsn config to resolver
+    
 https://github.com/X9Developers/swap-resolver/commit/ff4c5f539aeaa8e33bc93258884b0cf53b9d4879
 commit ff4c5f539aeaa8e33bc93258884b0cf53b9d4879
 Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
 Date:   Thu Oct 11 17:48:45 2018 +0300
 
     Update LIGHTNING-04-swap.md
-    
+
 https://github.com/X9Developers/swap-resolver/commit/54bccd4d05e26b93d7bf8239a19a8cc656e461e1
 commit 54bccd4d05e26b93d7bf8239a19a8cc656e461e1
 Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
