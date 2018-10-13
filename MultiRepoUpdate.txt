@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/swap-resolver/commit/b11caa0eb83436e2daf6901cfdbb6a2ba9a92885
+commit b11caa0eb83436e2daf6901cfdbb6a2ba9a92885
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Sat Oct 13 17:57:27 2018 +0300
+
+    Update LIGHTNING-03-channels.md
+    
 https://github.com/X9Developers/swap-resolver/commit/7cba99c2295f0d63f969723aca8e665a595ac432
 commit 7cba99c2295f0d63f969723aca8e665a595ac432
 Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
 Date:   Sat Oct 13 17:56:31 2018 +0300
 
     Update LIGHTNING-04-swap.md
-    
+
 https://github.com/X9Developers/swap-resolver/commit/d0bd3bb4a47518d5656727cc360f846287db456f
 commit d0bd3bb4a47518d5656727cc360f846287db456f
 Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
