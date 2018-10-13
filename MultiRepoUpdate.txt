@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/swap-resolver/commit/73b6c1d733369ab84df56c9fab926f629c9b2aab
+commit 73b6c1d733369ab84df56c9fab926f629c9b2aab
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Sat Oct 13 17:59:15 2018 +0300
+
+    Update LIGHTNING-00-install.md
+    
 https://github.com/X9Developers/swap-resolver/commit/e0d98d233e3950cd8ec22270a7d37cd9a1e38a3f
 commit e0d98d233e3950cd8ec22270a7d37cd9a1e38a3f
 Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
