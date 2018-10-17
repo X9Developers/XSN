@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/swap-resolver/commit/665998e28b905668ca0191698ff333c933abd505
+commit 665998e28b905668ca0191698ff333c933abd505
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Wed Oct 17 14:41:02 2018 +0300
+
+    Update start.bash
+
 https://github.com/X9Developers/swap-resolver/commit/eafd0abf250f028da24f91c261e12d513e7e1f95
 commit eafd0abf250f028da24f91c261e12d513e7e1f95
 Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
 Date:   Tue Oct 16 18:25:15 2018 +0300
 
     Removed tls in resolve conf
-    
+
 https://github.com/X9Developers/swap-resolver/commit/243bc5cbc861bbdb8d66502be75911635d4d8063
 commit 243bc5cbc861bbdb8d66502be75911635d4d8063
 Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
