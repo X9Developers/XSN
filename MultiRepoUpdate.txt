@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/lnd/commit/35d51d648cbe0e433509ea308c924f775ebf4409
+commit 35d51d648cbe0e433509ea308c924f775ebf4409
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Wed Oct 17 14:57:32 2018 +0300
+
+    Added xsn wallet with zmq support
+    
 https://github.com/X9Developers/swap-resolver/commit/7809e04d1b4e7eed3ab6388c8d6502df7429878f
 commit 7809e04d1b4e7eed3ab6388c8d6502df7429878f
 Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
 Date:   Wed Oct 17 14:44:19 2018 +0300
 
     Update start.bash
-    
+
 https://github.com/X9Developers/swap-resolver/commit/665998e28b905668ca0191698ff333c933abd505
 commit 665998e28b905668ca0191698ff333c933abd505
 Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
