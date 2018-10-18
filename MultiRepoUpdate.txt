@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/4b24e70ed52738cf8d027bf839c4af5e53c4d209
+commit 4b24e70ed52738cf8d027bf839c4af5e53c4d209
+Author: esuau <evan.suau@etu.u-pec.fr>
+Date:   Thu Oct 18 12:33:09 2018 +0200
+
+    web-ui: format Karma configuration file
+    
 https://github.com/X9Developers/block-explorer/commit/2a403b1d067653b302659da9d68cc4fed6977d1b
 commit 2a403b1d067653b302659da9d68cc4fed6977d1b
 Author: esuau <evan.suau@etu.u-pec.fr>
 Date:   Thu Oct 18 10:34:12 2018 +0200
 
     web-ui: Add updated yarn.lock file
-    
+
 https://github.com/X9Developers/block-explorer/commit/f52c6f2af9461aa9031bcc5818d22d2c31053a19
 commit f52c6f2af9461aa9031bcc5818d22d2c31053a19
 Author: esuau <evan.suau@etu.u-pec.fr>
