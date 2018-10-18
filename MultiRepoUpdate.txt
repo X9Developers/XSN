@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/2a403b1d067653b302659da9d68cc4fed6977d1b
+commit 2a403b1d067653b302659da9d68cc4fed6977d1b
+Author: esuau <evan.suau@etu.u-pec.fr>
+Date:   Thu Oct 18 10:34:12 2018 +0200
+
+    web-ui: Add updated yarn.lock file
+    
 https://github.com/X9Developers/block-explorer/commit/f52c6f2af9461aa9031bcc5818d22d2c31053a19
 commit f52c6f2af9461aa9031bcc5818d22d2c31053a19
 Author: esuau <evan.suau@etu.u-pec.fr>
 Date:   Thu Oct 18 10:08:35 2018 +0200
 
     web-ui: Fix X9Developers/block-explorer#55 by upgrading dependencies
-    
+
 https://github.com/X9Developers/block-explorer/commit/a8fb6930185b98e24165439bcb1549cdd30fd446
 commit a8fb6930185b98e24165439bcb1549cdd30fd446
 Author: Alexis Hernandez <alexis22229@gmail.com>
