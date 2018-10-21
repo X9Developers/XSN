@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/c72f458a9d9a7d760abc0fcd983ab047b6126de7
+commit c72f458a9d9a7d760abc0fcd983ab047b6126de7
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Oct 21 16:29:07 2018 -0600
+
+    server: Allow to get paginated blocks from the BlockDataHandler
+
 https://github.com/X9Developers/swap-resolver/commit/b87d900a2f23b849cb55a9554bace7a107bfafd9
 commit b87d900a2f23b849cb55a9554bace7a107bfafd9
 Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
 Date:   Fri Oct 19 12:32:52 2018 +0300
 
     Update start.bash
-    
+
 https://github.com/X9Developers/lnd/commit/35d51d648cbe0e433509ea308c924f775ebf4409
 commit 35d51d648cbe0e433509ea308c924f775ebf4409
 Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
