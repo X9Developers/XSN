@@ -1,5 +1,15 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/a8fb6930185b98e24165439bcb1549cdd30fd446
+commit a8fb6930185b98e24165439bcb1549cdd30fd446
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Oct 21 17:12:21 2018 -0600
+
+    server: Reuse the paginated query on the BlockPostgresDAO
+    
+    The getFirstBlock and getLatestBlock methods use the paginated
+    query to get the results.
+    
 https://github.com/X9Developers/block-explorer/commit/c72f458a9d9a7d760abc0fcd983ab047b6126de7
 commit c72f458a9d9a7d760abc0fcd983ab047b6126de7
 Author: Alexis Hernandez <alexis22229@gmail.com>
