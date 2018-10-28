@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/875be83564549561ddac14849575d13d8a6737c5
+commit 875be83564549561ddac14849575d13d8a6737c5
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Oct 28 12:30:32 2018 -0700
+
+    server: Set up sentry-logback
+    
 https://github.com/X9Developers/block-explorer/commit/64a0946e360e10276761c4449667784354f21935
 commit 64a0946e360e10276761c4449667784354f21935
 Author: esuau <evan.suau@etu.u-pec.fr>
 Date:   Mon Oct 22 20:35:27 2018 +0200
 
     web-ui: #61 Fix error 'Observable.of is not a function'
-    
+
 https://github.com/X9Developers/block-explorer/commit/4b24e70ed52738cf8d027bf839c4af5e53c4d209
 commit 4b24e70ed52738cf8d027bf839c4af5e53c4d209
 Author: esuau <evan.suau@etu.u-pec.fr>
