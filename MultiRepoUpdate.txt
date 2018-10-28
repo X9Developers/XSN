@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/83b2cf7fa7e14987a848ddad309f4aa943cf9b04
+commit 83b2cf7fa7e14987a848ddad309f4aa943cf9b04
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Oct 28 15:59:44 2018 -0700
+
+    server: Fix the sentry package properties
+
 https://github.com/X9Developers/block-explorer/commit/bdae233f764595abb8107ba5ecb2714894907e44
 commit bdae233f764595abb8107ba5ecb2714894907e44
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Sun Oct 28 15:31:42 2018 -0700
 
     infra: Store the hidden_addresses in a file
-    
+
 https://github.com/X9Developers/block-explorer/commit/875be83564549561ddac14849575d13d8a6737c5
 commit 875be83564549561ddac14849575d13d8a6737c5
 Author: Alexis Hernandez <alexis22229@gmail.com>
