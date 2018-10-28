@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/bdae233f764595abb8107ba5ecb2714894907e44
+commit bdae233f764595abb8107ba5ecb2714894907e44
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Oct 28 15:31:42 2018 -0700
+
+    infra: Store the hidden_addresses in a file
+    
 https://github.com/X9Developers/block-explorer/commit/875be83564549561ddac14849575d13d8a6737c5
 commit 875be83564549561ddac14849575d13d8a6737c5
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Sun Oct 28 12:30:32 2018 -0700
 
     server: Set up sentry-logback
-    
+
 https://github.com/X9Developers/block-explorer/commit/64a0946e360e10276761c4449667784354f21935
 commit 64a0946e360e10276761c4449667784354f21935
 Author: esuau <evan.suau@etu.u-pec.fr>
