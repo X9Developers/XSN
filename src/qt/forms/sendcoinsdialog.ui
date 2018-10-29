@@ -1277,7 +1277,7 @@
             <item>
              <widget class="QPushButton" name="addButton">
               <property name="text">
-               <string>Add Recepient</string>
+               <string>Add Recipient</string>
               </property>
              </widget>
             </item>
