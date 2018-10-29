@@ -3,7 +3,7 @@ XSN Core integration/staging tree
 
 [![Build Status](https://api.travis-ci.org/X9Developers/XSN.svg?branch=master)](https://travis-ci.org/X9Developers/XSN)
 
-https://xsncore.org
+https://stakenet.io
 
 What is XSN?
 ----------------
@@ -15,8 +15,8 @@ out collectively by the network. XSN Core is the name of open source
 software which enables the use of this currency.
 
 For more information, as well as an immediately useable, binary version of
-the XSN Core software, see https://xsn.org/en/download, or read the
-[original whitepaper](https://xsncore.org/xsn.pdf).
+the XSN Core software, see https://stakenet.io/, or read the
+[original whitepaper](https://stakenet.io/Whitepaper_Stakenet_V3.0_EN.pdf).
 
 License
 -------
@@ -28,7 +28,7 @@ Development Process
 -------------------
 
 The `master` branch is regularly built and tested, but is not guaranteed to be
-completely stable. [Tags](https://github.com/xsn/xsn/tags) are created
+completely stable. [Tags](https://github.com/X9Developers/XSN/tags) are created
 regularly to indicate new official, stable release versions of XSN Core.
 
 The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).
