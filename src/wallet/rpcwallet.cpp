@@ -4184,7 +4184,7 @@ static const CRPCCommand commands[] =
   { "wallet",             "backupwallet",                     &backupwallet,                  {"destination"} },
   { "wallet",             "bumpfee",                          &bumpfee,                       {"txid", "options"} },
   { "wallet",             "dumpprivkey",                      &dumpprivkey,                   {"address"}  },
-  { "wallet",             "dumpwallet",                       &dumpwallet,                    {"filename"} },
+//  { "wallet",             "dumpwallet",                       &dumpwallet,                    {"filename"} },
   { "wallet",             "encryptwallet",                    &encryptwallet,                 {"passphrase"} },
   { "wallet",             "getaddressinfo",                   &getaddressinfo,                {"address"} },
   { "wallet",             "getbalance",                       &getbalance,                    {"account","minconf","include_watchonly"} },
