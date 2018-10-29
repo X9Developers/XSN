@@ -624,8 +624,8 @@ void SetupServerArgs()
 
 std::string LicenseInfo()
 {
-    const std::string URL_SOURCE_CODE = "<https://github.com/xsn/xsn>";
-    const std::string URL_WEBSITE = "<https://xsncore.org>";
+    const std::string URL_SOURCE_CODE = "<https://github.com/X9Developers/XSN>";
+    const std::string URL_WEBSITE = "<https://stakenet.io/";
 
     return CopyrightHolders(strprintf(_("Copyright (C) %i-%i"), 2009, COPYRIGHT_YEAR) + " ") + "\n" +
             "\n" +
