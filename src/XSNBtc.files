@@ -45,6 +45,8 @@ qt/tposaddressestablemodel.cpp
 qt/tposaddressestablemodel.h
 qt/tpospage.cpp
 qt/tpospage.h
+wallet/authhelper.cpp
+wallet/authhelper.h
 xsn-cli.cpp
 xsn-tx.cpp
 xsnd.cpp

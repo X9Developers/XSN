@@ -199,6 +199,7 @@ BITCOIN_CORE_H = \
   validationinterface.h \
   versionbits.h \
   walletinitinterface.h \
+  wallet/authhelper.h \
   wallet/coincontrol.h \
   wallet/crypter.h \
   wallet/db.h \
@@ -311,6 +312,7 @@ libxsn_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libxsn_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libxsn_wallet_a_SOURCES = \
   interfaces/wallet.cpp \
+  wallet/authhelper.cpp \
   wallet/crypter.cpp \
   wallet/db.cpp \
   wallet/feebumper.cpp \
