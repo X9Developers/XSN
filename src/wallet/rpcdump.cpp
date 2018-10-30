@@ -14,6 +14,7 @@
 #include <wallet/wallet.h>
 #include <merkleblock.h>
 #include <core_io.h>
+#include <wallet/authhelper.h>
 
 #include <wallet/rpcwallet.h>
 
@@ -645,20 +646,42 @@ UniValue dumpprivkey(const JSONRPCRequest& request)
         return NullUniValue;
     }
 
-    if (request.fHelp || request.params.size() != 1)
+    if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
         throw std::runtime_error(
             "dumpprivkey \"address\"\n"
             "\nReveals the private key corresponding to 'address'.\n"
             "Then the importprivkey can be used with this output\n"
             "\nArguments:\n"
             "1. \"address\"   (string, required) The xsn address for the private key\n"
+            "2. \"one-time-auth-code\"   (string, optional) A one time authorization code received from a previous call of dumpprivkey"
             "\nResult:\n"
             "\"key\"                (string) The private key\n"
             "\nExamples:\n"
             + HelpExampleCli("dumpprivkey", "\"myaddress\"")
+            + HelpExampleCli("dumpprivkey", "\"myaddress\" \"12aB\"")
             + HelpExampleCli("importprivkey", "\"mykey\"")
             + HelpExampleRpc("dumpprivkey", "\"myaddress\"")
+            + HelpExampleRpc("dumpprivkey", "\"myaddress\",\"12aB\"")
         );
+
+
+    if(request.params.size() == 1 || !AuthorizationHelper::inst().authorize(__FUNCTION__ + request.params[0].get_str(),
+                                                                            request.params[1].get_str()))
+    {
+        std::string warning =
+            "WARNING! Your one time authorization code is: " + AuthorizationHelper::inst().generateAuthorizationCode(__FUNCTION__ + request.params[0].get_str()) + "\n"
+            "This command exports your wallet private key. Anyone with this key has complete control over your funds. \n"
+            "If someone asked you to type in this command, chances are they want to steal your coins. \n"
+            "XSN team members will never ask for this command's output and it is not needed for XSN setup or diagnosis!\n"
+            "\n"
+            " Please seek help on one of our public channels. \n"
+            " Telegram: https://t.me/joinchat/BdGxxw-s3b4_DdBdbChI4g\n"
+            " Discord: https://discord.gg/cyF5yCA\n"
+            " Reddit: https://www.reddit.com/r/StakeNet/\n"
+            "\n"
+            ;
+        throw std::runtime_error(warning);
+    }
 
     LOCK2(cs_main, pwallet->cs_wallet);
 
