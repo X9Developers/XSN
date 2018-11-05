@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/f7887cf3b17ecc7dcd0e19356d50a9008e66c036
+commit f7887cf3b17ecc7dcd0e19356d50a9008e66c036
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Nov 4 23:29:51 2018 -0700
+
+    server: Fill the address_transaction_details while synching the db
+    
 https://github.com/X9Developers/block-explorer/commit/80f27602f687251a33170624706ed54c05912093
 commit 80f27602f687251a33170624706ed54c05912093
 Author: Alexis Hernandez <alexis22229@gmail.com>
