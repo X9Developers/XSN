@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/80f27602f687251a33170624706ed54c05912093
+commit 80f27602f687251a33170624706ed54c05912093
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Nov 4 23:16:34 2018 -0700
+
+    server: Add the address_transaction_details table
+
 https://github.com/X9Developers/block-explorer/commit/84c6d69f18a0f42ad1ce1dcd9d887cbddde23daf
 commit 84c6d69f18a0f42ad1ce1dcd9d887cbddde23daf
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Sun Nov 4 20:18:40 2018 -0700
 
     infra: Update queries.sql
-    
+
 https://github.com/X9Developers/block-explorer/commit/83b2cf7fa7e14987a848ddad309f4aa943cf9b04
 commit 83b2cf7fa7e14987a848ddad309f4aa943cf9b04
 Author: Alexis Hernandez <alexis22229@gmail.com>
