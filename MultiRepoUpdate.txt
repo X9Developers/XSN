@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/a4563a5dc5eee2e067db457805965e157534783b
+commit a4563a5dc5eee2e067db457805965e157534783b
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Nov 6 15:22:08 2018 -0700
+
+    server: Add dev.stakenet.io to the CORS rules
+    
 https://github.com/X9Developers/block-explorer/commit/d4acc18d9fde136309a2f03deb20e5cb450b10d9
 commit d4acc18d9fde136309a2f03deb20e5cb450b10d9
 Author: Alexis Hernandez <alexis22229@gmail.com>
@@ -8,7 +15,7 @@ Date:   Mon Nov 5 00:26:13 2018 -0700
     server: Add endpoint "POST /transactions/latest"
     
     This retrieves the latest transaction id for the given addresses.
-    
+
 https://github.com/X9Developers/block-explorer/commit/65f94b1436961c6d6eed7e4933cede15891685f9
 commit 65f94b1436961c6d6eed7e4933cede15891685f9
 Author: Alexis Hernandez <alexis22229@gmail.com>
