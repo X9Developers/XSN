@@ -61,8 +61,8 @@ code. This is especially important for large or high-risk changes. It is useful
 to add a test plan to the pull request description if testing the changes is
 not straightforward.
 
-### Running with Docker
-
+Running with Docker
+-------
 
 If you are already familiar with Docker, then running XSN with Docker might be the the easier method for you. To run XSN using this method, first install [Docker](https://docs.docker.com/install/). After this you may
 continue with the following instructions.
