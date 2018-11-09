@@ -1,3 +1,7 @@
+# Docker
+Dockerfile
+.dockerignore
+
 # ide stuff
 .project
 .cproject
@@ -5,13 +9,13 @@
 
 # build output
 **/*.exe
-src/zcoin
-src/zcoind
-src/zcoin-cli
-src/zcoin-tx
-src/test/test_zcoin
-src/test/test_zcoin_fuzzy
-src/qt/test/test_zcoin-qt
+src/xsn
+src/xsnd
+src/xsn-cli
+src/xsn-tx
+src/test/test_xsn
+src/test/test_xsn_fuzzy
+src/qt/test/test_xsn-qt
 
 # autoreconf
 **/*.tar.gz
@@ -82,12 +86,12 @@ src/tor.timestamp*
 # Compilation and Qt preprocessor part
 **/*.qm
 **/Makefile
-**/zcoin-qt*
+**/xsn-qt*
 **/Zcoin-Qt.app
 
 # Unit-tests
 **/Makefile.test
-**/zcoin-qt_test
+**/xsn-qt_test
 
 # Resources cpp
 **/qrc_*.cpp
@@ -100,7 +104,7 @@ build
 **/*.gcno
 **/*.gcda
 *.info
-test_zcoin.coverage
+test_xsn.coverage
 total.coverage
 coverage_percent.txt
 
@@ -116,5 +120,5 @@ src/test/buildenv.py
 
 doc/doxygen
 
-libzcoinconsensus.pc
+libxsnconsensus.pc
 contrib/devtools/split-debug.sh

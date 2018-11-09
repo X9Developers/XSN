@@ -53,10 +53,11 @@ RUN apt-get remove -y \
 USER xsnd
 
 RUN mkdir /home/xsnd/.xsncore
+RUN touch /home/xsnd/.xsncore/xsn.conf
 VOLUME [ "/home/xsnd/.xsncore" ]
 
 EXPOSE 62583
 EXPOSE 8332
 EXPOSE 18332
 
-ENTRYPOINT [ "/usr/bin/xsnd --conf=/home/xsnd/.xsncore/xsn.conf" ]
+ENTRYPOINT ["/usr/bin/xsnd", "--conf=/home/xsnd/.xsncore/xsn.conf"]
