@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/418f2fd4fa9b5ee87254ba87afb3819445b8229d
+commit 418f2fd4fa9b5ee87254ba87afb3819445b8229d
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Nov 11 11:08:23 2018 -0700
+
+    server: Update the nonce from the Block model to Long
+    
 https://github.com/X9Developers/block-explorer/commit/c289364e25be1cb11c5a5f138f3c077e99d81bc5
 commit c289364e25be1cb11c5a5f138f3c077e99d81bc5
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Sun Nov 11 11:05:04 2018 -0700
 
     server: Update the nonce type from blocks table to bigint
-    
+
 https://github.com/X9Developers/block-explorer/commit/e66da342606c4d1b138c3f85c4b1064cbf52745d
 commit e66da342606c4d1b138c3f85c4b1064cbf52745d
 Author: Alexis Hernandez <alexis22229@gmail.com>
