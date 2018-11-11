@@ -1,12 +1,23 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/e66da342606c4d1b138c3f85c4b1064cbf52745d
+commit e66da342606c4d1b138c3f85c4b1064cbf52745d
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Nov 11 11:03:54 2018 -0700
+
+    server: Remove 6k from the supplies (temporal fix)
+    
+    It looks like the supplies are not being computed correctly,
+    this temporal fix allow us to have an accurate number while
+    having time to investigate the issue.
+    
 https://github.com/X9Developers/block-explorer/commit/a4563a5dc5eee2e067db457805965e157534783b
 commit a4563a5dc5eee2e067db457805965e157534783b
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Tue Nov 6 15:22:08 2018 -0700
 
     server: Add dev.stakenet.io to the CORS rules
-    
+
 https://github.com/X9Developers/block-explorer/commit/d4acc18d9fde136309a2f03deb20e5cb450b10d9
 commit d4acc18d9fde136309a2f03deb20e5cb450b10d9
 Author: Alexis Hernandez <alexis22229@gmail.com>
