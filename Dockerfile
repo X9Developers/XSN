@@ -23,7 +23,7 @@ RUN curl -L http://download.oracle.com/berkeley-db/db-4.8.30.tar.gz | tar -xz -C
     make -j$(nproc) && make install && \
     cd / && rm -rf /tmp/db-4.8.30
 
-RUN useradd -m -U xsnd
+RUN useradd -mU xsn
 
 COPY . /tmp/xsncore/
 
@@ -50,14 +50,15 @@ RUN apt-get remove -y \
     libssl-dev \
     libevent-dev
 
-USER xsnd
+USER xsn:xsn
 
-RUN mkdir /home/xsnd/.xsncore
-RUN touch /home/xsnd/.xsncore/xsn.conf
-VOLUME [ "/home/xsnd/.xsncore" ]
+RUN mkdir /home/xsn/.xsncore && \
+    touch /home/xsn/.xsncore/xsn.conf
+
+VOLUME [ "/home/xsn/.xsncore" ]
 
 EXPOSE 62583
 EXPOSE 8332
 EXPOSE 18332
 
-ENTRYPOINT ["/usr/bin/xsnd", "--conf=/home/xsnd/.xsncore/xsn.conf"]
+ENTRYPOINT ["/usr/bin/xsnd", "--conf=/home/xsn/.xsncore/xsn.conf"]

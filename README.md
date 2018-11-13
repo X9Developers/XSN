@@ -72,43 +72,43 @@ Please note that we currently don't support the GUI when running with Docker. Th
 Right now we don't store the image in docker hub, so you need to build it on your own:
 
 ```sh
-docker build . -t xsnd
+docker build . -t xsn
 ```
 
 Start XSN daemon: ( you might consider to bind custom ports in case you want to run a node or make usage of the json-rpc api [https://docs.docker.com/engine/reference/run/](https://docs.docker.com/engine/reference/run/))
 
 ```sh
-docker run -d -P --name xsnd xsnd:latest
+docker run -d -P --name xsn xsn:latest
 ```
 
 View current block count (this might take a while since the daemon needs to find other nodes and download blocks first):
 
 ```sh
-docker exec xsnd xsn-cli getblockcount
+docker exec xsn xsn-cli getblockcount
 ```
 
 View connected nodes:
 
 ```sh
-docker exec xsnd xsn-cli getpeerinfo
+docker exec xsn xsn-cli getpeerinfo
 ```
 
 Stop daemon:
 
 ```sh
-docker stop xsnd
+docker stop xsn
 ```
 
 Backup wallet:
 
 ```sh
-docker cp xsnd:/home/xsnd/.xsncore/wallet.dat .
+docker cp xsn:/home/xsn/.xsncore/wallet.dat .
 ```
 
 Start daemon again:
 
 ```sh
-docker start xsnd
+docker start xsn
 ```
 
 Translations
