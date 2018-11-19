@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/117a66869b4822e8eebb3a265a532487dc692018
+commit 117a66869b4822e8eebb3a265a532487dc692018
+Author: Adinael Perez Ruelas <Adin692@gmail.com>
+Date:   Sun Nov 18 20:43:33 2018 -0700
+
+    server: Add the genesis block to the config file
+
 https://github.com/X9Developers/block-explorer/commit/fa829936e4fc7b2fc8a7889fe8378e419ae3879c
 commit fa829936e4fc7b2fc8a7889fe8378e419ae3879c
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Sun Nov 11 11:18:29 2018 -0700
 
     server: Fix log messages on XSNService
-    
+
 https://github.com/X9Developers/block-explorer/commit/418f2fd4fa9b5ee87254ba87afb3819445b8229d
 commit 418f2fd4fa9b5ee87254ba87afb3819445b8229d
 Author: Alexis Hernandez <alexis22229@gmail.com>
