@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/449579dfce21dfb19cd6525d7f2dbafb94baee78
+commit 449579dfce21dfb19cd6525d7f2dbafb94baee78
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Nov 19 10:34:18 2018 -0700
+
+    server: Update postgres driver to 42.2.5
+    
 https://github.com/X9Developers/block-explorer/commit/ded2c478410e3b96c2fe8bd234fa4b066bd2ca20
 commit ded2c478410e3b96c2fe8bd234fa4b066bd2ca20
 Author: Adinael Perez Ruelas <Adin692@gmail.com>
 Date:   Sun Nov 18 20:44:19 2018 -0700
 
     server: Load the genesis block from the config file
-    
+
 https://github.com/X9Developers/block-explorer/commit/117a66869b4822e8eebb3a265a532487dc692018
 commit 117a66869b4822e8eebb3a265a532487dc692018
 Author: Adinael Perez Ruelas <Adin692@gmail.com>
