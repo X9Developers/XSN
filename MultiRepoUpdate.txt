@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/01bde7895ae0345659af198467dbbf56bab0677f
+commit 01bde7895ae0345659af198467dbbf56bab0677f
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Nov 24 16:53:41 2018 -0700
+
+    infra: Update the README.md for deploying the apps
+
 https://github.com/X9Developers/block-explorer/commit/0f39c55630dd640094a81dfab23a5851f1e5d20d
 commit 0f39c55630dd640094a81dfab23a5851f1e5d20d
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Sat Nov 24 16:51:59 2018 -0700
 
     infra: Add script to deploy the xsn-backend
-    
+
 https://github.com/X9Developers/block-explorer/commit/d1a6178337348b1378a1fd9b3f69fc465a93f68c
 commit d1a6178337348b1378a1fd9b3f69fc465a93f68c
 Author: Alexis Hernandez <alexis22229@gmail.com>
