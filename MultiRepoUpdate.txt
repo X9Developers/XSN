@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/d1a6178337348b1378a1fd9b3f69fc465a93f68c
+commit d1a6178337348b1378a1fd9b3f69fc465a93f68c
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Nov 24 16:50:49 2018 -0700
+
+    infra: Add script to deploy postgres
+    
 https://github.com/X9Developers/block-explorer/commit/94967d4f06b1c79a48fb5fa876fc8d50d15b2b30
 commit 94967d4f06b1c79a48fb5fa876fc8d50d15b2b30
 Author: Alexis Hernandez <alexis22229@gmail.com>
