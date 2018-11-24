@@ -1,12 +1,20 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/160134341d3c8bba9f78ddc47d50940a259ab0e8
+commit 160134341d3c8bba9f78ddc47d50940a259ab0e8
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Nov 24 16:55:32 2018 -0700
+
+    infra: Create the .gitignore for the deployment files
+
+
 https://github.com/X9Developers/block-explorer/commit/c01b2333a2e78abd246bcae4cffa7caab93e17fe
 commit c01b2333a2e78abd246bcae4cffa7caab93e17fe
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Sat Nov 24 16:55:04 2018 -0700
 
     infra: Move the docs for deploying to the docs folder
-    
+
 https://github.com/X9Developers/block-explorer/commit/01bde7895ae0345659af198467dbbf56bab0677f
 commit 01bde7895ae0345659af198467dbbf56bab0677f
 Author: Alexis Hernandez <alexis22229@gmail.com>
