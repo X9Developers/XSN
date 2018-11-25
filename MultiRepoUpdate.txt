@@ -1,12 +1,18 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/cf3fd0f044dde7fcda6fc4085ed1748ef4b8193c
+commit cf3fd0f044dde7fcda6fc4085ed1748ef4b8193c
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Nov 24 21:10:27 2018 -0700
+
+    infra: Add deployment scripts for litecoin
+
 https://github.com/X9Developers/block-explorer/commit/160134341d3c8bba9f78ddc47d50940a259ab0e8
 commit 160134341d3c8bba9f78ddc47d50940a259ab0e8
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Sat Nov 24 16:55:32 2018 -0700
 
     infra: Create the .gitignore for the deployment files
-
 
 https://github.com/X9Developers/block-explorer/commit/c01b2333a2e78abd246bcae4cffa7caab93e17fe
 commit c01b2333a2e78abd246bcae4cffa7caab93e17fe
