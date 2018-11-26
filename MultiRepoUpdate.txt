@@ -1,12 +1,22 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/a5325436625ddba4ae2fbdd423fdc4522f743caa
+commit a5325436625ddba4ae2fbdd423fdc4522f743caa
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Nov 25 17:47:16 2018 -0700
+
+    infra: Update systemd services for xsn and ltc
+    
+    The file limit is increased to avoid failures while
+    synchronizing the database.
+    
 https://github.com/X9Developers/block-explorer/commit/cf420b02247df97b50d0e955837e53f1759c6401
 commit cf420b02247df97b50d0e955837e53f1759c6401
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Sat Nov 24 22:18:50 2018 -0700
 
     server: Allow to override the genesis block with environment variable
-    
+
 https://github.com/X9Developers/block-explorer/commit/cf3fd0f044dde7fcda6fc4085ed1748ef4b8193c
 commit cf3fd0f044dde7fcda6fc4085ed1748ef4b8193c
 Author: Alexis Hernandez <alexis22229@gmail.com>
