@@ -1,5 +1,13 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/8c805a95d3c5d2612e83b9f53c7af193448133da
+commit 8c805a95d3c5d2612e83b9f53c7af193448133da
+Author: Adinael Perez Ruelas <Adin692@gmail.com>
+Date:   Sun Nov 25 22:32:22 2018 -0700
+
+    Server: Optimized the getBy and countBy methods
+     changing the transaction_inputs and transaction_outputs tables for address_transaction_details table which is indexed
+    
 https://github.com/X9Developers/block-explorer/commit/fc7ef3759dd5f14e2eed67881d0af85216f11e61
 commit fc7ef3759dd5f14e2eed67881d0af85216f11e61
 Author: Alexis Hernandez <alexis22229@gmail.com>
@@ -11,7 +19,7 @@ Date:   Sun Nov 25 19:36:55 2018 -0700
     synchronizing the database.
     
     The change was missing on the previous commit.
-    
+
 https://github.com/X9Developers/block-explorer/commit/a5325436625ddba4ae2fbdd423fdc4522f743caa
 commit a5325436625ddba4ae2fbdd423fdc4522f743caa
 Author: Alexis Hernandez <alexis22229@gmail.com>
