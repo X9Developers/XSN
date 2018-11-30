@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/dd8751bd2c2609188a367d50494f83ed8943cc1d
+commit dd8751bd2c2609188a367d50494f83ed8943cc1d
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Thu Nov 29 21:08:14 2018 -0700
+
+    infra: Update the expected user on deployment scripts
+
 https://github.com/X9Developers/block-explorer/commit/bcdbf1cd0fb0bb596aca7fd80dffeefbf8dfe9bb
 commit bcdbf1cd0fb0bb596aca7fd80dffeefbf8dfe9bb
 Author: Adinael Perez Ruelas <Adin692@gmail.com>
@@ -8,7 +15,7 @@ Date:   Fri Nov 30 18:53:03 2018 -0700
     Server: fix the getLatestTransactionBy method
     when sending an empty list
     added the tests for sending an empty list and retrieving valid data
-    
+
 https://github.com/X9Developers/block-explorer/commit/e654e7b6e61e39949d04f535d1b8ec3a853bca45
 commit e654e7b6e61e39949d04f535d1b8ec3a853bca45
 Author: Mario Mejia <mario128mex@gmail.com>
