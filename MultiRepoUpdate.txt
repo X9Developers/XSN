@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/1ec1629a1970352ef9a7f7af004aab45c443b90d
+commit 1ec1629a1970352ef9a7f7af004aab45c443b90d
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Dec 4 16:16:54 2018 -0700
+
+    server: Update the endpoint for retrieving latest transactions
+    
 https://github.com/X9Developers/block-explorer/commit/29dae2177ec770abbb4ed271ed90c8493c1916db
 commit 29dae2177ec770abbb4ed271ed90c8493c1916db
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Sun Dec 2 15:19:13 2018 -0700
 
     web-ui: Integrate analytics
-    
+
 https://github.com/X9Developers/block-explorer/commit/dd8751bd2c2609188a367d50494f83ed8943cc1d
 commit dd8751bd2c2609188a367d50494f83ed8943cc1d
 Author: Alexis Hernandez <alexis22229@gmail.com>
