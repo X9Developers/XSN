@@ -3,6 +3,8 @@ XSN Core integration/staging tree
 
 [![Build Status](https://api.travis-ci.org/X9Developers/XSN.svg?branch=master)](https://travis-ci.org/X9Developers/XSN)
 
+Stakenet Cloud
+----------------
 https://stakenet.io
 
 What is XSN?
