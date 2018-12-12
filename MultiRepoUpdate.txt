@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/9c5dcbeeacf4427d114ad8ddecc59c32bffbced5
+commit 9c5dcbeeacf4427d114ad8ddecc59c32bffbced5
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Dec 11 22:03:26 2018 -0700
+
+    infra: Update hidden_addresses
+    
 https://github.com/X9Developers/block-explorer/commit/1ec1629a1970352ef9a7f7af004aab45c443b90d
 commit 1ec1629a1970352ef9a7f7af004aab45c443b90d
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Tue Dec 4 16:16:54 2018 -0700
 
     server: Update the endpoint for retrieving latest transactions
-    
+
 https://github.com/X9Developers/block-explorer/commit/29dae2177ec770abbb4ed271ed90c8493c1916db
 commit 29dae2177ec770abbb4ed271ed90c8493c1916db
 Author: Alexis Hernandez <alexis22229@gmail.com>
