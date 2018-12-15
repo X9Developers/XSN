@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/9a832c5380996d7c1395dbc17b05d055217a9cb1
+commit 9a832c5380996d7c1395dbc17b05d055217a9cb1
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Dec 15 13:12:19 2018 -0700
+
+    infra: Add deployment hosts for xsn and ltc
+
 https://github.com/X9Developers/block-explorer/commit/d4515a3583ddbb42ce746ae204ed77bd70484795
 commit d4515a3583ddbb42ce746ae204ed77bd70484795
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Sat Dec 15 13:11:30 2018 -0700
 
     infra: Add scripts for deploying the frontend
-    
+
 https://github.com/X9Developers/block-explorer/commit/c8b71046a3c9a8082f9a950ce660f93842d9b6b8
 commit c8b71046a3c9a8082f9a950ce660f93842d9b6b8
 Author: Alexis Hernandez <alexis22229@gmail.com>
