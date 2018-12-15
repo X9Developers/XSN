@@ -1,5 +1,17 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/c8b71046a3c9a8082f9a950ce660f93842d9b6b8
+commit c8b71046a3c9a8082f9a950ce660f93842d9b6b8
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Dec 15 13:04:42 2018 -0700
+
+    server: Be resilient while loading a batch of transactions
+    
+    Instead of failing to load a batch of transactions, we try to load
+    them sequencially to avoid overloading the RPC API.
+    
+    This allows a smoother synchronization process.
+    
 https://github.com/X9Developers/block-explorer/commit/479eaca09c601276d72be9a853e6adaaab232c10
 commit 479eaca09c601276d72be9a853e6adaaab232c10
 Author: Alexis Hernandez <alexis22229@gmail.com>
@@ -9,7 +21,7 @@ Date:   Sat Dec 15 13:02:54 2018 -0700
     
     When the RPC API returns a non-json response, the XSNWorkQueueDepthExceeded
     error can be derived.
-    
+
 https://github.com/X9Developers/block-explorer/commit/f4738baef78fc8ca6987f79af91fad62d33c0514
 commit f4738baef78fc8ca6987f79af91fad62d33c0514
 Author: Alexis Hernandez <alexis22229@gmail.com>
