@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/d4515a3583ddbb42ce746ae204ed77bd70484795
+commit d4515a3583ddbb42ce746ae204ed77bd70484795
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Dec 15 13:11:30 2018 -0700
+
+    infra: Add scripts for deploying the frontend
+    
 https://github.com/X9Developers/block-explorer/commit/c8b71046a3c9a8082f9a950ce660f93842d9b6b8
 commit c8b71046a3c9a8082f9a950ce660f93842d9b6b8
 Author: Alexis Hernandez <alexis22229@gmail.com>
@@ -11,7 +18,7 @@ Date:   Sat Dec 15 13:04:42 2018 -0700
     them sequencially to avoid overloading the RPC API.
     
     This allows a smoother synchronization process.
-    
+
 https://github.com/X9Developers/block-explorer/commit/479eaca09c601276d72be9a853e6adaaab232c10
 commit 479eaca09c601276d72be9a853e6adaaab232c10
 Author: Alexis Hernandez <alexis22229@gmail.com>
