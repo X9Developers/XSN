@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/2ca745c6e86a1b37f489b3bf72d567db0b6590d0
+commit 2ca745c6e86a1b37f489b3bf72d567db0b6590d0
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Dec 15 13:12:57 2018 -0700
+
+    web-ui: Remove console.log
+    
 https://github.com/X9Developers/block-explorer/commit/9a832c5380996d7c1395dbc17b05d055217a9cb1
 commit 9a832c5380996d7c1395dbc17b05d055217a9cb1
 Author: Alexis Hernandez <alexis22229@gmail.com>
