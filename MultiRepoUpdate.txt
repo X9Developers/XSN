@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/85a61c86d3f0079f7976f3bba248b0440f36be67
+commit 85a61c86d3f0079f7976f3bba248b0440f36be67
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Dec 16 22:31:23 2018 -0700
+
+    infra: Update frontend deployment config
+    
 https://github.com/X9Developers/block-explorer/commit/f9c15698c79c67543b47f969a6b26629c06207a7
 commit f9c15698c79c67543b47f969a6b26629c06207a7
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Sun Dec 16 22:31:07 2018 -0700
 
     infra: Update xsn deployment config
-    
+
 https://github.com/X9Developers/block-explorer/commit/3db47ff2fbb64d3cfc459dcc6b1620928ba1e875
 commit 3db47ff2fbb64d3cfc459dcc6b1620928ba1e875
 Author: Alexis Hernandez <alexis22229@gmail.com>
