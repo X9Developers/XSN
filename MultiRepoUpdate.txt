@@ -1,12 +1,23 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/b2aaae4d4da8c96174c9bb8c8d0d5c7c67a148af
+commit b2aaae4d4da8c96174c9bb8c8d0d5c7c67a148af
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Dec 16 22:25:07 2018 -0700
+
+    server: Be resilient while loading a transaction
+    
+    For loading a transaction, we need to make several calls to
+    the RPC API for retrieving the inputs, when the server gets
+    overloaded by this, we try to get the inputs sequentially.
+    
 https://github.com/X9Developers/block-explorer/commit/f348eaf86f16c8db028271d2039044aee574545f
 commit f348eaf86f16c8db028271d2039044aee574545f
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Sun Dec 16 22:24:04 2018 -0700
 
     server: Enable constraints on the Address model
-    
+
 https://github.com/X9Developers/block-explorer/commit/19a711dec0fba078bf453c40eb906197e04bde70
 commit 19a711dec0fba078bf453c40eb906197e04bde70
 Author: Alexis Hernandez <alexis22229@gmail.com>
