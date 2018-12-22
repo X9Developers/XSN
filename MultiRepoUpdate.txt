@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/73943f73e2002349ca65bb7edca0a7313b16da82
+commit 73943f73e2002349ca65bb7edca0a7313b16da82
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Dec 21 22:23:43 2018 -0700
+
+    Add a summary for the public JSON API
+    
 https://github.com/X9Developers/block-explorer/commit/7592e06ff8845dda09de828b9b024ffe52ed3bb4
 commit 7592e06ff8845dda09de828b9b024ffe52ed3bb4
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Wed Dec 19 16:07:53 2018 -0700
 
     infra: Add SSL settings to the frontend
-    
+
 https://github.com/X9Developers/block-explorer/commit/85a61c86d3f0079f7976f3bba248b0440f36be67
 commit 85a61c86d3f0079f7976f3bba248b0440f36be67
 Author: Alexis Hernandez <alexis22229@gmail.com>
