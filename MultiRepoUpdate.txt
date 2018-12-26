@@ -1,12 +1,23 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/80c7460b18e95fb278dea31227e5f0b837e73115
+commit 80c7460b18e95fb278dea31227e5f0b837e73115
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Dec 25 17:05:08 2018 -0700
+
+    server: Precompute the available coins
+    
+    In order to speed up the available coins retrieval,
+    the aggregated_amounts table is created, here we store
+    the total available coins which can be retrieved fast.
+    
 https://github.com/X9Developers/block-explorer/commit/73943f73e2002349ca65bb7edca0a7313b16da82
 commit 73943f73e2002349ca65bb7edca0a7313b16da82
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Fri Dec 21 22:23:43 2018 -0700
 
     Add a summary for the public JSON API
-    
+
 https://github.com/X9Developers/block-explorer/commit/7592e06ff8845dda09de828b9b024ffe52ed3bb4
 commit 7592e06ff8845dda09de828b9b024ffe52ed3bb4
 Author: Alexis Hernandez <alexis22229@gmail.com>
