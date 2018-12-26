@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/e1a96c2c6173736dd81a9248357344527e4e5e85
+commit e1a96c2c6173736dd81a9248357344527e4e5e85
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Dec 25 17:06:00 2018 -0700
+
+    server: Speed up the statistics computation from the database
+    
 https://github.com/X9Developers/block-explorer/commit/80c7460b18e95fb278dea31227e5f0b837e73115
 commit 80c7460b18e95fb278dea31227e5f0b837e73115
 Author: Alexis Hernandez <alexis22229@gmail.com>
@@ -10,7 +17,7 @@ Date:   Tue Dec 25 17:05:08 2018 -0700
     In order to speed up the available coins retrieval,
     the aggregated_amounts table is created, here we store
     the total available coins which can be retrieved fast.
-    
+
 https://github.com/X9Developers/block-explorer/commit/73943f73e2002349ca65bb7edca0a7313b16da82
 commit 73943f73e2002349ca65bb7edca0a7313b16da82
 Author: Alexis Hernandez <alexis22229@gmail.com>
