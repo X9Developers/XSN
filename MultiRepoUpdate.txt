@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/b8783b961df18a406ff3860f9a8768da794812ba
+commit b8783b961df18a406ff3860f9a8768da794812ba
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Dec 26 13:37:11 2018 -0700
+
+    server: Enable test on AddressesControllerSpec
+    
 https://github.com/X9Developers/block-explorer/commit/e1a96c2c6173736dd81a9248357344527e4e5e85
 commit e1a96c2c6173736dd81a9248357344527e4e5e85
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Tue Dec 25 17:06:00 2018 -0700
 
     server: Speed up the statistics computation from the database
-    
+
 https://github.com/X9Developers/block-explorer/commit/80c7460b18e95fb278dea31227e5f0b837e73115
 commit 80c7460b18e95fb278dea31227e5f0b837e73115
 Author: Alexis Hernandez <alexis22229@gmail.com>
