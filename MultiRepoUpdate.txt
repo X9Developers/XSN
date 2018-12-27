@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/639eb62efdd991c6416be1c1eeeca86ff15adf03
+commit 639eb62efdd991c6416be1c1eeeca86ff15adf03
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Dec 26 22:46:09 2018 -0700
+
+    server: Add chimney dependency
+
 https://github.com/X9Developers/block-explorer/commit/6e54e9f870fdb73ad15cadde9d07cd22f24dbb49
 commit 6e54e9f870fdb73ad15cadde9d07cd22f24dbb49
 Author: Alexis Hernandez <alexis22229@gmail.com>
