@@ -1,12 +1,22 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/a03e4401ca5e9c1b5d463365a61b06dc7dfc6628
+commit a03e4401ca5e9c1b5d463365a61b06dc7dfc6628
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Dec 28 00:05:16 2018 -0700
+
+    server: Update endpoint - GET /addresses/:address/lightWalletTransactions
+    
+    The pagination is updated to check the latest seen transaction instead of its time,
+    this avoids hiding items when there are ties on the time.
+
 https://github.com/X9Developers/block-explorer/commit/4feee274ecb516e7b0972e82ac096651a5fa3435
 commit 4feee274ecb516e7b0972e82ac096651a5fa3435
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Wed Dec 26 22:47:05 2018 -0700
 
     server: Add endpoint - GET /addresses/:address/lightWalletTransactions
-    
+
 https://github.com/X9Developers/block-explorer/commit/639eb62efdd991c6416be1c1eeeca86ff15adf03
 commit 639eb62efdd991c6416be1c1eeeca86ff15adf03
 Author: Alexis Hernandez <alexis22229@gmail.com>
