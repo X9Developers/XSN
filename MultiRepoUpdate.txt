@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/2db4f9f513b744536ebf9d369a3ae4a459c43186
+commit 2db4f9f513b744536ebf9d369a3ae4a459c43186
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Dec 28 09:13:31 2018 -0700
+
+    server: Simplify the light wallet transactions retrieval query
+
 https://github.com/X9Developers/block-explorer/commit/38ab0e180316d0f064a3ffc3f741565ab59c7b59
 commit 38ab0e180316d0f064a3ffc3f741565ab59c7b59
 Author: Alexis Hernandez <alexis22229@gmail.com>
