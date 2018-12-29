@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/c4d5779516557b16afa1a7c20050119a4f56e093
+commit c4d5779516557b16afa1a7c20050119a4f56e093
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Dec 28 23:26:41 2018 -0700
+
+    web-ui: Update the richest addresses view to use the API V2
+
 https://github.com/X9Developers/block-explorer/commit/1d3e8432542b087893d1d893501518a3f9863753
 commit 1d3e8432542b087893d1d893501518a3f9863753
 Author: Alexis Hernandez <alexis22229@gmail.com>
