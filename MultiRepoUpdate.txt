@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/f1cc9103ea5e55a876a88122933f6280f04b98d7
+commit f1cc9103ea5e55a876a88122933f6280f04b98d7
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Dec 28 21:31:17 2018 -0700
+
+    server: Add getHighestBalances method to the BalanceDataHandler
+    
 https://github.com/X9Developers/block-explorer/commit/8d50af57b6e54db163b6a359fe64195c507542af
 commit 8d50af57b6e54db163b6a359fe64195c507542af
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Fri Dec 28 21:30:49 2018 -0700
 
     server: Add test to TransactionPostgresDataHandlerSpec
-    
+
 https://github.com/X9Developers/block-explorer/commit/36e05516fb8418238eec145973f2490df5986266
 commit 36e05516fb8418238eec145973f2490df5986266
 Author: Alexis Hernandez <alexis22229@gmail.com>
