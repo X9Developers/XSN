@@ -1,5 +1,15 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/95f16d79e8850f17f1f409f0bdf1254d53b0b752
+commit 95f16d79e8850f17f1f409f0bdf1254d53b0b752
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Dec 29 09:37:39 2018 -0700
+
+    server: Rename getLatestBy to getBy on TransactionDataHandler
+    
+    The method now allows an ordering condition (asc, desc) to choose
+    the result ordering.
+    
 https://github.com/X9Developers/block-explorer/commit/e030480a7cba810e6d93dd3381612aa33d79c5cc
 commit e030480a7cba810e6d93dd3381612aa33d79c5cc
 Author: Alexis Hernandez <alexis22229@gmail.com>
