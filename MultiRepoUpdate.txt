@@ -1,12 +1,22 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/585978fc17550b67ff1003f6bd3061fcec119469
+commit 585978fc17550b67ff1003f6bd3061fcec119469
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Dec 30 14:43:23 2018 -0700
+
+    server: Add index field to transactions table
+    
+    The transaction order from the xsnd must be recoverable
+    when we store the transactions in the database.
+    
 https://github.com/X9Developers/block-explorer/commit/fe9d2985f65239fe6dfb53a70991690d8c9ac20f
 commit fe9d2985f65239fe6dfb53a70991690d8c9ac20f
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Sat Dec 29 19:31:12 2018 -0700
 
     server: Add endpoint - GET /v2/blocks/:blockhash/transactions
-    
+
 https://github.com/X9Developers/block-explorer/commit/df8bc2e9ec9d167de14ab6386d89064ff16c4a73
 commit df8bc2e9ec9d167de14ab6386d89064ff16c4a73
 Author: Alexis Hernandez <alexis22229@gmail.com>
