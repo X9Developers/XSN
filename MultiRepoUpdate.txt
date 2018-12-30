@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/df8bc2e9ec9d167de14ab6386d89064ff16c4a73
+commit df8bc2e9ec9d167de14ab6386d89064ff16c4a73
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Dec 29 19:30:51 2018 -0700
+
+    server: Add method to get scrolled transactions by blockhash
+    
 https://github.com/X9Developers/block-explorer/commit/26ad85160fae2afd5dc1ad7f7664ee283fbc3d82
 commit 26ad85160fae2afd5dc1ad7f7664ee283fbc3d82
 Author: Alexis Hernandez <alexis22229@gmail.com>
