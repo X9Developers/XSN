@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/7c7b715946c4cb6fd6681840cb83a9533e4f71ed
+commit 7c7b715946c4cb6fd6681840cb83a9533e4f71ed
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Dec 29 21:21:14 2018 -0700
+
+    web-ui: Update the block view to use the API V2
+    
 https://github.com/X9Developers/block-explorer/commit/c4d5779516557b16afa1a7c20050119a4f56e093
 commit c4d5779516557b16afa1a7c20050119a4f56e093
 Author: Alexis Hernandez <alexis22229@gmail.com>
