@@ -1,12 +1,24 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/7c7abaf7ac7d4e6f6e925b47c467f1cf5ae198cd
+commit 7c7abaf7ac7d4e6f6e925b47c467f1cf5ae198cd
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Dec 30 17:01:14 2018 -0700
+
+    server: Avoid transaction ordering issues while deleting blocks
+    
+    There are certain transactions that spend inputs from created on
+    the same block, these transaction with dependencies should be deleted
+    before the transactions that they depend on, otherwise, we get
+    constraint violation errors.
+    
 https://github.com/X9Developers/block-explorer/commit/a9aa182091b5d8d6037ae700b4c743174b8c5dc7
 commit a9aa182091b5d8d6037ae700b4c743174b8c5dc7
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Sun Dec 30 16:58:23 2018 -0700
 
-    server: Store the transaction index while synchronizing the blocks
     
+
 https://github.com/X9Developers/block-explorer/commit/585978fc17550b67ff1003f6bd3061fcec119469
 commit 585978fc17550b67ff1003f6bd3061fcec119469
 Author: Alexis Hernandez <alexis22229@gmail.com>
