@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/c6326dfe02086f87748ec543d35e1f6055840916
+commit c6326dfe02086f87748ec543d35e1f6055840916
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Dec 31 19:26:19 2018 -0700
+
+    server: Add not null constraint to the transactions.index
+
 https://github.com/X9Developers/block-explorer/commit/7c7abaf7ac7d4e6f6e925b47c467f1cf5ae198cd
 commit 7c7abaf7ac7d4e6f6e925b47c467f1cf5ae198cd
 Author: Alexis Hernandez <alexis22229@gmail.com>
@@ -11,7 +18,7 @@ Date:   Sun Dec 30 17:01:14 2018 -0700
     the same block, these transaction with dependencies should be deleted
     before the transactions that they depend on, otherwise, we get
     constraint violation errors.
-    
+
 https://github.com/X9Developers/block-explorer/commit/a9aa182091b5d8d6037ae700b4c743174b8c5dc7
 commit a9aa182091b5d8d6037ae700b4c743174b8c5dc7
 Author: Alexis Hernandez <alexis22229@gmail.com>
