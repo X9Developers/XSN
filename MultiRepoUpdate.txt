@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/7599230784a7be2aa9e05999e86516031efa5541
+commit 7599230784a7be2aa9e05999e86516031efa5541
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Thu Jan 3 11:32:05 2019 -0700
+
+    server: Add documentation to a probable issue when running sbt test
+    
 https://github.com/X9Developers/block-explorer/commit/a9374bd21f7ff5721e4aa07e6b0c9166ed97d50c
 commit a9374bd21f7ff5721e4aa07e6b0c9166ed97d50c
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Mon Dec 31 19:26:53 2018 -0700
 
     server: Update postgres indexes
-    
+
 https://github.com/X9Developers/block-explorer/commit/c6326dfe02086f87748ec543d35e1f6055840916
 commit c6326dfe02086f87748ec543d35e1f6055840916
 Author: Alexis Hernandez <alexis22229@gmail.com>
