@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/e8db0aaa8518da8351112ab98c2eea77acc388d5
+commit e8db0aaa8518da8351112ab98c2eea77acc388d5
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Thu Jan 3 22:30:56 2019 -0700
+
+    infra: Update xsn.conf
+    
 https://github.com/X9Developers/block-explorer/commit/e464080a76d36f7d8281bc2a19ab2e6fb466e5ce
 commit e464080a76d36f7d8281bc2a19ab2e6fb466e5ce
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Thu Jan 3 22:27:45 2019 -0700
 
     server: Don't ignore errors while loading transaction inputs
-    
+
 https://github.com/X9Developers/block-explorer/commit/54a61a11a8809c23f4606a7d73327e44900d71c2
 commit 54a61a11a8809c23f4606a7d73327e44900d71c2
 Author: Alexis Hernandez <alexis22229@gmail.com>
