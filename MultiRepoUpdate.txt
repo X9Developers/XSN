@@ -1,12 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/a3aa33b809dc21e8b80b0a6457e70af07d5ded14
+commit a3aa33b809dc21e8b80b0a6457e70af07d5ded14
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Jan 4 21:00:49 2019 -0700
+
+    server: Update maintenance endpoint to receive a query
+    
 https://github.com/X9Developers/block-explorer/commit/1c0c271864a5463b341ab32828a74332b1a62749
 commit 1c0c271864a5463b341ab32828a74332b1a62749
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Fri Jan 4 20:59:55 2019 -0700
 
     server: Remove temporal shift while computing supplies
-    
+
 https://github.com/X9Developers/block-explorer/commit/e8db0aaa8518da8351112ab98c2eea77acc388d5
 commit e8db0aaa8518da8351112ab98c2eea77acc388d5
 Author: Alexis Hernandez <alexis22229@gmail.com>
