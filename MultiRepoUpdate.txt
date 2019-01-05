@@ -1,12 +1,22 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/1d3e8432542b087893d1d893501518a3f9863753
+commit 1d3e8432542b087893d1d893501518a3f9863753
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jan 5 00:10:40 2019 -0700
+
+    server: Update endpoint "GET /v2/addresses/:address/transactions"
+    
+    The inputs and outputs are now retrieved from the database, this makes
+    calls more reliable.
+
 https://github.com/X9Developers/block-explorer/commit/a3aa33b809dc21e8b80b0a6457e70af07d5ded14
 commit a3aa33b809dc21e8b80b0a6457e70af07d5ded14
 Author: Alexis Hernandez <alexis22229@gmail.com>
 Date:   Fri Jan 4 21:00:49 2019 -0700
 
     server: Update maintenance endpoint to receive a query
-    
+
 https://github.com/X9Developers/block-explorer/commit/1c0c271864a5463b341ab32828a74332b1a62749
 commit 1c0c271864a5463b341ab32828a74332b1a62749
 Author: Alexis Hernandez <alexis22229@gmail.com>
