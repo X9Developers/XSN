@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/07232bfd375d08353f836a364adc7775545c87d8
+commit 07232bfd375d08353f836a364adc7775545c87d8 
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Jan 8 10:24:07 2019 -0700
+
+    Update the icon for the ledger blue
+    
 https://github.com/X9Developers/block-explorer/commit/7241bf52143388d7d217bd273710562b0c1bc136
 commit 7241bf52143388d7d217bd273710562b0c1bc136
 Author: Alexis Hernandez <alexis22229@gmail.com>
