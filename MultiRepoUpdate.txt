@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/66da2b58a466b00ad6b3fe53dc53ed42e898f60f
+commit 66da2b58a466b00ad6b3fe53dc53ed42e898f60f
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Thu Jan 10 22:56:16 2019 -0700
+
+    infra: Restrict the available routes for LTC
+
 https://github.com/X9Developers/block-explorer/commit/7467bdc51ad57371ef20bffc2f79cc4a792eb97f
 commit 7467bdc51ad57371ef20bffc2f79cc4a792eb97f
 Author: jonsadev <jonsalazar99@hotmail.com>
