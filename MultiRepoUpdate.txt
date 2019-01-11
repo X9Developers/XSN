@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/9b0adaf943a4c9d1879cb6ea06896149d4639be9
+commit 9b0adaf943a4c9d1879cb6ea06896149d4639be9
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Thu Jan 10 23:15:53 2019 -0700
+
+    infra: Disable http and redirect to https on nginx
+
 https://github.com/X9Developers/block-explorer/commit/1f28104b843858a3bb5673a2c16eed09284a6ddb
 commit 1f28104b843858a3bb5673a2c16eed09284a6ddb
 Author: Alexis Hernandez <alexis22229@gmail.com>
