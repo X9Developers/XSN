@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/1f28104b843858a3bb5673a2c16eed09284a6ddb
+commit 1f28104b843858a3bb5673a2c16eed09284a6ddb
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Thu Jan 10 23:15:25 2019 -0700
+
+    infra: Enable gzip on nginx
+
 https://github.com/X9Developers/block-explorer/commit/66da2b58a466b00ad6b3fe53dc53ed42e898f60f
 commit 66da2b58a466b00ad6b3fe53dc53ed42e898f60f
 Author: Alexis Hernandez <alexis22229@gmail.com>
