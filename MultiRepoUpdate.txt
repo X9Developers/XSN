@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/5428c71aa746186fbbd9e33a98786b156e37f415
+commit 5428c71aa746186fbbd9e33a98786b156e37f415
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Fri Jan 11 09:26:11 2019 -0700
+
+    web-ui: Add explorerCurrency pipe (#43)
+    
+    Add pipe class and change all the occurrences to use it instead of label.coinName
+
 https://github.com/X9Developers/block-explorer/commit/9b0adaf943a4c9d1879cb6ea06896149d4639be9
 commit 9b0adaf943a4c9d1879cb6ea06896149d4639be9
 Author: Alexis Hernandez <alexis22229@gmail.com>
