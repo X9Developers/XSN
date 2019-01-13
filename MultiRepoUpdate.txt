@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/db35fb3c7ea874d054be6b40935c832a243ed4bd
+commit db35fb3c7ea874d054be6b40935c832a243ed4bd
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Jan 13 07:54:41 2019 -0700
+
+    infra: Include sentry on backend deployments
+
 https://github.com/X9Developers/block-explorer/commit/63bb70502d8f49226deb950a303a8e3607f78ded
 commit 63bb70502d8f49226deb950a303a8e3607f78ded
 Author: jonsadev <jonsalazar99@hotmail.com>
