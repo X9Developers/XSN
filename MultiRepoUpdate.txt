@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/c9d7775e350ba64e72bc41575d80f4eb34538617
+commit c9d7775e350ba64e72bc41575d80f4eb34538617
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Jan 13 07:55:15 2019 -0700
+
+    server: Update sentry.properties
+
 https://github.com/X9Developers/block-explorer/commit/db35fb3c7ea874d054be6b40935c832a243ed4bd
 commit db35fb3c7ea874d054be6b40935c832a243ed4bd
 Author: Alexis Hernandez <alexis22229@gmail.com>
