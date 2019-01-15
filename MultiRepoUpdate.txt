@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/7d1b18619a720a0d6dc5879815b1e64be5e7917b
+commit 7d1b18619a720a0d6dc5879815b1e64be5e7917b
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Tue Jan 15 15:51:34 2019 -0700
+
+    web-ui: Update explorerCurrency pipe to fix 8 decimals (#81)
+
 https://github.com/X9Developers/block-explorer/commit/c9d7775e350ba64e72bc41575d80f4eb34538617
 commit c9d7775e350ba64e72bc41575d80f4eb34538617
 Author: Alexis Hernandez <alexis22229@gmail.com>
