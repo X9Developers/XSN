@@ -1,5 +1,16 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/7f7512ceadfcca97447e2708d2d45cfb35723a60
+commit 7f7512ceadfcca97447e2708d2d45cfb35723a60
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Wed Jan 16 10:46:22 2019 -0700
+
+    web-ui: Add infinite scroll on richest addresses (#78)
+    
+    Add dependency to ngx-infinite-scroll
+    Add infinite scroll on richest addresses
+    Add color effect on new addresses
+
 https://github.com/X9Developers/block-explorer/commit/7d1b18619a720a0d6dc5879815b1e64be5e7917b
 commit 7d1b18619a720a0d6dc5879815b1e64be5e7917b
 Author: jonsadev <jonsalazar99@hotmail.com>
