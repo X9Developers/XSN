@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/79cfe8952d5671d948cc29192d740e8bef61034c
+commit 79cfe8952d5671d948cc29192d740e8bef61034c
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Wed Jan 16 20:03:48 2019 -0700
+
+    web-ui: Add utils file
+    
+    Utils file has a function to get the number of rows to load depending on screen height
+
 https://github.com/X9Developers/block-explorer/commit/045fba30de9db9f2bfc92648e50c9ee26d90ce51
 commit 045fba30de9db9f2bfc92648e50c9ee26d90ce51
 Author: Alexis Hernandez <alexis22229@gmail.com>
