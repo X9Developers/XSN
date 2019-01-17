@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/a44bb5818cceb9b53e45b93e2dbeeb5d7e3cc048
+commit a44bb5818cceb9b53e45b93e2dbeeb5d7e3cc048
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Thu Jan 17 00:06:52 2019 -0700
+
+    web-ui: Upgrade angular cli
+
 https://github.com/X9Developers/block-explorer/commit/7f7512ceadfcca97447e2708d2d45cfb35723a60
 commit 7f7512ceadfcca97447e2708d2d45cfb35723a60
 Author: jonsadev <jonsalazar99@hotmail.com>
