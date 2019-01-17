@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/870f2c789b56863ff1cafc7f5621e9147368d7e5
+commit 870f2c789b56863ff1cafc7f5621e9147368d7e5
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Thu Jan 17 08:40:14 2019 -0700
+
+    web-ui: Add infinite scroll to Address screen
+
 https://github.com/X9Developers/block-explorer/commit/28a8a2588b23a167ccaaf9c60738cc2d911e97b4
 commit 28a8a2588b23a167ccaaf9c60738cc2d911e97b4
 Author: jonsadev <jonsalazar99@hotmail.com>
