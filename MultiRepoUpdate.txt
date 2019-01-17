@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/045fba30de9db9f2bfc92648e50c9ee26d90ce51
+commit 045fba30de9db9f2bfc92648e50c9ee26d90ce51
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Thu Jan 17 00:07:35 2019 -0700
+
+    Build web-ui on travis-ci
+
 https://github.com/X9Developers/block-explorer/commit/a44bb5818cceb9b53e45b93e2dbeeb5d7e3cc048
 commit a44bb5818cceb9b53e45b93e2dbeeb5d7e3cc048
 Author: Alexis Hernandez <alexis22229@gmail.com>
