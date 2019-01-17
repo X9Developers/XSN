@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/28a8a2588b23a167ccaaf9c60738cc2d911e97b4
+commit 28a8a2588b23a167ccaaf9c60738cc2d911e97b4
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Wed Jan 16 20:05:34 2019 -0700
+
+    web-ui: Implements utils function to get rows to display on richest addresses
+
 https://github.com/X9Developers/block-explorer/commit/79cfe8952d5671d948cc29192d740e8bef61034c
 commit 79cfe8952d5671d948cc29192d740e8bef61034c
 Author: jonsadev <jonsalazar99@hotmail.com>
