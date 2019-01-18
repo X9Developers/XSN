@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/a363dae37d6fffa8afc9e82beeee42b076aa1602
+commit a363dae37d6fffa8afc9e82beeee42b076aa1602
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Jan 18 12:29:31 2019 -0700
+
+    web-ui: Fix home.component.spec
+
 https://github.com/X9Developers/block-explorer/commit/efea7d0159784d1ab082e5759a43b93bbbd1743e
 commit efea7d0159784d1ab082e5759a43b93bbbd1743e
 Author: Alexis Hernandez <alexis22229@gmail.com>
