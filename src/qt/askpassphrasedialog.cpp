@@ -18,8 +18,6 @@
 #include <QMessageBox>
 #include <QPushButton>
 
-#include "wallet/wallet.h"
-
 AskPassphraseDialog::AskPassphraseDialog(Mode _mode, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AskPassphraseDialog),
