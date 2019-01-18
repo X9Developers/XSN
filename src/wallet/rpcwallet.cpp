@@ -80,7 +80,7 @@ bool EnsureWalletIsAvailable(CWallet * const pwallet, bool avoidException)
 
 void EnsureWalletIsUnlocked(CWallet * const pwallet)
 {
-    if (pwallet->IsLocked()) {
+    if (pwallet->IsLocked() || pwallet->fWalletUnlockStakingOnly) {
         throw JSONRPCError(RPC_WALLET_UNLOCK_NEEDED, "Error: Please enter the wallet passphrase with walletpassphrase first.");
     }
 }
@@ -2549,10 +2549,17 @@ static UniValue walletpassphrase(const JSONRPCRequest& request)
     if (nSleepTime > MAX_SLEEP_TIME) {
         nSleepTime = MAX_SLEEP_TIME;
     }
+    
+    bool stakingOnly = false;
+    if (request.params.size() == 3)
+        stakingOnly = request.params[2].get_bool();
+
+    if (!pwallet->IsLocked() && pwallet->fWalletUnlockStakingOnly && stakingOnly)
+        throw JSONRPCError(RPC_WALLET_ALREADY_UNLOCKED, "Error: Wallet is already unlocked.");
 
     if (strWalletPass.length() > 0)
     {
-        if (!pwallet->Unlock(strWalletPass)) {
+        if (!pwallet->Unlock(strWalletPass, stakingOnly)) {
             throw JSONRPCError(RPC_WALLET_PASSPHRASE_INCORRECT, "Error: The wallet passphrase entered was incorrect.");
         }
     }

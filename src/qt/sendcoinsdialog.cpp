@@ -606,6 +606,10 @@ void SendCoinsDialog::processSendCoinsReturn(const WalletModel::SendCoinsReturn 
         msgParams.second = CClientUIInterface::MSG_ERROR;
         break;
         // included to prevent a compiler warning.
+    case WalletModel::StakingOnlyUnlocked:
+        QMessageBox::warning(this, tr("Send Coins"),
+            tr("Error: The wallet was unlocked only for staking coins."),
+            QMessageBox::Ok, QMessageBox::Ok);
     case WalletModel::OK:
     default:
         return;

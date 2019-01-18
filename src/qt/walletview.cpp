@@ -317,9 +317,9 @@ void WalletView::unlockWallet()
     if(!walletModel)
         return;
     // Unlock wallet when requested by wallet model
-    if (walletModel->getEncryptionStatus() == WalletModel::Locked)
+    if (walletModel->getEncryptionStatus() == WalletModel::Locked || walletModel->getEncryptionStatus() == WalletModel::UnlockedForStakingOnly)
     {
-        AskPassphraseDialog dlg(AskPassphraseDialog::Unlock, this);
+        AskPassphraseDialog dlg(AskPassphraseDialog::UnlockStaking, this);
         dlg.setModel(walletModel);
         dlg.exec();
     }

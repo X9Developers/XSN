@@ -128,8 +128,9 @@ public:
     }
     bool isCrypted() override { return m_wallet.IsCrypted(); }
     bool lock() override { return m_wallet.Lock(); }
-    bool unlock(const SecureString& wallet_passphrase) override { return m_wallet.Unlock(wallet_passphrase); }
+    bool unlock(const SecureString& wallet_passphrase, bool stakingOnly = false) override { return m_wallet.Unlock(wallet_passphrase, stakingOnly); }
     bool isLocked() override { return m_wallet.IsLocked(); }
+    bool isLockedForStaking() override { return m_wallet.fWalletUnlockStakingOnly; }
     bool changeWalletPassphrase(const SecureString& old_wallet_passphrase,
         const SecureString& new_wallet_passphrase) override
     {

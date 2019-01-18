@@ -545,8 +545,13 @@ bool CWallet::LoadWatchOnly(const CScript &dest)
     return CCryptoKeyStore::AddWatchOnly(dest);
 }
 
-bool CWallet::Unlock(const SecureString& strWalletPassphrase)
+bool CWallet::Unlock(const SecureString& strWalletPassphrase, bool stakingOnly)
 {
+    if (!IsLocked()) {
+        fWalletUnlockStakingOnly = stakingOnly;
+        return true;
+    }
+        
     CCrypter crypter;
     CKeyingMaterial _vMasterKey;
 
@@ -559,6 +564,7 @@ bool CWallet::Unlock(const SecureString& strWalletPassphrase)
             if (!crypter.Decrypt(pMasterKey.second.vchCryptedKey, _vMasterKey))
                 continue; // try another master key
             if (CCryptoKeyStore::Unlock(_vMasterKey))
+                fWalletUnlockStakingOnly = stakingOnly;
                 return true;
         }
     }

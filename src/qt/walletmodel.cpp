@@ -135,10 +135,15 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
     {
         return OK;
     }
+    
+    if (isStakingOnlyUnlocked()) 
+    {
+        return StakingOnlyUnlocked;
+    }
 
     QSet<QString> setAddress; // Used to detect duplicates
     int nAddresses = 0;
-
+    
     // Pre-check input data for validity
     for (const SendCoinsRecipient &rcp : recipients)
     {
@@ -233,6 +238,10 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
 WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction &transaction)
 {
     QByteArray transaction_array; /* store serialized transaction */
+    
+    if (isStakingOnlyUnlocked()) {
+        return StakingOnlyUnlocked;
+    }
 
     {
         std::vector<std::pair<std::string, std::string>> vOrderForm;
@@ -331,6 +340,10 @@ WalletModel::EncryptionStatus WalletModel::getEncryptionStatus() const
     {
         return Locked;
     }
+    else if(m_wallet->isLockedForStaking()) 
+    {
+        return UnlockedForStakingOnly;
+    }
     else
     {
         return Unlocked;
@@ -351,7 +364,7 @@ bool WalletModel::setWalletEncrypted(bool encrypted, const SecureString &passphr
     }
 }
 
-bool WalletModel::setWalletLocked(bool locked, const SecureString &passPhrase)
+bool WalletModel::setWalletLocked(bool locked, const SecureString &passPhrase, bool stakingOnly)
 {
     if(locked)
     {
@@ -361,8 +374,13 @@ bool WalletModel::setWalletLocked(bool locked, const SecureString &passPhrase)
     else
     {
         // Unlock
-        return m_wallet->unlock(passPhrase);
+        return m_wallet->unlock(passPhrase, stakingOnly);
     }
+}
+
+bool WalletModel::isStakingOnlyUnlocked()
+{
+    return m_wallet->isLockedForStaking();
 }
 
 bool WalletModel::changePassphrase(const SecureString &oldPass, const SecureString &newPass)
@@ -440,6 +458,12 @@ void WalletModel::unsubscribeFromCoreSignals()
 WalletModel::UnlockContext WalletModel::requestUnlock()
 {
     bool was_locked = getEncryptionStatus() == Locked;
+    
+    if (!was_locked && isStakingOnlyUnlocked()) {
+        setWalletLocked(true);
+        was_locked = getEncryptionStatus() == Locked;
+    }
+    
     if(was_locked)
     {
         // Request UI to unlock wallet
