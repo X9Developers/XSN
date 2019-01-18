@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/4f20fb4ebfd6ab2301388e0377fc061a27be639f
+commit 4f20fb4ebfd6ab2301388e0377fc061a27be639f
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Fri Jan 18 13:20:05 2019 -0700
+
+    web-ui: Fix navbar.component.spec
+
 https://github.com/X9Developers/block-explorer/commit/a363dae37d6fffa8afc9e82beeee42b076aa1602
 commit a363dae37d6fffa8afc9e82beeee42b076aa1602
 Author: Alexis Hernandez <alexis22229@gmail.com>
