@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/d5e1a6cb5c997bc23cb9fc95adfdc0be4f18f0ec
+commit d5e1a6cb5c997bc23cb9fc95adfdc0be4f18f0ec
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Fri Jan 18 15:48:27 2019 -0700
+
+    web-ui: Fix address-details.component.spec
+
 https://github.com/X9Developers/block-explorer/commit/4f20fb4ebfd6ab2301388e0377fc061a27be639f
 commit 4f20fb4ebfd6ab2301388e0377fc061a27be639f
 Author: jonsadev <jonsalazar99@hotmail.com>
