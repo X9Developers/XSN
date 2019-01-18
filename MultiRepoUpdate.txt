@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/efea7d0159784d1ab082e5759a43b93bbbd1743e
+commit efea7d0159784d1ab082e5759a43b93bbbd1743e
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Jan 18 11:46:16 2019 -0700
+
+    web-ui: Upgrade angular to 7.2.1
+
 https://github.com/X9Developers/block-explorer/commit/9100fc65c55dc98c1385093a56dea08da7aeb379
 commit 9100fc65c55dc98c1385093a56dea08da7aeb379
 Author: jonsadev <jonsalazar99@hotmail.com>
