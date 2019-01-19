@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/97254aae11f3bf9532f0b0aa1e74ebb6b9db8607
+commit 97254aae11f3bf9532f0b0aa1e74ebb6b9db8607
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jan 19 09:30:31 2019 -0700
+
+    server: Remove unnecessary endpoint "POST /transactions/latest"
+
 https://github.com/X9Developers/block-explorer/commit/8f0645b30a75b931ba923b6a14e2708c7de7b069
 commit 8f0645b30a75b931ba923b6a14e2708c7de7b069
 Author: Alexis Hernandez <alexis22229@gmail.com>
