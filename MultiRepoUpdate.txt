@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/8f0645b30a75b931ba923b6a14e2708c7de7b069
+commit 8f0645b30a75b931ba923b6a14e2708c7de7b069
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Jan 18 22:42:18 2019 -0700
+
+    server: Batch update while spending outputs on TransactionPostgresDAO
+
 https://github.com/X9Developers/block-explorer/commit/81535991a7d598521d0ca37b2dcbcb6715f34359
 commit 81535991a7d598521d0ca37b2dcbcb6715f34359
 Author: Alexis Hernandez <alexis22229@gmail.com>
