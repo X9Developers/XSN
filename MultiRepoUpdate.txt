@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/668153d6c4ad4e40a40649d7025934e44facfdff
+commit 668153d6c4ad4e40a40649d7025934e44facfdff
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jan 19 23:25:13 2019 -0700
+
+    server: Split the TransactionPostgresDAO into several files
+
 https://github.com/X9Developers/block-explorer/commit/447e31e55c348082d3590f60e37f1675e497fe18
 commit 447e31e55c348082d3590f60e37f1675e497fe18
 Author: Alexis Hernandez <alexis22229@gmail.com>
