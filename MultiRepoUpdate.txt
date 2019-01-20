@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/447e31e55c348082d3590f60e37f1675e497fe18
+commit 447e31e55c348082d3590f60e37f1675e497fe18
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jan 19 22:52:49 2019 -0700
+
+    server: Insert transaction batch while synchronizing the ledger
+
 https://github.com/X9Developers/block-explorer/commit/a3feadbcf0dd66293eab0a0e2864789a2bcdfc05
 commit a3feadbcf0dd66293eab0a0e2864789a2bcdfc05
 Author: Alexis Hernandez <alexis22229@gmail.com>
