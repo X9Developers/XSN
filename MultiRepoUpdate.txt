@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/8bf78c60813e2718b49f603048e628df09dd293a
+commit 8bf78c60813e2718b49f603048e628df09dd293a
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jan 19 19:09:50 2019 -0700
+
+    server: Fix scrolled pagination bug while retrieving address transactions
+
 https://github.com/X9Developers/block-explorer/commit/97254aae11f3bf9532f0b0aa1e74ebb6b9db8607
 commit 97254aae11f3bf9532f0b0aa1e74ebb6b9db8607
 Author: Alexis Hernandez <alexis22229@gmail.com>
