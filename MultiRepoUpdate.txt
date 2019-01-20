@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/72b66c07689260840f1c9e015b7419738f3982f4
+commit 72b66c07689260840f1c9e015b7419738f3982f4
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jan 19 19:13:17 2019 -0700
+
+    server: Refactor the TransactionPostgresDataHandlerSpec
+
 https://github.com/X9Developers/block-explorer/commit/8bf78c60813e2718b49f603048e628df09dd293a
 commit 8bf78c60813e2718b49f603048e628df09dd293a
 Author: Alexis Hernandez <alexis22229@gmail.com>
