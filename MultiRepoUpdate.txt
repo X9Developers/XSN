@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/2c60f25d21f4e17b8f94681a1e133d80fcb592c2
+commit 2c60f25d21f4e17b8f94681a1e133d80fcb592c2
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Mon Jan 21 10:25:17 2019 -0700
+
+    web-ui: Fix ticker.component.spec
+
 https://github.com/X9Developers/block-explorer/commit/1b3effd132195b24045c81ca14696cbe3e07cf69
 commit 1b3effd132195b24045c81ca14696cbe3e07cf69
 Author: jonsadev <jonsalazar99@hotmail.com>
