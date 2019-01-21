@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/513102228dcb6f0e863e4c64af83dc2df3331e40
+commit 513102228dcb6f0e863e4c64af83dc2df3331e40
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Mon Jan 21 10:04:45 2019 -0700
+
+    web-ui: Fix masternode-details.component.spec
+
 https://github.com/X9Developers/block-explorer/commit/8cfe906051629599e63fabdb330ab3dc36a3f498
 commit 8cfe906051629599e63fabdb330ab3dc36a3f498
 Author: jonsadev <jonsalazar99@hotmail.com>
