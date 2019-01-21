@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/8a3669ef07d7ec78f5d8fd6dae47a9bdde1a20a6
+commit 8a3669ef07d7ec78f5d8fd6dae47a9bdde1a20a6
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Mon Jan 21 10:41:35 2019 -0700
+
+    web-ui: Fix transaction-raw.component.spec
+
 https://github.com/X9Developers/block-explorer/commit/56ff5bf94da1b641daae100531d2b9f6557ec1e9
 commit 56ff5bf94da1b641daae100531d2b9f6557ec1e9
 Author: jonsadev <jonsalazar99@hotmail.com>
