@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/1b3effd132195b24045c81ca14696cbe3e07cf69
+commit 1b3effd132195b24045c81ca14696cbe3e07cf69
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Mon Jan 21 10:21:55 2019 -0700
+
+    web-ui: Fix richest-addresses.component.spec
+
 https://github.com/X9Developers/block-explorer/commit/6535f60e963d1719561ad09a33892bfba0e69c0f
 commit 6535f60e963d1719561ad09a33892bfba0e69c0f
 Author: jonsadev <jonsalazar99@hotmail.com>
