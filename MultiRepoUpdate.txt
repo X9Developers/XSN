@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/edcf7222703bef1330b0fcddd6d96c507560fd68
+commit edcf7222703bef1330b0fcddd6d96c507560fd68
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Mon Jan 21 10:59:21 2019 -0700
+
+    web-ui: Fix explorer-datetime.pipe.spec
+
 https://github.com/X9Developers/block-explorer/commit/bb23dc15985fd3030d36d023509abff47c7ab078
 commit bb23dc15985fd3030d36d023509abff47c7ab078
 Author: jonsadev <jonsalazar99@hotmail.com>
