@@ -1,0 +1,1065 @@
+This text file will track changes from other XSN Repos.
+
+https://github.com/X9Developers/block-explorer/commit/7467bdc51ad57371ef20bffc2f79cc4a792eb97f
+commit 7467bdc51ad57371ef20bffc2f79cc4a792eb97f
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Thu Jan 10 10:52:35 2019 -0700
+
+    web-ui: collapse similar inputs while displaying a transaction (#49)
+    
+https://github.com/X9Developers/block-explorer/commit/07232bfd375d08353f836a364adc7775545c87d8
+commit 07232bfd375d08353f836a364adc7775545c87d8 
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Jan 8 10:24:07 2019 -0700
+
+    Update the icon for the ledger blue
+
+https://github.com/X9Developers/block-explorer/commit/7241bf52143388d7d217bd273710562b0c1bc136
+commit 7241bf52143388d7d217bd273710562b0c1bc136
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Thu Jan 3 19:38:15 2019 -0700
+
+    server: Update the address details view to use the API V2
+
+https://github.com/X9Developers/block-explorer/commit/7c7b715946c4cb6fd6681840cb83a9533e4f71ed
+commit 7c7b715946c4cb6fd6681840cb83a9533e4f71ed
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Dec 29 21:21:14 2018 -0700
+
+    web-ui: Update the block view to use the API V2
+
+https://github.com/X9Developers/block-explorer/commit/c4d5779516557b16afa1a7c20050119a4f56e093
+commit c4d5779516557b16afa1a7c20050119a4f56e093
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Dec 28 23:26:41 2018 -0700
+
+    web-ui: Update the richest addresses view to use the API V2
+
+https://github.com/X9Developers/block-explorer/commit/1d3e8432542b087893d1d893501518a3f9863753
+commit 1d3e8432542b087893d1d893501518a3f9863753
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jan 5 00:10:40 2019 -0700
+
+    server: Update endpoint "GET /v2/addresses/:address/transactions"
+    
+    The inputs and outputs are now retrieved from the database, this makes
+    calls more reliable.
+
+https://github.com/X9Developers/block-explorer/commit/a3aa33b809dc21e8b80b0a6457e70af07d5ded14
+commit a3aa33b809dc21e8b80b0a6457e70af07d5ded14
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Jan 4 21:00:49 2019 -0700
+
+    server: Update maintenance endpoint to receive a query
+
+https://github.com/X9Developers/block-explorer/commit/1c0c271864a5463b341ab32828a74332b1a62749
+commit 1c0c271864a5463b341ab32828a74332b1a62749
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Jan 4 20:59:55 2019 -0700
+
+    server: Remove temporal shift while computing supplies
+
+https://github.com/X9Developers/block-explorer/commit/e8db0aaa8518da8351112ab98c2eea77acc388d5
+commit e8db0aaa8518da8351112ab98c2eea77acc388d5
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Thu Jan 3 22:30:56 2019 -0700
+
+    infra: Update xsn.conf
+
+https://github.com/X9Developers/block-explorer/commit/e464080a76d36f7d8281bc2a19ab2e6fb466e5ce
+commit e464080a76d36f7d8281bc2a19ab2e6fb466e5ce
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Thu Jan 3 22:27:45 2019 -0700
+
+    server: Don't ignore errors while loading transaction inputs
+
+https://github.com/X9Developers/block-explorer/commit/54a61a11a8809c23f4606a7d73327e44900d71c2
+commit 54a61a11a8809c23f4606a7d73327e44900d71c2
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Thu Jan 3 20:04:08 2019 -0700
+
+    server: Prepare "GET /maintenance" endpoint
+    
+    This is useful for running occasional maintenance tasks.
+
+https://github.com/X9Developers/block-explorer/commit/7599230784a7be2aa9e05999e86516031efa5541
+commit 7599230784a7be2aa9e05999e86516031efa5541
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Thu Jan 3 11:32:05 2019 -0700
+
+    server: Add documentation to a probable issue when running sbt test
+
+https://github.com/X9Developers/block-explorer/commit/a9374bd21f7ff5721e4aa07e6b0c9166ed97d50c
+commit a9374bd21f7ff5721e4aa07e6b0c9166ed97d50c
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Dec 31 19:26:53 2018 -0700
+
+    server: Update postgres indexes
+
+https://github.com/X9Developers/block-explorer/commit/c6326dfe02086f87748ec543d35e1f6055840916
+commit c6326dfe02086f87748ec543d35e1f6055840916
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Dec 31 19:26:19 2018 -0700
+
+    server: Add not null constraint to the transactions.index
+
+https://github.com/X9Developers/block-explorer/commit/7c7abaf7ac7d4e6f6e925b47c467f1cf5ae198cd
+commit 7c7abaf7ac7d4e6f6e925b47c467f1cf5ae198cd
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Dec 30 17:01:14 2018 -0700
+
+    server: Avoid transaction ordering issues while deleting blocks
+    
+    There are certain transactions that spend inputs from created on
+    the same block, these transaction with dependencies should be deleted
+    before the transactions that they depend on, otherwise, we get
+    constraint violation errors.
+
+https://github.com/X9Developers/block-explorer/commit/a9aa182091b5d8d6037ae700b4c743174b8c5dc7
+commit a9aa182091b5d8d6037ae700b4c743174b8c5dc7
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Dec 30 16:58:23 2018 -0700
+
+    
+
+https://github.com/X9Developers/block-explorer/commit/585978fc17550b67ff1003f6bd3061fcec119469
+commit 585978fc17550b67ff1003f6bd3061fcec119469
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Dec 30 14:43:23 2018 -0700
+
+    server: Add index field to transactions table
+    
+    The transaction order from the xsnd must be recoverable
+    when we store the transactions in the database.
+
+https://github.com/X9Developers/block-explorer/commit/fe9d2985f65239fe6dfb53a70991690d8c9ac20f
+commit fe9d2985f65239fe6dfb53a70991690d8c9ac20f
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Dec 29 19:31:12 2018 -0700
+
+    server: Add endpoint - GET /v2/blocks/:blockhash/transactions
+
+https://github.com/X9Developers/block-explorer/commit/df8bc2e9ec9d167de14ab6386d89064ff16c4a73
+commit df8bc2e9ec9d167de14ab6386d89064ff16c4a73
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Dec 29 19:30:51 2018 -0700
+
+    server: Add method to get scrolled transactions by blockhash
+
+https://github.com/X9Developers/block-explorer/commit/26ad85160fae2afd5dc1ad7f7664ee283fbc3d82
+commit 26ad85160fae2afd5dc1ad7f7664ee283fbc3d82
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Dec 29 10:32:08 2018 -0700
+
+    server: Rename /addresses/:address/lightWalletTransactions to /v2/addresses/:address/transactions
+
+https://github.com/X9Developers/block-explorer/commit/95f16d79e8850f17f1f409f0bdf1254d53b0b752
+commit 95f16d79e8850f17f1f409f0bdf1254d53b0b752
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Dec 29 09:37:39 2018 -0700
+
+    server: Rename getLatestBy to getBy on TransactionDataHandler
+    
+    The method now allows an ordering condition (asc, desc) to choose
+    the result ordering.
+
+https://github.com/X9Developers/block-explorer/commit/e030480a7cba810e6d93dd3381612aa33d79c5cc
+commit e030480a7cba810e6d93dd3381612aa33d79c5cc
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Dec 29 08:50:25 2018 -0700
+
+    server: Allow to reverse the order of TransactionPostgresDAO#getLatestBy
+
+https://github.com/X9Developers/block-explorer/commit/e9116b35441ef196c62a5096e200a22a35712527
+commit e9116b35441ef196c62a5096e200a22a35712527
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Dec 28 22:17:21 2018 -0700
+
+    server: Add endpoint - GET /v2/balances
+    
+    Returns the highest balances allowing to paginate from highest to smallest.
+
+https://github.com/X9Developers/block-explorer/commit/f1cc9103ea5e55a876a88122933f6280f04b98d7
+commit f1cc9103ea5e55a876a88122933f6280f04b98d7
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Dec 28 21:31:17 2018 -0700
+
+    server: Add getHighestBalances method to the BalanceDataHandler
+
+https://github.com/X9Developers/block-explorer/commit/8d50af57b6e54db163b6a359fe64195c507542af
+commit 8d50af57b6e54db163b6a359fe64195c507542af
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Dec 28 21:30:49 2018 -0700
+
+    server: Add test to TransactionPostgresDataHandlerSpec
+
+https://github.com/X9Developers/block-explorer/commit/36e05516fb8418238eec145973f2490df5986266
+commit 36e05516fb8418238eec145973f2490df5986266
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Dec 28 20:07:01 2018 -0700
+
+    server: Wrap the light wallet transactions response in a data field
+
+https://github.com/X9Developers/block-explorer/commit/2db4f9f513b744536ebf9d369a3ae4a459c43186
+commit 2db4f9f513b744536ebf9d369a3ae4a459c43186
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Dec 28 09:13:31 2018 -0700
+
+    server: Simplify the light wallet transactions retrieval query
+
+https://github.com/X9Developers/block-explorer/commit/38ab0e180316d0f064a3ffc3f741565ab59c7b59
+commit 38ab0e180316d0f064a3ffc3f741565ab59c7b59
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Dec 28 00:23:39 2018 -0700
+
+    server: Add the value to the LightWalletTransaction.Input
+
+https://github.com/X9Developers/block-explorer/commit/a03e4401ca5e9c1b5d463365a61b06dc7dfc6628
+commit a03e4401ca5e9c1b5d463365a61b06dc7dfc6628
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Dec 28 00:05:16 2018 -0700
+
+    server: Update endpoint - GET /addresses/:address/lightWalletTransactions
+    
+    The pagination is updated to check the latest seen transaction instead of its time,
+    this avoids hiding items when there are ties on the time.
+
+https://github.com/X9Developers/block-explorer/commit/4feee274ecb516e7b0972e82ac096651a5fa3435
+commit 4feee274ecb516e7b0972e82ac096651a5fa3435
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Dec 26 22:47:05 2018 -0700
+
+    server: Add endpoint - GET /addresses/:address/lightWalletTransactions
+
+https://github.com/X9Developers/block-explorer/commit/639eb62efdd991c6416be1c1eeeca86ff15adf03
+commit 639eb62efdd991c6416be1c1eeeca86ff15adf03
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Dec 26 22:46:09 2018 -0700
+
+    server: Add chimney dependency
+
+https://github.com/X9Developers/block-explorer/commit/6e54e9f870fdb73ad15cadde9d07cd22f24dbb49
+commit 6e54e9f870fdb73ad15cadde9d07cd22f24dbb49
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Dec 26 22:41:32 2018 -0700
+
+    server: Add keyset-based method for retrieving address transactions
+    
+https://github.com/X9Developers/block-explorer/commit/b8783b961df18a406ff3860f9a8768da794812ba
+commit b8783b961df18a406ff3860f9a8768da794812ba
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Dec 26 13:37:11 2018 -0700
+
+    server: Enable test on AddressesControllerSpec
+
+https://github.com/X9Developers/block-explorer/commit/e1a96c2c6173736dd81a9248357344527e4e5e85
+commit e1a96c2c6173736dd81a9248357344527e4e5e85
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Dec 25 17:06:00 2018 -0700
+
+    server: Speed up the statistics computation from the database
+
+https://github.com/X9Developers/block-explorer/commit/80c7460b18e95fb278dea31227e5f0b837e73115
+commit 80c7460b18e95fb278dea31227e5f0b837e73115
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Dec 25 17:05:08 2018 -0700
+
+    server: Precompute the available coins
+    
+    In order to speed up the available coins retrieval,
+    the aggregated_amounts table is created, here we store
+    the total available coins which can be retrieved fast.
+
+https://github.com/X9Developers/block-explorer/commit/73943f73e2002349ca65bb7edca0a7313b16da82
+commit 73943f73e2002349ca65bb7edca0a7313b16da82
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Dec 21 22:23:43 2018 -0700
+
+    Add a summary for the public JSON API
+
+https://github.com/X9Developers/block-explorer/commit/7592e06ff8845dda09de828b9b024ffe52ed3bb4
+commit 7592e06ff8845dda09de828b9b024ffe52ed3bb4
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Dec 19 16:07:53 2018 -0700
+
+    infra: Add SSL settings to the frontend
+
+https://github.com/X9Developers/block-explorer/commit/85a61c86d3f0079f7976f3bba248b0440f36be67
+commit 85a61c86d3f0079f7976f3bba248b0440f36be67
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Dec 16 22:31:23 2018 -0700
+
+    infra: Update frontend deployment config
+
+https://github.com/X9Developers/block-explorer/commit/f9c15698c79c67543b47f969a6b26629c06207a7
+commit f9c15698c79c67543b47f969a6b26629c06207a7
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Dec 16 22:31:07 2018 -0700
+
+    infra: Update xsn deployment config
+
+https://github.com/X9Developers/block-explorer/commit/3db47ff2fbb64d3cfc459dcc6b1620928ba1e875
+commit 3db47ff2fbb64d3cfc459dcc6b1620928ba1e875
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Dec 16 22:30:43 2018 -0700
+
+    infra: Update litecoin deployment config
+
+https://github.com/X9Developers/block-explorer/commit/dc71ce8d23e2179b3b984ca4cd20ee0e1ddb8c89
+commit dc71ce8d23e2179b3b984ca4cd20ee0e1ddb8c89
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Dec 16 22:28:54 2018 -0700
+
+    server: Add allowed hosts
+
+https://github.com/X9Developers/block-explorer/commit/b2aaae4d4da8c96174c9bb8c8d0d5c7c67a148af
+commit b2aaae4d4da8c96174c9bb8c8d0d5c7c67a148af
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Dec 16 22:25:07 2018 -0700
+
+    server: Be resilient while loading a transaction
+    
+    For loading a transaction, we need to make several calls to
+    the RPC API for retrieving the inputs, when the server gets
+    overloaded by this, we try to get the inputs sequentially.
+
+https://github.com/X9Developers/block-explorer/commit/f348eaf86f16c8db028271d2039044aee574545f
+commit f348eaf86f16c8db028271d2039044aee574545f
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Dec 16 22:24:04 2018 -0700
+
+    server: Enable constraints on the Address model
+
+https://github.com/X9Developers/block-explorer/commit/19a711dec0fba078bf453c40eb906197e04bde70
+commit 19a711dec0fba078bf453c40eb906197e04bde70
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Dec 15 13:13:50 2018 -0700
+
+    web-ui: Ignore the web-ui.zip file
+
+https://github.com/X9Developers/block-explorer/commit/2ca745c6e86a1b37f489b3bf72d567db0b6590d0
+commit 2ca745c6e86a1b37f489b3bf72d567db0b6590d0
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Dec 15 13:12:57 2018 -0700
+
+    web-ui: Remove console.log
+
+https://github.com/X9Developers/block-explorer/commit/9a832c5380996d7c1395dbc17b05d055217a9cb1
+commit 9a832c5380996d7c1395dbc17b05d055217a9cb1
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Dec 15 13:12:19 2018 -0700
+
+    infra: Add deployment hosts for xsn and ltc
+
+https://github.com/X9Developers/block-explorer/commit/d4515a3583ddbb42ce746ae204ed77bd70484795
+commit d4515a3583ddbb42ce746ae204ed77bd70484795
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Dec 15 13:11:30 2018 -0700
+
+    infra: Add scripts for deploying the frontend
+
+https://github.com/X9Developers/block-explorer/commit/c8b71046a3c9a8082f9a950ce660f93842d9b6b8
+commit c8b71046a3c9a8082f9a950ce660f93842d9b6b8
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Dec 15 13:04:42 2018 -0700
+
+    server: Be resilient while loading a batch of transactions
+    
+    Instead of failing to load a batch of transactions, we try to load
+    them sequencially to avoid overloading the RPC API.
+    
+    This allows a smoother synchronization process.
+
+https://github.com/X9Developers/block-explorer/commit/479eaca09c601276d72be9a853e6adaaab232c10
+commit 479eaca09c601276d72be9a853e6adaaab232c10
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Dec 15 13:02:54 2018 -0700
+
+    server: Handle XSNWorkQueueDepthExceeded when the response is not a json
+    
+    When the RPC API returns a non-json response, the XSNWorkQueueDepthExceeded
+    error can be derived.
+
+https://github.com/X9Developers/block-explorer/commit/f4738baef78fc8ca6987f79af91fad62d33c0514
+commit f4738baef78fc8ca6987f79af91fad62d33c0514
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Dec 15 10:49:50 2018 -0700
+
+    server: Update playsonify to 2.0.0
+
+https://github.com/X9Developers/block-explorer/commit/e20d12cd54f00546afb379977f993f44555b63d3
+commit e20d12cd54f00546afb379977f993f44555b63d3
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Dec 14 23:13:22 2018 -0700
+
+    server: Add XSNWorkQueueDepthExceeded error
+    
+    Now, when the XSN RPC API returns the "Work Queue Depth Exceeded" error,
+    it will be mapped to the XSNWorkQueueDepthExceeded error.
+
+https://github.com/X9Developers/block-explorer/commit/9c5dcbeeacf4427d114ad8ddecc59c32bffbced5
+commit 9c5dcbeeacf4427d114ad8ddecc59c32bffbced5
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Dec 11 22:03:26 2018 -0700
+
+    infra: Update hidden_addresses
+
+https://github.com/X9Developers/block-explorer/commit/1ec1629a1970352ef9a7f7af004aab45c443b90d
+commit 1ec1629a1970352ef9a7f7af004aab45c443b90d
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Dec 4 16:16:54 2018 -0700
+
+    server: Update the endpoint for retrieving latest transactions
+
+https://github.com/X9Developers/block-explorer/commit/29dae2177ec770abbb4ed271ed90c8493c1916db
+commit 29dae2177ec770abbb4ed271ed90c8493c1916db
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Dec 2 15:19:13 2018 -0700
+
+    web-ui: Integrate analytics
+
+https://github.com/X9Developers/block-explorer/commit/dd8751bd2c2609188a367d50494f83ed8943cc1d
+commit dd8751bd2c2609188a367d50494f83ed8943cc1d
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Thu Nov 29 21:08:14 2018 -0700
+
+    infra: Update the expected user on deployment scripts
+
+https://github.com/X9Developers/block-explorer/commit/bcdbf1cd0fb0bb596aca7fd80dffeefbf8dfe9bb
+commit bcdbf1cd0fb0bb596aca7fd80dffeefbf8dfe9bb
+Author: Adinael Perez Ruelas <Adin692@gmail.com>
+Date:   Fri Nov 30 18:53:03 2018 -0700
+
+    Server: fix the getLatestTransactionBy method
+    when sending an empty list
+    added the tests for sending an empty list and retrieving valid data
+
+https://github.com/X9Developers/block-explorer/commit/e654e7b6e61e39949d04f535d1b8ec3a853bca45
+commit e654e7b6e61e39949d04f535d1b8ec3a853bca45
+Author: Mario Mejia <mario128mex@gmail.com>
+Date:   Wed Nov 28 08:17:52 2018 -0700
+
+    Added stakenet (XSN) nano S icons and xsn.png updated
+
+https://github.com/X9Developers/block-explorer/commit/8c805a95d3c5d2612e83b9f53c7af193448133da
+commit 8c805a95d3c5d2612e83b9f53c7af193448133da
+Author: Adinael Perez Ruelas <Adin692@gmail.com>
+Date:   Sun Nov 25 22:32:22 2018 -0700
+
+    Server: Optimized the getBy and countBy methods
+     changing the transaction_inputs and transaction_outputs tables for address_transaction_details table which is indexed
+
+https://github.com/X9Developers/block-explorer/commit/fc7ef3759dd5f14e2eed67881d0af85216f11e61
+commit fc7ef3759dd5f14e2eed67881d0af85216f11e61
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Nov 25 19:36:55 2018 -0700
+
+    infra: Update systemd services for xsn
+    
+    The file limit is increased to avoid failures while
+    synchronizing the database.
+    
+    The change was missing on the previous commit.
+
+https://github.com/X9Developers/block-explorer/commit/a5325436625ddba4ae2fbdd423fdc4522f743caa
+commit a5325436625ddba4ae2fbdd423fdc4522f743caa
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Nov 25 17:47:16 2018 -0700
+
+    infra: Update systemd services for xsn and ltc
+    
+    The file limit is increased to avoid failures while
+    synchronizing the database.
+
+https://github.com/X9Developers/block-explorer/commit/cf420b02247df97b50d0e955837e53f1759c6401
+commit cf420b02247df97b50d0e955837e53f1759c6401
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Nov 24 22:18:50 2018 -0700
+
+    server: Allow to override the genesis block with environment variable
+
+https://github.com/X9Developers/block-explorer/commit/cf3fd0f044dde7fcda6fc4085ed1748ef4b8193c
+commit cf3fd0f044dde7fcda6fc4085ed1748ef4b8193c
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Nov 24 21:10:27 2018 -0700
+
+    infra: Add deployment scripts for litecoin
+
+https://github.com/X9Developers/block-explorer/commit/160134341d3c8bba9f78ddc47d50940a259ab0e8
+commit 160134341d3c8bba9f78ddc47d50940a259ab0e8
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Nov 24 16:55:32 2018 -0700
+
+    infra: Create the .gitignore for the deployment files
+
+https://github.com/X9Developers/block-explorer/commit/c01b2333a2e78abd246bcae4cffa7caab93e17fe
+commit c01b2333a2e78abd246bcae4cffa7caab93e17fe
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Nov 24 16:55:04 2018 -0700
+
+    infra: Move the docs for deploying to the docs folder
+
+https://github.com/X9Developers/block-explorer/commit/01bde7895ae0345659af198467dbbf56bab0677f
+commit 01bde7895ae0345659af198467dbbf56bab0677f
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Nov 24 16:53:41 2018 -0700
+
+    infra: Update the README.md for deploying the apps
+
+https://github.com/X9Developers/block-explorer/commit/0f39c55630dd640094a81dfab23a5851f1e5d20d
+commit 0f39c55630dd640094a81dfab23a5851f1e5d20d
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Nov 24 16:51:59 2018 -0700
+
+    infra: Add script to deploy the xsn-backend
+
+https://github.com/X9Developers/block-explorer/commit/d1a6178337348b1378a1fd9b3f69fc465a93f68c
+commit d1a6178337348b1378a1fd9b3f69fc465a93f68c
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Nov 24 16:50:49 2018 -0700
+
+    infra: Add script to deploy postgres
+
+https://github.com/X9Developers/block-explorer/commit/94967d4f06b1c79a48fb5fa876fc8d50d15b2b30
+commit 94967d4f06b1c79a48fb5fa876fc8d50d15b2b30
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Nov 24 16:50:06 2018 -0700
+
+    infra: Add script to deploy xsnd
+
+https://github.com/X9Developers/block-explorer/commit/449579dfce21dfb19cd6525d7f2dbafb94baee78
+commit 449579dfce21dfb19cd6525d7f2dbafb94baee78
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Nov 19 10:34:18 2018 -0700
+
+    server: Update postgres driver to 42.2.5
+    
+https://github.com/X9Developers/block-explorer/commit/ded2c478410e3b96c2fe8bd234fa4b066bd2ca20
+commit ded2c478410e3b96c2fe8bd234fa4b066bd2ca20
+Author: Adinael Perez Ruelas <Adin692@gmail.com>
+Date:   Sun Nov 18 20:44:19 2018 -0700
+
+    server: Load the genesis block from the config file
+
+https://github.com/X9Developers/block-explorer/commit/117a66869b4822e8eebb3a265a532487dc692018
+commit 117a66869b4822e8eebb3a265a532487dc692018
+Author: Adinael Perez Ruelas <Adin692@gmail.com>
+Date:   Sun Nov 18 20:43:33 2018 -0700
+
+    server: Add the genesis block to the config file
+
+https://github.com/X9Developers/block-explorer/commit/fa829936e4fc7b2fc8a7889fe8378e419ae3879c
+commit fa829936e4fc7b2fc8a7889fe8378e419ae3879c
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Nov 11 11:18:29 2018 -0700
+
+    server: Fix log messages on XSNService
+
+https://github.com/X9Developers/block-explorer/commit/418f2fd4fa9b5ee87254ba87afb3819445b8229d
+commit 418f2fd4fa9b5ee87254ba87afb3819445b8229d
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Nov 11 11:08:23 2018 -0700
+
+    server: Update the nonce from the Block model to Long
+
+https://github.com/X9Developers/block-explorer/commit/c289364e25be1cb11c5a5f138f3c077e99d81bc5
+commit c289364e25be1cb11c5a5f138f3c077e99d81bc5
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Nov 11 11:05:04 2018 -0700
+
+    server: Update the nonce type from blocks table to bigint
+
+https://github.com/X9Developers/block-explorer/commit/e66da342606c4d1b138c3f85c4b1064cbf52745d
+commit e66da342606c4d1b138c3f85c4b1064cbf52745d
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Nov 11 11:03:54 2018 -0700
+
+    server: Remove 6k from the supplies (temporal fix)
+    
+    It looks like the supplies are not being computed correctly,
+    this temporal fix allow us to have an accurate number while
+    having time to investigate the issue.
+
+https://github.com/X9Developers/block-explorer/commit/a4563a5dc5eee2e067db457805965e157534783b
+commit a4563a5dc5eee2e067db457805965e157534783b
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Nov 6 15:22:08 2018 -0700
+
+    server: Add dev.stakenet.io to the CORS rules
+
+https://github.com/X9Developers/block-explorer/commit/d4acc18d9fde136309a2f03deb20e5cb450b10d9
+commit d4acc18d9fde136309a2f03deb20e5cb450b10d9
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Nov 5 00:26:13 2018 -0700
+
+    server: Add endpoint "POST /transactions/latest"
+    
+    This retrieves the latest transaction id for the given addresses.
+
+https://github.com/X9Developers/block-explorer/commit/65f94b1436961c6d6eed7e4933cede15891685f9
+commit 65f94b1436961c6d6eed7e4933cede15891685f9
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Nov 5 00:05:54 2018 -0700
+
+    server: Add getLatestTransactionBy method to the TransactionDataHandler
+    
+    The method returns the latest transaction id for each of the given addresses.
+
+https://github.com/X9Developers/block-explorer/commit/f7887cf3b17ecc7dcd0e19356d50a9008e66c036
+commit f7887cf3b17ecc7dcd0e19356d50a9008e66c036
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Nov 4 23:29:51 2018 -0700
+
+    server: Fill the address_transaction_details while synching the db
+
+https://github.com/X9Developers/block-explorer/commit/80f27602f687251a33170624706ed54c05912093
+commit 80f27602f687251a33170624706ed54c05912093
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Nov 4 23:16:34 2018 -0700
+
+    server: Add the address_transaction_details table
+
+https://github.com/X9Developers/block-explorer/commit/84c6d69f18a0f42ad1ce1dcd9d887cbddde23daf
+commit 84c6d69f18a0f42ad1ce1dcd9d887cbddde23daf
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Nov 4 20:18:40 2018 -0700
+
+    infra: Update queries.sql
+
+https://github.com/X9Developers/block-explorer/commit/83b2cf7fa7e14987a848ddad309f4aa943cf9b04
+commit 83b2cf7fa7e14987a848ddad309f4aa943cf9b04
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Oct 28 15:59:44 2018 -0700
+
+    server: Fix the sentry package properties
+
+https://github.com/X9Developers/block-explorer/commit/bdae233f764595abb8107ba5ecb2714894907e44
+commit bdae233f764595abb8107ba5ecb2714894907e44
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Oct 28 15:31:42 2018 -0700
+
+    infra: Store the hidden_addresses in a file
+
+https://github.com/X9Developers/block-explorer/commit/875be83564549561ddac14849575d13d8a6737c5
+commit 875be83564549561ddac14849575d13d8a6737c5
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Oct 28 12:30:32 2018 -0700
+
+    server: Set up sentry-logback
+
+https://github.com/X9Developers/block-explorer/commit/64a0946e360e10276761c4449667784354f21935
+commit 64a0946e360e10276761c4449667784354f21935
+Author: esuau <evan.suau@etu.u-pec.fr>
+Date:   Mon Oct 22 20:35:27 2018 +0200
+
+    web-ui: #61 Fix error 'Observable.of is not a function'
+
+https://github.com/X9Developers/block-explorer/commit/4b24e70ed52738cf8d027bf839c4af5e53c4d209
+commit 4b24e70ed52738cf8d027bf839c4af5e53c4d209
+Author: esuau <evan.suau@etu.u-pec.fr>
+Date:   Thu Oct 18 12:33:09 2018 +0200
+
+    web-ui: format Karma configuration file
+
+https://github.com/X9Developers/block-explorer/commit/2a403b1d067653b302659da9d68cc4fed6977d1b
+commit 2a403b1d067653b302659da9d68cc4fed6977d1b
+Author: esuau <evan.suau@etu.u-pec.fr>
+Date:   Thu Oct 18 10:34:12 2018 +0200
+
+    web-ui: Add updated yarn.lock file
+
+https://github.com/X9Developers/block-explorer/commit/f52c6f2af9461aa9031bcc5818d22d2c31053a19
+commit f52c6f2af9461aa9031bcc5818d22d2c31053a19
+Author: esuau <evan.suau@etu.u-pec.fr>
+Date:   Thu Oct 18 10:08:35 2018 +0200
+
+    web-ui: Fix X9Developers/block-explorer#55 by upgrading dependencies
+
+https://github.com/X9Developers/block-explorer/commit/a8fb6930185b98e24165439bcb1549cdd30fd446
+commit a8fb6930185b98e24165439bcb1549cdd30fd446
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Oct 21 17:12:21 2018 -0600
+
+    server: Reuse the paginated query on the BlockPostgresDAO
+    
+    The getFirstBlock and getLatestBlock methods use the paginated
+    query to get the results.
+
+https://github.com/X9Developers/block-explorer/commit/c72f458a9d9a7d760abc0fcd983ab047b6126de7
+commit c72f458a9d9a7d760abc0fcd983ab047b6126de7
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Oct 21 16:29:07 2018 -0600
+
+    server: Allow to get paginated blocks from the BlockDataHandler
+
+https://github.com/X9Developers/swap-resolver/commit/b87d900a2f23b849cb55a9554bace7a107bfafd9
+commit b87d900a2f23b849cb55a9554bace7a107bfafd9
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Fri Oct 19 12:32:52 2018 +0300
+
+    Update start.bash
+
+https://github.com/X9Developers/lnd/commit/35d51d648cbe0e433509ea308c924f775ebf4409
+commit 35d51d648cbe0e433509ea308c924f775ebf4409
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Wed Oct 17 14:57:32 2018 +0300
+
+    Added xsn wallet with zmq support
+
+https://github.com/X9Developers/swap-resolver/commit/7809e04d1b4e7eed3ab6388c8d6502df7429878f
+commit 7809e04d1b4e7eed3ab6388c8d6502df7429878f
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Wed Oct 17 14:44:19 2018 +0300
+
+    Update start.bash
+
+https://github.com/X9Developers/swap-resolver/commit/665998e28b905668ca0191698ff333c933abd505
+commit 665998e28b905668ca0191698ff333c933abd505
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Wed Oct 17 14:41:02 2018 +0300
+
+    Update start.bash
+
+https://github.com/X9Developers/swap-resolver/commit/eafd0abf250f028da24f91c261e12d513e7e1f95
+commit eafd0abf250f028da24f91c261e12d513e7e1f95
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Tue Oct 16 18:25:15 2018 +0300
+
+    Removed tls in resolve conf
+
+https://github.com/X9Developers/swap-resolver/commit/243bc5cbc861bbdb8d66502be75911635d4d8063
+commit 243bc5cbc861bbdb8d66502be75911635d4d8063
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Tue Oct 16 11:31:14 2018 +0300
+
+    Fixed ports connections to fit xud resolv conf requirements
+
+https://github.com/X9Developers/swap-resolver/commit/6cb7d57b08ff237a288acea56f703ac28022f525
+commit 6cb7d57b08ff237a288acea56f703ac28022f525
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Sat Oct 13 18:07:45 2018 +0300
+
+    Update LIGHTNING-02-connect.md
+
+https://github.com/X9Developers/swap-resolver/commit/73b6c1d733369ab84df56c9fab926f629c9b2aab
+commit 73b6c1d733369ab84df56c9fab926f629c9b2aab
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Sat Oct 13 17:59:15 2018 +0300
+
+    Update LIGHTNING-00-install.md
+
+https://github.com/X9Developers/swap-resolver/commit/e0d98d233e3950cd8ec22270a7d37cd9a1e38a3f
+commit e0d98d233e3950cd8ec22270a7d37cd9a1e38a3f
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Sat Oct 13 17:58:28 2018 +0300
+
+    Update LIGHTNING-01-peers.md
+    
+https://github.com/X9Developers/swap-resolver/commit/dc3529dbd4ed7bbf45d6bdbd244423a576323b17
+commit dc3529dbd4ed7bbf45d6bdbd244423a576323b17
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Sat Oct 13 17:58:01 2018 +0300
+
+    Update LIGHTNING-02-connect.md
+
+https://github.com/X9Developers/swap-resolver/commit/b11caa0eb83436e2daf6901cfdbb6a2ba9a92885
+commit b11caa0eb83436e2daf6901cfdbb6a2ba9a92885
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Sat Oct 13 17:57:27 2018 +0300
+
+    Update LIGHTNING-03-channels.md
+
+https://github.com/X9Developers/swap-resolver/commit/7cba99c2295f0d63f969723aca8e665a595ac432
+commit 7cba99c2295f0d63f969723aca8e665a595ac432
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Sat Oct 13 17:56:31 2018 +0300
+
+    Update LIGHTNING-04-swap.md
+
+https://github.com/X9Developers/swap-resolver/commit/d0bd3bb4a47518d5656727cc360f846287db456f
+commit d0bd3bb4a47518d5656727cc360f846287db456f
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Sat Oct 13 17:54:06 2018 +0300
+
+    Update LIGHTNING-00-install.md
+
+https://github.com/X9Developers/swap-resolver/commit/9378daa1546ba9f06d99e40b8b45300f6e0b4280
+commit 9378daa1546ba9f06d99e40b8b45300f6e0b4280
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Sat Oct 13 17:50:16 2018 +0300
+
+    Update LIGHTNING-04-swap.md
+
+https://github.com/X9Developers/swap-resolver/commit/a228872520490f5e89ff281587a6b4fcdb89749c
+commit a228872520490f5e89ff281587a6b4fcdb89749c
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Sat Oct 13 17:49:31 2018 +0300
+
+    Update LIGHTNING-03-channels.md
+
+https://github.com/X9Developers/swap-resolver/commit/a8c6f8b947637e8124f4f0577b82674a78fc56e8
+commit a8c6f8b947637e8124f4f0577b82674a78fc56e8
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Sat Oct 13 17:49:08 2018 +0300
+
+    Update LIGHTNING-02-connect.md
+
+https://github.com/X9Developers/swap-resolver/commit/2fd8a8e10f4b189a305c42b0d59801cafced5b2c
+commit 2fd8a8e10f4b189a305c42b0d59801cafced5b2c
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Sat Oct 13 17:48:22 2018 +0300
+
+    Update LIGHTNING-01-peers.md
+
+https://github.com/X9Developers/swap-resolver/commit/177a627c5787964678952085dc22da6716efda2e
+commit 177a627c5787964678952085dc22da6716efda2e
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Sat Oct 13 17:30:14 2018 +0300
+
+    Update LIGHTNING-01-peers.md
+    
+https://github.com/X9Developers/swap-resolver/commit/353f74d875951d1129dd99d792486240a7f565f0
+commit 353f74d875951d1129dd99d792486240a7f565f0
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Sat Oct 13 14:23:22 2018 +0000
+
+    Fixed exchanges and resolver start scripts
+
+https://github.com/X9Developers/swap-resolver/commit/0337d73eb88b7e8c33eec78ce9b1eeed48c22458
+commit 0337d73eb88b7e8c33eec78ce9b1eeed48c22458
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Sat Oct 13 10:42:28 2018 +0300
+
+    Update LIGHTNING-01-peers.md
+
+https://github.com/X9Developers/swap-resolver/commit/1a16fd2254d85e5f14fc35891ad46f9322516ba2
+commit 1a16fd2254d85e5f14fc35891ad46f9322516ba2
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Fri Oct 12 16:39:56 2018 +0300
+
+    Added additional xsn config to resolver
+
+https://github.com/X9Developers/swap-resolver/commit/ff4c5f539aeaa8e33bc93258884b0cf53b9d4879
+commit ff4c5f539aeaa8e33bc93258884b0cf53b9d4879
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Thu Oct 11 17:48:45 2018 +0300
+
+    Update LIGHTNING-04-swap.md
+
+https://github.com/X9Developers/swap-resolver/commit/54bccd4d05e26b93d7bf8239a19a8cc656e461e1
+commit 54bccd4d05e26b93d7bf8239a19a8cc656e461e1
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Thu Oct 11 17:27:49 2018 +0300
+
+    Update Concept.md
+
+https://github.com/X9Developers/swap-resolver/commit/b53e9d077ef904e477ba8fa772426b5c5463d341
+commit b53e9d077ef904e477ba8fa772426b5c5463d341
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Thu Oct 11 17:15:06 2018 +0300
+
+    Delete README.litecoin.md
+
+https://github.com/X9Developers/swap-resolver/commit/40096d448815eb0cf13d17c4d8bae427b5d3bcb5
+commit 40096d448815eb0cf13d17c4d8bae427b5d3bcb5
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Thu Oct 11 17:14:56 2018 +0300
+
+    Delete README.bitcoin.md
+
+https://github.com/X9Developers/swap-resolver/commit/4cdd6b781e3eb05f6d405fc4686bf260b1a47522
+commit 4cdd6b781e3eb05f6d405fc4686bf260b1a47522
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Thu Oct 11 15:54:23 2018 +0300
+
+    Update LIGHTNING-04-swap.md
+
+https://github.com/X9Developers/swap-resolver/commit/744a763f63ebd803b18384dcc51b345f159dd45c
+commit 744a763f63ebd803b18384dcc51b345f159dd45c
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Thu Oct 11 15:51:00 2018 +0300
+
+    Update LIGHTNING-03-channels.md
+
+https://github.com/X9Developers/swap-resolver/commit/4ce5312ae6a62dce8f892daa8a0364c20f2c5e86
+commit 4ce5312ae6a62dce8f892daa8a0364c20f2c5e86
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Thu Oct 11 14:53:18 2018 +0300
+
+    Update LIGHTNING-02-connect.md
+
+https://github.com/X9Developers/swap-resolver/commit/aad1c7a6ee06706662f957c4de9367da9549b51c
+commit aad1c7a6ee06706662f957c4de9367da9549b51c
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Thu Oct 11 14:50:01 2018 +0300
+
+    Update LIGHTNING-01-peers.md
+
+https://github.com/X9Developers/swap-resolver/commit/10b2f5d0d4070fb5b25875075f405a0b6a1ad0c6
+commit 10b2f5d0d4070fb5b25875075f405a0b6a1ad0c6
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Thu Oct 11 14:34:42 2018 +0300
+
+    Update LIGHTNING-00-install.md
+
+https://github.com/X9Developers/swap-resolver/commit/038f39f7ebcee872be21b8fa9e4d4e7d31fe0655
+commit 038f39f7ebcee872be21b8fa9e4d4e7d31fe0655
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Wed Oct 10 17:05:31 2018 +0300
+
+    Added xsn support for swap-resolver
+
+https://github.com/X9Developers/swap-resolver/commit/364a629a4d07c3afe8c66521d73c0f609b1a54fe
+commit 364a629a4d07c3afe8c66521d73c0f609b1a54fe
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Wed Oct 10 16:47:59 2018 +0300
+
+    Added instructions for lightning swaps
+
+https://github.com/X9Developers/block-explorer/commit/35deff6b5e9a0b9fef7cf836f0b23d57a60653fb
+commit 35deff6b5e9a0b9fef7cf836f0b23d57a60653fb
+Author: Rishabh Chakrabarti <rishabh.chakrabarti@protonmail.com>
+Date:   Wed Oct 10 08:44:59 2018 +0530
+
+    server: Add root-cause-exception-first logging to logback.xml (#57)
+    
+    This change helps identify the root cause in the stack trace of exceptions.
+
+https://github.com/X9Developers/block-explorer/commit/1680b7b85272f1b0d04b063a698664c3009bf499
+commit 1680b7b85272f1b0d04b063a698664c3009bf499
+Author: Rishabh Chakrabarti <rishabh.chakrabarti@protonmail.com>
+Date:   Tue Oct 9 22:21:51 2018 +0530
+
+    server: Integrated sbt-errors-plugin
+
+https://github.com/X9Developers/lnd/commit/a5189bb071099c94dbe71c6d8be7f1e7dedb467e
+commit a5189bb071099c94dbe71c6d8be7f1e7dedb467e
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Wed Oct 3 14:17:49 2018 +0300
+
+    updated xsn integration patch with latest changes
+
+https://github.com/X9Developers/lnd/commit/85a2af3f7af2a916e207ca3146f69291d295808e
+commit 85a2af3f7af2a916e207ca3146f69291d295808e
+Merge: 7d42f842 a3edcf9c
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Wed Oct 3 13:58:56 2018 +0300
+
+    Merge branch 'master' of https://github.com/lightningnetwork/lnd
+
+https://github.com/X9Developers/lnd/commit/7d42f8424ec0e65ba143d9cfc007314485bd0da8
+commit 7d42f8424ec0e65ba143d9cfc007314485bd0da8
+Author: RostyslavAntonyshyn <rostyslav.antonyshyn@gmail.com>
+Date:   Wed Oct 3 13:55:48 2018 +0300
+
+    Update lightning_channels_manual.md
+    
+https://github.com/X9Developers/block-explorer/commit/3bf3fce27ce95af8bd3bdd0673b3205a487c0a17
+commit 3bf3fce27ce95af8bd3bdd0673b3205a487c0a17
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Sep 30 23:12:43 2018 -0600
+
+    infra: Fix deploy-web-ui.md symbol
+
+https://github.com/X9Developers/block-explorer/commit/fe5d3b004a57e14b54b184fd9ae593138acc4425
+commit fe5d3b004a57e14b54b184fd9ae593138acc4425
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Sep 30 22:49:01 2018 -0600
+
+    web-ui: Improve the block details component (#19)
+    
+    - A message is displayed when the transaction list is not available.
+    - The transaction list is loaded after the block data.
+    - When the paginated transactions aren't available, the transaction
+      list from the block data is displayed.
+
+https://github.com/X9Developers/block-explorer/commit/b4a4577186a3978dfe76a2d681cc9f1bc8cea96a
+commit b4a4577186a3978dfe76a2d681cc9f1bc8cea96a
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Sep 30 17:38:06 2018 -0600
+
+    server: Add "GET /blocks/:blockhash/transactions" (#19)
+
+https://github.com/X9Developers/block-explorer/commit/11e25da4a4957008907d329d745d2f4b3ce690bd
+commit 11e25da4a4957008907d329d745d2f4b3ce690bd
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Sep 30 09:10:10 2018 -0600
+
+    server: Add getByBlockhash method to the TransactionDataHandler (#19)
+
+https://github.com/X9Developers/ledger-app-btc/commit/143a0f3a6e8f61abd3e61affa5a4c83500d40103
+commit 143a0f3a6e8f61abd3e61affa5a4c83500d40103
+Author: Yura Oleksyshyn <yuraolex@gmail.com>
+Date:   Mon Sep 17 16:01:47 2018 +0300
+
+    Added support for XSN
+
+https://github.com/X9Developers/block-explorer/commit/b6a98d1ffa1969c3ff9705e785ffdccbe6878600
+commit b6a98d1ffa1969c3ff9705e785ffdccbe6878600
+Author: Mario Mejia <mario128mex@gmail.com>
+Date:   Mon Jul 23 14:09:35 2018 -0500
+
+    web-ui: improvements on block details view (#19)
+    
+    transactions for the block are now retrieved separately, the
+    transactions table is paginated and shows more info and
+    finally the view now is mobile friendly
+
+https://github.com/X9Developers/block-explorer/commit/13ea8da0be50cb5073e3c2c5ea9bf6f247411fde
+commit 13ea8da0be50cb5073e3c2c5ea9bf6f247411fde
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Sep 2 11:08:51 2018 -0600
+
+    Update README.md
+
+https://github.com/X9Developers/block-explorer/commit/113ac97c8bb6909c7cb2bf044e6521369fd4885f
+commit 113ac97c8bb6909c7cb2bf044e6521369fd4885f
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Sep 2 09:03:16 2018 -0600
+
+    infra: Update the xsn.conf
+
+https://github.com/X9Developers/block-explorer/commit/4280ecc27da629b1f194d85b011d10b7e00662d4
+commit 4280ecc27da629b1f194d85b011d10b7e00662d4
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Sep 2 08:58:48 2018 -0600
+
+    server: Allow CORS from https://cloud.stakenet.io
+
+https://github.com/X9Developers/block-explorer/commit/393b737df3e94653d2be2c8c8a15b846efea2319
+commit 393b737df3e94653d2be2c8c8a15b846efea2319
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Sep 2 08:57:31 2018 -0600
+
+    infra: Add maintenance page
+
+https://github.com/X9Developers/block-explorer/commit/6379c4e0bf91e4bde92f3abd3bf39f086d09ebc8
+commit 6379c4e0bf91e4bde92f3abd3bf39f086d09ebc8
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Sep 1 20:44:00 2018 -0600
+
+    Revert "server: Hardcode previous supplies (#47)"
+    
+    This reverts commit 249589b8709170eba41dc2199fdfef470f87cb11.
+
+https://github.com/X9Developers/block-explorer/commit/41ea8f776aba5a89fd04b767adb4d579953fee71
+commit 41ea8f776aba5a89fd04b767adb4d579953fee71
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Aug 22 11:40:00 2018 -0600
+
+    server: Hardcode previous supplies (#47)
+    
+    Until #47 is fixed, we'll display the previous supplies
+    to avoid displaying any possible big inconsistencies.
+
+https://github.com/X9Developers/block-explorer/commit/8bb3ff26e02c05b1da98a1410e86474a6dba6ad1
+commit 8bb3ff26e02c05b1da98a1410e86474a6dba6ad1
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Aug 22 11:13:09 2018 -0600
+
+    server: Disable address checks (#45)
+    
+    In order to keep the database in sync, the address
+    checks are being disabled, this is a partial solution
+    to let the explorer continue working until the actual
+    validations are added.
