@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/99c0200af02cdcd3b67a0db338a212029dc7e6bd
+commit 99c0200af02cdcd3b67a0db338a212029dc7e6bd
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Jan 21 22:25:56 2019 -0700
+
+    server: Extract the TransactionRPCService from TransactionService
+
 https://github.com/X9Developers/block-explorer/commit/3630e24483fe825b0611b0005e584279f4e5d1bb
 commit 3630e24483fe825b0611b0005e584279f4e5d1bb
 Author: Alexis Hernandez <alexis22229@gmail.com>
