@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/3630e24483fe825b0611b0005e584279f4e5d1bb
+commit 3630e24483fe825b0611b0005e584279f4e5d1bb
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Jan 21 22:25:51 2019 -0700
+
+    server: Log timings while synchronizing blocks
+
 https://github.com/X9Developers/block-explorer/commit/668153d6c4ad4e40a40649d7025934e44facfdff
 commit 668153d6c4ad4e40a40649d7025934e44facfdff
 Author: Alexis Hernandez <alexis22229@gmail.com>
