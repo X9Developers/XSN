@@ -223,8 +223,8 @@ void TPoSPage::onStakeClicked()
                 sendToTPoSAddress(tposAddress);
             }
         };
-
-        if (_walletModel->getEncryptionStatus() == WalletModel::Locked)
+        WalletModel::EncryptionStatus encStatus = _walletModel->getEncryptionStatus();
+        if (encStatus == WalletModel::Locked || encStatus == _walletModel->UnlockedForStakingOnly)
         {
             WalletModel::UnlockContext ctx(_walletModel->requestUnlock());
             if (!ctx.isValid())
@@ -270,7 +270,8 @@ void TPoSPage::onCancelClicked()
 
     try
     {
-        if (_walletModel->getEncryptionStatus() == WalletModel::Locked)
+        WalletModel::EncryptionStatus encStatus = _walletModel->getEncryptionStatus();
+        if (encStatus == WalletModel::Locked || encStatus == _walletModel->UnlockedForStakingOnly)
         {
             WalletModel::UnlockContext ctx(_walletModel->requestUnlock());
             if (!ctx.isValid())

@@ -705,7 +705,7 @@ UniValue dumpprivkey(const JSONRPCRequest& request)
 
 
 UniValue dumpwallet(const JSONRPCRequest& request)
-{
+{    
     CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
     if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
         return NullUniValue;
