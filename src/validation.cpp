@@ -3674,7 +3674,7 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CVali
     if (fNewBlock) *fNewBlock = false;
     AssertLockHeld(cs_main);
 
-    CBlockIndex *pindexDummy = NULL;
+    CBlockIndex *pindexDummy = nullptr;
     CBlockIndex *&pindex = ppindex ? *ppindex : pindexDummy;
 
     // Get prev block index
@@ -3759,12 +3759,12 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CVali
         }
         
         // if this is on fork
-        if (!chainActive.Contains(pindexPrev) && pindexPrev != NULL) {
+        if (!chainActive.Contains(pindexPrev) && pindexPrev != nullptr) {
             // start at the block we're adding on to
             CBlockIndex *last = pindexPrev;
 
             // while that block is not on the main chain
-            while (!chainActive.Contains(last) && pindexPrev != NULL) {
+            while (!chainActive.Contains(last) && pindexPrev != nullptr) {
                 CBlock bl;
                 ReadBlockFromDisk(bl, last, Params().GetConsensus());
                 // loop through every spent input from said block
