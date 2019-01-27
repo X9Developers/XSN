@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/2e45d79fa04660b88a77a5c3b8a963c633ac8b3b
+commit 2e45d79fa04660b88a77a5c3b8a963c633ac8b3b
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jan 26 22:43:31 2019 -0700
+
+    web-ui: Render block rewards only when available
+
 https://github.com/X9Developers/block-explorer/commit/b7d2dc0740e34ce38b5a77df12369684d3c3f291
 commit b7d2dc0740e34ce38b5a77df12369684d3c3f291
 Author: Alexis Hernandez <alexis22229@gmail.com>
