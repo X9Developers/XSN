@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/b7d2dc0740e34ce38b5a77df12369684d3c3f291
+commit b7d2dc0740e34ce38b5a77df12369684d3c3f291
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jan 26 22:38:36 2019 -0700
+
+    server: Allow to retrieve blocks without rewards (#62)
+
 https://github.com/X9Developers/block-explorer/commit/08f26e764bd8a11db84ee6d597d2aaf0c8d7f716
 commit 08f26e764bd8a11db84ee6d597d2aaf0c8d7f716
 Author: Alexis Hernandez <alexis22229@gmail.com>
