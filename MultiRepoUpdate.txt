@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/08f26e764bd8a11db84ee6d597d2aaf0c8d7f716
+commit 08f26e764bd8a11db84ee6d597d2aaf0c8d7f716
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jan 26 22:16:24 2019 -0700
+
+    server: Reduce boilerplate on the BlocksControllerSpec
+
 https://github.com/X9Developers/block-explorer/commit/99c0200af02cdcd3b67a0db338a212029dc7e6bd
 commit 99c0200af02cdcd3b67a0db338a212029dc7e6bd
 Author: Alexis Hernandez <alexis22229@gmail.com>
