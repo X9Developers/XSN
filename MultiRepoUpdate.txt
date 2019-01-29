@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/56963b23d61cfe432c8b0d5b4f062c9cda694188
+commit 56963b23d61cfe432c8b0d5b4f062c9cda694188
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Jan 28 19:02:48 2019 -0700
+
+    server: Remove unnecessary timing logs
+
 https://github.com/X9Developers/block-explorer/commit/2e45d79fa04660b88a77a5c3b8a963c633ac8b3b
 commit 2e45d79fa04660b88a77a5c3b8a963c633ac8b3b
 Author: Alexis Hernandez <alexis22229@gmail.com>
