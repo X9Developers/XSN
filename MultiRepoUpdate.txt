@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/bwang22/lightWallet/commit/429f4942c5c73cc35009f7b542df43aa34dd2f7b
+commit 429f4942c5c73cc35009f7b542df43aa34dd2f7b
+Author: yuraolex <yuraolex@Yura-MacBook-Pro.local>
+Date:   Tue Jan 29 18:11:42 2019 +0200
+
+    Private activity from https://github.com/bwang22/lightWallet
+
 https://github.com/bwang22/lightWallet/commit/2ad747920707e6257382ae11d654adfc18920682
 commit 2ad747920707e6257382ae11d654adfc18920682
 Author: yuraolex <yuraolex@Yura-MacBook-Pro.local>
