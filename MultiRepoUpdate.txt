@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/423ff7df1ad0171c532e08381946f53529f16116
+commit 423ff7df1ad0171c532e08381946f53529f16116
+Author: Kolby Moroz <31669092+mrmetech@users.noreply.github.com>
+Date:   Sat Feb 2 19:14:53 2019 -0700
+
+    server: Add difficulty to the /stats endpoint
+
 https://github.com/X9Developers/block-explorer/commit/56963b23d61cfe432c8b0d5b4f062c9cda694188
 commit 56963b23d61cfe432c8b0d5b4f062c9cda694188
 Author: Alexis Hernandez <alexis22229@gmail.com>
