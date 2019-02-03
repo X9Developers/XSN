@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/516dd402d1b083ae84cc5765462e2165058cbbcc
+commit 516dd402d1b083ae84cc5765462e2165058cbbcc
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 2 19:41:42 2019 -0700
+
+    server: Return statistics even if masternodes or difficulty aren't available
+
 https://github.com/X9Developers/block-explorer/commit/423ff7df1ad0171c532e08381946f53529f16116
 commit 423ff7df1ad0171c532e08381946f53529f16116
 Author: Kolby Moroz <31669092+mrmetech@users.noreply.github.com>
