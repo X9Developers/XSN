@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/29b8b583badab6b14f74fadc09794c659b9d8b75
+commit 29b8b583badab6b14f74fadc09794c659b9d8b75
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Feb 17 00:05:55 2019 -0700
+
+    server: Move the HexString model to the values package
+
 https://github.com/X9Developers/block-explorer/commit/33fcda6ef3b37cd2a8f833ca75134d04aa053542
 commit 33fcda6ef3b37cd2a8f833ca75134d04aa053542
 Author: Alexis Hernandez <alexis22229@gmail.com>
