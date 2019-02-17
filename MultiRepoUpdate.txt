@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/d7cc0307f3bbc5198dd37f89bd249d7072c1cd7c
+commit d7cc0307f3bbc5198dd37f89bd249d7072c1cd7c
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 16 23:54:12 2019 -0700
+
+    server: Create the values package
+
 https://github.com/X9Developers/block-explorer/commit/685b54b576852ddc442c56b34df908c6f9d24a03
 commit 685b54b576852ddc442c56b34df908c6f9d24a03
 Author: Alexis Hernandez <alexis22229@gmail.com>
