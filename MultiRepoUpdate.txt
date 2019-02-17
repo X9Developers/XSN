@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/5a5f6073174ebe83f4fb78ddbe00bc3d725b5cf2
+commit 5a5f6073174ebe83f4fb78ddbe00bc3d725b5cf2
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 16 23:25:23 2019 -0700
+
+    server: Create the model transformers package
+    
+    The logic to transform a rpc block to a persisted block lives here.
+
 https://github.com/X9Developers/block-explorer/commit/21399f3c99f1809d32e86bf8705a4a2cc5512943
 commit 21399f3c99f1809d32e86bf8705a4a2cc5512943
 Author: Alexis Hernandez <alexis22229@gmail.com>
