@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/33fcda6ef3b37cd2a8f833ca75134d04aa053542
+commit 33fcda6ef3b37cd2a8f833ca75134d04aa053542
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Feb 17 00:02:01 2019 -0700
+
+    server: Move the Height value to the values package
+
 https://github.com/X9Developers/block-explorer/commit/9c10ae154d43ff9e59f6c9683a495bd74b67c389
 commit 9c10ae154d43ff9e59f6c9683a495bd74b67c389
 Author: Alexis Hernandez <alexis22229@gmail.com>
