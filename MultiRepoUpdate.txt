@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/6dd7b032b11cab79d829c804c1932568b17b45fb
+commit 6dd7b032b11cab79d829c804c1932568b17b45fb
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Feb 17 00:08:34 2019 -0700
+
+    server: Move the Size value to the values package
+
 https://github.com/X9Developers/block-explorer/commit/f67d7831f093ed63bd00faa58627e707f20f5d29
 commit f67d7831f093ed63bd00faa58627e707f20f5d29
 Author: Alexis Hernandez <alexis22229@gmail.com>
