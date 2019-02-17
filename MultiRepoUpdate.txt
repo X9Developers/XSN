@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/2dd9b4837a115382bd78637e03ba9eee60bb9527
+commit 2dd9b4837a115382bd78637e03ba9eee60bb9527
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 16 22:36:00 2019 -0700
+
+    server: Update the data package to use the Block from the persisted package
+
 https://github.com/X9Developers/block-explorer/commit/7619ef348306ad47b8ca0e15fa06ea6fc523c8bc
 commit 7619ef348306ad47b8ca0e15fa06ea6fc523c8bc
 Author: Alexis Hernandez <alexis22229@gmail.com>
