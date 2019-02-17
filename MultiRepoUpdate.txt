@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/685b54b576852ddc442c56b34df908c6f9d24a03
+commit 685b54b576852ddc442c56b34df908c6f9d24a03
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 16 23:47:58 2019 -0700
+
+    server: Move the Balance model to the persisted package
+
 https://github.com/X9Developers/block-explorer/commit/38a83f23aee08068d78cdc417ece6e9faf6c3160
 commit 38a83f23aee08068d78cdc417ece6e9faf6c3160
 Author: Alexis Hernandez <alexis22229@gmail.com>
