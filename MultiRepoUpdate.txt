@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/21399f3c99f1809d32e86bf8705a4a2cc5512943
+commit 21399f3c99f1809d32e86bf8705a4a2cc5512943
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 16 23:08:31 2019 -0700
+
+    server: Add extraction_method column to the blocks table
+    
+    Defaults to PoW, a migration is required to set the correct values.
+
 https://github.com/X9Developers/block-explorer/commit/2dd9b4837a115382bd78637e03ba9eee60bb9527
 commit 2dd9b4837a115382bd78637e03ba9eee60bb9527
 Author: Alexis Hernandez <alexis22229@gmail.com>
