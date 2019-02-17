@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/a1737b9710d47069ded6341e77c651d7f51e4899
+commit a1737b9710d47069ded6341e77c651d7f51e4899
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 16 23:54:36 2019 -0700
+
+    server: Move the Address value to the values package
+
 https://github.com/X9Developers/block-explorer/commit/d7cc0307f3bbc5198dd37f89bd249d7072c1cd7c
 commit d7cc0307f3bbc5198dd37f89bd249d7072c1cd7c
 Author: Alexis Hernandez <alexis22229@gmail.com>
