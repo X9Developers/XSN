@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/38a83f23aee08068d78cdc417ece6e9faf6c3160
+commit 38a83f23aee08068d78cdc417ece6e9faf6c3160
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 16 23:42:24 2019 -0700
+
+    server: Move the AddressTransactionDetails model to the persisted package
+
 https://github.com/X9Developers/block-explorer/commit/b7f91b7ce44761ab85ff786dbb41d7340e7afcad
 commit b7f91b7ce44761ab85ff786dbb41d7340e7afcad
 Author: Alexis Hernandez <alexis22229@gmail.com>
