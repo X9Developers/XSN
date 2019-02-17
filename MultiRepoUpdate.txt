@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/b7f91b7ce44761ab85ff786dbb41d7340e7afcad
+commit b7f91b7ce44761ab85ff786dbb41d7340e7afcad
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 16 23:41:10 2019 -0700
+
+    server: Move the Transaction model to the persisted package
+
 https://github.com/X9Developers/block-explorer/commit/5a5f6073174ebe83f4fb78ddbe00bc3d725b5cf2
 commit 5a5f6073174ebe83f4fb78ddbe00bc3d725b5cf2
 Author: Alexis Hernandez <alexis22229@gmail.com>
