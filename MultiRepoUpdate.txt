@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/7619ef348306ad47b8ca0e15fa06ea6fc523c8bc
+commit 7619ef348306ad47b8ca0e15fa06ea6fc523c8bc
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 16 21:44:08 2019 -0700
+
+    server: Add the persisted models package
+    
+    Includes the Block model which represents what is actually persisted.
+
 https://github.com/X9Developers/block-explorer/commit/988694b88a976a27175c7772abd6360690521bd0
 commit 988694b88a976a27175c7772abd6360690521bd0
 Author: Alexis Hernandez <alexis22229@gmail.com>
