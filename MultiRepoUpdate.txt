@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/de64af5b9ba25d002e32edb8d0e5fa87ee48ecd8
+commit de64af5b9ba25d002e32edb8d0e5fa87ee48ecd8
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Feb 17 00:00:27 2019 -0700
+
+    server: Move the Blockhash value to the values package
+
 https://github.com/X9Developers/block-explorer/commit/a1737b9710d47069ded6341e77c651d7f51e4899
 commit a1737b9710d47069ded6341e77c651d7f51e4899
 Author: Alexis Hernandez <alexis22229@gmail.com>
