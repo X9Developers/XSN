@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/fc0696a46759ae9e2442a08826c8a3b189ba8c80
+commit fc0696a46759ae9e2442a08826c8a3b189ba8c80
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Feb 17 21:37:24 2019 -0700
+
+    server: Refactor TransactionService to remove the transaction transformer
+    
+    The logic was moved to the transformers package.
+
 https://github.com/X9Developers/block-explorer/commit/b8b44eab5b99eea34ae8094fbbee35db15a0dd92
 commit b8b44eab5b99eea34ae8094fbbee35db15a0dd92
 Author: Alexis Hernandez <alexis22229@gmail.com>
