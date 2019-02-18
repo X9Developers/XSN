@@ -1,5 +1,15 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/b8b44eab5b99eea34ae8094fbbee35db15a0dd92
+commit b8b44eab5b99eea34ae8094fbbee35db15a0dd92
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Feb 17 21:31:21 2019 -0700
+
+    server: Refactor the sql parsers to expect correct data from the database
+    
+    If the data turns out to be corrupted, an exception is going to be thrown,
+    as there are check constraints on the sql schema, this shouldn't occur.
+
 https://github.com/X9Developers/block-explorer/commit/aef41d5f8eb89b6282717b5e674a23d907647d3a
 commit aef41d5f8eb89b6282717b5e674a23d907647d3a
 Author: Alexis Hernandez <alexis22229@gmail.com>
