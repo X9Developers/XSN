@@ -1,5 +1,15 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/aef41d5f8eb89b6282717b5e674a23d907647d3a
+commit aef41d5f8eb89b6282717b5e674a23d907647d3a
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Feb 17 21:15:49 2019 -0700
+
+    server: Split the persisted transaction model
+    
+    There are two models now, the one having inputs/outputs
+    and the one without them.
+
 https://github.com/X9Developers/block-explorer/commit/347a4d6ca50f1366f900a96adc78269b535c91c0
 commit 347a4d6ca50f1366f900a96adc78269b535c91c0
 Author: Alexis Hernandez <alexis22229@gmail.com>
