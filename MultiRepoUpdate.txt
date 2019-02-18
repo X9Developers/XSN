@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/469c241931d2b20aa832cfe76e370dbb0823792f
+commit 469c241931d2b20aa832cfe76e370dbb0823792f
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Feb 17 22:13:18 2019 -0700
+
+    server: Extract the BlockExtractionMethod from the persisted block
+
 https://github.com/X9Developers/block-explorer/commit/fc0696a46759ae9e2442a08826c8a3b189ba8c80
 commit fc0696a46759ae9e2442a08826c8a3b189ba8c80
 Author: Alexis Hernandez <alexis22229@gmail.com>
