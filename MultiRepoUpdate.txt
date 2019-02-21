@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/750e2968b676f5b0464ea8c530a09868ee9dfe3a
+commit 750e2968b676f5b0464ea8c530a09868ee9dfe3a
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Feb 20 22:55:54 2019 -0700
+
+    server: Add missing index to the transaction_inputs table
+
 https://github.com/X9Developers/block-explorer/commit/a926191a77b906f652708162d694ca0663c9917d
 commit a926191a77b906f652708162d694ca0663c9917d
 Author: Alexis Hernandez <alexis22229@gmail.com>
