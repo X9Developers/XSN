@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/1e4cc232274be2b6e01a36f0ef19135460fc6183
+commit 1e4cc232274be2b6e01a36f0ef19135460fc6183
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Feb 20 21:06:27 2019 -0700
+
+    infra: Add support for GRS
+
 https://github.com/X9Developers/block-explorer/commit/750e2968b676f5b0464ea8c530a09868ee9dfe3a
 commit 750e2968b676f5b0464ea8c530a09868ee9dfe3a
 Author: Alexis Hernandez <alexis22229@gmail.com>
