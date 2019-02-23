@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/2798b528ed330bee4c5c8f10cc763bdb4c35e476
+commit 2798b528ed330bee4c5c8f10cc763bdb4c35e476
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Feb 22 18:13:04 2019 -0700
+
+    server: Add endpoint "GET /blocks/headers"
+
 https://github.com/X9Developers/block-explorer/commit/ae42e3cc9ca0e4ebca75707492589443abe5eb62
 commit ae42e3cc9ca0e4ebca75707492589443abe5eb62
 Author: Alexis Hernandez <alexis22229@gmail.com>
