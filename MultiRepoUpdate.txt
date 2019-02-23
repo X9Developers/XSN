@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/8b9f1c00f3f0c970b13e57e973b0ef17bfb0d337
+commit 8b9f1c00f3f0c970b13e57e973b0ef17bfb0d337
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Feb 22 18:47:28 2019 -0700
+
+    server: Add Block.HasTransactions persisted model
+
 https://github.com/X9Developers/block-explorer/commit/485faea74b142b66d0fb25bb82d1caea42f59edf
 commit 485faea74b142b66d0fb25bb82d1caea42f59edf
 Author: Alexis Hernandez <alexis22229@gmail.com>
