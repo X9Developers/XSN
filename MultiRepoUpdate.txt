@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/9dd24a4212fb34bfc05056ff29a7ca3295bcc592
+commit 9dd24a4212fb34bfc05056ff29a7ca3295bcc592
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Feb 22 18:13:24 2019 -0700
+
+    server: Update Address format to allow bitcoin addresses
+
 https://github.com/X9Developers/block-explorer/commit/2798b528ed330bee4c5c8f10cc763bdb4c35e476
 commit 2798b528ed330bee4c5c8f10cc763bdb4c35e476
 Author: Alexis Hernandez <alexis22229@gmail.com>
