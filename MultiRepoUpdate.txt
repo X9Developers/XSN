@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/485faea74b142b66d0fb25bb82d1caea42f59edf
+commit 485faea74b142b66d0fb25bb82d1caea42f59edf
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Feb 22 18:46:54 2019 -0700
+
+    server: Fix AddressesControllerSpec
+
 https://github.com/X9Developers/block-explorer/commit/dbd1f28ff773665241c0372eb4cbe0307fa84755
 commit dbd1f28ff773665241c0372eb4cbe0307fa84755
 Author: Alexis Hernandez <alexis22229@gmail.com>
