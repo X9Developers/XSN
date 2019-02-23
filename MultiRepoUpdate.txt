@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/c921d73415c42b45c9b8cc004f09e02cf7b90092
+commit c921d73415c42b45c9b8cc004f09e02cf7b90092
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Feb 22 18:48:10 2019 -0700
+
+    server: Update classes related to the ledger sync process to use the Block.HasTransactions model
+
 https://github.com/X9Developers/block-explorer/commit/8b9f1c00f3f0c970b13e57e973b0ef17bfb0d337
 commit 8b9f1c00f3f0c970b13e57e973b0ef17bfb0d337
 Author: Alexis Hernandez <alexis22229@gmail.com>
