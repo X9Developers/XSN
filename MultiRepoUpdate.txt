@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/aa05af72ac6b25ccd6e01c9eb3a04eb431e97e4f
+commit aa05af72ac6b25ccd6e01c9eb3a04eb431e97e4f
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Feb 27 21:16:29 2019 -0700
+
+    server: Return the txid after pushing a transaction to the network
+
 https://github.com/X9Developers/block-explorer/commit/c921d73415c42b45c9b8cc004f09e02cf7b90092
 commit c921d73415c42b45c9b8cc004f09e02cf7b90092
 Author: Alexis Hernandez <alexis22229@gmail.com>
