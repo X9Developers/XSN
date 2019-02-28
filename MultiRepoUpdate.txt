@@ -1,5 +1,17 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/e5fc2ac2508a30f789d9db8037b7b634514b33b5
+commit e5fc2ac2508a30f789d9db8037b7b634514b33b5
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Feb 27 21:33:28 2019 -0700
+
+    server: Filter out duplicated transactions while synchronizing the ledger
+    
+    Bitcoin allows duplicated transactions that are already spent, this causes
+    conflicts when retrieving them from the txindex because the older ones are lost.
+    
+    Filtering the lost transactions reduces the consistency but allows to keep syncing.
+
 https://github.com/X9Developers/block-explorer/commit/e91de5b6de21f73c1ed6b413ce2f0cf99c801741
 commit e91de5b6de21f73c1ed6b413ce2f0cf99c801741
 Author: Alexis Hernandez <alexis22229@gmail.com>
