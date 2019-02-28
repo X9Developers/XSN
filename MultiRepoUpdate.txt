@@ -1,5 +1,15 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/5527b545b6bd0a6b271f985ee90a6cee2edd8c99
+commit 5527b545b6bd0a6b271f985ee90a6cee2edd8c99
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Feb 27 21:51:00 2019 -0700
+
+    server: Add lite-version config
+    
+    Enabling the lite-version allows to prune block details
+    to allow syncing fast until what the light wallet needs.
+
 https://github.com/X9Developers/block-explorer/commit/e5fc2ac2508a30f789d9db8037b7b634514b33b5
 commit e5fc2ac2508a30f789d9db8037b7b634514b33b5
 Author: Alexis Hernandez <alexis22229@gmail.com>
