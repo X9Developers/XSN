@@ -1,5 +1,15 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/ff857975651ec719f8f0d076582887f78b1d91ce
+commit ff857975651ec719f8f0d076582887f78b1d91ce
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 2 13:24:44 2019 -0700
+
+    server: Refactor the TransactionVIN into a typed alternative
+    
+    Now we are able to use types to detect when a TransactionVIN has the
+    cached values.
+
 https://github.com/X9Developers/block-explorer/commit/b6e41002d0c06f839115c40e3e973f8824801158
 commit b6e41002d0c06f839115c40e3e973f8824801158
 Author: Alexis Hernandez <alexis22229@gmail.com>
