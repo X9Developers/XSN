@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/b6e41002d0c06f839115c40e3e973f8824801158
+commit b6e41002d0c06f839115c40e3e973f8824801158
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 2 12:27:29 2019 -0700
+
+    server: Add instructions for Bitcoin
+
 https://github.com/X9Developers/block-explorer/commit/aa05af72ac6b25ccd6e01c9eb3a04eb431e97e4f
 commit aa05af72ac6b25ccd6e01c9eb3a04eb431e97e4f
 Author: Alexis Hernandez <alexis22229@gmail.com>
