@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/d9c56e31e43b91cc2ca71ac7c6e0f4ac834a6f07
+commit d9c56e31e43b91cc2ca71ac7c6e0f4ac834a6f07
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 2 21:32:16 2019 -0700
+
+    server: Update blocks.difficulty precision
+
 https://github.com/X9Developers/block-explorer/commit/ff857975651ec719f8f0d076582887f78b1d91ce
 commit ff857975651ec719f8f0d076582887f78b1d91ce
 Author: Alexis Hernandez <alexis22229@gmail.com>
