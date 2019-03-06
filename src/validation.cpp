@@ -3400,6 +3400,10 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationSta
             return state.DoS(100, error("%s: forked chain older than last checkpoint (height %d)", __func__, nHeight), REJECT_CHECKPOINT, "bad-fork-prior-to-checkpoint");
     }
 
+    // Check that the block satisfies synchronized checkpoint
+    if (!Checkpoints::CheckSync(nHeight))
+        return state.DoS(1, error("%s: forked chain older than synchronized checkpoint (height %d)", __func__, nHeight), REJECT_CHECKPOINT, "bad-fork-prior-to-synch-checkpoint");
+
     // Check timestamp against prev
     if (block.GetBlockTime() <= pindexPrev->GetMedianTimePast())
         return state.Invalid(false, REJECT_INVALID, "time-too-old", "block's timestamp is too early");
@@ -3609,6 +3613,20 @@ bool ProcessNewBlockHeaders(const std::vector<CBlockHeader>& headers, CValidatio
         LOCK(cs_main);
         for (const CBlockHeader& header : headers) {
             CBlockIndex *pindex = nullptr; // Use a temp pindex instead of ppindex to avoid a const_cast
+
+            // Check for the checkpoint
+            if (header.hashPrevBlock != chainActive.Tip()->GetBlockHash())
+            {
+                // Extra checks to prevent "fill up memory by spamming with bogus blocks"
+                const CBlockIndex* pcheckpoint = Checkpoints::AutoSelectSyncCheckpoint();
+                int64_t deltaTime = header.GetBlockTime() - pcheckpoint->nTime;
+                if (deltaTime < 0)
+                {
+                    return state.DoS(1, false, REJECT_INVALID, "older-than-checkpoint", false,
+                                     "ProcessNewBlockHeaders(): Block with a timestamp before last checkpoint");
+                }
+            }
+
             if (!g_chainstate.AcceptBlockHeader(header, state, chainparams, &pindex)) {
                 if (first_invalid) *first_invalid = header;
                 return false;
