@@ -342,20 +342,6 @@ uint256 stakeHash(unsigned int nTimeTx, CDataStream ss, unsigned int prevoutInde
     return Hash(ss.begin(), ss.end());
 }
 
-//test hash vs target
-bool stakeTargetHit(uint256 hashProofOfStake, int64_t nValueIn, arith_uint256 bnTargetPerCoinDay, bool fTPoS)
-{
-    //get the stake weight - weight is equal to coin amount
-    arith_uint256 bnCoinDayWeight = arith_uint256(nValueIn) / 100;
-
-    //Tpos weight penalty -- first try. This might need to be modified later depending on testing
-    //    if(fTPoS){
-    //        bnCoinDayWeight = bnCoinDayWeight / 80;
-    //    }
-    // Now check if proof-of-stake hash meets target protocol
-    return UintToArith256(hashProofOfStake) < bnCoinDayWeight * bnTargetPerCoinDay;
-}
-
 // ppcoin kernel protocol
 // coinstake must meet hash target according to the protocol:
 // kernel (input 0) must meet the formula
