@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/10f19329020eef4725fffc4ce724245a111a8ca9
+commit 10f19329020eef4725fffc4ce724245a111a8ca9
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Mar 12 15:38:59 2019 -0700
+
+    server: Add endpoint "GET /v2/blocks/:blockhash/light-wallet-transactions"
+
 https://github.com/X9Developers/block-explorer/commit/b6bc0d1cf898442f4cebb9ad12834f204315937b
 commit b6bc0d1cf898442f4cebb9ad12834f204315937b
 Author: Alexis Hernandez <alexis22229@gmail.com>
