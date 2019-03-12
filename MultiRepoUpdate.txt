@@ -1,5 +1,15 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/4a8e481e7ee95f515c4cb74ee10d5880836fa64b
+commit 4a8e481e7ee95f515c4cb74ee10d5880836fa64b
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Mar 12 15:58:54 2019 -0700
+
+    server: Remove default json codecs for the LightWalletTransaction
+    
+    - The AddressesController has its own codecs
+    - The BlocksController has its own codecs
+
 https://github.com/X9Developers/block-explorer/commit/529ef38415980b213e904ba9c5db172896dc60e3
 commit 529ef38415980b213e904ba9c5db172896dc60e3
 Author: Alexis Hernandez <alexis22229@gmail.com>
