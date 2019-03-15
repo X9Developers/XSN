@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/cd3a099610cf896bbae58c6532957d0cb29e7a77
+commit cd3a099610cf896bbae58c6532957d0cb29e7a77
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Mar 15 11:03:44 2019 -0700
+
+    infra: Update ltc-routes
+
 https://github.com/X9Developers/block-explorer/commit/4a8e481e7ee95f515c4cb74ee10d5880836fa64b
 commit 4a8e481e7ee95f515c4cb74ee10d5880836fa64b
 Author: Alexis Hernandez <alexis22229@gmail.com>
