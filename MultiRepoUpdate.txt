@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/be728346627356f9c9253720606943fac9763db0
+commit be728346627356f9c9253720606943fac9763db0
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Mar 15 22:24:42 2019 -0700
+
+    server: Allow to reverse the block headers ordering
+
 https://github.com/X9Developers/block-explorer/commit/1b359f75850590672f8ab756e49b299fe16006cb
 commit 1b359f75850590672f8ab756e49b299fe16006cb
 Author: Alexis Hernandez <alexis22229@gmail.com>
