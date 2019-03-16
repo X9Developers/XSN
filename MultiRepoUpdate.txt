@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/1b359f75850590672f8ab756e49b299fe16006cb
+commit 1b359f75850590672f8ab756e49b299fe16006cb
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Mar 15 22:09:27 2019 -0700
+
+    server: Extract the OrderingConditionParser from the TransactionService
+
 https://github.com/X9Developers/block-explorer/commit/19fdfc26c8006d2f381b5c5bbca5c648a7241221
 commit 19fdfc26c8006d2f381b5c5bbca5c648a7241221
 Author: Alexis Hernandez <alexis22229@gmail.com>
