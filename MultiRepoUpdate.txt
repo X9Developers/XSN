@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/9ba617ed917aff85242b7e80a3c324b7d4747638
+commit 9ba617ed917aff85242b7e80a3c324b7d4747638
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 16 18:01:21 2019 -0700
+
+    server: Add guava dependency
+
 https://github.com/X9Developers/block-explorer/commit/be728346627356f9c9253720606943fac9763db0
 commit be728346627356f9c9253720606943fac9763db0
 Author: Alexis Hernandez <alexis22229@gmail.com>
