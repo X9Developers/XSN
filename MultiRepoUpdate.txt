@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/2f3d2b0faef8fe622fde882b1a1ab1ef97b58f78
+commit 2f3d2b0faef8fe622fde882b1a1ab1ef97b58f78
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Mar 17 19:52:00 2019 -0700
+
+    server: Allow to derive a SipHashKey from a Blockhash
+
 https://github.com/X9Developers/block-explorer/commit/f6f328888035c91c9c361c542093d5d25c64728f
 commit f6f328888035c91c9c361c542093d5d25c64728f
 Author: Alexis Hernandez <alexis22229@gmail.com>
