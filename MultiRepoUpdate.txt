@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/aeeb7f5586c4cc524fa35898c25bcd0140b41d07
+commit aeeb7f5586c4cc524fa35898c25bcd0140b41d07
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Mar 18 21:40:22 2019 -0700
+
+    server: Update the GolombCodedSet to hold the hex encoded filter
+
 https://github.com/X9Developers/block-explorer/commit/2f3d2b0faef8fe622fde882b1a1ab1ef97b58f78
 commit 2f3d2b0faef8fe622fde882b1a1ab1ef97b58f78
 Author: Alexis Hernandez <alexis22229@gmail.com>
