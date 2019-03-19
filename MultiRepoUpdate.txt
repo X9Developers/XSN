@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/8e203c9fb6fe88c91f6d39086b5412833fc13fab
+commit 8e203c9fb6fe88c91f6d39086b5412833fc13fab
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Mar 18 23:13:52 2019 -0700
+
+    server: Handle empty set on GolombEncoding
+
 https://github.com/X9Developers/block-explorer/commit/8c0f92a07a15ceee2f55c6d786af50973bcd7602
 commit 8c0f92a07a15ceee2f55c6d786af50973bcd7602
 Author: Alexis Hernandez <alexis22229@gmail.com>
