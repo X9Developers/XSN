@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/8c0f92a07a15ceee2f55c6d786af50973bcd7602
+commit 8c0f92a07a15ceee2f55c6d786af50973bcd7602
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Mar 18 23:02:04 2019 -0700
+
+    server: Update the GolombEncoding to use Set and SortedSet
+
 https://github.com/X9Developers/block-explorer/commit/aeeb7f5586c4cc524fa35898c25bcd0140b41d07
 commit aeeb7f5586c4cc524fa35898c25bcd0140b41d07
 Author: Alexis Hernandez <alexis22229@gmail.com>
