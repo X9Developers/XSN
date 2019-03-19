@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/8f5f4a48cb68ef53cca97e6cd664640b5098facc
+commit 8f5f4a48cb68ef53cca97e6cd664640b5098facc
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Mar 18 23:39:38 2019 -0700
+
+    server: Store the filter on the BlockHeader
+
 https://github.com/X9Developers/block-explorer/commit/52ae52e3c47615180d1b0ddfe4bd3257fdd7dd67
 commit 52ae52e3c47615180d1b0ddfe4bd3257fdd7dd67
 Author: Alexis Hernandez <alexis22229@gmail.com>
