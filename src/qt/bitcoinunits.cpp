@@ -55,7 +55,7 @@ QString BitcoinUnits::shortName(int unit)
 {
     switch(unit)
     {
-    case uXSN: return QString::fromUtf8("XSN");
+    case uXSN: return QString::fromUtf8("µXSN");
     case duffs: return QString("duffs");
     default: return longName(unit);
     }

@@ -1,5 +1,630 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/aa05af72ac6b25ccd6e01c9eb3a04eb431e97e4f
+commit aa05af72ac6b25ccd6e01c9eb3a04eb431e97e4f
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Feb 27 21:16:29 2019 -0700
+
+    server: Return the txid after pushing a transaction to the network
+
+https://github.com/X9Developers/block-explorer/commit/c921d73415c42b45c9b8cc004f09e02cf7b90092
+commit c921d73415c42b45c9b8cc004f09e02cf7b90092
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Feb 22 18:48:10 2019 -0700
+
+    server: Update classes related to the ledger sync process to use the Block.HasTransactions model
+
+https://github.com/X9Developers/block-explorer/commit/8b9f1c00f3f0c970b13e57e973b0ef17bfb0d337
+commit 8b9f1c00f3f0c970b13e57e973b0ef17bfb0d337
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Feb 22 18:47:28 2019 -0700
+
+    server: Add Block.HasTransactions persisted model
+
+https://github.com/X9Developers/block-explorer/commit/485faea74b142b66d0fb25bb82d1caea42f59edf
+commit 485faea74b142b66d0fb25bb82d1caea42f59edf
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Feb 22 18:46:54 2019 -0700
+
+    server: Fix AddressesControllerSpec
+
+https://github.com/X9Developers/block-explorer/commit/dbd1f28ff773665241c0372eb4cbe0307fa84755
+commit dbd1f28ff773665241c0372eb4cbe0307fa84755
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Feb 22 18:12:03 2019 -0700
+
+    server: Log invalid response details on XSNService
+
+https://github.com/X9Developers/block-explorer/commit/9dd24a4212fb34bfc05056ff29a7ca3295bcc592
+commit 9dd24a4212fb34bfc05056ff29a7ca3295bcc592
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Feb 22 18:13:24 2019 -0700
+
+    server: Update Address format to allow bitcoin addresses
+
+https://github.com/X9Developers/block-explorer/commit/2798b528ed330bee4c5c8f10cc763bdb4c35e476
+commit 2798b528ed330bee4c5c8f10cc763bdb4c35e476
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Feb 22 18:13:04 2019 -0700
+
+    server: Add endpoint "GET /blocks/headers"
+
+https://github.com/X9Developers/block-explorer/commit/ae42e3cc9ca0e4ebca75707492589443abe5eb62
+commit ae42e3cc9ca0e4ebca75707492589443abe5eb62
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Thu Feb 21 20:50:57 2019 -0700
+
+    server: Update allowed hosts
+
+https://github.com/X9Developers/block-explorer/commit/3b0e30b417701e660661a4cd1170eb21ee8885f6
+commit 3b0e30b417701e660661a4cd1170eb21ee8885f6
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Thu Feb 21 20:49:05 2019 -0700
+
+    infra: Add bitcoin support
+
+https://github.com/X9Developers/block-explorer/commit/1e4cc232274be2b6e01a36f0ef19135460fc6183
+commit 1e4cc232274be2b6e01a36f0ef19135460fc6183
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Feb 20 21:06:27 2019 -0700
+
+    infra: Add support for GRS
+
+https://github.com/X9Developers/block-explorer/commit/750e2968b676f5b0464ea8c530a09868ee9dfe3a
+commit 750e2968b676f5b0464ea8c530a09868ee9dfe3a
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Feb 20 22:55:54 2019 -0700
+
+    server: Add missing index to the transaction_inputs table
+
+https://github.com/X9Developers/block-explorer/commit/a926191a77b906f652708162d694ca0663c9917d
+commit a926191a77b906f652708162d694ca0663c9917d
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Feb 17 23:30:08 2019 -0700
+
+    server: Persist the block extraction method while synchronizing the blocks
+
+https://github.com/X9Developers/block-explorer/commit/a334864e38b8db3e7953fcd1c130cb08a0cbed35
+commit a334864e38b8db3e7953fcd1c130cb08a0cbed35
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Feb 17 23:28:46 2019 -0700
+
+    server: allow to get block extractionMethod from the BlockService
+
+https://github.com/X9Developers/block-explorer/commit/469c241931d2b20aa832cfe76e370dbb0823792f
+commit 469c241931d2b20aa832cfe76e370dbb0823792f
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Feb 17 22:13:18 2019 -0700
+
+    server: Extract the BlockExtractionMethod from the persisted block
+
+https://github.com/X9Developers/block-explorer/commit/fc0696a46759ae9e2442a08826c8a3b189ba8c80
+commit fc0696a46759ae9e2442a08826c8a3b189ba8c80
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Feb 17 21:37:24 2019 -0700
+
+    server: Refactor TransactionService to remove the transaction transformer
+    
+    The logic was moved to the transformers package.
+
+https://github.com/X9Developers/block-explorer/commit/b8b44eab5b99eea34ae8094fbbee35db15a0dd92
+commit b8b44eab5b99eea34ae8094fbbee35db15a0dd92
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Feb 17 21:31:21 2019 -0700
+
+    server: Refactor the sql parsers to expect correct data from the database
+    
+    If the data turns out to be corrupted, an exception is going to be thrown,
+    as there are check constraints on the sql schema, this shouldn't occur.
+
+https://github.com/X9Developers/block-explorer/commit/aef41d5f8eb89b6282717b5e674a23d907647d3a
+commit aef41d5f8eb89b6282717b5e674a23d907647d3a
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Feb 17 21:15:49 2019 -0700
+
+    server: Split the persisted transaction model
+    
+    There are two models now, the one having inputs/outputs
+    and the one without them.
+
+https://github.com/X9Developers/block-explorer/commit/347a4d6ca50f1366f900a96adc78269b535c91c0
+commit 347a4d6ca50f1366f900a96adc78269b535c91c0
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Feb 17 00:09:24 2019 -0700
+
+    server: Move the TransactionId value to the values package
+
+https://github.com/X9Developers/block-explorer/commit/6dd7b032b11cab79d829c804c1932568b17b45fb
+commit 6dd7b032b11cab79d829c804c1932568b17b45fb
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Feb 17 00:08:34 2019 -0700
+
+    server: Move the Size value to the values package
+
+https://github.com/X9Developers/block-explorer/commit/f67d7831f093ed63bd00faa58627e707f20f5d29
+commit f67d7831f093ed63bd00faa58627e707f20f5d29
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Feb 17 00:07:46 2019 -0700
+
+    server: Move the IPAddress value to the values package
+
+https://github.com/X9Developers/block-explorer/commit/29b8b583badab6b14f74fadc09794c659b9d8b75
+commit 29b8b583badab6b14f74fadc09794c659b9d8b75
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Feb 17 00:05:55 2019 -0700
+
+    server: Move the HexString model to the values package
+
+https://github.com/X9Developers/block-explorer/commit/33fcda6ef3b37cd2a8f833ca75134d04aa053542
+commit 33fcda6ef3b37cd2a8f833ca75134d04aa053542
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Feb 17 00:02:01 2019 -0700
+
+    server: Move the Height value to the values package
+
+https://github.com/X9Developers/block-explorer/commit/9c10ae154d43ff9e59f6c9683a495bd74b67c389
+commit 9c10ae154d43ff9e59f6c9683a495bd74b67c389
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Feb 17 00:01:20 2019 -0700
+
+    server: Move the Confirmations value to the values package
+
+https://github.com/X9Developers/block-explorer/commit/de64af5b9ba25d002e32edb8d0e5fa87ee48ecd8
+commit de64af5b9ba25d002e32edb8d0e5fa87ee48ecd8
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Feb 17 00:00:27 2019 -0700
+
+    server: Move the Blockhash value to the values package
+
+https://github.com/X9Developers/block-explorer/commit/a1737b9710d47069ded6341e77c651d7f51e4899
+commit a1737b9710d47069ded6341e77c651d7f51e4899
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 16 23:54:36 2019 -0700
+
+    server: Move the Address value to the values package
+
+https://github.com/X9Developers/block-explorer/commit/d7cc0307f3bbc5198dd37f89bd249d7072c1cd7c
+commit d7cc0307f3bbc5198dd37f89bd249d7072c1cd7c
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 16 23:54:12 2019 -0700
+
+    server: Create the values package
+
+https://github.com/X9Developers/block-explorer/commit/685b54b576852ddc442c56b34df908c6f9d24a03
+commit 685b54b576852ddc442c56b34df908c6f9d24a03
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 16 23:47:58 2019 -0700
+
+    server: Move the Balance model to the persisted package
+
+https://github.com/X9Developers/block-explorer/commit/38a83f23aee08068d78cdc417ece6e9faf6c3160
+commit 38a83f23aee08068d78cdc417ece6e9faf6c3160
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 16 23:42:24 2019 -0700
+
+    server: Move the AddressTransactionDetails model to the persisted package
+
+https://github.com/X9Developers/block-explorer/commit/b7f91b7ce44761ab85ff786dbb41d7340e7afcad
+commit b7f91b7ce44761ab85ff786dbb41d7340e7afcad
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 16 23:41:10 2019 -0700
+
+    server: Move the Transaction model to the persisted package
+
+https://github.com/X9Developers/block-explorer/commit/5a5f6073174ebe83f4fb78ddbe00bc3d725b5cf2
+commit 5a5f6073174ebe83f4fb78ddbe00bc3d725b5cf2
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 16 23:25:23 2019 -0700
+
+    server: Create the model transformers package
+    
+    The logic to transform a rpc block to a persisted block lives here.
+
+https://github.com/X9Developers/block-explorer/commit/21399f3c99f1809d32e86bf8705a4a2cc5512943
+commit 21399f3c99f1809d32e86bf8705a4a2cc5512943
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 16 23:08:31 2019 -0700
+
+    server: Add extraction_method column to the blocks table
+    
+    Defaults to PoW, a migration is required to set the correct values.
+
+https://github.com/X9Developers/block-explorer/commit/2dd9b4837a115382bd78637e03ba9eee60bb9527
+commit 2dd9b4837a115382bd78637e03ba9eee60bb9527
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 16 22:36:00 2019 -0700
+
+    server: Update the data package to use the Block from the persisted package
+
+https://github.com/X9Developers/block-explorer/commit/7619ef348306ad47b8ca0e15fa06ea6fc523c8bc
+commit 7619ef348306ad47b8ca0e15fa06ea6fc523c8bc
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 16 21:44:08 2019 -0700
+
+    server: Add the persisted models package
+    
+    Includes the Block model which represents what is actually persisted.
+
+https://github.com/X9Developers/block-explorer/commit/988694b88a976a27175c7772abd6360690521bd0
+commit 988694b88a976a27175c7772abd6360690521bd0
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 16 21:27:25 2019 -0700
+
+    server: Refactor the sql parsers to expect correct data from the database
+    
+    If the data turns out to be corrupted, an exception is going to be thrown,
+    as there are check constraints on the sql schema, this shouldn't occur.
+
+https://github.com/X9Developers/block-explorer/commit/516dd402d1b083ae84cc5765462e2165058cbbcc
+commit 516dd402d1b083ae84cc5765462e2165058cbbcc
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 2 19:41:42 2019 -0700
+
+    server: Return statistics even if masternodes or difficulty aren't available
+
+https://github.com/X9Developers/block-explorer/commit/423ff7df1ad0171c532e08381946f53529f16116
+commit 423ff7df1ad0171c532e08381946f53529f16116
+Author: Kolby Moroz <31669092+mrmetech@users.noreply.github.com>
+Date:   Sat Feb 2 19:14:53 2019 -0700
+
+    server: Add difficulty to the /stats endpoint
+
+https://github.com/X9Developers/block-explorer/commit/56963b23d61cfe432c8b0d5b4f062c9cda694188
+commit 56963b23d61cfe432c8b0d5b4f062c9cda694188
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Jan 28 19:02:48 2019 -0700
+
+    server: Remove unnecessary timing logs
+
+https://github.com/X9Developers/block-explorer/commit/2e45d79fa04660b88a77a5c3b8a963c633ac8b3b
+commit 2e45d79fa04660b88a77a5c3b8a963c633ac8b3b
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jan 26 22:43:31 2019 -0700
+
+    web-ui: Render block rewards only when available
+
+https://github.com/X9Developers/block-explorer/commit/b7d2dc0740e34ce38b5a77df12369684d3c3f291
+commit b7d2dc0740e34ce38b5a77df12369684d3c3f291
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jan 26 22:38:36 2019 -0700
+
+    server: Allow to retrieve blocks without rewards (#62)
+
+https://github.com/X9Developers/block-explorer/commit/08f26e764bd8a11db84ee6d597d2aaf0c8d7f716
+commit 08f26e764bd8a11db84ee6d597d2aaf0c8d7f716
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jan 26 22:16:24 2019 -0700
+
+    server: Reduce boilerplate on the BlocksControllerSpec
+
+https://github.com/X9Developers/block-explorer/commit/99c0200af02cdcd3b67a0db338a212029dc7e6bd
+commit 99c0200af02cdcd3b67a0db338a212029dc7e6bd
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Jan 21 22:25:56 2019 -0700
+
+    server: Extract the TransactionRPCService from TransactionService
+
+https://github.com/X9Developers/block-explorer/commit/3630e24483fe825b0611b0005e584279f4e5d1bb
+commit 3630e24483fe825b0611b0005e584279f4e5d1bb
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Jan 21 22:25:51 2019 -0700
+
+    server: Log timings while synchronizing blocks
+
+https://github.com/X9Developers/block-explorer/commit/668153d6c4ad4e40a40649d7025934e44facfdff
+commit 668153d6c4ad4e40a40649d7025934e44facfdff
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jan 19 23:25:13 2019 -0700
+
+    server: Split the TransactionPostgresDAO into several files
+
+https://github.com/X9Developers/block-explorer/commit/447e31e55c348082d3590f60e37f1675e497fe18
+commit 447e31e55c348082d3590f60e37f1675e497fe18
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jan 19 22:52:49 2019 -0700
+
+    server: Insert transaction batch while synchronizing the ledger
+
+https://github.com/X9Developers/block-explorer/commit/a3feadbcf0dd66293eab0a0e2864789a2bcdfc05
+commit a3feadbcf0dd66293eab0a0e2864789a2bcdfc05
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jan 19 19:13:43 2019 -0700
+
+    server: The Transaction now requires that its outputs belong to it
+
+https://github.com/X9Developers/block-explorer/commit/72b66c07689260840f1c9e015b7419738f3982f4
+commit 72b66c07689260840f1c9e015b7419738f3982f4
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jan 19 19:13:17 2019 -0700
+
+    server: Refactor the TransactionPostgresDataHandlerSpec
+
+https://github.com/X9Developers/block-explorer/commit/8bf78c60813e2718b49f603048e628df09dd293a
+commit 8bf78c60813e2718b49f603048e628df09dd293a
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jan 19 19:09:50 2019 -0700
+
+    server: Fix scrolled pagination bug while retrieving address transactions
+
+https://github.com/X9Developers/block-explorer/commit/97254aae11f3bf9532f0b0aa1e74ebb6b9db8607
+commit 97254aae11f3bf9532f0b0aa1e74ebb6b9db8607
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jan 19 09:30:31 2019 -0700
+
+    server: Remove unnecessary endpoint "POST /transactions/latest"
+
+https://github.com/X9Developers/block-explorer/commit/8f0645b30a75b931ba923b6a14e2708c7de7b069
+commit 8f0645b30a75b931ba923b6a14e2708c7de7b069
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Jan 18 22:42:18 2019 -0700
+
+    server: Batch update while spending outputs on TransactionPostgresDAO
+
+https://github.com/X9Developers/block-explorer/commit/81535991a7d598521d0ca37b2dcbcb6715f34359
+commit 81535991a7d598521d0ca37b2dcbcb6715f34359
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Jan 18 22:01:16 2019 -0700
+
+    server: Batch insert for inputs/outputs on TransactionPostgresDAO
+
+https://github.com/X9Developers/block-explorer/commit/5d7425a5c0f4bdddd207b574ea7bd63706c615f3
+commit 5d7425a5c0f4bdddd207b574ea7bd63706c615f3
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Mon Jan 21 11:55:32 2019 -0700
+
+    web-ui: Add test command to travis file
+    
+    Add ChromeHeadlessCI as custom launcher in karma config file
+
+https://github.com/X9Developers/block-explorer/commit/edcf7222703bef1330b0fcddd6d96c507560fd68
+commit edcf7222703bef1330b0fcddd6d96c507560fd68
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Mon Jan 21 10:59:21 2019 -0700
+
+    web-ui: Fix explorer-datetime.pipe.spec
+
+https://github.com/X9Developers/block-explorer/commit/bb23dc15985fd3030d36d023509abff47c7ab078
+commit bb23dc15985fd3030d36d023509abff47c7ab078
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Mon Jan 21 10:53:10 2019 -0700
+
+    web-ui: Fix app.component.spec
+
+https://github.com/X9Developers/block-explorer/commit/8a3669ef07d7ec78f5d8fd6dae47a9bdde1a20a6
+commit 8a3669ef07d7ec78f5d8fd6dae47a9bdde1a20a6
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Mon Jan 21 10:41:35 2019 -0700
+
+    web-ui: Fix transaction-raw.component.spec
+
+https://github.com/X9Developers/block-explorer/commit/56ff5bf94da1b641daae100531d2b9f6557ec1e9
+commit 56ff5bf94da1b641daae100531d2b9f6557ec1e9
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Mon Jan 21 10:36:08 2019 -0700
+
+    web-ui: Fix transaction-details.component.spec
+
+https://github.com/X9Developers/block-explorer/commit/21855615c55a466c633a4c42343aa136ec2b1b75
+commit 21855615c55a466c633a4c42343aa136ec2b1b75
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Mon Jan 21 10:27:17 2019 -0700
+
+    web-ui: Fix transaction.component.spec
+
+https://github.com/X9Developers/block-explorer/commit/2c60f25d21f4e17b8f94681a1e133d80fcb592c2
+commit 2c60f25d21f4e17b8f94681a1e133d80fcb592c2
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Mon Jan 21 10:25:17 2019 -0700
+
+    web-ui: Fix ticker.component.spec
+
+https://github.com/X9Developers/block-explorer/commit/1b3effd132195b24045c81ca14696cbe3e07cf69
+commit 1b3effd132195b24045c81ca14696cbe3e07cf69
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Mon Jan 21 10:21:55 2019 -0700
+
+    web-ui: Fix richest-addresses.component.spec
+
+https://github.com/X9Developers/block-explorer/commit/6535f60e963d1719561ad09a33892bfba0e69c0f
+commit 6535f60e963d1719561ad09a33892bfba0e69c0f
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Mon Jan 21 10:12:34 2019 -0700
+
+    web-ui: Fix masternodes.component.spec
+
+https://github.com/X9Developers/block-explorer/commit/513102228dcb6f0e863e4c64af83dc2df3331e40
+commit 513102228dcb6f0e863e4c64af83dc2df3331e40
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Mon Jan 21 10:04:45 2019 -0700
+
+    web-ui: Fix masternode-details.component.spec
+
+https://github.com/X9Developers/block-explorer/commit/8cfe906051629599e63fabdb330ab3dc36a3f498
+commit 8cfe906051629599e63fabdb330ab3dc36a3f498
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Mon Jan 21 09:54:05 2019 -0700
+
+    web-ui: Fix latest-blocks.component.spec
+
+https://github.com/X9Developers/block-explorer/commit/22ced162252fc69a8b895eee2f7e76307b1486b7
+commit 22ced162252fc69a8b895eee2f7e76307b1486b7
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Mon Jan 21 09:34:00 2019 -0700
+
+    web-ui: Fix finder.component.spec
+
+https://github.com/X9Developers/block-explorer/commit/ce358d7755f0389dd5761df3200242eda7e69c87
+commit ce358d7755f0389dd5761df3200242eda7e69c87
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Mon Jan 21 08:51:23 2019 -0700
+
+    web-ui: Fix block-raw.component.spec
+
+https://github.com/X9Developers/block-explorer/commit/417667df43cac77d4a6b850deb5c783e65845144
+commit 417667df43cac77d4a6b850deb5c783e65845144
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Fri Jan 18 16:18:55 2019 -0700
+
+    web-ui: Fix block-details.component.spec
+
+https://github.com/X9Developers/block-explorer/commit/a5ac041465ed7ca4eb2a8d2df42a7799a3ef6390
+commit a5ac041465ed7ca4eb2a8d2df42a7799a3ef6390
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Fri Jan 18 16:02:58 2019 -0700
+
+    web-ui: Fix block.component.spec
+
+https://github.com/X9Developers/block-explorer/commit/d5e1a6cb5c997bc23cb9fc95adfdc0be4f18f0ec
+commit d5e1a6cb5c997bc23cb9fc95adfdc0be4f18f0ec
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Fri Jan 18 15:48:27 2019 -0700
+
+    web-ui: Fix address-details.component.spec
+
+https://github.com/X9Developers/block-explorer/commit/4f20fb4ebfd6ab2301388e0377fc061a27be639f
+commit 4f20fb4ebfd6ab2301388e0377fc061a27be639f
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Fri Jan 18 13:20:05 2019 -0700
+
+    web-ui: Fix navbar.component.spec
+
+https://github.com/X9Developers/block-explorer/commit/a363dae37d6fffa8afc9e82beeee42b076aa1602
+commit a363dae37d6fffa8afc9e82beeee42b076aa1602
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Jan 18 12:29:31 2019 -0700
+
+    web-ui: Fix home.component.spec
+
+https://github.com/X9Developers/block-explorer/commit/efea7d0159784d1ab082e5759a43b93bbbd1743e
+commit efea7d0159784d1ab082e5759a43b93bbbd1743e
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Jan 18 11:46:16 2019 -0700
+
+    web-ui: Upgrade angular to 7.2.1
+
+https://github.com/X9Developers/block-explorer/commit/9100fc65c55dc98c1385093a56dea08da7aeb379
+commit 9100fc65c55dc98c1385093a56dea08da7aeb379
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Thu Jan 17 09:10:11 2019 -0700
+
+    web-ui: Add infinite scroll to block screen
+
+https://github.com/X9Developers/block-explorer/commit/870f2c789b56863ff1cafc7f5621e9147368d7e5
+commit 870f2c789b56863ff1cafc7f5621e9147368d7e5
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Thu Jan 17 08:40:14 2019 -0700
+
+    web-ui: Add infinite scroll to Address screen
+
+https://github.com/X9Developers/block-explorer/commit/28a8a2588b23a167ccaaf9c60738cc2d911e97b4
+commit 28a8a2588b23a167ccaaf9c60738cc2d911e97b4
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Wed Jan 16 20:05:34 2019 -0700
+
+    web-ui: Implements utils function to get rows to display on richest addresses
+
+https://github.com/X9Developers/block-explorer/commit/79cfe8952d5671d948cc29192d740e8bef61034c
+commit 79cfe8952d5671d948cc29192d740e8bef61034c
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Wed Jan 16 20:03:48 2019 -0700
+
+    web-ui: Add utils file
+    
+    Utils file has a function to get the number of rows to load depending on screen height
+
+https://github.com/X9Developers/block-explorer/commit/045fba30de9db9f2bfc92648e50c9ee26d90ce51
+commit 045fba30de9db9f2bfc92648e50c9ee26d90ce51
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Thu Jan 17 00:07:35 2019 -0700
+
+    Build web-ui on travis-ci
+
+https://github.com/X9Developers/block-explorer/commit/a44bb5818cceb9b53e45b93e2dbeeb5d7e3cc048
+commit a44bb5818cceb9b53e45b93e2dbeeb5d7e3cc048
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Thu Jan 17 00:06:52 2019 -0700
+
+    web-ui: Upgrade angular cli
+
+https://github.com/X9Developers/block-explorer/commit/7f7512ceadfcca97447e2708d2d45cfb35723a60
+commit 7f7512ceadfcca97447e2708d2d45cfb35723a60
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Wed Jan 16 10:46:22 2019 -0700
+
+    web-ui: Add infinite scroll on richest addresses (#78)
+    
+    Add dependency to ngx-infinite-scroll
+    Add infinite scroll on richest addresses
+    Add color effect on new addresses
+
+https://github.com/X9Developers/block-explorer/commit/7d1b18619a720a0d6dc5879815b1e64be5e7917b
+commit 7d1b18619a720a0d6dc5879815b1e64be5e7917b
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Tue Jan 15 15:51:34 2019 -0700
+
+    web-ui: Update explorerCurrency pipe to fix 8 decimals (#81)
+
+https://github.com/X9Developers/block-explorer/commit/c9d7775e350ba64e72bc41575d80f4eb34538617
+commit c9d7775e350ba64e72bc41575d80f4eb34538617
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Jan 13 07:55:15 2019 -0700
+
+    server: Update sentry.properties
+
+https://github.com/X9Developers/block-explorer/commit/db35fb3c7ea874d054be6b40935c832a243ed4bd
+commit db35fb3c7ea874d054be6b40935c832a243ed4bd
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Jan 13 07:54:41 2019 -0700
+
+    infra: Include sentry on backend deployments
+
+https://github.com/X9Developers/block-explorer/commit/63bb70502d8f49226deb950a303a8e3607f78ded
+commit 63bb70502d8f49226deb950a303a8e3607f78ded
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Fri Jan 11 12:15:33 2019 -0700
+
+    web-ui: Display accumulated total value for input and output on detail transactions
+
+https://github.com/X9Developers/block-explorer/commit/e0e2606f131b5a838b5cccfa07d19323b5236b78
+commit e0e2606f131b5a838b5cccfa07d19323b5236b78
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Fri Jan 11 09:59:58 2019 -0700
+
+    web-ui: Add config file with first value currentCurrency
+    
+    Add config file in app/
+    Use config value currentCurrency in explorerCurrency pipe
+
+https://github.com/X9Developers/block-explorer/commit/5428c71aa746186fbbd9e33a98786b156e37f415
+commit 5428c71aa746186fbbd9e33a98786b156e37f415
+Author: jonsadev <jonsalazar99@hotmail.com>
+Date:   Fri Jan 11 09:26:11 2019 -0700
+
+    web-ui: Add explorerCurrency pipe (#43)
+    
+    Add pipe class and change all the occurrences to use it instead of label.coinName
+
+https://github.com/X9Developers/block-explorer/commit/9b0adaf943a4c9d1879cb6ea06896149d4639be9
+commit 9b0adaf943a4c9d1879cb6ea06896149d4639be9
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Thu Jan 10 23:15:53 2019 -0700
+
+    infra: Disable http and redirect to https on nginx
+
+https://github.com/X9Developers/block-explorer/commit/1f28104b843858a3bb5673a2c16eed09284a6ddb
+commit 1f28104b843858a3bb5673a2c16eed09284a6ddb
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Thu Jan 10 23:15:25 2019 -0700
+
+    infra: Enable gzip on nginx
+
+https://github.com/X9Developers/block-explorer/commit/66da2b58a466b00ad6b3fe53dc53ed42e898f60f
+commit 66da2b58a466b00ad6b3fe53dc53ed42e898f60f
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Thu Jan 10 22:56:16 2019 -0700
+
+    infra: Restrict the available routes for LTC
+
 https://github.com/X9Developers/block-explorer/commit/7467bdc51ad57371ef20bffc2f79cc4a792eb97f
 commit 7467bdc51ad57371ef20bffc2f79cc4a792eb97f
 Author: jonsadev <jonsalazar99@hotmail.com>
