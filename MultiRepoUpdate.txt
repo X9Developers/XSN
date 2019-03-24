@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/b9ee34d97df94308f3878cac968b41136de1320d
+commit b9ee34d97df94308f3878cac968b41136de1320d
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Mar 24 08:19:02 2019 -0700
+
+    server: BlockService uses the cache for loading headers
+
 https://github.com/X9Developers/block-explorer/commit/4c7b05b48dbb29db577ac7488638344ea62d5c4e
 commit 4c7b05b48dbb29db577ac7488638344ea62d5c4e
 Author: Alexis Hernandez <alexis22229@gmail.com>
