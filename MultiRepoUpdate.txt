@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/5657c5b5cd4301b47c793469980074884688e24b
+commit 5657c5b5cd4301b47c793469980074884688e24b
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 23 19:36:37 2019 -0700
+
+    infra: Update nginx certs
+
 https://github.com/X9Developers/block-explorer/commit/4f6ab522d4d20d254c518e22e047ced1e107bb22
 commit 4f6ab522d4d20d254c518e22e047ced1e107bb22
 Author: Alexis Hernandez <alexis22229@gmail.com>
