@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/4f6ab522d4d20d254c518e22e047ced1e107bb22
+commit 4f6ab522d4d20d254c518e22e047ced1e107bb22
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 23 19:34:18 2019 -0700
+
+    server: Disable CSRFFilter
+    
+    As there are no authenticated routes, CSRF protection can be disabled.
+
 https://github.com/X9Developers/block-explorer/commit/5d1b3662c0d319d8072852024dfb7bff081f7447
 commit 5d1b3662c0d319d8072852024dfb7bff081f7447
 Author: Alexis Hernandez <alexis22229@gmail.com>
