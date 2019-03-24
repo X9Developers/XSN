@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/54393145223d74cc4b9f02a84837052b61c9b16f
+commit 54393145223d74cc4b9f02a84837052b61c9b16f
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 23 23:56:58 2019 -0700
+
+    server: Add caffeine dependency
+
 https://github.com/X9Developers/block-explorer/commit/5657c5b5cd4301b47c793469980074884688e24b
 commit 5657c5b5cd4301b47c793469980074884688e24b
 Author: Alexis Hernandez <alexis22229@gmail.com>
