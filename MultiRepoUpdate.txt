@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/d781a0f646f80f1bc43a76d22877324a6adaf246
+commit d781a0f646f80f1bc43a76d22877324a6adaf246
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Mar 24 08:22:49 2019 -0700
+
+    server: Remove hardcoded 1000 on the BlockHeaderCache
+
 https://github.com/X9Developers/block-explorer/commit/b9ee34d97df94308f3878cac968b41136de1320d
 commit b9ee34d97df94308f3878cac968b41136de1320d
 Author: Alexis Hernandez <alexis22229@gmail.com>
