@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/4c7b05b48dbb29db577ac7488638344ea62d5c4e
+commit 4c7b05b48dbb29db577ac7488638344ea62d5c4e
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Mar 24 08:17:58 2019 -0700
+
+    server: Add the CacheModule which loads the available caches
+
 https://github.com/X9Developers/block-explorer/commit/0153d8dfaec2d448b3aa1113c076b1cc8174ec40
 commit 0153d8dfaec2d448b3aa1113c076b1cc8174ec40
 Author: Alexis Hernandez <alexis22229@gmail.com>
