@@ -269,28 +269,40 @@ COutPoint TPoSUtils::GetContractCollateralOutpoint(const TPoSContract &contract)
     return result;
 }
 
-bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contract, bool fCheckSignature, bool fCheckContractOutpoint)
+bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contract, bool fCheckSignature, bool fCheckContractOutpoint, std::string &strError)
 {
     CTransactionRef tx;
     uint256 hashBlock;
     if(!GetTransaction(hashContractTx, tx, Params().GetConsensus(), hashBlock, true))
     {
-        return error("CheckContract() : failed to get transaction for tpos contract %s",
-                     hashContractTx.ToString());
+        strError = strprintf("%s : failed to get transaction for tpos contract %s", __func__,
+                             hashContractTx.ToString());
+
+        return error(strError.c_str());
     }
 
-    TPoSContract tmpContract = TPoSContract::FromTPoSContractTx(tx);
+    return CheckContract(tx, contract, fCheckSignature, fCheckContractOutpoint, strError);
+
+}
+
+bool TPoSUtils::CheckContract(const CTransactionRef &txContract, TPoSContract &contract, bool fCheckSignature, bool fCheckContractOutpoint, std::string &strError)
+{
+    TPoSContract tmpContract = TPoSContract::FromTPoSContractTx(txContract);
 
     if(!tmpContract.IsValid())
-        return error("CheckContract() : invalid transaction for tpos contract");
+    {
+        strError = "CheckContract() : invalid transaction for tpos contract";
+        return error(strError.c_str());
+    }
 
     if(fCheckSignature)
     {
         auto hashMessage = SerializeHash(tmpContract.rawTx->vin.front().prevout);
-        std::string strError;
-        if(!CHashSigner::VerifyHash(hashMessage, tmpContract.tposAddress.Get(), tmpContract.vchSignature, strError))
+        std::string strVerifyHashError;
+        if(!CHashSigner::VerifyHash(hashMessage, tmpContract.tposAddress.Get(), tmpContract.vchSignature, strVerifyHashError))
         {
-            return error("CheckContract() : TPoS contract signature is invalid %s", strError);
+            strError = strprintf("%s : TPoS contract signature is invalid %s", __func__, strError);
+            return error(strError.c_str());
         }
     }
 
@@ -299,7 +311,10 @@ bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contr
         auto tposContractOutpoint = TPoSUtils::GetContractCollateralOutpoint(tmpContract);
         Coin coin;
         if(!pcoinsTip->GetCoin(tposContractOutpoint, coin) || coin.IsSpent())
-            return error("CheckContract() : tpos contract invalid, collateral is spent");
+        {
+            strError = "CheckContract() : tpos contract invalid, collateral is spent";
+            return error(strError.c_str());
+        }
     }
 
     contract = tmpContract;
