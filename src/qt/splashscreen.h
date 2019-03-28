@@ -7,6 +7,7 @@
 
 #include <functional>
 #include <QSplashScreen>
+#include <QLabel>
 
 #include <interfaces/wallet.h>
 
@@ -58,6 +59,7 @@ private:
     /** Connect wallet signals to splash screen */
     void ConnectWallet(std::unique_ptr<interfaces::Wallet> wallet);
 
+    QLabel *bg;
     QPixmap pixmap;
     QString curMessage;
     QColor curColor;
