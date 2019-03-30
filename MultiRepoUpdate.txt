@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/bdbaa415b5f48d394da946b6c8113f33119d643d
+commit bdbaa415b5f48d394da946b6c8113f33119d643d
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 08:56:33 2019 -0700
+
+    server: Add isTPoSContract method to the XSNService
+    
+    The method verifies whether a transaction is a TPoS contract.
+
 https://github.com/X9Developers/block-explorer/commit/750ab7c4ae830f8856fe62e650259a7186f1b29c
 commit 750ab7c4ae830f8856fe62e650259a7186f1b29c
 Author: Alexis Hernandez <alexis22229@gmail.com>
