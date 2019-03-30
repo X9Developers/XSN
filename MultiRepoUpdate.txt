@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/750ab7c4ae830f8856fe62e650259a7186f1b29c
+commit 750ab7c4ae830f8856fe62e650259a7186f1b29c
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Mar 29 18:12:11 2019 -0700
+
+    server: Simplify the anorm parsers
+
 https://github.com/X9Developers/block-explorer/commit/d781a0f646f80f1bc43a76d22877324a6adaf246
 commit d781a0f646f80f1bc43a76d22877324a6adaf246
 Author: Alexis Hernandez <alexis22229@gmail.com>
