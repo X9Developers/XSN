@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/c6800a1fc77879874a500f5384ebe2ff3b61b1fe
+commit c6800a1fc77879874a500f5384ebe2ff3b61b1fe
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 11:49:31 2019 -0700
+
+    server: Add the TPoSContract model
+
 https://github.com/X9Developers/block-explorer/commit/bdbaa415b5f48d394da946b6c8113f33119d643d
 commit bdbaa415b5f48d394da946b6c8113f33119d643d
 Author: Alexis Hernandez <alexis22229@gmail.com>
