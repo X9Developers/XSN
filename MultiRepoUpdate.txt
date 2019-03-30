@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/9d2edf8314e6a5662d98afa686d18890e5b31679
+commit 9d2edf8314e6a5662d98afa686d18890e5b31679
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 12:34:51 2019 -0700
+
+    server: Remove the TPoS addresses from the Transaction.Output
+    
+    The addresses are useless and the whole contract will be stored instead.
+
 https://github.com/X9Developers/block-explorer/commit/4af9a6cac4babc31df1939466c674a5a0fd698a5
 commit 4af9a6cac4babc31df1939466c674a5a0fd698a5
 Author: Alexis Hernandez <alexis22229@gmail.com>
