@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/4af9a6cac4babc31df1939466c674a5a0fd698a5
+commit 4af9a6cac4babc31df1939466c674a5a0fd698a5
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 11:52:41 2019 -0700
+
+    server: Remove TPoS contract logic from the ScriptPubKey model
+
 https://github.com/X9Developers/block-explorer/commit/c6800a1fc77879874a500f5384ebe2ff3b61b1fe
 commit c6800a1fc77879874a500f5384ebe2ff3b61b1fe
 Author: Alexis Hernandez <alexis22229@gmail.com>
