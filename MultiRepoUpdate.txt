@@ -1,5 +1,15 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/80f02664e528e3d64c423a0fc1223b1246b79565
+commit 80f02664e528e3d64c423a0fc1223b1246b79565
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 17:25:25 2019 -0700
+
+    server: Update the persisted Transaction model
+    
+    - Allow mapping from rpc transaction with values only
+    - While mapping from rpc transactions, return the TPoS contract if there is one.
+
 https://github.com/X9Developers/block-explorer/commit/1daa9ee3cc3dfa059b5ab0953bf9db505b0c1806
 commit 1daa9ee3cc3dfa059b5ab0953bf9db505b0c1806
 Author: Alexis Hernandez <alexis22229@gmail.com>
