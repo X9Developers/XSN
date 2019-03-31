@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/f926b442721d903de3e58bff3e27ba4bf783a13e
+commit f926b442721d903de3e58bff3e27ba4bf783a13e
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 22:57:14 2019 -0700
+
+    infra: Update xsnd
+
 https://github.com/X9Developers/block-explorer/commit/887af0ff56c4ed30ca25ff15fa7f078e6666749f
 commit 887af0ff56c4ed30ca25ff15fa7f078e6666749f
 Author: Alexis Hernandez <alexis22229@gmail.com>
