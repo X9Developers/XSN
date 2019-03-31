@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/0f04494d65ab5f0b3e61d1797e3ceec4314f2f83
+commit 0f04494d65ab5f0b3e61d1797e3ceec4314f2f83
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Mar 31 15:00:20 2019 -0700
+
+    server: Add endpoint "GET /addresses/:address/tposcontracts"
+
 https://github.com/X9Developers/block-explorer/commit/8c3a0cb3e690c3d714b8d883059ad7489888c779
 commit 8c3a0cb3e690c3d714b8d883059ad7489888c779
 Author: Alexis Hernandez <alexis22229@gmail.com>
