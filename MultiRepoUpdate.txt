@@ -1,5 +1,17 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/887af0ff56c4ed30ca25ff15fa7f078e6666749f
+commit 887af0ff56c4ed30ca25ff15fa7f078e6666749f
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 21:21:47 2019 -0700
+
+    server: Synchronize the TPoS contracts
+    
+    - A TPoS contract is created when the transaction is synchronized.
+    - A TPoS contract is deleted when the transaction is rolled back.
+    - A TPoS contract is closed when the collateral output is spent.
+    - A TPoS contract is enabled when the collateral output gets unspent.
+
 https://github.com/X9Developers/block-explorer/commit/87793c7bcbce8bc74d4c126d6b01277c6d60aa1d
 commit 87793c7bcbce8bc74d4c126d6b01277c6d60aa1d
 Author: Alexis Hernandez <alexis22229@gmail.com>
