@@ -1,5 +1,108 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/0f04494d65ab5f0b3e61d1797e3ceec4314f2f83
+commit 0f04494d65ab5f0b3e61d1797e3ceec4314f2f83
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Mar 31 15:00:20 2019 -0700
+
+    server: Add endpoint "GET /addresses/:address/tposcontracts"
+
+https://github.com/X9Developers/block-explorer/commit/8c3a0cb3e690c3d714b8d883059ad7489888c779
+commit 8c3a0cb3e690c3d714b8d883059ad7489888c779
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Mar 31 13:07:58 2019 -0700
+
+    server: Add the TPoSContractDataHandler
+
+https://github.com/X9Developers/block-explorer/commit/f926b442721d903de3e58bff3e27ba4bf783a13e
+commit f926b442721d903de3e58bff3e27ba4bf783a13e
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 22:57:14 2019 -0700
+
+    infra: Update xsnd
+
+https://github.com/X9Developers/block-explorer/commit/887af0ff56c4ed30ca25ff15fa7f078e6666749f
+commit 887af0ff56c4ed30ca25ff15fa7f078e6666749f
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 21:21:47 2019 -0700
+
+    server: Synchronize the TPoS contracts
+    
+    - A TPoS contract is created when the transaction is synchronized.
+    - A TPoS contract is deleted when the transaction is rolled back.
+    - A TPoS contract is closed when the collateral output is spent.
+    - A TPoS contract is enabled when the collateral output gets unspent.
+
+https://github.com/X9Developers/block-explorer/commit/87793c7bcbce8bc74d4c126d6b01277c6d60aa1d
+commit 87793c7bcbce8bc74d4c126d6b01277c6d60aa1d
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 21:19:45 2019 -0700
+
+    server: Add the TPoSContractDAO
+
+https://github.com/X9Developers/block-explorer/commit/35f1b3b3ac675936e6e288f01139d6fd59482ec1
+commit 35f1b3b3ac675936e6e288f01139d6fd59482ec1
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 21:18:19 2019 -0700
+
+    server: Add the tpos_contracts table
+
+https://github.com/X9Developers/block-explorer/commit/80f02664e528e3d64c423a0fc1223b1246b79565
+commit 80f02664e528e3d64c423a0fc1223b1246b79565
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 17:25:25 2019 -0700
+
+    server: Update the persisted Transaction model
+    
+    - Allow mapping from rpc transaction with values only
+    - While mapping from rpc transactions, return the TPoS contract if there is one.
+
+https://github.com/X9Developers/block-explorer/commit/1daa9ee3cc3dfa059b5ab0953bf9db505b0c1806
+commit 1daa9ee3cc3dfa059b5ab0953bf9db505b0c1806
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 12:45:21 2019 -0700
+
+    server: Remove the TPoS addresses from the transaction_outputs table
+
+https://github.com/X9Developers/block-explorer/commit/9d2edf8314e6a5662d98afa686d18890e5b31679
+commit 9d2edf8314e6a5662d98afa686d18890e5b31679
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 12:34:51 2019 -0700
+
+    server: Remove the TPoS addresses from the Transaction.Output
+    
+    The addresses are useless and the whole contract will be stored instead.
+
+https://github.com/X9Developers/block-explorer/commit/4af9a6cac4babc31df1939466c674a5a0fd698a5
+commit 4af9a6cac4babc31df1939466c674a5a0fd698a5
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 11:52:41 2019 -0700
+
+    server: Remove TPoS contract logic from the ScriptPubKey model
+
+https://github.com/X9Developers/block-explorer/commit/c6800a1fc77879874a500f5384ebe2ff3b61b1fe
+commit c6800a1fc77879874a500f5384ebe2ff3b61b1fe
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 11:49:31 2019 -0700
+
+    server: Add the TPoSContract model
+
+https://github.com/X9Developers/block-explorer/commit/bdbaa415b5f48d394da946b6c8113f33119d643d
+commit bdbaa415b5f48d394da946b6c8113f33119d643d
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 08:56:33 2019 -0700
+
+    server: Add isTPoSContract method to the XSNService
+    
+    The method verifies whether a transaction is a TPoS contract.
+
+https://github.com/X9Developers/block-explorer/commit/750ab7c4ae830f8856fe62e650259a7186f1b29c
+commit 750ab7c4ae830f8856fe62e650259a7186f1b29c
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Mar 29 18:12:11 2019 -0700
+
+    server: Simplify the anorm parsers
+
 https://github.com/X9Developers/block-explorer/commit/d781a0f646f80f1bc43a76d22877324a6adaf246
 commit d781a0f646f80f1bc43a76d22877324a6adaf246
 Author: Alexis Hernandez <alexis22229@gmail.com>
