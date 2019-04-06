@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/0373dff0fee6902a6f02b090e03e4070b07a39cb
+commit 0373dff0fee6902a6f02b090e03e4070b07a39cb
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Apr 6 16:58:59 2019 -0700
+
+    server: Use the AddressValidator on the BalanceService
+
 https://github.com/X9Developers/block-explorer/commit/a74e7cd714e780af3c37d8770bc5551ac39714a7
 commit a74e7cd714e780af3c37d8770bc5551ac39714a7
 Author: Alexis Hernandez <alexis22229@gmail.com>
