@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/13e25faa08259fbad002cacb1eec73d9822d6546
+commit 13e25faa08259fbad002cacb1eec73d9822d6546
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Apr 6 16:20:20 2019 -0700
+
+    infra: Update the xsn-backend memory
+
 https://github.com/X9Developers/block-explorer/commit/c0ba0b43069a4511a5205573e556eacece050570
 commit c0ba0b43069a4511a5205573e556eacece050570
 Author: Alexis Hernandez <alexis22229@gmail.com>
