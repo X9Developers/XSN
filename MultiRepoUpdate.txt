@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/1185c799ba33d442c53044f7d22237f7947c6c29
+commit 1185c799ba33d442c53044f7d22237f7947c6c29
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Apr 6 23:09:52 2019 -0700
+
+    server: Use the TransactionCollectorService on the LedgerSynchronizerService
+
 https://github.com/X9Developers/block-explorer/commit/9fc35c16ce86c85346336d790a7e877d46336d40
 commit 9fc35c16ce86c85346336d790a7e877d46336d40
 Author: Alexis Hernandez <alexis22229@gmail.com>
