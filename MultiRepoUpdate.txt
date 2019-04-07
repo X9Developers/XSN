@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/8a9ce8179bc3c860ee5d63b8d5049bc0ec39ebfe
+commit 8a9ce8179bc3c860ee5d63b8d5049bc0ec39ebfe
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Apr 6 17:22:28 2019 -0700
+
+    server: Use the TransactionIdValidator on the TransactionService
+
 https://github.com/X9Developers/block-explorer/commit/bbe4828a0e367cb358d7e5f64911ab2fe95b216f
 commit bbe4828a0e367cb358d7e5f64911ab2fe95b216f
 Author: Alexis Hernandez <alexis22229@gmail.com>
