@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/d670d138501d8ed76cf149d66e0235b1cea4d568
+commit d670d138501d8ed76cf149d66e0235b1cea4d568
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Apr 6 22:41:39 2019 -0700
+
+    server: Add getOutput method to the TransactionDataHandler
+
 https://github.com/X9Developers/block-explorer/commit/21fcb826a0c433e9014688b1dfda8517c65ed400
 commit 21fcb826a0c433e9014688b1dfda8517c65ed400
 Author: Alexis Hernandez <alexis22229@gmail.com>
