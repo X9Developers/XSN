@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/9fc35c16ce86c85346336d790a7e877d46336d40
+commit 9fc35c16ce86c85346336d790a7e877d46336d40
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Apr 6 23:09:34 2019 -0700
+
+    server: Add the TransactionCollectorService
+
 https://github.com/X9Developers/block-explorer/commit/d670d138501d8ed76cf149d66e0235b1cea4d568
 commit d670d138501d8ed76cf149d66e0235b1cea4d568
 Author: Alexis Hernandez <alexis22229@gmail.com>
