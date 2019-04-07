@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/277abf922b4635f252a524ebbb81b19add6a0b57
+commit 277abf922b4635f252a524ebbb81b19add6a0b57
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Apr 6 17:28:20 2019 -0700
+
+    server: Use the validators in the service package
+
 https://github.com/X9Developers/block-explorer/commit/8a9ce8179bc3c860ee5d63b8d5049bc0ec39ebfe
 commit 8a9ce8179bc3c860ee5d63b8d5049bc0ec39ebfe
 Author: Alexis Hernandez <alexis22229@gmail.com>
