@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/21fcb826a0c433e9014688b1dfda8517c65ed400
+commit 21fcb826a0c433e9014688b1dfda8517c65ed400
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Apr 6 17:43:58 2019 -0700
+
+    server: Simplify the validators
+
 https://github.com/X9Developers/block-explorer/commit/277abf922b4635f252a524ebbb81b19add6a0b57
 commit 277abf922b4635f252a524ebbb81b19add6a0b57
 Author: Alexis Hernandez <alexis22229@gmail.com>
