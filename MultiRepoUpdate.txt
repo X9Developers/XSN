@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/bbe4828a0e367cb358d7e5f64911ab2fe95b216f
+commit bbe4828a0e367cb358d7e5f64911ab2fe95b216f
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Apr 6 17:17:15 2019 -0700
+
+    server: Simplify the AddressValidator
+
 https://github.com/X9Developers/block-explorer/commit/a723a6501c46d9d4cf13c733fa12aae7d8cdda97
 commit a723a6501c46d9d4cf13c733fa12aae7d8cdda97
 Author: Alexis Hernandez <alexis22229@gmail.com>
