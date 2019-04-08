@@ -1,5 +1,326 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/0f04494d65ab5f0b3e61d1797e3ceec4314f2f83
+commit 0f04494d65ab5f0b3e61d1797e3ceec4314f2f83
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Mar 31 15:00:20 2019 -0700
+
+    server: Add endpoint "GET /addresses/:address/tposcontracts"
+
+https://github.com/X9Developers/block-explorer/commit/8c3a0cb3e690c3d714b8d883059ad7489888c779
+commit 8c3a0cb3e690c3d714b8d883059ad7489888c779
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Mar 31 13:07:58 2019 -0700
+
+    server: Add the TPoSContractDataHandler
+
+https://github.com/X9Developers/block-explorer/commit/f926b442721d903de3e58bff3e27ba4bf783a13e
+commit f926b442721d903de3e58bff3e27ba4bf783a13e
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 22:57:14 2019 -0700
+
+    infra: Update xsnd
+
+https://github.com/X9Developers/block-explorer/commit/887af0ff56c4ed30ca25ff15fa7f078e6666749f
+commit 887af0ff56c4ed30ca25ff15fa7f078e6666749f
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 21:21:47 2019 -0700
+
+    server: Synchronize the TPoS contracts
+    
+    - A TPoS contract is created when the transaction is synchronized.
+    - A TPoS contract is deleted when the transaction is rolled back.
+    - A TPoS contract is closed when the collateral output is spent.
+    - A TPoS contract is enabled when the collateral output gets unspent.
+
+https://github.com/X9Developers/block-explorer/commit/87793c7bcbce8bc74d4c126d6b01277c6d60aa1d
+commit 87793c7bcbce8bc74d4c126d6b01277c6d60aa1d
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 21:19:45 2019 -0700
+
+    server: Add the TPoSContractDAO
+
+https://github.com/X9Developers/block-explorer/commit/35f1b3b3ac675936e6e288f01139d6fd59482ec1
+commit 35f1b3b3ac675936e6e288f01139d6fd59482ec1
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 21:18:19 2019 -0700
+
+    server: Add the tpos_contracts table
+
+https://github.com/X9Developers/block-explorer/commit/80f02664e528e3d64c423a0fc1223b1246b79565
+commit 80f02664e528e3d64c423a0fc1223b1246b79565
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 17:25:25 2019 -0700
+
+    server: Update the persisted Transaction model
+    
+    - Allow mapping from rpc transaction with values only
+    - While mapping from rpc transactions, return the TPoS contract if there is one.
+
+https://github.com/X9Developers/block-explorer/commit/1daa9ee3cc3dfa059b5ab0953bf9db505b0c1806
+commit 1daa9ee3cc3dfa059b5ab0953bf9db505b0c1806
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 12:45:21 2019 -0700
+
+    server: Remove the TPoS addresses from the transaction_outputs table
+
+https://github.com/X9Developers/block-explorer/commit/9d2edf8314e6a5662d98afa686d18890e5b31679
+commit 9d2edf8314e6a5662d98afa686d18890e5b31679
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 12:34:51 2019 -0700
+
+    server: Remove the TPoS addresses from the Transaction.Output
+    
+    The addresses are useless and the whole contract will be stored instead.
+
+https://github.com/X9Developers/block-explorer/commit/4af9a6cac4babc31df1939466c674a5a0fd698a5
+commit 4af9a6cac4babc31df1939466c674a5a0fd698a5
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 11:52:41 2019 -0700
+
+    server: Remove TPoS contract logic from the ScriptPubKey model
+
+https://github.com/X9Developers/block-explorer/commit/c6800a1fc77879874a500f5384ebe2ff3b61b1fe
+commit c6800a1fc77879874a500f5384ebe2ff3b61b1fe
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 11:49:31 2019 -0700
+
+    server: Add the TPoSContract model
+
+https://github.com/X9Developers/block-explorer/commit/bdbaa415b5f48d394da946b6c8113f33119d643d
+commit bdbaa415b5f48d394da946b6c8113f33119d643d
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 30 08:56:33 2019 -0700
+
+    server: Add isTPoSContract method to the XSNService
+    
+    The method verifies whether a transaction is a TPoS contract.
+
+https://github.com/X9Developers/block-explorer/commit/750ab7c4ae830f8856fe62e650259a7186f1b29c
+commit 750ab7c4ae830f8856fe62e650259a7186f1b29c
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Mar 29 18:12:11 2019 -0700
+
+    server: Simplify the anorm parsers
+
+https://github.com/X9Developers/block-explorer/commit/d781a0f646f80f1bc43a76d22877324a6adaf246
+commit d781a0f646f80f1bc43a76d22877324a6adaf246
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Mar 24 08:22:49 2019 -0700
+
+    server: Remove hardcoded 1000 on the BlockHeaderCache
+
+https://github.com/X9Developers/block-explorer/commit/b9ee34d97df94308f3878cac968b41136de1320d
+commit b9ee34d97df94308f3878cac968b41136de1320d
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Mar 24 08:19:02 2019 -0700
+
+    server: BlockService uses the cache for loading headers
+
+https://github.com/X9Developers/block-explorer/commit/4c7b05b48dbb29db577ac7488638344ea62d5c4e
+commit 4c7b05b48dbb29db577ac7488638344ea62d5c4e
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Mar 24 08:17:58 2019 -0700
+
+    server: Add the CacheModule which loads the available caches
+
+https://github.com/X9Developers/block-explorer/commit/0153d8dfaec2d448b3aa1113c076b1cc8174ec40
+commit 0153d8dfaec2d448b3aa1113c076b1cc8174ec40
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Mar 24 08:17:22 2019 -0700
+
+    server: Add the BlockHeaderCache
+
+https://github.com/X9Developers/block-explorer/commit/54393145223d74cc4b9f02a84837052b61c9b16f
+commit 54393145223d74cc4b9f02a84837052b61c9b16f
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 23 23:56:58 2019 -0700
+
+    server: Add caffeine dependency
+
+https://github.com/X9Developers/block-explorer/commit/5657c5b5cd4301b47c793469980074884688e24b
+commit 5657c5b5cd4301b47c793469980074884688e24b
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 23 19:36:37 2019 -0700
+
+    infra: Update nginx certs
+
+https://github.com/X9Developers/block-explorer/commit/4f6ab522d4d20d254c518e22e047ced1e107bb22
+commit 4f6ab522d4d20d254c518e22e047ced1e107bb22
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 23 19:34:18 2019 -0700
+
+    server: Disable CSRFFilter
+    
+    As there are no authenticated routes, CSRF protection can be disabled.
+
+https://github.com/X9Developers/block-explorer/commit/5d1b3662c0d319d8072852024dfb7bff081f7447
+commit 5d1b3662c0d319d8072852024dfb7bff081f7447
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Mar 18 23:50:08 2019 -0700
+
+    server: Attach the filter while retrieving block headers
+
+https://github.com/X9Developers/block-explorer/commit/8f5f4a48cb68ef53cca97e6cd664640b5098facc
+commit 8f5f4a48cb68ef53cca97e6cd664640b5098facc
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Mar 18 23:39:38 2019 -0700
+
+    server: Store the filter on the BlockHeader
+
+https://github.com/X9Developers/block-explorer/commit/52ae52e3c47615180d1b0ddfe4bd3257fdd7dd67
+commit 52ae52e3c47615180d1b0ddfe4bd3257fdd7dd67
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Mar 18 23:21:25 2019 -0700
+
+    server: Store the block filter while synchronizing the ledger
+
+https://github.com/X9Developers/block-explorer/commit/18f2260e80a3a6e45c2061e3c1f8387d1dff2923
+commit 18f2260e80a3a6e45c2061e3c1f8387d1dff2923
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Mar 18 23:20:49 2019 -0700
+
+    server: Add the block_address_gcs table
+
+https://github.com/X9Developers/block-explorer/commit/37cb7ceb81a9ce8d2a098b3b319b5fca616c2d2b
+commit 37cb7ceb81a9ce8d2a098b3b319b5fca616c2d2b
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Mar 18 23:20:20 2019 -0700
+
+    server: Allow to create a GolombCodedSet from block addresses
+
+https://github.com/X9Developers/block-explorer/commit/8e203c9fb6fe88c91f6d39086b5412833fc13fab
+commit 8e203c9fb6fe88c91f6d39086b5412833fc13fab
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Mar 18 23:13:52 2019 -0700
+
+    server: Handle empty set on GolombEncoding
+
+https://github.com/X9Developers/block-explorer/commit/8c0f92a07a15ceee2f55c6d786af50973bcd7602
+commit 8c0f92a07a15ceee2f55c6d786af50973bcd7602
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Mar 18 23:02:04 2019 -0700
+
+    server: Update the GolombEncoding to use Set and SortedSet
+
+https://github.com/X9Developers/block-explorer/commit/aeeb7f5586c4cc524fa35898c25bcd0140b41d07
+commit aeeb7f5586c4cc524fa35898c25bcd0140b41d07
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Mar 18 21:40:22 2019 -0700
+
+    server: Update the GolombCodedSet to hold the hex encoded filter
+
+https://github.com/X9Developers/block-explorer/commit/2f3d2b0faef8fe622fde882b1a1ab1ef97b58f78
+commit 2f3d2b0faef8fe622fde882b1a1ab1ef97b58f78
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Mar 17 19:52:00 2019 -0700
+
+    server: Allow to derive a SipHashKey from a Blockhash
+
+https://github.com/X9Developers/block-explorer/commit/f6f328888035c91c9c361c542093d5d25c64728f
+commit f6f328888035c91c9c361c542093d5d25c64728f
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Mar 17 19:38:47 2019 -0700
+
+    server: Add the GolombEncoding
+
+https://github.com/X9Developers/block-explorer/commit/628300f9d61cf42f40cc69620f6c93a12fcad3b6
+commit 628300f9d61cf42f40cc69620f6c93a12fcad3b6
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 16 18:01:51 2019 -0700
+
+    server: Add the gcs SipHashKey
+
+https://github.com/X9Developers/block-explorer/commit/9ba617ed917aff85242b7e80a3c324b7d4747638
+commit 9ba617ed917aff85242b7e80a3c324b7d4747638
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 16 18:01:21 2019 -0700
+
+    server: Add guava dependency
+
+https://github.com/X9Developers/block-explorer/commit/be728346627356f9c9253720606943fac9763db0
+commit be728346627356f9c9253720606943fac9763db0
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Mar 15 22:24:42 2019 -0700
+
+    server: Allow to reverse the block headers ordering
+
+https://github.com/X9Developers/block-explorer/commit/1b359f75850590672f8ab756e49b299fe16006cb
+commit 1b359f75850590672f8ab756e49b299fe16006cb
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Mar 15 22:09:27 2019 -0700
+
+    server: Extract the OrderingConditionParser from the TransactionService
+
+https://github.com/X9Developers/block-explorer/commit/19fdfc26c8006d2f381b5c5bbca5c648a7241221
+commit 19fdfc26c8006d2f381b5c5bbca5c648a7241221
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Mar 15 11:32:54 2019 -0700
+
+    server: Allow to sync 1000 headers per request
+
+https://github.com/X9Developers/block-explorer/commit/cd3a099610cf896bbae58c6532957d0cb29e7a77
+commit cd3a099610cf896bbae58c6532957d0cb29e7a77
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Mar 15 11:03:44 2019 -0700
+
+    infra: Update ltc-routes
+
+https://github.com/X9Developers/block-explorer/commit/4a8e481e7ee95f515c4cb74ee10d5880836fa64b
+commit 4a8e481e7ee95f515c4cb74ee10d5880836fa64b
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Mar 12 15:58:54 2019 -0700
+
+    server: Remove default json codecs for the LightWalletTransaction
+    
+    - The AddressesController has its own codecs
+    - The BlocksController has its own codecs
+
+https://github.com/X9Developers/block-explorer/commit/529ef38415980b213e904ba9c5db172896dc60e3
+commit 529ef38415980b213e904ba9c5db172896dc60e3
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Mar 12 15:44:56 2019 -0700
+
+    server: Add the address to the LightWalletTransaction.Output
+
+https://github.com/X9Developers/block-explorer/commit/10f19329020eef4725fffc4ce724245a111a8ca9
+commit 10f19329020eef4725fffc4ce724245a111a8ca9
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Mar 12 15:38:59 2019 -0700
+
+    server: Add endpoint "GET /v2/blocks/:blockhash/light-wallet-transactions"
+
+https://github.com/X9Developers/block-explorer/commit/b6bc0d1cf898442f4cebb9ad12834f204315937b
+commit b6bc0d1cf898442f4cebb9ad12834f204315937b
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 9 19:29:15 2019 -0700
+
+    infra: Update configs
+
+https://github.com/X9Developers/block-explorer/commit/d9c56e31e43b91cc2ca71ac7c6e0f4ac834a6f07
+commit d9c56e31e43b91cc2ca71ac7c6e0f4ac834a6f07
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 2 21:32:16 2019 -0700
+
+    server: Update blocks.difficulty precision
+
+https://github.com/X9Developers/block-explorer/commit/ff857975651ec719f8f0d076582887f78b1d91ce
+commit ff857975651ec719f8f0d076582887f78b1d91ce
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 2 13:24:44 2019 -0700
+
+    server: Refactor the TransactionVIN into a typed alternative
+    
+    Now we are able to use types to detect when a TransactionVIN has the
+    cached values.
+
+https://github.com/X9Developers/block-explorer/commit/b6e41002d0c06f839115c40e3e973f8824801158
+commit b6e41002d0c06f839115c40e3e973f8824801158
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Mar 2 12:27:29 2019 -0700
+
+    server: Add instructions for Bitcoin
+
 https://github.com/X9Developers/block-explorer/commit/aa05af72ac6b25ccd6e01c9eb3a04eb431e97e4f
 commit aa05af72ac6b25ccd6e01c9eb3a04eb431e97e4f
 Author: Alexis Hernandez <alexis22229@gmail.com>

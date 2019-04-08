@@ -1515,7 +1515,12 @@ bool CWallet::AddToWalletIfTPoSContract(const CTransactionRef &tx)
 
             if(isMerchant || isOwner)
             {
-                auto contract = TPoSContract::FromTPoSContractTx(tx);
+                TPoSContract contract;
+                std::string strError;
+                if(!TPoSUtils::CheckContract(tx, contract, true, false, strError))
+                {
+                    return error(strError.c_str());
+                }
 
                 CWalletTx wtx(this, tx);
                 if(LoadTPoSContract(wtx))

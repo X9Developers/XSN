@@ -453,7 +453,7 @@ UniValue merchantsentinelping(const JSONRPCRequest& request)
 }
 
 #ifdef ENABLE_WALLET
-UniValue tposcontract(const JSONRPCRequest& request)
+static UniValue tposcontract(const JSONRPCRequest& request)
 {
     auto pwallet = GetWalletForJSONRPCRequest(request);
     std::string strCommand;
@@ -461,7 +461,7 @@ UniValue tposcontract(const JSONRPCRequest& request)
         strCommand = request.params[0].get_str();
     }
 
-    if (request.fHelp  || (strCommand != "list" && strCommand != "create" && strCommand != "refresh" && strCommand != "cleanup"))
+    if (request.fHelp  || (strCommand != "list" && strCommand != "create" && strCommand != "refresh" && strCommand != "cleanup" && strCommand != "validate"))
         throw std::runtime_error(
                 "tposcontract \"command\"...\n"
                 "Set of commands to execute merchantnode related actions\n"
@@ -471,6 +471,7 @@ UniValue tposcontract(const JSONRPCRequest& request)
                 "  create           - Create tpos transaction\n"
                 "  list             - Print list of all tpos contracts that you are owner or merchant\n"
                 "  refresh          - Refresh tpos contract for merchant to fetch all coins from blockchain.\n"
+                "  validate         - Validates transaction checking if it's a valid contract"
                 );
 
 
@@ -565,7 +566,7 @@ UniValue tposcontract(const JSONRPCRequest& request)
     {
         if(request.params.size() < 2)
             throw JSONRPCError(RPC_INVALID_PARAMETER,
-                               "Expected format: tposcontract refres tposcontract_id");
+                               "Expected format: tposcontract cleanup tposcontract_id");
 
         auto tposContractHashID = ParseHashV(request.params[1], "tposcontractid");
 
@@ -585,7 +586,72 @@ UniValue tposcontract(const JSONRPCRequest& request)
         if(!tmpContract.IsValid())
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Contract is invalid");
 
-            pwallet->RemoveWatchOnly(GetScriptForDestination(tmpContract.tposAddress.Get()));
+        pwallet->RemoveWatchOnly(GetScriptForDestination(tmpContract.tposAddress.Get()));
+    }
+    else if(strCommand == "validate")
+    {
+
+        if(request.params.size() < 2)
+            throw JSONRPCError(RPC_INVALID_PARAMETER,
+                               "Expected format: tposcontract validate { \"hex\" : \"hex_encoded_transaction\", "
+                               "\n                                       \"check_spent\" : 1, (optional, default 1)"
+                               "\n                                       \"check_signature\" : 1 (optional, default 1) } OR "
+                               "\n                                     { \"txid\" : \"txid\", "
+                               "\n                                       \"check_spent\" : 1, (optional, default 1)"
+                               "\n                                       \"check_signature\" : 1 (optional, default 1) }");
+
+        UniValue obj;
+        obj.read(request.params[1].get_str());
+
+        const UniValue &hexObj = find_value(obj, "hex");
+        const UniValue &txIdObj = find_value(obj, "txid");
+        const UniValue &checkSpentObj = find_value(obj, "check_spent");
+        const UniValue &checkSignatureObj = find_value(obj, "check_signature");
+
+        bool fCheckSignature = true;
+        bool fCheckSpent = true;
+        bool fCheckResult = false;
+
+        if(checkSpentObj.isNum())
+        {
+            fCheckSpent = checkSpentObj.get_int() != 0;
+        }
+
+        if(checkSignatureObj.isNum())
+        {
+            fCheckSignature = checkSignatureObj.get_int() != 0;
+        }
+
+        std::string strError;
+        TPoSContract contract;
+
+        if(!hexObj.isNull())
+        {
+            // parse hex string from parameter
+            CMutableTransaction mtx;
+            if (!DecodeHexTx(mtx, hexObj.get_str()))
+                throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
+            CTransactionRef tx(MakeTransactionRef(std::move(mtx)));
+
+            fCheckResult = TPoSUtils::CheckContract(tx, contract, fCheckSignature, fCheckSpent, strError);
+        }
+        else if(!txIdObj.isNull())
+        {
+            fCheckResult = TPoSUtils::CheckContract(ParseHashStr(txIdObj.get_str(), "txid"), contract, fCheckSignature, fCheckSpent, strError);
+        }
+        else
+        {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter");
+        }
+
+        if(fCheckResult)
+        {
+            return "Contract is valid";
+        }
+        else
+        {
+            return strprintf("Contract invalid, error: %s", strError);
+        }
     }
 
     return NullUniValue;

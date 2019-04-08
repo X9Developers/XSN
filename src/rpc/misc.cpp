@@ -517,9 +517,10 @@ UniValue getstakingstatus(const JSONRPCRequest& request)
     {
         auto helper = [&txId, &tposStatus] {
             TPoSContract contract;
-            if(!TPoSUtils::CheckContract(txId, contract, true, true))
+            std::string strError;
+            if(!TPoSUtils::CheckContract(txId, contract, true, true, strError))
             {
-                tposStatus = "Failed to find tpos contract, probably spent";
+                tposStatus = strError;
                 return false;
             }
 
