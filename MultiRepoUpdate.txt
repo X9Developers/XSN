@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/28c8c71705f72f3d2b6a9c838cc29cc955c2561c
+commit 28c8c71705f72f3d2b6a9c838cc29cc955c2561c
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Apr 14 12:20:36 2019 -0600
+
+    infra: Add script for syncing headers
+
 https://github.com/X9Developers/block-explorer/commit/62a313b28ab03f219d8731f9020c320ded9486d7
 commit 62a313b28ab03f219d8731f9020c320ded9486d7
 Author: Alexis Hernandez <alexis22229@gmail.com>
