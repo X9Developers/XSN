@@ -1,5 +1,15 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/364fe6a997da388cf9300b61950237bf546d7517
+commit 364fe6a997da388cf9300b61950237bf546d7517
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Apr 14 12:19:12 2019 -0600
+
+    server: Handle duplicate txid by excluding inputs referring them
+    
+    When syncing the ledger, the inputs that are spending outputs from
+    duplicated txids are excluded.
+
 https://github.com/X9Developers/block-explorer/commit/666561124d6eae4364619a6adf5422d93da1d5a5
 commit 666561124d6eae4364619a6adf5422d93da1d5a5
 Author: Alexis Hernandez <alexis22229@gmail.com>
