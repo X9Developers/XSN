@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/67a0e62b97ef37ea02da6ed08b5956a3ff019eb2
+commit 67a0e62b97ef37ea02da6ed08b5956a3ff019eb2
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Apr 16 13:54:35 2019 -0600
+
+    server: Allow to set the app host as the allowed host
+
 https://github.com/X9Developers/block-explorer/commit/be415eaa2241ea612677e98af3cb1c9c5ce78bba
 commit be415eaa2241ea612677e98af3cb1c9c5ce78bba
 Author: Alexis Hernandez <alexis22229@gmail.com>
