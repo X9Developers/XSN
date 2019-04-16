@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/3888041470f7ac7eae2acb5dd9a195f40995f8ed
+commit 3888041470f7ac7eae2acb5dd9a195f40995f8ed
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Apr 16 13:35:25 2019 -0600
+
+    server: Add endpoint "GET /blocks/estimate-fee"
+
 https://github.com/X9Developers/block-explorer/commit/092f3b7b947b2ce0f9479a18eb919e23ce21f442
 commit 092f3b7b947b2ce0f9479a18eb919e23ce21f442
 Author: Alexis Hernandez <alexis22229@gmail.com>
