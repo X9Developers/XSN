@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/092f3b7b947b2ce0f9479a18eb919e23ce21f442
+commit 092f3b7b947b2ce0f9479a18eb919e23ce21f442
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Apr 16 13:25:35 2019 -0600
+
+    server: Add estimateSmartFee method to the XSNService
+
 https://github.com/X9Developers/block-explorer/commit/28c8c71705f72f3d2b6a9c838cc29cc955c2561c
 commit 28c8c71705f72f3d2b6a9c838cc29cc955c2561c
 Author: Alexis Hernandez <alexis22229@gmail.com>
