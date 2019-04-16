@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/be415eaa2241ea612677e98af3cb1c9c5ce78bba
+commit be415eaa2241ea612677e98af3cb1c9c5ce78bba
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Apr 16 13:40:08 2019 -0600
+
+    infra: Update bitcoin ip
+
 https://github.com/X9Developers/block-explorer/commit/3888041470f7ac7eae2acb5dd9a195f40995f8ed
 commit 3888041470f7ac7eae2acb5dd9a195f40995f8ed
 Author: Alexis Hernandez <alexis22229@gmail.com>
