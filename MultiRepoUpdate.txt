@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/f065e142b251b151bcc2c3bdce6c675373f064de
+commit f065e142b251b151bcc2c3bdce6c675373f064de
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Apr 16 13:54:55 2019 -0600
+
+    infra: Set the app host as the bitcoin lite server
+
 https://github.com/X9Developers/block-explorer/commit/67a0e62b97ef37ea02da6ed08b5956a3ff019eb2
 commit 67a0e62b97ef37ea02da6ed08b5956a3ff019eb2
 Author: Alexis Hernandez <alexis22229@gmail.com>
