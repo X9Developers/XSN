@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/666561124d6eae4364619a6adf5422d93da1d5a5
+commit 666561124d6eae4364619a6adf5422d93da1d5a5
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Apr 16 22:48:33 2019 -0600
+
+    server: Allow upto 250,000 headers on the cache
+
 https://github.com/X9Developers/block-explorer/commit/f065e142b251b151bcc2c3bdce6c675373f064de
 commit f065e142b251b151bcc2c3bdce6c675373f064de
 Author: Alexis Hernandez <alexis22229@gmail.com>
