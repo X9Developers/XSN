@@ -16,7 +16,6 @@
 
 static const std::string TPOSEXPORTHEADER("TPOSOWNERINFO");
 static const int TPOSEXPORTHEADERWIDTH = 40;
-
 static const int TPOS_CONTRACT_COLATERAL = 1 * COIN;
 
 std::string ParseAddressFromMetadata(std::string str)

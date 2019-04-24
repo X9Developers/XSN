@@ -2713,7 +2713,7 @@ bool CChainState::ActivateBestChainStep(CValidationState& state, const CChainPar
     else
         CheckForkWarningConditions();
 
-    return true;
+    return !fInvalidFound;
 }
 
 static void NotifyHeaderTip() {

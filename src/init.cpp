@@ -62,6 +62,7 @@
 #include <tpos/merchantnodeman.h>
 #include <netfulfilledman.h>
 #include <governance/governance.h>
+#include <tpos/merchantnode-sync.h>
 #include <flat-database.h>
 
 #ifndef WIN32
