@@ -737,7 +737,7 @@ void CMerchantnodeMan::AskForMissing(CConnman &connman)
 
     if(shouldAsk)
     {
-        connman.ForEachNode([](CNode* pnode) {
+        connman.ForEachNode([this, &connman](CNode* pnode) {
             DsegUpdate(pnode, connman);
         });
     }
