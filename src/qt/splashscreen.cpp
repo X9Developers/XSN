@@ -39,7 +39,7 @@ SplashScreen::SplashScreen(interfaces::Node& node, Qt::WindowFlags f, const Netw
 
     // set reference point, paddings
     int paddingLeft             = 14;
-    int paddingTop              = 470;
+    int paddingTop              = 500;
     int titleVersionVSpace      = 17;
     int titleCopyrightVSpace    = 32;
 
@@ -64,13 +64,23 @@ SplashScreen::SplashScreen(interfaces::Node& node, Qt::WindowFlags f, const Netw
     if(gArgs.GetBoolArg("-testnet", false))
         splashScreenPath = basePath.arg("splash");
 
+    bg = new QLabel;
     QString font = QApplication::font().toString();
 
     // load the bitmap for writing some text over it
     pixmap = QPixmap(splashScreenPath);
 
+    QSize splashSize = QSize(pixmap.width(), pixmap.height());
+    if(splashSize.width() > 1600)
+        splashSize = QSize(splashSize.width()/2, splashSize.height()/2);
+    pixmap.setDevicePixelRatio(2);
+    pixmap = pixmap.scaled(static_cast<int>(splashSize.width()*pixmap.devicePixelRatio()), static_cast<int>(splashSize.height()*pixmap.devicePixelRatio()),
+                       Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+
     QPainter pixPaint(&pixmap);
     pixPaint.setPen(QColor(255, 255, 255));
+    pixPaint.setRenderHint(QPainter::HighQualityAntialiasing);
 
     // check font size and drawing with
     pixPaint.setFont(QFont(font, 28*fontFactor));
@@ -107,8 +117,11 @@ SplashScreen::SplashScreen(interfaces::Node& node, Qt::WindowFlags f, const Netw
 
     pixPaint.end();
 
+    bg->setPixmap(pixmap);
+    bg->setFixedSize(splashSize);
+
     // Resize window and move to center of desktop, disallow resizing
-    QRect r(QPoint(), QSize(pixmap.size().width()/devicePixelRatio,pixmap.size().height()/devicePixelRatio));
+    QRect r(QPoint(), bg->size());
     resize(r.size());
     setFixedSize(r.size());
     move(QApplication::desktop()->screenGeometry().center() - r.center());

@@ -121,3 +121,4 @@ src/core
 
 # IDE files
 .idea/
+nbproject

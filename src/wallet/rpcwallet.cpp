@@ -2504,7 +2504,7 @@ static UniValue walletpassphrase(const JSONRPCRequest& request)
         return NullUniValue;
     }
 
-    if (request.fHelp || request.params.size() != 2) {
+    if (request.fHelp || request.params.size() < 2 || request.params.size() > 3) {
         throw std::runtime_error(
                     "walletpassphrase \"passphrase\" timeout\n"
                     "\nStores the wallet decryption key in memory for 'timeout' seconds.\n"
@@ -2512,6 +2512,7 @@ static UniValue walletpassphrase(const JSONRPCRequest& request)
                     "\nArguments:\n"
                     "1. \"passphrase\"     (string, required) The wallet passphrase\n"
                     "2. timeout            (numeric, required) The time to keep the decryption key in seconds; capped at 100000000 (~3 years).\n"
+                    "3. stakingOnly        (boolean, optional, default=flase) If is true sending functions are disabled."
                     "\nNote:\n"
                     "Issuing the walletpassphrase command while the wallet is already unlocked will set a new unlock\n"
                     "time that overrides the old one.\n"
@@ -2537,21 +2538,10 @@ static UniValue walletpassphrase(const JSONRPCRequest& request)
     // TODO: get rid of this .c_str() by implementing SecureString::operator=(std::string)
     // Alternately, find a way to make request.params[0] mlock()'d to begin with.
     strWalletPass = request.params[0].get_str().c_str();
-
-    // Get the timeout
-    int64_t nSleepTime = request.params[1].get_int64();
-    // Timeout cannot be negative, otherwise it will relock immediately
-    if (nSleepTime < 0) {
-        throw JSONRPCError(RPC_INVALID_PARAMETER, "Timeout cannot be negative.");
-    }
-    // Clamp timeout
-    constexpr int64_t MAX_SLEEP_TIME = 100000000; // larger values trigger a macos/libevent bug?
-    if (nSleepTime > MAX_SLEEP_TIME) {
-        nSleepTime = MAX_SLEEP_TIME;
-    }
-    
+  
     bool stakingOnly = false;
     if (request.params.size() == 3)
+        RPCTypeCheckArgument(request.params[2], UniValue::VBOOL);
         stakingOnly = request.params[2].get_bool();
 
     if (!pwallet->IsLocked() && pwallet->fWalletUnlockStakingOnly && stakingOnly)
@@ -2569,6 +2559,18 @@ static UniValue walletpassphrase(const JSONRPCRequest& request)
                 "Stores the wallet decryption key in memory for <timeout> seconds.");
 
     pwallet->TopUpKeyPool();
+    
+    // Get the timeout
+    int64_t nSleepTime = request.params[1].get_int64();
+    // Timeout cannot be negative, otherwise it will relock immediately
+    if (nSleepTime < 0) {
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "Timeout cannot be negative.");
+    }
+    // Clamp timeout
+    constexpr int64_t MAX_SLEEP_TIME = 100000000; // larger values trigger a macos/libevent bug?
+    if (nSleepTime > MAX_SLEEP_TIME) {
+        nSleepTime = MAX_SLEEP_TIME;
+    }
 
     pwallet->nRelockTime = GetTime() + nSleepTime;
     RPCRunLater(strprintf("lockwallet(%s)", pwallet->GetName()), std::bind(LockWallet, pwallet), nSleepTime);
@@ -3306,7 +3308,7 @@ static UniValue fundrawtransaction(const JSONRPCRequest& request)
     bool lockUnspents = false;
     UniValue subtractFeeFromOutputs;
     std::set<int> setSubtractFeeFromOutputs;
-
+    
     if (!request.params[1].isNull()) {
         if (request.params[1].type() == UniValue::VBOOL) {
             // backward compatibility bool only fallback
@@ -4224,7 +4226,7 @@ static const CRPCCommand commands[] =
   { "wallet",             "signrawtransactionwithwallet",     &signrawtransactionwithwallet,  {"hexstring","prevtxs","sighashtype"} },
   { "wallet",             "walletlock",                       &walletlock,                    {} },
   { "wallet",             "walletpassphrasechange",           &walletpassphrasechange,        {"oldpassphrase","newpassphrase"} },
-  { "wallet",             "walletpassphrase",                 &walletpassphrase,              {"passphrase","timeout"} },
+  { "wallet",             "walletpassphrase",                 &walletpassphrase,              {"passphrase","timeout", "unlock_staking"} },
   { "wallet",             "removeprunedfunds",                &removeprunedfunds,             {"txid"} },
   { "wallet",             "rescanblockchain",                 &rescanblockchain,              {"start_height", "stop_height"} },
   { "wallet",             "setstakesplitthreshold",           &setstakesplitthreshold,        {"threshold_amount"}},
