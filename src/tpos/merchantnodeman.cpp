@@ -368,13 +368,21 @@ bool CMerchantnodeMan::Get(const CKeyID &pubKeyID, CMerchantnode& merchantnodeRe
 {
     // Theses mutexes are recursive so double locking by the same thread is safe.
     LOCK(cs);
-    for (auto& mnpair : mapMerchantnodes) {
+    for (auto& mnpair : mapMerchantnodes)
+    {
         CKeyID keyID = mnpair.second.pubKeyMerchantnode.GetID();
         if (keyID == pubKeyID) {
             merchantnodeRet = mnpair.second;
             return true;
         }
     }
+
+    if(mUnknownMerchantnodes.size() < 100)
+    {
+        // if it's more than 100, which is very unlikely, someone might try to attack us.
+        mUnknownMerchantnodes[pubKeyID] += 1;
+    }
+
     return false;
 }
 
@@ -438,7 +446,7 @@ void CMerchantnodeMan::ProcessMerchantnodeConnections(CConnman& connman)
     //we don't care about this for regtest
     if(Params().NetworkIDString() == CBaseChainParams::REGTEST) return;
 
-    connman.ForEachNode([](CNode* pnode) {
+    connman.ForEachNode([&connman](CNode* pnode) {
         if(pnode->fMerchantnode) {
             LogPrintf("Closing Merchantnode connection: peer=%d, addr=%s\n", pnode->GetId(), pnode->addr.ToString());
             pnode->fDisconnect = true;
@@ -486,6 +494,14 @@ void CMerchantnodeMan::ProcessMessage(CNode* pfrom, const std::string& strComman
         pfrom->setAskFor.erase(mnb.GetHash());
 
         if(!merchantnodeSync.IsBlockchainSynced()) return;
+
+        {
+            auto it = mUnknownMerchantnodes.find(mnb.pubKeyMerchantnode.GetID());
+            if(it != std::end(mUnknownMerchantnodes))
+            {
+                mUnknownMerchantnodes.erase(it);
+            }
+        }
 
         LogPrint(BCLog::MERCHANTNODE, "MERCHANTNODEANNOUNCE -- Merchantnode announce, merchantnode=%s\n", mnb.pubKeyMerchantnode.GetID().ToString());
 
@@ -708,6 +724,23 @@ void CMerchantnodeMan::DoFullVerificationStep(CConnman& connman)
 
     LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::DoFullVerificationStep -- Sent verification requests to %d merchantnodes\n", nCount);
 #endif
+}
+
+void CMerchantnodeMan::AskForMissing(CConnman &connman)
+{
+    bool shouldAsk = false;
+
+    for(auto &&it : mUnknownMerchantnodes)
+    {
+        shouldAsk |= (it.second >= 10);
+    }
+
+    if(shouldAsk)
+    {
+        connman.ForEachNode([](CNode* pnode) {
+            DsegUpdate(pnode, connman);
+        });
+    }
 }
 
 // This function tries to find merchantnodes with the same addr,
@@ -1138,7 +1171,7 @@ bool CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList(CNode* pfrom, CMerchant
 
         {
             // Need to lock cs_main here to ensure consistent locking order because the SimpleCheck call below locks cs_main
-//            LOCK(cs_main);
+            //            LOCK(cs_main);
             if(!mnb.SimpleCheck(nDos)) {
                 LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::CheckMnbAndUpdateMerchantnodeList -- SimpleCheck() failed, merchantnode=%s\n",
                          mnb.pubKeyMerchantnode.GetID().ToString());

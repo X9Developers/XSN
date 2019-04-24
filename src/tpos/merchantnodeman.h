@@ -57,6 +57,8 @@ private:
     std::map<uint256, std::pair< int64_t, std::set<CNetAddr> > > mMnbRecoveryRequests;
     std::map<uint256, std::vector<CMerchantnodeBroadcast> > mMnbRecoveryGoodReplies;
     std::list< std::pair<CService, uint256> > listScheduledMnbRequestConnections;
+    // map to represent unkown merchantnode and how many times it was asked
+    std::map<CKeyID, unsigned> mUnknownMerchantnodes;
 
     int64_t nLastWatchdogVoteTime;
 
@@ -155,6 +157,7 @@ public:
     void ProcessMessage(CNode* pfrom, const string &strCommand, CDataStream& vRecv, CConnman& connman);
 
     void DoFullVerificationStep(CConnman& connman);
+    void AskForMissing(CConnman& connman);
     void CheckSameAddr();
     bool SendVerifyRequest(const CAddress& addr, const std::vector<CMerchantnode*>& vSortedByAddr, CConnman& connman);
     void SendVerifyReply(CNode* pnode, CMerchantnodeVerification& mnv, CConnman& connman);

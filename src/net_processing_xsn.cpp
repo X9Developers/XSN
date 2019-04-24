@@ -250,6 +250,7 @@ void net_processing_xsn::ThreadProcessExtensions(CConnman *pConnman)
                 if(nTick % 60 == 0) {
                     merchantnodeman.ProcessMerchantnodeConnections(connman);
                     merchantnodeman.CheckAndRemove(connman);
+                    merchantnodeman.AskForMissing(connman);
                 }
                 if(fMerchantNode && (nTick % (60 * 5) == 0)) {
                     merchantnodeman.DoFullVerificationStep(connman);
