@@ -1,5 +1,16 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/87b345dd76ac57d3e87a3471d448973b64f466f2
+commit 87b345dd76ac57d3e87a3471d448973b64f466f2
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Apr 28 17:18:58 2019 -0600
+
+    server: Refactor the transaction models to support multisig transactions
+    
+    This refactor changes the input/output model from transactions to store
+    the possibly empty address list, which allows to deal with certain
+    transactions on bitcoin as well as with multisig transactions.
+
 https://github.com/X9Developers/block-explorer/commit/67f724ed218cad9ee2122cc7071aab19552dc958
 commit 67f724ed218cad9ee2122cc7071aab19552dc958
 Author: Alexis Hernandez <alexis22229@gmail.com>
