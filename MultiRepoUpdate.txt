@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/149601dda7b05e090b8cd6acbae3688acdaf5e9f
+commit 149601dda7b05e090b8cd6acbae3688acdaf5e9f
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Apr 28 22:58:05 2019 -0600
+
+    server: Allow storing empty addresses on transaction inputs/outputs
+
 https://github.com/X9Developers/block-explorer/commit/87b345dd76ac57d3e87a3471d448973b64f466f2
 commit 87b345dd76ac57d3e87a3471d448973b64f466f2
 Author: Alexis Hernandez <alexis22229@gmail.com>
