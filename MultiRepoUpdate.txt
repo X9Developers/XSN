@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/46779c9db9c32f10cf0ecb75c7f9bdd9627a50bf
+commit 46779c9db9c32f10cf0ecb75c7f9bdd9627a50bf
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Apr 28 22:59:04 2019 -0600
+
+    server: Discard 0-value outputs while building a persisted transaction
+
 https://github.com/X9Developers/block-explorer/commit/149601dda7b05e090b8cd6acbae3688acdaf5e9f
 commit 149601dda7b05e090b8cd6acbae3688acdaf5e9f
 Author: Alexis Hernandez <alexis22229@gmail.com>
