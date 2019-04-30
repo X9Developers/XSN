@@ -1,5 +1,15 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/e91de5b6de21f73c1ed6b413ce2f0cf99c801741
+commit e91de5b6de21f73c1ed6b413ce2f0cf99c801741
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Apr 29 22:15:11 2019 -0600
+
+    server: Fix bug that corrupted the transaction outputs
+    
+    For some reason, storing a list on an array column gets the row
+    corrupted.
+
 https://github.com/X9Developers/block-explorer/commit/46779c9db9c32f10cf0ecb75c7f9bdd9627a50bf
 commit 46779c9db9c32f10cf0ecb75c7f9bdd9627a50bf
 Author: Alexis Hernandez <alexis22229@gmail.com>
