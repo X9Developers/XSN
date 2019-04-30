@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/2c463b95ef13a7c1a42167a620207425c89afeb2
+commit 2c463b95ef13a7c1a42167a620207425c89afeb2
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Apr 29 22:14:30 2019 -0600
+
+    infra: Enable lite version on bitcoin
+
 https://github.com/X9Developers/block-explorer/commit/5527b545b6bd0a6b271f985ee90a6cee2edd8c99
 commit 5527b545b6bd0a6b271f985ee90a6cee2edd8c99
 Author: Alexis Hernandez <alexis22229@gmail.com>
