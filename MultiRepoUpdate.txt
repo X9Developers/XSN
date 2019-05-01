@@ -1,5 +1,15 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/b832a1f6dba541423822705bc6bf4e1a4a7807c5
+commit b832a1f6dba541423822705bc6bf4e1a4a7807c5
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed May 1 13:11:23 2019 -0600
+
+    server: Replace mockito by mockito-scala
+    
+    It is a pain to use mocks involving value classes which is simplified
+    by mockito-scala.
+
 https://github.com/X9Developers/block-explorer/commit/41ebfec5421298e17c436fe811cd6cceb37b222c
 commit 41ebfec5421298e17c436fe811cd6cceb37b222c
 Author: Alexis Hernandez <alexis22229@gmail.com>
