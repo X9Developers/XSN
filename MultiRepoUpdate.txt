@@ -1,5 +1,15 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/3f0556c6c5df97bf4ab60bcbf4eebfce5cf40aeb
+commit 3f0556c6c5df97bf4ab60bcbf4eebfce5cf40aeb
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed May 1 13:54:14 2019 -0600
+
+    server: Update the ordering while retrieving transactions for a given block
+    
+    Sort by the transaction index instead of the txid, this leads to the same
+    ordering as the one original one in the block.
+
 https://github.com/X9Developers/block-explorer/commit/b4f1799a54cc24c47966043c67e246c640cd64d4
 commit b4f1799a54cc24c47966043c67e246c640cd64d4
 Author: Alexis Hernandez <alexis22229@gmail.com>
