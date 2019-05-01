@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/44e81c2c02a0b52d2cd9b27d69c4752587101e41
+commit 44e81c2c02a0b52d2cd9b27d69c4752587101e41
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed May 1 13:22:35 2019 -0600
+
+    server: Disable deprecated endpoints
+    
+    Those endpoints are slow while dealing with lots of data.
+
 https://github.com/X9Developers/block-explorer/commit/9ebea5d87055dd9a007acfc2f65a51db5b16ad1f
 commit 9ebea5d87055dd9a007acfc2f65a51db5b16ad1f
 Author: Alexis Hernandez <alexis22229@gmail.com>
