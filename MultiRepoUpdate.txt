@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/41ebfec5421298e17c436fe811cd6cceb37b222c
+commit 41ebfec5421298e17c436fe811cd6cceb37b222c
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed May 1 09:29:49 2019 -0600
+
+    server: Add the script to the LightWalletTransaction.Output
+
 https://github.com/X9Developers/block-explorer/commit/2c463b95ef13a7c1a42167a620207425c89afeb2
 commit 2c463b95ef13a7c1a42167a620207425c89afeb2
 Author: Alexis Hernandez <alexis22229@gmail.com>
