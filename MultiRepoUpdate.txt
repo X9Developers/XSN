@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/bb8774603e5ca595bd731e4e75de7ed576069c65
+commit bb8774603e5ca595bd731e4e75de7ed576069c65
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed May 1 19:42:19 2019 -0600
+
+    infra: Add support for Dash
+
 https://github.com/X9Developers/block-explorer/commit/3f0556c6c5df97bf4ab60bcbf4eebfce5cf40aeb
 commit 3f0556c6c5df97bf4ab60bcbf4eebfce5cf40aeb
 Author: Alexis Hernandez <alexis22229@gmail.com>
