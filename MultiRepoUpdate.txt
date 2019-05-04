@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/8cb10f59f01148258c6ec81d5d07787261080130
+commit 8cb10f59f01148258c6ec81d5d07787261080130
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat May 4 10:35:52 2019 -0600
+
+    server: The HexScript could be empty
+
 https://github.com/X9Developers/block-explorer/commit/6a9f2e00988c96772301fd926d43d10dd479563a
 commit 6a9f2e00988c96772301fd926d43d10dd479563a
 Author: Alexis Hernandez <alexis22229@gmail.com>
