@@ -1,5 +1,15 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/097bc75566d9f1dc73e2934abccdc5ba89c6217e
+commit 097bc75566d9f1dc73e2934abccdc5ba89c6217e
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat May 4 10:35:55 2019 -0600
+
+    server: Update the headers endpoint to add caching
+    
+    There are headers that can be cached forever, while the most recent
+    ones should not due to possible reorganizations.
+
 https://github.com/X9Developers/block-explorer/commit/f6712c3c8fca1d3c38656c9b0b0d92637bb68781
 commit f6712c3c8fca1d3c38656c9b0b0d92637bb68781
 Author: Alexis Hernandez <alexis22229@gmail.com>
