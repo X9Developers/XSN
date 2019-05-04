@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/f6712c3c8fca1d3c38656c9b0b0d92637bb68781
+commit f6712c3c8fca1d3c38656c9b0b0d92637bb68781
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat May 4 10:35:54 2019 -0600
+
+    server: Update playsonify to 2.0.1-SNAPSHOT
+
 https://github.com/X9Developers/block-explorer/commit/3a4f5ded34675af468c710b42390b6b32285b83a
 commit 3a4f5ded34675af468c710b42390b6b32285b83a
 Author: Alexis Hernandez <alexis22229@gmail.com>
