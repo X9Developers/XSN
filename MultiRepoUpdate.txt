@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/027b13f6e9923672f70991230ce9721fe6ffe45b
+commit 027b13f6e9923672f70991230ce9721fe6ffe45b
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat May 4 10:35:53 2019 -0600
+
+    server: Test that a transaction output with empty script and value > 0 is accepted
+
 https://github.com/X9Developers/block-explorer/commit/8cb10f59f01148258c6ec81d5d07787261080130
 commit 8cb10f59f01148258c6ec81d5d07787261080130
 Author: Alexis Hernandez <alexis22229@gmail.com>
