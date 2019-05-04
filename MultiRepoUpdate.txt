@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/474453520333eef66f6fc119d37cdbc6be8e3fe7
+commit 474453520333eef66f6fc119d37cdbc6be8e3fe7
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat May 4 11:36:40 2019 -0600
+
+    server: Update playsonify to 2.0.1
+    
+    This allows to reduce the custom code for setting cache headers
+
 https://github.com/X9Developers/block-explorer/commit/097bc75566d9f1dc73e2934abccdc5ba89c6217e
 commit 097bc75566d9f1dc73e2934abccdc5ba89c6217e
 Author: Alexis Hernandez <alexis22229@gmail.com>
