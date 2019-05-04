@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/6a9f2e00988c96772301fd926d43d10dd479563a
+commit 6a9f2e00988c96772301fd926d43d10dd479563a
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat May 4 10:35:40 2019 -0600
+
+    server: Refactor the transaction errors to be more descriptive
+
 https://github.com/X9Developers/block-explorer/commit/bb8774603e5ca595bd731e4e75de7ed576069c65
 commit bb8774603e5ca595bd731e4e75de7ed576069c65
 Author: Alexis Hernandez <alexis22229@gmail.com>
