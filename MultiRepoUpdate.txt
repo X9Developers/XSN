@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/c90ef5e79720c8d83fe51801490661ee4e847eb2
+commit c90ef5e79720c8d83fe51801490661ee4e847eb2
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat May 11 10:43:53 2019 -0600
+
+    infra: Add support for lnd on litecoin
+
 https://github.com/X9Developers/block-explorer/commit/3f068fc609d2fe51c142bd9d2afc6879152e2bd8
 commit 3f068fc609d2fe51c142bd9d2afc6879152e2bd8
 Author: Alexis Hernandez <alexis22229@gmail.com>
