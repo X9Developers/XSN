@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/3e8b93dd4de86ef54b1683a9205d78102d76e8bd
+commit 3e8b93dd4de86ef54b1683a9205d78102d76e8bd
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat May 11 08:17:07 2019 -0600
+
+    infra: Update bitcoin url
+
 https://github.com/X9Developers/block-explorer/commit/474453520333eef66f6fc119d37cdbc6be8e3fe7
 commit 474453520333eef66f6fc119d37cdbc6be8e3fe7
 Author: Alexis Hernandez <alexis22229@gmail.com>
