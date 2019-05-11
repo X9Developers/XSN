@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/3f068fc609d2fe51c142bd9d2afc6879152e2bd8
+commit 3f068fc609d2fe51c142bd9d2afc6879152e2bd8
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat May 11 12:24:38 2019 -0600
+
+    infra: Expose zmq on litecoind
+
 https://github.com/X9Developers/block-explorer/commit/3e8b93dd4de86ef54b1683a9205d78102d76e8bd
 commit 3e8b93dd4de86ef54b1683a9205d78102d76e8bd
 Author: Alexis Hernandez <alexis22229@gmail.com>
