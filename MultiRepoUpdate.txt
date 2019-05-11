@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/3fdfa2d9994b1f3f6495628cdae158a6b1422f00
+commit 3fdfa2d9994b1f3f6495628cdae158a6b1422f00
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat May 11 15:07:53 2019 -0600
+
+    infra: Update the dash-explorer.yml to use the explorer role
+
 https://github.com/X9Developers/block-explorer/commit/fdf4fc1601c261bd1158e1a625244809cf73790d
 commit fdf4fc1601c261bd1158e1a625244809cf73790d
 Author: Alexis Hernandez <alexis22229@gmail.com>
