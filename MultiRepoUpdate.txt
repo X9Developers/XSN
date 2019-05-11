@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/315ed3748d61ef3ffdd6e6db5e9517b99139d652
+commit 315ed3748d61ef3ffdd6e6db5e9517b99139d652
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat May 11 14:01:09 2019 -0600
+
+    infra: Replace oracle jdk with openjdk
+
 https://github.com/X9Developers/block-explorer/commit/c90ef5e79720c8d83fe51801490661ee4e847eb2
 commit c90ef5e79720c8d83fe51801490661ee4e847eb2
 Author: Alexis Hernandez <alexis22229@gmail.com>
