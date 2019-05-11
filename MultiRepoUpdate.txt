@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/fdf4fc1601c261bd1158e1a625244809cf73790d
+commit fdf4fc1601c261bd1158e1a625244809cf73790d
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat May 11 15:07:16 2019 -0600
+
+    infra: Add the explorer ansible role
+
 https://github.com/X9Developers/block-explorer/commit/315ed3748d61ef3ffdd6e6db5e9517b99139d652
 commit 315ed3748d61ef3ffdd6e6db5e9517b99139d652
 Author: Alexis Hernandez <alexis22229@gmail.com>
