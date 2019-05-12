@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/1bf84228d4e31b0088746686663142f10eade607
+commit 1bf84228d4e31b0088746686663142f10eade607
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat May 11 22:53:52 2019 -0600
+
+    infra: dashd uses the node role
+
 https://github.com/X9Developers/block-explorer/commit/c9ba11988727100f98f6ec9f1a98fe785df0af3b
 commit c9ba11988727100f98f6ec9f1a98fe785df0af3b
 Author: Alexis Hernandez <alexis22229@gmail.com>
