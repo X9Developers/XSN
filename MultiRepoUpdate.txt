@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/cbf5138991c17c8a5be8279c85369cc1b217ccbb
+commit cbf5138991c17c8a5be8279c85369cc1b217ccbb
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun May 12 15:53:58 2019 -0600
+
+    infra: Organize the deployment scripts in folders
+
 https://github.com/X9Developers/block-explorer/commit/daeab63bc46c340b8dd87eeb58ff21d0c7788278
 commit daeab63bc46c340b8dd87eeb58ff21d0c7788278
 Author: Alexis Hernandez <alexis22229@gmail.com>
