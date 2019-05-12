@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/263e1afc6130ec72d2cf1846907ddf5972f43dc1
+commit 263e1afc6130ec72d2cf1846907ddf5972f43dc1
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun May 12 17:39:00 2019 -0600
+
+    infra: Add lnd-bitcoin
+
 https://github.com/X9Developers/block-explorer/commit/1eea0b6882a2be30418596c348df41cc37b357e9
 commit 1eea0b6882a2be30418596c348df41cc37b357e9
 Author: Alexis Hernandez <alexis22229@gmail.com>
