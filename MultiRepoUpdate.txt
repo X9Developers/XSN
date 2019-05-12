@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/7f10f8c598b1e755353f881c35c0fccc16786709
+commit 7f10f8c598b1e755353f881c35c0fccc16786709
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun May 12 15:24:52 2019 -0600
+
+    infra: bitcoind uses the node role
+
 https://github.com/X9Developers/block-explorer/commit/7261b9c12d0a4579a072ec9d3e9ab6b5fbea917f
 commit 7261b9c12d0a4579a072ec9d3e9ab6b5fbea917f
 Author: Alexis Hernandez <alexis22229@gmail.com>
