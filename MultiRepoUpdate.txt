@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/caeccdfc4f247d08c181e0190f54465a84bd6ad5
+commit caeccdfc4f247d08c181e0190f54465a84bd6ad5
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat May 11 20:38:31 2019 -0600
+
+    infra: The groestlcoin script uses the explorer role
+
 https://github.com/X9Developers/block-explorer/commit/d01f3b4371cc8ff9d34ba608c97a791c3a87b9e1
 commit d01f3b4371cc8ff9d34ba608c97a791c3a87b9e1
 Author: Alexis Hernandez <alexis22229@gmail.com>
