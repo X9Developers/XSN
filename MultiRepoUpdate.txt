@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/61b64a00830916b12f1016f90d6f3fb27ab5bfd3
+commit 61b64a00830916b12f1016f90d6f3fb27ab5bfd3
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat May 11 21:00:19 2019 -0600
+
+    infra: The xsn script uses the explorer role
+
 https://github.com/X9Developers/block-explorer/commit/f3dc0fc4d20536fbba666d48caf7bc7d8933b7c5
 commit f3dc0fc4d20536fbba666d48caf7bc7d8933b7c5
 Author: Alexis Hernandez <alexis22229@gmail.com>
