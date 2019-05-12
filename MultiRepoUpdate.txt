@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/f3dc0fc4d20536fbba666d48caf7bc7d8933b7c5
+commit f3dc0fc4d20536fbba666d48caf7bc7d8933b7c5
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat May 11 20:48:00 2019 -0600
+
+    infra: The litecoin script uses the explorer role
+
 https://github.com/X9Developers/block-explorer/commit/caeccdfc4f247d08c181e0190f54465a84bd6ad5
 commit caeccdfc4f247d08c181e0190f54465a84bd6ad5
 Author: Alexis Hernandez <alexis22229@gmail.com>
