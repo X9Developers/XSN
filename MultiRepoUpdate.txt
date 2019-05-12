@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/2b3c3e7cc67a58347efee2ba7d0cf85795c78ddd
+commit 2b3c3e7cc67a58347efee2ba7d0cf85795c78ddd
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat May 11 20:29:47 2019 -0600
+
+    infra: Use a template for the explorer systemd services
+
 https://github.com/X9Developers/block-explorer/commit/b31c47c8ca7daf6e82081a1b29529a01d1072683
 commit b31c47c8ca7daf6e82081a1b29529a01d1072683
 Author: Alexis Hernandez <alexis22229@gmail.com>
