@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/1eea0b6882a2be30418596c348df41cc37b357e9
+commit 1eea0b6882a2be30418596c348df41cc37b357e9
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun May 12 17:28:21 2019 -0600
+
+    infra: lnd-litecoin uses the lnd role
+
 https://github.com/X9Developers/block-explorer/commit/e98b7b317b7824d60534e3dc73b2fb3e7db361c6
 commit e98b7b317b7824d60534e3dc73b2fb3e7db361c6
 Author: Alexis Hernandez <alexis22229@gmail.com>
