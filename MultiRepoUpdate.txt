@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/b31c47c8ca7daf6e82081a1b29529a01d1072683
+commit b31c47c8ca7daf6e82081a1b29529a01d1072683
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat May 11 19:13:11 2019 -0600
+
+    infra: Use a template for the sentry config
+
 https://github.com/X9Developers/block-explorer/commit/3fdfa2d9994b1f3f6495628cdae158a6b1422f00
 commit 3fdfa2d9994b1f3f6495628cdae158a6b1422f00
 Author: Alexis Hernandez <alexis22229@gmail.com>
