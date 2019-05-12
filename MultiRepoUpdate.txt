@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/e98b7b317b7824d60534e3dc73b2fb3e7db361c6
+commit e98b7b317b7824d60534e3dc73b2fb3e7db361c6
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun May 12 17:27:58 2019 -0600
+
+    infra: Add the lnd role
+
 https://github.com/X9Developers/block-explorer/commit/cbf5138991c17c8a5be8279c85369cc1b217ccbb
 commit cbf5138991c17c8a5be8279c85369cc1b217ccbb
 Author: Alexis Hernandez <alexis22229@gmail.com>
