@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/c9ba11988727100f98f6ec9f1a98fe785df0af3b
+commit c9ba11988727100f98f6ec9f1a98fe785df0af3b
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat May 11 22:53:38 2019 -0600
+
+    infra: Add role to setup nodes
+
 https://github.com/X9Developers/block-explorer/commit/6e8c6bff569b3450f8e532c6c18d7c6e65d55b2f
 commit 6e8c6bff569b3450f8e532c6c18d7c6e65d55b2f
 Author: Alexis Hernandez <alexis22229@gmail.com>
