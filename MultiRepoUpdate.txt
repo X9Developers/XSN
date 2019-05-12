@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/345d618d185a9e87e71b59cbda982646437e3f74
+commit 345d618d185a9e87e71b59cbda982646437e3f74
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun May 12 17:39:10 2019 -0600
+
+    infra: Enable zmq on bitcoind
+
 https://github.com/X9Developers/block-explorer/commit/263e1afc6130ec72d2cf1846907ddf5972f43dc1
 commit 263e1afc6130ec72d2cf1846907ddf5972f43dc1
 Author: Alexis Hernandez <alexis22229@gmail.com>
