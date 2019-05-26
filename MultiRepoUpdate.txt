@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/5dbd09f313bfc4de2bfdbdfe1ba7ecefcb2c1e78
+commit 5dbd09f313bfc4de2bfdbdfe1ba7ecefcb2c1e78
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun May 26 15:44:59 2019 -0600
+
+    root: Check scala sources are formatted with scalafmt on travis
+
 https://github.com/X9Developers/block-explorer/commit/49357c984f03fb6ed1db8155b693213175d980c0
 commit 49357c984f03fb6ed1db8155b693213175d980c0
 Author: Alexis Hernandez <alexis22229@gmail.com>
