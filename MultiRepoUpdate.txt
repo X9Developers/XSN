@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/49357c984f03fb6ed1db8155b693213175d980c0
+commit 49357c984f03fb6ed1db8155b693213175d980c0
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun May 26 15:44:29 2019 -0600
+
+    root: Update CONTRIBUTING.md to add scalafmt steps
+
 https://github.com/X9Developers/block-explorer/commit/29f64d9ddc924b37a4fd89082530d50bf0575f89
 commit 29f64d9ddc924b37a4fd89082530d50bf0575f89
 Author: Alexis Hernandez <alexis22229@gmail.com>
