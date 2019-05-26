@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/0113bbad4701f19e2463b466ec12468f728f88a5
+commit 0113bbad4701f19e2463b466ec12468f728f88a5
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun May 26 14:26:32 2019 -0600
+
+    server: Let scalafmt do its job
+
 https://github.com/X9Developers/block-explorer/commit/896e4fb2da66144e385043888abe2e21c2380dad
 commit 896e4fb2da66144e385043888abe2e21c2380dad
 Author: Alexis Hernandez <alexis22229@gmail.com>
