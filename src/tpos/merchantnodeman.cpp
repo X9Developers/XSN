@@ -14,6 +14,7 @@
 #include <utilstrencodings.h>
 #include <util.h>
 #include <init.h>
+#include <key_io.h>
 #include <netmessagemaker.h>
 
 /** Merchantnode manager */
@@ -354,7 +355,7 @@ void CMerchantnodeMan::DsegUpdate(CNode* pnode, CConnman& connman)
     int64_t askAgain = GetTime() + DSEG_UPDATE_SECONDS;
     mWeAskedForMerchantnodeList[pnode->addr] = askAgain;
 
-    LogPrint(BCLog::MERCHANTNODE, "CMerchantnodeMan::DsegUpdate -- asked %s for the list\n", pnode->addr.ToString());
+    LogPrintf("CMerchantnodeMan::DsegUpdate -- asked %s for the list\n", pnode->addr.ToString());
 }
 
 CMerchantnode* CMerchantnodeMan::Find(const CPubKey &pubKeyMerchantnode)
@@ -732,7 +733,11 @@ void CMerchantnodeMan::AskForMissing(CConnman &connman)
 
     for(auto &&it : mUnknownMerchantnodes)
     {
-        shouldAsk |= (it.second >= 10);
+        if(it.second >= 10)
+        {
+            shouldAsk = true;
+            LogPrintf("Asking for merchantnode with address: %s\n", EncodeDestination(it.first));
+        }
     }
 
     if(shouldAsk)

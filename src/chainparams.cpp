@@ -106,6 +106,7 @@ public:
         consensus.nTPoSContractSignatureDeploymentTime = 1523127600;
         consensus.nPowKGWHeight = 15200;
         consensus.nPowDGWHeight = 24;
+        consensus.nMaxBlockSpacingFixDeploymentHeight = 674980; // apprx 28 of June
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
         consensus.nRuleChangeActivationThreshold = 1080; // 75% of 2016
@@ -235,6 +236,7 @@ public:
         consensus.fPowNoRetargeting = false;
         consensus.nPowKGWHeight = 4001; // nPowKGWHeight >= nPowDGWHeight means "no KGW"
         consensus.nPowDGWHeight = 4001;
+        consensus.nMaxBlockSpacingFixDeploymentHeight = 0;
         consensus.nStakeMinAge = 60 * 60;
         consensus.nStakeMaxAge = 60 * 60 * 24; // one day
         consensus.nCoinbaseMaturity = 20;
@@ -362,6 +364,7 @@ public:
         consensus.nPowKGWHeight = 4001; // nPowKGWHeight >= nPowDGWHeight means "no KGW"
         consensus.nPowDGWHeight = 4001;
         consensus.nLastPoWBlock = 75;
+        consensus.nMaxBlockSpacingFixDeploymentHeight = 0;
         consensus.nStakeMinAge = 60 * 60;
         consensus.nStakeMaxAge = 60 * 60 * 24; // one day
         consensus.nCoinbaseMaturity = 20;

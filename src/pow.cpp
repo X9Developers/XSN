@@ -90,6 +90,11 @@ unsigned int static PoSWorkRequired(const CBlockIndex* pindexLast, const Consens
     if (nActualSpacing < 0)
         nActualSpacing = 1;
 
+    if(pindexLast->nHeight > params.nMaxBlockSpacingFixDeploymentHeight)
+    {
+        nActualSpacing = std::min(nActualSpacing, nTargetSpacing * 10);
+    }
+
     // ppcoin: target change every block
     // ppcoin: retarget with exponential moving toward target spacing
     arith_uint256 bnNew;
