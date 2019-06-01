@@ -297,7 +297,7 @@ CBlockIndex* FindForkInGlobalIndex(const CChain& chain, const CBlockLocator& loc
     return chain.Genesis();
 }
 
-static int64_t GetMaxFutureBlockTime(CBlockIndex *pindexPrev, const Consensus::Params &params)
+static int64_t GetMaxFutureBlockTime(const CBlockIndex *pindexPrev, const Consensus::Params &params)
 {
     return pindexPrev->nHeight > params.nMaxBlockSpacingFixDeploymentHeight ? MAX_FUTURE_BLOCK_TIME_POST_FORK :
                                                                               MAX_FUTURE_BLOCK_TIME;
@@ -3416,7 +3416,7 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationSta
         return state.Invalid(false, REJECT_INVALID, "time-too-old", "block's timestamp is too early");
 
     // Check timestamp
-    if (block.GetBlockTime() > nAdjustedTime + GetMaxFutureBlockTime(pindexPrev, params))
+    if (block.GetBlockTime() > nAdjustedTime + GetMaxFutureBlockTime(pindexPrev, consensusParams))
         return state.Invalid(false, REJECT_INVALID, "time-too-new", "block timestamp too far in the future");
 
     // Reject outdated version blocks when 95% (75% on testnet) of the network has upgraded:
