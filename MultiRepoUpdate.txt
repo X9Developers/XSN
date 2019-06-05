@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/5767ab293554235e0ae0ac78ccf484609beb0dbd
+commit 5767ab293554235e0ae0ac78ccf484609beb0dbd
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Jun 4 23:01:17 2019 -0600
+
+    infra: Remove useless files
+
 https://github.com/X9Developers/block-explorer/commit/ce06325661ede26cd8b19ca34d56b262497364bd
 commit ce06325661ede26cd8b19ca34d56b262497364bd
 Author: Alexis Hernandez <alexis22229@gmail.com>
