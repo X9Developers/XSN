@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/51146d04ef330217f06a8f5b04e8cfe718f896ed
+commit 51146d04ef330217f06a8f5b04e8cfe718f896ed
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Jun 4 23:02:54 2019 -0600
+
+    root: Check test sources format on travis
+
 https://github.com/X9Developers/block-explorer/commit/87c55df42d64a4146d747fabd4d08dd4f00f1ff3
 commit 87c55df42d64a4146d747fabd4d08dd4f00f1ff3
 Author: Alexis Hernandez <alexis22229@gmail.com>
