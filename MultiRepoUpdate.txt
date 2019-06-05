@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/87c55df42d64a4146d747fabd4d08dd4f00f1ff3
+commit 87c55df42d64a4146d747fabd4d08dd4f00f1ff3
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Jun 4 23:02:35 2019 -0600
+
+    server: Let scalafmt format the test sources
+
 https://github.com/X9Developers/block-explorer/commit/5767ab293554235e0ae0ac78ccf484609beb0dbd
 commit 5767ab293554235e0ae0ac78ccf484609beb0dbd
 Author: Alexis Hernandez <alexis22229@gmail.com>
