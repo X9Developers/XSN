@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/ce06325661ede26cd8b19ca34d56b262497364bd
+commit ce06325661ede26cd8b19ca34d56b262497364bd
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Jun 4 22:09:47 2019 -0600
+
+    infra: Fix explorer playbooks
+
 https://github.com/X9Developers/block-explorer/commit/5dbd09f313bfc4de2bfdbdfe1ba7ecefcb2c1e78
 commit 5dbd09f313bfc4de2bfdbdfe1ba7ecefcb2c1e78
 Author: Alexis Hernandez <alexis22229@gmail.com>
