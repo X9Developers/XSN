@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/1cdb010e37d497ea8f0cf48daf4638e69799a085
+commit 1cdb010e37d497ea8f0cf48daf4638e69799a085
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Thu Jun 6 14:59:43 2019 -0600
+
+    server: Update endpoint "GET /block-headers/:query"
+    
+    retrieves a block header by its height or by its blockhash
+
 https://github.com/X9Developers/block-explorer/commit/5db1682111bd951a954e55159445c28149dd6ce5
 commit 5db1682111bd951a954e55159445c28149dd6ce5
 Author: Adinael Perez Ruelas <adin692@gmail.com>
