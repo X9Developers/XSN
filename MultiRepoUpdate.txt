@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/2086918f1ec8219f01f8628f9b937b64bb64bd29
+commit 2086918f1ec8219f01f8628f9b937b64bb64bd29
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Fri Jun 7 20:11:42 2019 -0600
+
+    server: update blockHeader model
+    
+    blockHeader model matchs with the persisted block model
+
 https://github.com/X9Developers/block-explorer/commit/1daf6f0aac531d0cf373279f09b97036815ea1d2
 commit 1daf6f0aac531d0cf373279f09b97036815ea1d2
 Author: Adinael Perez Ruelas <adin692@gmail.com>
