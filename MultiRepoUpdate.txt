@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/32fdc3537e7a436d6441288bd04c268f1436d334
+commit 32fdc3537e7a436d6441288bd04c268f1436d334
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jun 8 17:26:41 2019 -0600
+
+    server: Allow to enable the new synchronizer from the config file
+
 https://github.com/X9Developers/block-explorer/commit/4e82f19c23523d4a4df130ef421621df74579f8b
 commit 4e82f19c23523d4a4df130ef421621df74579f8b
 Author: Alexis Hernandez <alexis22229@gmail.com>
