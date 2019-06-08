@@ -1,5 +1,17 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/4e82f19c23523d4a4df130ef421621df74579f8b
+commit 4e82f19c23523d4a4df130ef421621df74579f8b
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jun 8 12:39:21 2019 -0600
+
+    server: Add a new ledger synchronization process
+    
+    This uses a different approach that is simpler because there
+    are not that many corner cases as in the existing one.
+    
+    This will replace the current sync process after it is tested enough.
+
 https://github.com/X9Developers/block-explorer/commit/0c7068b7cde23a794f9059807666d7c02755d445
 commit 0c7068b7cde23a794f9059807666d7c02755d445
 Author: Alexis Hernandez <alexis22229@gmail.com>
