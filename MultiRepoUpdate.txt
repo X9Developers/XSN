@@ -1,5 +1,16 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/6ef201e430ae52052cf09d7178fe6a9908a6d124
+commit 6ef201e430ae52052cf09d7178fe6a9908a6d124
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jun 8 17:43:38 2019 -0600
+
+    server: Refactor the ledger synchronizers
+    
+    - The legacy one was moved to the synchronizer package and renamed to LegacyLedgerSynchronizerService.
+    - The is a common trait called LedgerSynchronizer.
+    - The LedgerSynchronizerSpec were merged into a single one that tests both implementations.
+
 https://github.com/X9Developers/block-explorer/commit/32fdc3537e7a436d6441288bd04c268f1436d334
 commit 32fdc3537e7a436d6441288bd04c268f1436d334
 Author: Alexis Hernandez <alexis22229@gmail.com>
