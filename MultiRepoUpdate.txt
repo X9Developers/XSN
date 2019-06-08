@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/0c7068b7cde23a794f9059807666d7c02755d445
+commit 0c7068b7cde23a794f9059807666d7c02755d445
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Jun 7 22:01:21 2019 -0600
+
+    infra: Update bitcoind hosts
+
 https://github.com/X9Developers/block-explorer/commit/2086918f1ec8219f01f8628f9b937b64bb64bd29
 commit 2086918f1ec8219f01f8628f9b937b64bb64bd29
 Author: Adinael Perez Ruelas <adin692@gmail.com>
