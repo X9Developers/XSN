@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/ab8ae6fc508798769d63ee2b4778fd25b84d75ac
+commit ab8ae6fc508798769d63ee2b4778fd25b84d75ac
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jun 8 22:02:02 2019 -0600
+
+    server: Allow lightningstake.com on the CORS filter
+
 https://github.com/X9Developers/block-explorer/commit/56b988d4f21907d1261bf0c71229b9db409e25a1
 commit 56b988d4f21907d1261bf0c71229b9db409e25a1
 Author: Alexis Hernandez <alexis22229@gmail.com>
