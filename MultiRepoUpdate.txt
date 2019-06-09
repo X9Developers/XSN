@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/a562497f6ffe33dbc82a54875e0256349b24fbbb
+commit a562497f6ffe33dbc82a54875e0256349b24fbbb
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Jun 9 10:20:45 2019 -0600
+
+    server: Allow www.xsnexplorer.io on the CORS filter
+
 https://github.com/X9Developers/block-explorer/commit/f1b0f32965774efb3e837f9bed7a3976a9b2867a
 commit f1b0f32965774efb3e837f9bed7a3976a9b2867a
 Author: Alexis Hernandez <alexis22229@gmail.com>
