@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/f1b0f32965774efb3e837f9bed7a3976a9b2867a
+commit f1b0f32965774efb3e837f9bed7a3976a9b2867a
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jun 8 22:10:12 2019 -0600
+
+    server: The /health endpoint fails if there are more than 10 missing blocks
+
 https://github.com/X9Developers/block-explorer/commit/ab8ae6fc508798769d63ee2b4778fd25b84d75ac
 commit ab8ae6fc508798769d63ee2b4778fd25b84d75ac
 Author: Alexis Hernandez <alexis22229@gmail.com>
