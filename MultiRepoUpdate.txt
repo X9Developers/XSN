@@ -1,5 +1,16 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/0b9ea97691a989a5f76dc596017f2798727a356d
+commit 0b9ea97691a989a5f76dc596017f2798727a356d
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Mon Jun 10 12:00:06 2019 -0600
+
+    server: remove deprecated code
+    remove the following endpoints:
+    GET   /addresses/:address/transactions
+    GET   /blocks/:blockhash/transactions
+    GET   /balances
+
 https://github.com/X9Developers/block-explorer/commit/9e30a310b7372b754347a5b37ccb615f05120c96
 commit 9e30a310b7372b754347a5b37ccb615f05120c96
 Author: Alexis Hernandez <alexis22229@gmail.com>
