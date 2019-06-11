@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/c9db9a8dc63df8e5bd552af1b4627fe33f2eb4b3
+commit c9db9a8dc63df8e5bd552af1b4627fe33f2eb4b3
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Mon Jun 10 18:47:19 2019 -0600
+
+    server: Fix block reward computation
+    
+    Remove the isPoW, isPoS, and isTPoS methods from the rpc.Block.
+
 https://github.com/X9Developers/block-explorer/commit/0b9ea97691a989a5f76dc596017f2798727a356d
 commit 0b9ea97691a989a5f76dc596017f2798727a356d
 Author: Adinael Perez Ruelas <adin692@gmail.com>
