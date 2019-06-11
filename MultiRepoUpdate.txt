@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/865ae10e227be471d107caedf3ff089cb215b134
+commit 865ae10e227be471d107caedf3ff089cb215b134
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Tue Jun 11 17:50:28 2019 -0600
+
+    web-ui: Create a PoC for the new explorer UI
+    
+    update the principal page of the block explorer UI
+
 https://github.com/X9Developers/block-explorer/commit/26b005c527cc5951024f1795d3e98954182e4a82
 commit 26b005c527cc5951024f1795d3e98954182e4a82
 Author: Alexis Hernandez <alexis22229@gmail.com>
