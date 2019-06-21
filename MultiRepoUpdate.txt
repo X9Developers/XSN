@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/ec2be994c9971febff75afa5e187101650a8f0f6
+commit ec2be994c9971febff75afa5e187101650a8f0f6
+Author: Raul Lopez <raul.hll@hotmail.com>
+Date:   Thu Jun 20 23:30:08 2019 -0500
+
+    server: fixed SipHashKey.fromBtcutil(hash: Blockhash) implementation
+    
+    It now produces the same key as the btcutil implementation does.
+
 https://github.com/X9Developers/block-explorer/commit/2f847db1249560278170efec371510888a80d44f
 commit 2f847db1249560278170efec371510888a80d44f
 Author: Alexis Hernandez <alexis22229@gmail.com>
