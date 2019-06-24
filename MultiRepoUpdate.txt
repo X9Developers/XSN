@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/5ca71b19c2f46523d58b60539bdb462d3fe35d0d
+commit 5ca71b19c2f46523d58b60539bdb462d3fe35d0d
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Mon Jun 24 14:53:54 2019 -0600
+
+    web-ui: Explain what Total supply and Circulating supply stand for
+    
+    add a tooltip for Total supply and circulating supply
+
 https://github.com/X9Developers/block-explorer/commit/82ba3c1081b3f648287ae365fcf6b6b19a6d0b2e
 commit 82ba3c1081b3f648287ae365fcf6b6b19a6d0b2e
 Author: Alexis Hernandez <alexis22229@gmail.com>
