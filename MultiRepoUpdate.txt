@@ -1,5 +1,16 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/3187523364daed6f566a04dd865517a56011f65b
+commit 3187523364daed6f566a04dd865517a56011f65b
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Jun 24 22:36:53 2019 -0600
+
+    server: Load full blocks on the synchronization process
+    
+    By using the more verbose level while retrieving blocks from the RPC API,
+    we are now able to store the transactions on the genesis block, also,
+    the number of calls to the RPC API is reduced considerably.
+
 https://github.com/X9Developers/block-explorer/commit/1a6a892df104638139adda6ab7420c95876d9150
 commit 1a6a892df104638139adda6ab7420c95876d9150
 Author: Adinael Perez Ruelas <adin692@gmail.com>
