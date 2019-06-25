@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/34eadd5d929fe223daf257b44e2b190463742cec
+commit 34eadd5d929fe223daf257b44e2b190463742cec
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Mon Jun 24 20:06:15 2019 -0600
+
+    web-ui: Add new address label 'Burned coins'
+
 https://github.com/X9Developers/block-explorer/commit/5ca71b19c2f46523d58b60539bdb462d3fe35d0d
 commit 5ca71b19c2f46523d58b60539bdb462d3fe35d0d
 Author: Adinael Perez Ruelas <adin692@gmail.com>
