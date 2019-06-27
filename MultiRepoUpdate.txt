@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/515ba9ea7cfcd2225a570188d0ef0584368bbc4c
+commit 515ba9ea7cfcd2225a570188d0ef0584368bbc4c
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Thu Jun 27 17:12:25 2019 -0600
+
+    web-ui: Change help icon
+
 https://github.com/X9Developers/block-explorer/commit/2997bafc7819f149ec236c9952e1c2ccb8702e50
 commit 2997bafc7819f149ec236c9952e1c2ccb8702e50
 Author: Alexis Hernandez <alexis22229@gmail.com>
