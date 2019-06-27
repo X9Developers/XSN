@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/2997bafc7819f149ec236c9952e1c2ccb8702e50
+commit 2997bafc7819f149ec236c9952e1c2ccb8702e50
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Jun 26 22:49:20 2019 -0600
+
+    root: Update .nvmrc
+
 https://github.com/X9Developers/block-explorer/commit/d57910d0e6947dd6bf6fa92eb7c2da191491b8c1
 commit d57910d0e6947dd6bf6fa92eb7c2da191491b8c1
 Author: Alexis Hernandez <alexis22229@gmail.com>
