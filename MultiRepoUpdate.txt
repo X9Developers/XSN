@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/1aeb42ab46821d0f19a0f7de08a631892980778e
+commit 1aeb42ab46821d0f19a0f7de08a631892980778e
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Jun 30 17:53:26 2019 -0600
+
+    server: Extract balances related logic from LedgerPostgresDataHandler
+
 https://github.com/X9Developers/block-explorer/commit/3187523364daed6f566a04dd865517a56011f65b
 commit 3187523364daed6f566a04dd865517a56011f65b
 Author: Alexis Hernandez <alexis22229@gmail.com>
