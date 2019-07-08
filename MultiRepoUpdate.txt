@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/4f44858dc61c168e978226fd73ee78d9a0d0699a
+commit 4f44858dc61c168e978226fd73ee78d9a0d0699a
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Jul 7 22:01:18 2019 -0600
+
+    server: Use the parallel block synchronizer on the LedgerSynchronizerService
+
 https://github.com/X9Developers/block-explorer/commit/c920db68216500979c45035c8560e0b6b171319c
 commit c920db68216500979c45035c8560e0b6b171319c
 Author: Alexis Hernandez <alexis22229@gmail.com>
