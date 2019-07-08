@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/c920db68216500979c45035c8560e0b6b171319c
+commit c920db68216500979c45035c8560e0b6b171319c
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Jul 7 21:59:25 2019 -0600
+
+    server: Add the BlockParallelChunkSynchronizer
+    
+    This synchronizer allows to sync a single block in parallel.
+
 https://github.com/X9Developers/block-explorer/commit/63adb40c67b66a389baff58a7aab295ce92e3585
 commit 63adb40c67b66a389baff58a7aab295ce92e3585
 Author: Alexis Hernandez <alexis22229@gmail.com>
