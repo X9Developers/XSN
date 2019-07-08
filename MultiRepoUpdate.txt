@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/1e2b5f07703fa670d62138b914dee8db97caca0d
+commit 1e2b5f07703fa670d62138b914dee8db97caca0d
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Jul 7 21:34:52 2019 -0600
+
+    server: Allow to update available coins even if the row is not here
+
 https://github.com/X9Developers/block-explorer/commit/0dcbce0e638f3680715932b68f461fc5049b88db
 commit 0dcbce0e638f3680715932b68f461fc5049b88db
 Author: Alexis Hernandez <alexis22229@gmail.com>
