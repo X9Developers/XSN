@@ -1,5 +1,19 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/63adb40c67b66a389baff58a7aab295ce92e3585
+commit 63adb40c67b66a389baff58a7aab295ce92e3585
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Jul 7 21:45:41 2019 -0600
+
+    server: Add the BlockChunkRepository
+    
+    Allows to perform operations required for synchronizing a block
+    in phases, where each phase can be done in parallel.
+    
+    Also, these changes are included:
+    - Adds the block_synchronization_progress table.
+    - Adds the postgres implementation.
+
 https://github.com/X9Developers/block-explorer/commit/1f2f6426e240adf8f41af5b91332fc44e283a0bf
 commit 1f2f6426e240adf8f41af5b91332fc44e283a0bf
 Author: Alexis Hernandez <alexis22229@gmail.com>
