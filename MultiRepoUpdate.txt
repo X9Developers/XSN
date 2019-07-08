@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/569762e15bc655d5a6894b0b21d5113cbc8279a7
+commit 569762e15bc655d5a6894b0b21d5113cbc8279a7
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Jul 7 21:37:41 2019 -0600
+
+    server: Add deterministic order while retrieving transaction inputs
+
 https://github.com/X9Developers/block-explorer/commit/1e2b5f07703fa670d62138b914dee8db97caca0d
 commit 1e2b5f07703fa670d62138b914dee8db97caca0d
 Author: Alexis Hernandez <alexis22229@gmail.com>
