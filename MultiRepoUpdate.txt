@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/8d8765b261b2b83e61497b2f1b71ea72de5e3a94
+commit 8d8765b261b2b83e61497b2f1b71ea72de5e3a94
+Author: Raul Lopez <raul.hll@hotmail.com>
+Date:   Wed Jul 10 01:28:03 2019 -0500
+
+    server: calculate block basic filter the spent pubKeyScripts and the outputs pubKeyScripts
+
 https://github.com/X9Developers/block-explorer/commit/ec2be994c9971febff75afa5e187101650a8f0f6
 commit ec2be994c9971febff75afa5e187101650a8f0f6
 Author: Raul Lopez <raul.hll@hotmail.com>
