@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/163b1650b138f608853805b9a83f1c879a916f67
+commit 163b1650b138f608853805b9a83f1c879a916f67
+Author: Jonathan <jonathan@wiringbits.net>
+Date:   Thu Jul 18 16:18:26 2019 -0600
+
+    server: Fix test in TransactionPostgresDataHandlerSpec
+
 https://github.com/X9Developers/block-explorer/commit/4f44858dc61c168e978226fd73ee78d9a0d0699a
 commit 4f44858dc61c168e978226fd73ee78d9a0d0699a
 Author: Alexis Hernandez <alexis22229@gmail.com>
