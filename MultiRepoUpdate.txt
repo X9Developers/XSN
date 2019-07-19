@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/37c8b75a46c38112787924439e99fa91c7ff7455
+commit 37c8b75a46c38112787924439e99fa91c7ff7455
+Author: Jonathan <jonathan@wiringbits.net>
+Date:   Fri Jul 19 13:18:41 2019 -0600
+
+    server: remove useless calls to getAddressBalance and getTransactions, issue #48
+
 https://github.com/X9Developers/block-explorer/commit/163b1650b138f608853805b9a83f1c879a916f67
 commit 163b1650b138f608853805b9a83f1c879a916f67
 Author: Jonathan <jonathan@wiringbits.net>
