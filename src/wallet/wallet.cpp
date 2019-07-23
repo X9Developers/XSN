@@ -397,7 +397,7 @@ bool CWallet::AddWatchOnly(const CScript& dest)
 
 CAmount GetStakeReward(CAmount blockReward, unsigned int percentage)
 {
-    return (blockReward / 100) * percentage;
+    return blockReward * percentage / 100;
 }
 
 bool CWallet::CreateCoinStakeKernel(CScript &kernelScript, const CScript &stakeScript,

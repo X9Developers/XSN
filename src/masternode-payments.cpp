@@ -1045,9 +1045,8 @@ void AdjustMasternodePayment(CMutableTransaction &tx, const CTxOut &txoutMastern
         int i = tx.vout.size() - 2;
         if(tposContract.IsValid()) // here we have 3 outputs, first as stake reward, second as tpos reward, third as MN reward
         {
-            masternodePayment /= 100; // to calculate percentage
-            tx.vout[i - 1].nValue -= masternodePayment * tposContract.stakePercentage; // adjust reward for owner.
-            tx.vout[i].nValue -= masternodePayment * (100 - tposContract.stakePercentage); // adjust reward for merchant
+            tx.vout[i - 1].nValue -= masternodePayment * tposContract.stakePercentage / 100; // adjust reward for owner.
+            tx.vout[i].nValue -= masternodePayment * (100 - tposContract.stakePercentage) / 100; // adjust reward for merchant
         }
         else // here we have 2 outputs, first as stake reward, second as MN reward
         {
