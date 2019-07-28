@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/2234722a10af8820526b4f6fa3d064ad5d7d6adb
+commit 2234722a10af8820526b4f6fa3d064ad5d7d6adb
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Jul 28 15:40:25 2019 -0600
+
+    server: Rename endpoint /blocks/headers/ to /block-headers
+
 https://github.com/X9Developers/block-explorer/commit/37c8b75a46c38112787924439e99fa91c7ff7455
 commit 37c8b75a46c38112787924439e99fa91c7ff7455
 Author: Jonathan <jonathan@wiringbits.net>
