@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/cff916792e6a55cd660113eb167d4238379ec1e9
+commit cff916792e6a55cd660113eb167d4238379ec1e9
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Jul 28 15:40:56 2019 -0600
+
+    server: Add version, nonce, and bits fields to the paginated block headers endpoint
+
 https://github.com/X9Developers/block-explorer/commit/2234722a10af8820526b4f6fa3d064ad5d7d6adb
 commit 2234722a10af8820526b4f6fa3d064ad5d7d6adb
 Author: Alexis Hernandez <alexis22229@gmail.com>
