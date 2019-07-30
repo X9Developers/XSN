@@ -1,5 +1,15 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/3a2f261992a8924740c019e9a69593190917ec67
+commit 3a2f261992a8924740c019e9a69593190917ec67
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Mon Jul 29 18:30:33 2019 -0600
+
+    server: Add validation for lastSeenHash
+    
+    Update the route "GET   /block-headers"
+    The server returns a 400 error when the lastSeenHashparameter does not exist
+
 https://github.com/X9Developers/block-explorer/commit/cff916792e6a55cd660113eb167d4238379ec1e9
 commit cff916792e6a55cd660113eb167d4238379ec1e9
 Author: Alexis Hernandez <alexis22229@gmail.com>
