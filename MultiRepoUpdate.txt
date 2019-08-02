@@ -1,5 +1,15 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/5770575144b1e08a0772b2a9d4936304ad833eb2
+commit 5770575144b1e08a0772b2a9d4936304ad833eb2
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Aug 2 17:22:09 2019 -0600
+
+    server: Fix missing transaction time while loading full blocks
+    
+    The full block retrieval API from xsnd assumes that the blocktime
+    is the same as the transaction time.
+
 https://github.com/X9Developers/block-explorer/commit/3a2f261992a8924740c019e9a69593190917ec67
 commit 3a2f261992a8924740c019e9a69593190917ec67
 Author: Adinael Perez Ruelas <adin692@gmail.com>
