@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/2f847db1249560278170efec371510888a80d44f
+commit 2f847db1249560278170efec371510888a80d44f
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Aug 4 12:26:39 2019 -0600
+
+    server: Disable the parallel block synchronizer by default
+    
+    It seems to be causing issues while aggregating balances.
+
 https://github.com/X9Developers/block-explorer/commit/af50215942d13de49c66af140b45f757b19ec819
 commit af50215942d13de49c66af140b45f757b19ec819
 Author: Alexis Hernandez <alexis22229@gmail.com>
