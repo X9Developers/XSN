@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/af50215942d13de49c66af140b45f757b19ec819
+commit af50215942d13de49c66af140b45f757b19ec819
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Aug 3 22:55:24 2019 -0600
+
+    infra: Update queries.sql
+
 https://github.com/X9Developers/block-explorer/commit/5770575144b1e08a0772b2a9d4936304ad833eb2
 commit 5770575144b1e08a0772b2a9d4936304ad833eb2
 Author: Alexis Hernandez <alexis22229@gmail.com>
