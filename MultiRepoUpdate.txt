@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/3cd5f00870c3d7ab0ec26532a968949e50625eec
+commit 3cd5f00870c3d7ab0ec26532a968949e50625eec
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Aug 16 19:59:55 2019 -0600
+
+    infra: Update dashd to v0.14.0.2
+
 https://github.com/X9Developers/block-explorer/commit/8d8765b261b2b83e61497b2f1b71ea72de5e3a94
 commit 8d8765b261b2b83e61497b2f1b71ea72de5e3a94
 Author: Raul Lopez <raul.hll@hotmail.com>
