@@ -1,5 +1,21 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/26b005c527cc5951024f1795d3e98954182e4a82
+commit 26b005c527cc5951024f1795d3e98954182e4a82
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Aug 16 22:09:56 2019 -0600
+
+    server: Initial schema migration from hex strings to bytes
+    
+    The HEX_STRING_TYPE is deleted and BYTEA is used instead, which
+    only stores the bytes instead of the hex-string representation.
+    
+    The merkle_root column is changed from TEXT to BYTEA.
+    
+    The transaction_outputs.hex_script column is changed from TEXT to BYTEA.
+    
+    The disk requirements for these fields is reduced by half.
+
 https://github.com/X9Developers/block-explorer/commit/3cd5f00870c3d7ab0ec26532a968949e50625eec
 commit 3cd5f00870c3d7ab0ec26532a968949e50625eec
 Author: Alexis Hernandez <alexis22229@gmail.com>
