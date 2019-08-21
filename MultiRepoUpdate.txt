@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/c3c558bf085d2c0065deb651e799cd8834a93cd8
+commit c3c558bf085d2c0065deb651e799cd8834a93cd8
+Author: Jaziel <jazimovil@gmail.com>
+Date:   Wed Aug 21 13:27:49 2019 -0500
+
+    web-ui: full responsive pages, borderless tables
+    
+    using styles.css for css rules that are used in various pages; added hr division between tables
+
 https://github.com/X9Developers/block-explorer/commit/865ae10e227be471d107caedf3ff089cb215b134
 commit 865ae10e227be471d107caedf3ff089cb215b134
 Author: Adinael Perez Ruelas <adin692@gmail.com>
