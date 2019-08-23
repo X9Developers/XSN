@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/3642988df853fa8b3522c55c65e60e4b207453cf
+commit 3642988df853fa8b3522c55c65e60e4b207453cf
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Fri Aug 23 15:56:28 2019 -0600
+
+    web-ui: Fix the Search button
+    
+    Update the circulating supply label
+
 https://github.com/X9Developers/block-explorer/commit/c3c558bf085d2c0065deb651e799cd8834a93cd8
 commit c3c558bf085d2c0065deb651e799cd8834a93cd8
 Author: Jaziel <jazimovil@gmail.com>
