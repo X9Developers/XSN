@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/a2837ce6379060c46da3db563d8849c1cc428958
+commit a2837ce6379060c46da3db563d8849c1cc428958
+Author: Jonathan <jonathan@wiringbits.net>
+Date:   Thu Aug 29 19:59:07 2019 -0600
+
+    server: Add to README a troubleshooting for xsnd
+
 https://github.com/X9Developers/block-explorer/commit/3642988df853fa8b3522c55c65e60e4b207453cf
 commit 3642988df853fa8b3522c55c65e60e4b207453cf
 Author: Adinael Perez Ruelas <adin692@gmail.com>
