@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/885c7d5f005919dedfe92f550a27a2207e35ce6e
+commit 885c7d5f005919dedfe92f550a27a2207e35ce6e
+Author: Raul Lopez <raul.hll@hotmail.com>
+Date:   Tue Sep 3 21:37:44 2019 -0500
+
+    server: implement RetryableFuture on XSNServiceRPCImpl
+
 https://github.com/X9Developers/block-explorer/commit/a549b74d78920aa73b8fcbc839a3c4ed1d573949
 commit a549b74d78920aa73b8fcbc839a3c4ed1d573949
 Author: Jonathan <jonathan@wiringbits.com>
