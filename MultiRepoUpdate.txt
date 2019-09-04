@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/a549b74d78920aa73b8fcbc839a3c4ed1d573949
+commit a549b74d78920aa73b8fcbc839a3c4ed1d573949
+Author: Jonathan <jonathan@wiringbits.com>
+Date:   Tue Sep 3 19:25:41 2019 -0600
+
+    server: Add GET /transactions/:txid/lite endpoint, included unit tests
+
 https://github.com/X9Developers/block-explorer/commit/40c9e6ca399cc1a3b9f5a9f948e1a8dc4abc3b35
 commit 40c9e6ca399cc1a3b9f5a9f948e1a8dc4abc3b35
 Author: Raul Lopez <raul.hll@hotmail.com>
