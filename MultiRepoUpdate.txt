@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/dfc27cec5648e14703edce012a6cd3625e2ce0fd
+commit dfc27cec5648e14703edce012a6cd3625e2ce0fd
+Author: Raul Lopez <raul.hll@hotmail.com>
+Date:   Sun Sep 8 17:10:24 2019 -0500
+
+    server: XSNServiceRPCImpl retry connection errors
+
 https://github.com/X9Developers/block-explorer/commit/885c7d5f005919dedfe92f550a27a2207e35ce6e
 commit 885c7d5f005919dedfe92f550a27a2207e35ce6e
 Author: Raul Lopez <raul.hll@hotmail.com>
