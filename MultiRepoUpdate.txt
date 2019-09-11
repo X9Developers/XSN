@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/bccebaa0401083068e1d00076fef7717cc8f68d4
+commit bccebaa0401083068e1d00076fef7717cc8f68d4
+Author: Raul Lopez <raul.hll@hotmail.com>
+Date:   Tue Sep 10 20:33:29 2019 -0500
+
+    server: Integrate RetryableFuture to future data handlers
+
 https://github.com/X9Developers/block-explorer/commit/92ef9ae4e3bf3b0a1eb386e1507c9096d79cbf6e
 commit 92ef9ae4e3bf3b0a1eb386e1507c9096d79cbf6e
 Author: Jonathan <jonathan@wiringbits.com>
