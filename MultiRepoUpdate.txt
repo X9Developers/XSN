@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/92ef9ae4e3bf3b0a1eb386e1507c9096d79cbf6e
+commit 92ef9ae4e3bf3b0a1eb386e1507c9096d79cbf6e
+Author: Jonathan <jonathan@wiringbits.com>
+Date:   Wed Sep 11 00:00:26 2019 -0600
+
+    server: Add Cache-Control to GET /transactions/:txid/lite endpoint, included unit tests
+
 https://github.com/X9Developers/block-explorer/commit/dfc27cec5648e14703edce012a6cd3625e2ce0fd
 commit dfc27cec5648e14703edce012a6cd3625e2ce0fd
 Author: Raul Lopez <raul.hll@hotmail.com>
