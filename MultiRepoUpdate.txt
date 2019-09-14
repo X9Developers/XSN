@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/250326d91c643e7f8e362dabead8d19f0f3c6189
+commit 250326d91c643e7f8e362dabead8d19f0f3c6189
+Author: Jonathan <jonathan@wiringbits.com>
+Date:   Fri Sep 13 20:40:36 2019 -0600
+
+    server: Add GET /blocks/:blockhash/lite endpoint
+
 https://github.com/X9Developers/block-explorer/commit/829cfabdd282ce9f8de9ba24252c9e9d0c43cf05
 commit 829cfabdd282ce9f8de9ba24252c9e9d0c43cf05
 Author: Jonathan <jonathan@wiringbits.net>
