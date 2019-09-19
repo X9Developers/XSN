@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/50759b2fc494b7e59e4dbeb3b5445c8606aaa29a
+commit 50759b2fc494b7e59e4dbeb3b5445c8606aaa29a
+Author: Jonathan <jonathan@wiringbits.com>
+Date:   Wed Sep 18 19:43:20 2019 -0600
+
+    server: Add GET /transactions/:txid/utxos/:index endpoint
+
 https://github.com/X9Developers/block-explorer/commit/bccebaa0401083068e1d00076fef7717cc8f68d4
 commit bccebaa0401083068e1d00076fef7717cc8f68d4
 Author: Raul Lopez <raul.hll@hotmail.com>
