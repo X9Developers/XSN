@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/829cfabdd282ce9f8de9ba24252c9e9d0c43cf05
+commit 829cfabdd282ce9f8de9ba24252c9e9d0c43cf05
+Author: Jonathan <jonathan@wiringbits.net>
+Date:   Thu Sep 19 21:02:57 2019 -0600
+
+    server: Add test for getTxOut in XSNService
+
 https://github.com/X9Developers/block-explorer/commit/50759b2fc494b7e59e4dbeb3b5445c8606aaa29a
 commit 50759b2fc494b7e59e4dbeb3b5445c8606aaa29a
 Author: Jonathan <jonathan@wiringbits.com>
