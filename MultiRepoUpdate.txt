@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/f421ae5d291016ab844943d1bcbe83112ae39356
+commit f421ae5d291016ab844943d1bcbe83112ae39356
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Sep 21 16:01:47 2019 -0600
+
+    infra: Fix pg_hba.conf
+
 https://github.com/X9Developers/block-explorer/commit/250326d91c643e7f8e362dabead8d19f0f3c6189
 commit 250326d91c643e7f8e362dabead8d19f0f3c6189
 Author: Jonathan <jonathan@wiringbits.com>
