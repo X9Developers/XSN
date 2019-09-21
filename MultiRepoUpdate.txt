@@ -1,5 +1,17 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/14e99fa2ca43d2b378717b09f64495045ba55c72
+commit 14e99fa2ca43d2b378717b09f64495045ba55c72
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Sep 21 15:55:26 2019 -0600
+
+    server: Migrate database from BLOCKHASH_TYPE to HASH_TYPE
+    
+    The change reduces the disk usage because BLOCKHASH_TYPE is a TEXT while
+    the HASH_TYPE is a byte array.
+    
+    Be aware that applying this evolution will take a while on production.
+
 https://github.com/X9Developers/block-explorer/commit/f421ae5d291016ab844943d1bcbe83112ae39356
 commit f421ae5d291016ab844943d1bcbe83112ae39356
 Author: Alexis Hernandez <alexis22229@gmail.com>
