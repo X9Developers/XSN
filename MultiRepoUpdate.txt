@@ -1,5 +1,18 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/e5e7d1715cbd8cd3197455b69fab82cbc66fdf27
+commit e5e7d1715cbd8cd3197455b69fab82cbc66fdf27
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Sep 22 07:48:54 2019 -0600
+
+    server: Migrate database from TXID_TYPE to HASH_TYPE
+    
+    The change reduces the disk usage considerably because TXID_TYPE is a TEXT while
+    the HASH_TYPE is a byte array.
+    
+    This reduces around 25% disk requirements on XSN, on BTC that's hundreds of gigabytes.
+    Be aware that applying this evolution will take a while on production.
+
 https://github.com/X9Developers/block-explorer/commit/14e99fa2ca43d2b378717b09f64495045ba55c72
 commit 14e99fa2ca43d2b378717b09f64495045ba55c72
 Author: Alexis Hernandez <alexis22229@gmail.com>
