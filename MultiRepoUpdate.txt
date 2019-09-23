@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/ca3885f5b61cc42d0414fb08ad3576b0b7e055ce
+commit ca3885f5b61cc42d0414fb08ad3576b0b7e055ce
+Author: Raul Lopez <raul.hll@hotmail.com>
+Date:   Sun Sep 22 21:31:47 2019 -0500
+
+    server: Store block rewards when syncing
+
 https://github.com/X9Developers/block-explorer/commit/99181e7692a134e1622bef41c30f4d6d1b802ea1
 commit 99181e7692a134e1622bef41c30f4d6d1b802ea1
 Author: Raul Lopez <raul.hll@hotmail.com>
