@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/b51a7f59bb02371d5e807bead6c0a6b1274df655
+commit b51a7f59bb02371d5e807bead6c0a6b1274df655
+Author: Jonathan <jonathan@wiringbits.net>
+Date:   Tue Oct 1 21:09:55 2019 -0600
+
+    web-ui: Add trezor-wallet to get address and transactions on trezor device
+
 https://github.com/X9Developers/block-explorer/commit/e5e7d1715cbd8cd3197455b69fab82cbc66fdf27
 commit e5e7d1715cbd8cd3197455b69fab82cbc66fdf27
 Author: Alexis Hernandez <alexis22229@gmail.com>
