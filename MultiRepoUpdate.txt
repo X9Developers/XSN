@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/71296763a279bfc3e20cd986e6434bf1595fbb5d
+commit 71296763a279bfc3e20cd986e6434bf1595fbb5d
+Author: Austin White <austin.j.white.96@gmail.com>
+Date:   Sun Oct 6 17:57:29 2019 -0700
+
+    Update CONTRIBUTING.md
+
 https://github.com/X9Developers/block-explorer/commit/6910ab05d0e8c488f1791f5516e1ebd26b69a209
 commit 6910ab05d0e8c488f1791f5516e1ebd26b69a209
 Author: Adinael Perez Ruelas <adin692@gmail.com>
