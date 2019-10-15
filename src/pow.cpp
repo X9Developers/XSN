@@ -12,6 +12,27 @@
 #include <arith_uint256.h>
 #include <primitives/block.h>
 
+namespace {
+// returns a * exp(p/q) where |p/q| is small
+arith_uint256 mul_exp(arith_uint256 a, int64_t p, int64_t q)
+{
+    bool isNegative = p < 0;
+    uint64_t abs_p = p >= 0 ? p : -p;
+    arith_uint256 result = a;
+    uint64_t n = 0;
+    while (a > 0) {
+        ++n;
+        a = a * abs_p / q / n;
+        if (isNegative && (n % 2 == 1)) {
+            result -= a;
+        } else {
+            result += a;
+        }
+    }
+    return result;
+}
+}
+
 unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const Consensus::Params& params) {
     const CBlockIndex *BlockLastSolved = pindexLast;
     const CBlockIndex *BlockReading = pindexLast;
@@ -78,31 +99,49 @@ unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const Conse
     return bnNew.GetCompact();
 }
 
+inline arith_uint256 GetPoSLimit(int nHeight, const Consensus::Params& params)
+{
+    if(nHeight < params.nNewDifficultyAlgoHFHeight) {
+        return ((~arith_uint256(0) >> 24));
+    } else {
+        return UintToArith256(params.nNewHFPoSLimit);
+    }
+}
+
 unsigned int static PoSWorkRequired(const CBlockIndex* pindexLast, const Consensus::Params& params) {
-    arith_uint256 bnTargetLimit = (~arith_uint256(0) >> 24);
+    const arith_uint256 bnTargetLimit = GetPoSLimit(pindexLast ? pindexLast->nHeight+1 : 0, params);
     int64_t nTargetSpacing = Params().GetConsensus().nPosTargetSpacing;
-    int64_t nTargetTimespan = Params().GetConsensus().nPosTargetTimespan;
 
     int64_t nActualSpacing = 0;
     if (pindexLast->nHeight != 0)
         nActualSpacing = pindexLast->GetBlockTime() - pindexLast->pprev->GetBlockTime();
-
-    if (nActualSpacing < 0)
-        nActualSpacing = 1;
-
-    if(pindexLast->nHeight > params.nMaxBlockSpacingFixDeploymentHeight)
-    {
-        nActualSpacing = std::min(nActualSpacing, nTargetSpacing * 10);
-    }
 
     // ppcoin: target change every block
     // ppcoin: retarget with exponential moving toward target spacing
     arith_uint256 bnNew;
     bnNew.SetCompact(pindexLast->nBits);
 
-    int64_t nInterval = nTargetTimespan / nTargetSpacing;
-    bnNew *= ((nInterval - 1) * nTargetSpacing + nActualSpacing + nActualSpacing);
-    bnNew /= ((nInterval + 1) * nTargetSpacing);
+    int64_t nInterval = params.DifficultyAdjustmentInterval(pindexLast->nHeight + 1);
+
+    if (pindexLast->nHeight + 1 < params.nNewDifficultyAlgoHFHeight) {
+
+        if (nActualSpacing < 0)
+            nActualSpacing = 1;
+
+        if(pindexLast->nHeight > params.nMaxBlockSpacingFixDeploymentHeight)
+        {
+            nActualSpacing = std::min(nActualSpacing, nTargetSpacing * 10);
+        }
+
+        bnNew *= ((nInterval - 1) * nTargetSpacing + nActualSpacing + nActualSpacing);
+        bnNew /= ((nInterval + 1) * nTargetSpacing);
+    } else {
+        if (nActualSpacing < 0)
+            nActualSpacing = nTargetSpacing;
+        if (nActualSpacing > nTargetSpacing * 20)
+            nActualSpacing = nTargetSpacing * 20;
+        bnNew = mul_exp(bnNew, 2 * (nActualSpacing - nTargetSpacing) / 16, (nInterval + 1) * nTargetSpacing / 16);
+    }
 
     if (bnNew <= 0 || bnNew > bnTargetLimit)
         bnNew = bnTargetLimit;
@@ -169,7 +208,7 @@ unsigned int GetNextWorkRequiredBTC(const CBlockIndex* pindexLast, const CBlockH
         return nProofOfWorkLimit;
 
     // Only change once per interval
-    if ((pindexLast->nHeight+1) % params.DifficultyAdjustmentInterval() != 0)
+    if ((pindexLast->nHeight+1) % params.DifficultyAdjustmentInterval(0) != 0)
     {
         if (params.fPowAllowMinDifficultyBlocks)
         {
@@ -182,7 +221,7 @@ unsigned int GetNextWorkRequiredBTC(const CBlockIndex* pindexLast, const CBlockH
             {
                 // Return the last non-special-min-difficulty-rules-block
                 const CBlockIndex* pindex = pindexLast;
-                while (pindex->pprev && pindex->nHeight % params.DifficultyAdjustmentInterval() != 0 && pindex->nBits == nProofOfWorkLimit)
+                while (pindex->pprev && pindex->nHeight % params.DifficultyAdjustmentInterval(0) != 0 && pindex->nBits == nProofOfWorkLimit)
                     pindex = pindex->pprev;
                 return pindex->nBits;
             }
@@ -191,7 +230,7 @@ unsigned int GetNextWorkRequiredBTC(const CBlockIndex* pindexLast, const CBlockH
     }
 
     // Go back by what we want to be 1 day worth of blocks
-    int nHeightFirst = pindexLast->nHeight - (params.DifficultyAdjustmentInterval()-1);
+    int nHeightFirst = pindexLast->nHeight - (params.DifficultyAdjustmentInterval(0) - 1);
     assert(nHeightFirst >= 0);
     const CBlockIndex* pindexFirst = pindexLast->GetAncestor(nHeightFirst);
     assert(pindexFirst);
