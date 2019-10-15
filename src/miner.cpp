@@ -695,9 +695,12 @@ void static XSNMiner(const CChainParams& chainparams, CConnman& connman,
             }
 
             // check if block is valid
-            CValidationState state;
-            if (!TestBlockValidity(state, chainparams, *pblock, pindexPrev, false, false)) {
-                throw std::runtime_error(strprintf("%s: TestBlockValidity failed: %s", __func__, FormatStateMessage(state)));
+            {
+                LOCK(cs_main);
+                CValidationState state;
+                if (!TestBlockValidity(state, chainparams, *pblock, pindexPrev, false, false)) {
+                    throw std::runtime_error(strprintf("%s: TestBlockValidity failed: %s", __func__, FormatStateMessage(state)));
+                }
             }
 
             // process proof of stake block

@@ -5300,7 +5300,10 @@ bool CWallet::GetMasternodeOutpointAndKeys(COutPoint& outpointRet, CPubKey& pubK
     std::vector<COutput> vPossibleCoins;
     CCoinControl coinControl;
     coinControl.nCoinType = ONLY_MASTERNODE_COLLATERAL;
-    AvailableCoins(vPossibleCoins, true, &coinControl, 1, MAX_MONEY, MAX_MONEY, 0, 0, 9999999);
+    {
+        LOCK2(cs_main, cs_wallet);
+        AvailableCoins(vPossibleCoins, true, &coinControl, 1, MAX_MONEY, MAX_MONEY, 0, 0, 9999999);
+    }
     if(vPossibleCoins.empty()) {
         LogPrintf("CWallet::GetMasternodeOutpointAndKeys -- Could not locate any valid masternode vin\n");
         return false;
