@@ -471,6 +471,7 @@ static UniValue tposcontract(const JSONRPCRequest& request)
                 "  create           - Create tpos transaction\n"
                 "  list             - Print list of all tpos contracts that you are owner or merchant\n"
                 "  refresh          - Refresh tpos contract for merchant to fetch all coins from blockchain.\n"
+                "  cleanup          - Cleanup old entries of tpos contract.\n"
                 "  validate         - Validates transaction checking if it's a valid contract"
                 );
 
@@ -587,6 +588,7 @@ static UniValue tposcontract(const JSONRPCRequest& request)
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Contract is invalid");
 
         pwallet->RemoveWatchOnly(GetScriptForDestination(tmpContract.tposAddress.Get()));
+        pwallet->RemoveTPoSContract(tposContractHashID);
     }
     else if(strCommand == "validate")
     {

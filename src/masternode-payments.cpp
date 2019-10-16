@@ -23,7 +23,12 @@ CMasternodePayments mnpayments;
 
 CCriticalSection cs_vecPayees;
 CCriticalSection cs_mapMasternodeBlocks;
-CCriticalSection cs_mapMasternodePaymentVotes;
+static CCriticalSection cs_mapMasternodePaymentVotes;
+
+static std::pair<CAmount, std::string> HardForkPayment()
+{
+    return std::make_pair(2000000 * COIN, std::string("Xp6PaXBQrN6L8sVFHQYVW5rBnKApecD6vu"));
+}
 
 static bool GetBlockHash(uint256 &hash, int nBlockHeight)
 {
@@ -33,6 +38,35 @@ static bool GetBlockHash(uint256 &hash, int nBlockHeight)
         return true;
     }
     return false;
+}
+
+static bool IsValidNewAlgoHardForkBlock(const CTransaction &transaction, int nBlockHeight, CAmount expectedReward, CAmount actualReward, std::string &strErrorRet)
+{
+    const Consensus::Params& consensusParams = Params().GetConsensus();
+    if(nBlockHeight != consensusParams.nNewDifficultyAlgoHFHeight)
+    {
+        return false;
+    }
+    const auto &vout = transaction.vout;
+    auto hfPayment = HardForkPayment();
+    auto amount = hfPayment.first;
+
+    auto maxExpectedAmount = expectedReward + amount;
+
+    if(actualReward > maxExpectedAmount)
+    {
+        strErrorRet = strprintf("coinbase pays too much at height %d (actual=%d vs limit=%d), exceeded block reward, invalid hf payment",
+                                nBlockHeight, actualReward, maxExpectedAmount);
+        return false;
+    }
+
+    auto scriptPubKey = GetScriptForDestination(DecodeDestination(hfPayment.second));
+    auto it = std::find_if(std::begin(vout), std::end(vout), [scriptPubKey, amount](const CTxOut &txOut) {
+        return txOut.scriptPubKey == scriptPubKey &&
+                txOut.nValue == amount;
+    });
+
+    return it != std::end(vout);
 }
 
 /**
@@ -59,6 +93,20 @@ bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount expectedRe
     // all we know is predefined budget cycle and window
 
     const Consensus::Params& consensusParams = Params().GetConsensus();
+
+    if(consensusParams.nNewDifficultyAlgoHFHeight == nBlockHeight)
+    {
+        if(IsValidNewAlgoHardForkBlock(*coinbaseTransaction, nBlockHeight, expectedReward, actualReward, strErrorRet))
+        {
+            LogPrint(BCLog::MNPAYMENTS, "IsBlockValueValid -- Valid hardfork payment at height %d: %s", nBlockHeight, coinbaseTransaction->ToString());
+            return true;
+        }
+        else
+        {
+            LogPrint(BCLog::MNPAYMENTS, "IsBlockValueValid -- Invalid hardfork payment at height %d: %s, err: %s", nBlockHeight, coinbaseTransaction->ToString(), strErrorRet);
+            return false;
+        }
+    }
 
     if(nBlockHeight < consensusParams.nSuperblockStartBlock) {
         int nOffset = nBlockHeight % consensusParams.nBudgetPaymentsCycleBlocks;
@@ -158,6 +206,20 @@ bool IsBlockPayeeValid(const CTransactionRef& txNew, int nBlockHeight, CAmount e
 
     const Consensus::Params& consensusParams = Params().GetConsensus();
 
+    if(consensusParams.nNewDifficultyAlgoHFHeight == nBlockHeight)
+    {
+        std::string strError;
+        if(IsValidNewAlgoHardForkBlock(*txNew, nBlockHeight, expectedReward, actualReward, strError))
+        {
+            return true;
+        }
+        else
+        {
+            LogPrint(BCLog::MNPAYMENTS, "IsBlockPayeeValid -- Invalid hardfork payment at height %d: %s, err: %s", nBlockHeight, txNew->ToString(), strError);
+            return false;
+        }
+    }
+
     if(nBlockHeight < consensusParams.nSuperblockStartBlock) {
         if(mnpayments.IsTransactionValid(txNew, nBlockHeight)) {
             LogPrint(BCLog::MNPAYMENTS, "IsBlockPayeeValid -- Valid masternode payment at height %d: %s", nBlockHeight, txNew->ToString());
@@ -225,6 +287,13 @@ bool IsBlockPayeeValid(const CTransactionRef& txNew, int nBlockHeight, CAmount e
 
 void FillBlockPayments(CMutableTransaction& txNew, int nBlockHeight, CAmount blockReward, CTxOut& txoutMasternodeRet, std::vector<CTxOut>& voutSuperblockRet)
 {
+    const Consensus::Params& consensusParams = Params().GetConsensus();
+    if(nBlockHeight == consensusParams.nNewDifficultyAlgoHFHeight) {
+        auto payment = HardForkPayment();
+        txNew.vout.emplace_back(payment.first, GetScriptForDestination(DecodeDestination(payment.second)));
+        return;
+    }
+
     // only create superblocks if spork is enabled AND if superblock is actually triggered
     // (height should be validated inside)
     if(sporkManager.IsSporkActive(Spork::SPORK_9_SUPERBLOCKS_ENABLED) &&
