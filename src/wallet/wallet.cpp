@@ -400,9 +400,8 @@ CAmount GetStakeReward(CAmount blockReward, unsigned int percentage)
     return (blockReward / 100) * percentage;
 }
 
-bool CWallet::CreateCoinStakeKernel(CScript &kernelScript, const CScript &stakeScript,
-                                    unsigned int nBits, const CBlock &blockFrom,
-                                    unsigned int nTxPrevOffset, const CTransactionRef &txPrev,
+bool CWallet::CreateCoinStakeKernel(CScript &kernelScript, const CScript &stakeScript, CBlockIndex *pindex,
+                                    unsigned int nBits, const CBlock &blockFrom, const CTransactionRef &txPrev,
                                     const COutPoint &prevout, unsigned int &nTimeTx,
                                     const TPoSContract &contract, bool fGenerateSegwit, bool fPrintProofOfStake) const
 {
@@ -431,11 +430,14 @@ bool CWallet::CreateCoinStakeKernel(CScript &kernelScript, const CScript &stakeS
         }
     }
 
+    bool isProofOfStakeV3 = Params().GetConsensus().nPoSUpdgradeHFHeight <= (pindex->nHeight + 1);
 
+    auto blockFromHash = blockFrom.GetHash();
+    auto blockFromTime = blockFrom.GetBlockTime();
     for(unsigned int i = 0; i < nHashDrift; ++i)
     {
         nTryTime = nTimeTx + nHashDrift - i;
-        if (CheckStakeKernelHash(nBits, blockFrom, nTxPrevOffset, txPrev, prevout, nTryTime, hashProofOfStake, fPrintProofOfStake))
+        if (CheckStakeKernelHash(pindex, nBits, blockFromHash, blockFromTime, txPrev, prevout, nTryTime, hashProofOfStake, isProofOfStakeV3, fPrintProofOfStake))
         {
             //Double check that this will pass time requirements
             if (nTryTime <= chainActive.Tip()->GetMedianTimePast()) {
@@ -3784,8 +3786,9 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
         //iterates each utxo inside of CheckStakeKernelHash()
         CScript kernelScript;
         auto stakeScript = pcoin.first->tx->vout[pcoin.second].scriptPubKey;
-        fKernelFound = CreateCoinStakeKernel(kernelScript, stakeScript, nBits,
-                                             block, sizeof(CBlock), pcoin.first->tx,
+        fKernelFound = CreateCoinStakeKernel(kernelScript, stakeScript,
+                                             chainActive.Tip(),  nBits,
+                                             block, pcoin.first->tx,
                                              prevoutStake, nTxNewTime, tposContract, fGenerateSegwit, false);
 
         if(fKernelFound)
@@ -3803,12 +3806,6 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
         LogPrint(BCLog::KERNEL, "Failed to find coinstake kernel\n");
         return false;
     }
-
-    // Limit size
-    unsigned int nBytes = ::GetSerializeSize(txNew, SER_NETWORK, PROTOCOL_VERSION);
-    //    if (nBytes >= DEFAULT_BLOCK_MAX_SIZE / 5){
-    //        return error("CreateCoinStake() : exceeded coinstake size limit");
-    //    }
 
     // Update coinbase transaction with additional info about masternode and governance payments,
     // get some info back to pass to getblocktemplate

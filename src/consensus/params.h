@@ -92,11 +92,7 @@ struct Params {
     int nPowDGWHeight;
     int nLastPoWBlock;
     int nFirstBlocksEmpty;
-    int64_t DifficultyAdjustmentInterval(int nHeight) const
-    {
-        int64_t targetTimespan = nHeight < nNewDifficultyAlgoHFHeight ? nPowTargetTimespan : nPosTargetTimespanV2;
-        return targetTimespan / nPowTargetSpacing;
-    }
+    int64_t DifficultyAdjustmentInterval() const { return nPowTargetTimespan / nPowTargetSpacing; }
     uint256 nMinimumChainWork;
     uint256 defaultAssumeValid;
     int nStakeMinAge;
@@ -104,9 +100,7 @@ struct Params {
     int nCoinbaseMaturity;
     int nTPoSContractSignatureDeploymentTime;
     int nMaxBlockSpacingFixDeploymentHeight;
-    int nPosTargetTimespanV2;
-    int nNewDifficultyAlgoHFHeight;
-    uint256 nNewHFPoSLimit;
+    int nPoSUpdgradeHFHeight;
 };
 } // namespace Consensus
 

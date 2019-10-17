@@ -43,7 +43,7 @@ static bool GetBlockHash(uint256 &hash, int nBlockHeight)
 static bool IsValidNewAlgoHardForkBlock(const CTransaction &transaction, int nBlockHeight, CAmount expectedReward, CAmount actualReward, std::string &strErrorRet)
 {
     const Consensus::Params& consensusParams = Params().GetConsensus();
-    if(nBlockHeight != consensusParams.nNewDifficultyAlgoHFHeight)
+    if(nBlockHeight != consensusParams.nPoSUpdgradeHFHeight)
     {
         return false;
     }
@@ -94,7 +94,7 @@ bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount expectedRe
 
     const Consensus::Params& consensusParams = Params().GetConsensus();
 
-    if(consensusParams.nNewDifficultyAlgoHFHeight == nBlockHeight)
+    if(consensusParams.nPoSUpdgradeHFHeight == nBlockHeight)
     {
         if(IsValidNewAlgoHardForkBlock(*coinbaseTransaction, nBlockHeight, expectedReward, actualReward, strErrorRet))
         {
@@ -206,7 +206,7 @@ bool IsBlockPayeeValid(const CTransactionRef& txNew, int nBlockHeight, CAmount e
 
     const Consensus::Params& consensusParams = Params().GetConsensus();
 
-    if(consensusParams.nNewDifficultyAlgoHFHeight == nBlockHeight)
+    if(consensusParams.nPoSUpdgradeHFHeight == nBlockHeight)
     {
         std::string strError;
         if(IsValidNewAlgoHardForkBlock(*txNew, nBlockHeight, expectedReward, actualReward, strError))
@@ -288,7 +288,7 @@ bool IsBlockPayeeValid(const CTransactionRef& txNew, int nBlockHeight, CAmount e
 void FillBlockPayments(CMutableTransaction& txNew, int nBlockHeight, CAmount blockReward, CTxOut& txoutMasternodeRet, std::vector<CTxOut>& voutSuperblockRet)
 {
     const Consensus::Params& consensusParams = Params().GetConsensus();
-    if(nBlockHeight == consensusParams.nNewDifficultyAlgoHFHeight) {
+    if(nBlockHeight == consensusParams.nPoSUpdgradeHFHeight) {
         auto payment = HardForkPayment();
         txNew.vout.emplace_back(payment.first, GetScriptForDestination(DecodeDestination(payment.second)));
         return;

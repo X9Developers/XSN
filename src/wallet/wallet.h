@@ -787,8 +787,8 @@ private:
     const CBlockIndex* m_last_block_processed = nullptr;
 
     bool CreateCoinStakeKernel(CScript &kernelScript, const CScript &stakeScript,
-                               unsigned int nBits, const CBlock& blockFrom,
-                               unsigned int nTxPrevOffset, const CTransactionRef &txPrev,
+                               CBlockIndex *pindex,
+                               unsigned int nBits, const CBlock& blockFrom, const CTransactionRef &txPrev,
                                const COutPoint& prevout, unsigned int &nTimeTx,
                                const TPoSContract &contract, bool fGenerateSegwit, bool fPrintProofOfStake) const;
 

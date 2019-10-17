@@ -599,12 +599,12 @@ void static XSNMiner(const CChainParams& chainparams, CConnman& connman,
             if (!coinbaseScript || coinbaseScript->reserveScript.empty())
                 throw std::runtime_error("No coinbase script available (mining requires a wallet)");
 
-            do {
-                bool fvNodesEmpty = connman.GetNodeCount(CConnman::CONNECTIONS_ALL) == 0;
-                if (!fvNodesEmpty && !IsInitialBlockDownload() && masternodeSync.IsSynced())
-                    break;
-                MilliSleep(1000);
-            } while (true);
+//            do {
+//                bool fvNodesEmpty = connman.GetNodeCount(CConnman::CONNECTIONS_ALL) == 0;
+//                if (!fvNodesEmpty && !IsInitialBlockDownload() && masternodeSync.IsSynced())
+//                    break;
+//                MilliSleep(1000);
+//            } while (true);
 
             bool isTPoS = false;
             uint256 hashTPoSContractTxId;
@@ -612,13 +612,13 @@ void static XSNMiner(const CChainParams& chainparams, CConnman& connman,
 
             if(fProofOfStake)
             {
-                if (chainActive.Tip()->nHeight < chainparams.GetConsensus().nLastPoWBlock ||
-                        pwallet->IsLocked() || !masternodeSync.IsSynced() || !merchantnodeSync.IsSynced())
-                {
-                    nLastCoinStakeSearchInterval = 0;
-                    MilliSleep(5000);
-                    continue;
-                }
+//                if (chainActive.Tip()->nHeight < chainparams.GetConsensus().nLastPoWBlock ||
+//                        pwallet->IsLocked() || !masternodeSync.IsSynced() || !merchantnodeSync.IsSynced())
+//                {
+//                    nLastCoinStakeSearchInterval = 0;
+//                    MilliSleep(5000);
+//                    continue;
+//                }
 
                 LOCK(csTPoSParams);
 
