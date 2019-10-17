@@ -430,7 +430,7 @@ bool CWallet::CreateCoinStakeKernel(CScript &kernelScript, const CScript &stakeS
         }
     }
 
-    bool isProofOfStakeV3 = Params().GetConsensus().nPoSUpdgradeHFHeight <= (pindex->nHeight + 1);
+    bool isProofOfStakeV3 = Params().GetConsensus().nPoSUpdgradeHFHeight < pindex->nHeight;
 
     auto blockFromHash = blockFrom.GetHash();
     auto blockFromTime = blockFrom.GetBlockTime();

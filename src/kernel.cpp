@@ -390,12 +390,13 @@ bool CheckStakeKernelHash(const CBlockIndex* pindexPrev, unsigned int nBits, uin
 {
     auto nTxPrevOffset = 336;
     auto txPrevTime = blockFromTime;
+    unsigned int nTimeBlockFrom = blockFromTime;
     if (nTimeTx < txPrevTime)  // Transaction timestamp violation
         return error("CheckStakeKernelHash() : nTime violation");
 
     auto nStakeMinAge = Params().GetConsensus().nStakeMinAge;
     auto nStakeMaxAge = Params().GetConsensus().nStakeMaxAge;
-    if (blockFromTime + nStakeMinAge > nTimeTx) // Min age requirement
+    if (nTimeBlockFrom + nStakeMinAge > nTimeTx) // Min age requirement
         return error("CheckStakeKernelHash() : min age violation");
 
     arith_uint256 bnTargetPerCoinDay;
@@ -424,7 +425,7 @@ bool CheckStakeKernelHash(const CBlockIndex* pindexPrev, unsigned int nBits, uin
         ss << nStakeModifier;
     }
 
-    ss << blockFromTime << nTxPrevOffset << txPrevTime << prevout.n << nTimeTx;
+    ss << nTimeBlockFrom << nTxPrevOffset << txPrevTime << prevout.n << nTimeTx;
     hashProofOfStake = Hash(ss.begin(), ss.end());
     if (fPrintProofOfStake)
     {

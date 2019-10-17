@@ -377,8 +377,11 @@ public:
 
     bool IsProofOfStake(bool isProofOfStakeV3) const
     {
-        return (nFlags & BLOCK_PROOF_OF_STAKE) ||
-                (isProofOfStakeV3 && (nFlags & BLOCK_PROOF_OF_STAKE_V3));
+        if(isProofOfStakeV3) {
+            return (nFlags & BLOCK_PROOF_OF_STAKE_V3);
+        }
+
+        return (nFlags & BLOCK_PROOF_OF_STAKE);
     }
 
     void SetProofOfStake(bool isProofOfStakeV3)
