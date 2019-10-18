@@ -537,7 +537,7 @@ CAmount CSuperblock::GetPaymentsLimit(int nBlockHeight)
 
 
     if(nBlockHeight >= consensusParams.nPoSUpdgradeHFHeight) {
-        nSuperblockPartOfSubsidy = 462962962; // 4.62962962 coins
+        nSuperblockPartOfSubsidy = 462962963; // 4.62962963 coins
     }
 
     CAmount nPaymentsLimit = nSuperblockPartOfSubsidy * consensusParams.nSuperblockCycle;
