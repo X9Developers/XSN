@@ -75,7 +75,7 @@ public:
     CMainParams() {
         strNetworkID = "main";
         consensus.nLastPoWBlock = 75;
-        consensus.nFirstBlocksEmpty = 0;
+        consensus.nFirstBlocksEmpty = 20000;
         consensus.nSubsidyHalvingInterval = 43200; // Note: actual number of blocks per calendar year with DGW v3 is ~200700 (for example 449750 - 249050)
         consensus.nMasternodePaymentsStartBlock = 20100; // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
         consensus.nMasternodePaymentsIncreaseBlock = 158000; // actual historical value
@@ -98,7 +98,7 @@ public:
         consensus.nPowTargetSpacing = 1 * 60; // XSN: 1 minutes
         consensus.nPosTargetSpacing = 1 * 60; // XSN: 1 minutes
         consensus.nPosTargetTimespan = 60 * 40;
-        consensus.nPoSUpdgradeHFHeight = 150;
+        consensus.nPoSUpdgradeHFHeight = 848750; // 28th October 2019
         consensus.nMerchantnodeMinimumConfirmations = 1;
         consensus.nMasternodeMinimumConfirmations = 15;
         consensus.nStakeMinAge = 60 * 60;
