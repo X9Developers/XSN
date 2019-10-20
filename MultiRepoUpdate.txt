@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/99181e7692a134e1622bef41c30f4d6d1b802ea1
+commit 99181e7692a134e1622bef41c30f4d6d1b802ea1
+Author: Raul Lopez <raul.hll@hotmail.com>
+Date:   Sun Oct 20 12:25:32 2019 -0500
+
+    server: fix block extraction method calculation
+
 https://github.com/X9Developers/block-explorer/commit/71296763a279bfc3e20cd986e6434bf1595fbb5d
 commit 71296763a279bfc3e20cd986e6434bf1595fbb5d
 Author: Austin White <austin.j.white.96@gmail.com>
