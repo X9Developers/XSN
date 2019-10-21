@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/e506f7d226d6efe2e05b5eff65c64844471e7205
+commit e506f7d226d6efe2e05b5eff65c64844471e7205
+Author: Raul Lopez <raul.hll@hotmail.com>
+Date:   Sun Oct 20 19:13:19 2019 -0500
+
+    server: block rewards migrations
+
 https://github.com/X9Developers/block-explorer/commit/6428091b01b4f2c9248f43aced6511a7d815ac7e
 commit 6428091b01b4f2c9248f43aced6511a7d815ac7e
 Author: Raul Lopez <raul.hll@hotmail.com>
