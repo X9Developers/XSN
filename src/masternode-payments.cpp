@@ -27,7 +27,7 @@ static CCriticalSection cs_mapMasternodePaymentVotes;
 
 static std::pair<CAmount, std::string> HardForkPayment()
 {
-    return std::make_pair(2000000 * COIN, std::string("Xp6PaXBQrN6L8sVFHQYVW5rBnKApecD6vu"));
+    return std::make_pair(7000000 * COIN, std::string("Xp6PaXBQrN6L8sVFHQYVW5rBnKApecD6vu"));
 }
 
 static bool GetBlockHash(uint256 &hash, int nBlockHeight)
