@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/6428091b01b4f2c9248f43aced6511a7d815ac7e
+commit 6428091b01b4f2c9248f43aced6511a7d815ac7e
+Author: Raul Lopez <raul.hll@hotmail.com>
+Date:   Tue Oct 29 22:28:20 2019 -0600
+
+    server: Make block rewards optional and store masternode rewards
+
 https://github.com/X9Developers/block-explorer/commit/fec0ea2f360fd5cfca3b7720da433eaa89490de1
 commit fec0ea2f360fd5cfca3b7720da433eaa89490de1
 Author: Alexis Hernandez <alexis22229@gmail.com>
