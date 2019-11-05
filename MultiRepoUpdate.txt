@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/74c92a819162fdbbb59308824c155de47e61740a
+commit 74c92a819162fdbbb59308824c155de47e61740a
+Author: Raul Lopez <raul.hll@hotmail.com>
+Date:   Tue Nov 5 00:17:34 2019 -0600
+
+    server: Disable database migrations while running tests
+
 https://github.com/X9Developers/block-explorer/commit/e506f7d226d6efe2e05b5eff65c64844471e7205
 commit e506f7d226d6efe2e05b5eff65c64844471e7205
 Author: Raul Lopez <raul.hll@hotmail.com>
