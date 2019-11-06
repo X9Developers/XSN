@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/1d6a21069878e187d0880a61cccfae5fa63cec93
+commit 1d6a21069878e187d0880a61cccfae5fa63cec93
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Nov 5 18:41:20 2019 -0700
+
+    server: Disable migration
+
 https://github.com/X9Developers/block-explorer/commit/2e3b418b685adf92d8dc62581d7a4981ce4e2835
 commit 2e3b418b685adf92d8dc62581d7a4981ce4e2835
 Author: Jonathan <jonathan@wiringbits.net>
