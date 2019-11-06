@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/2e3b418b685adf92d8dc62581d7a4981ce4e2835
+commit 2e3b418b685adf92d8dc62581d7a4981ce4e2835
+Author: Jonathan <jonathan@wiringbits.net>
+Date:   Tue Nov 5 17:51:06 2019 -0700
+
+    web-ui: New Stakenet logo
+
 https://github.com/X9Developers/block-explorer/commit/74c92a819162fdbbb59308824c155de47e61740a
 commit 74c92a819162fdbbb59308824c155de47e61740a
 Author: Raul Lopez <raul.hll@hotmail.com>
