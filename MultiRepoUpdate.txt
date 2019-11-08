@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/orderbook/commit/a69973102a361461052355a4d81416cc12e0e5b7
+commit a69973102a361461052355a4d81416cc12e0e5b7
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Thu Nov 7 21:26:13 2019 -0700
+
+    Private activity from https://github.com/X9Developers/orderbook
+
 https://github.com/X9Developers/orderbook/commit/43ea6149c85f9ed07507b52938e60b12494670ee
 commit 43ea6149c85f9ed07507b52938e60b12494670ee
 Author: Adinael Perez Ruelas <adin692@gmail.com>
