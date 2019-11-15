@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/1d1a27dad64cc95183a83e7a460d20e373769d58
+commit 1d1a27dad64cc95183a83e7a460d20e373769d58
+Author: Raul Lopez <raul.hll@hotmail.com>
+Date:   Thu Nov 14 23:42:23 2019 -0600
+
+    server: Add endpoint to get a summary of the last 1000 blocks rewards
+
 https://github.com/X9Developers/block-explorer/commit/82dd1cdca0e7fdfa2c2cf28d9da761473b2a37a9
 commit 82dd1cdca0e7fdfa2c2cf28d9da761473b2a37a9
 Author: Alexis Hernandez <alexis22229@gmail.com>
