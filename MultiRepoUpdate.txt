@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/orderbook/commit/b59b5d19b73c50b7dbcfd98ac289e626d41b9fd5
+commit b59b5d19b73c50b7dbcfd98ac289e626d41b9fd5
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Nov 18 16:09:31 2019 -0700
+
+    Private activity from https://github.com/X9Developers/orderbook
+
 https://github.com/X9Developers/orderbook/commit/cb54c22dd4077303da102bd2edac5b291554283e
 commit cb54c22dd4077303da102bd2edac5b291554283e
 Author: Alexis Hernandez <alexis22229@gmail.com>
