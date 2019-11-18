@@ -100,6 +100,7 @@ struct Params {
     int nCoinbaseMaturity;
     int nTPoSContractSignatureDeploymentTime;
     int nMaxBlockSpacingFixDeploymentHeight;
+    int nPoSUpdgradeHFHeight;
 };
 } // namespace Consensus
 

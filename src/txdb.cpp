@@ -296,6 +296,7 @@ bool CBlockTreeDB::LoadBlockIndexGuts(const Consensus::Params& consensusParams, 
                 pindexNew->prevoutStake = diskindex.prevoutStake;
                 pindexNew->nStakeTime = diskindex.nStakeTime;
                 pindexNew->hashProofOfStake = diskindex.hashProofOfStake;
+                pindexNew->hashStakeModifierV3 = diskindex.hashStakeModifierV3;
 
                 if(pindexNew->nHeight <= Params().GetConsensus().nLastPoWBlock)
                 {

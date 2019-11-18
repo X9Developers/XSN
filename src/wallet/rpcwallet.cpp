@@ -692,13 +692,13 @@ static UniValue signmessage(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_TYPE_ERROR, "Invalid address");
     }
 
-    const CKeyID *keyID = boost::get<CKeyID>(&dest);
-    if (!keyID) {
-        throw JSONRPCError(RPC_TYPE_ERROR, "Address does not refer to key");
+    CKeyID keyID = GetKeyForDestination(*pwallet, dest);
+    if(keyID.IsNull()) {
+        throw JSONRPCError(RPC_WALLET_ERROR, "Invalid address, supporting p2pkh or p2wpkh");
     }
 
     CKey key;
-    if (!pwallet->GetKey(*keyID, key)) {
+    if (!pwallet->GetKey(keyID, key)) {
         throw JSONRPCError(RPC_WALLET_ERROR, "Private key not available");
     }
 

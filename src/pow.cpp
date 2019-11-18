@@ -78,8 +78,9 @@ unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const Conse
     return bnNew.GetCompact();
 }
 
+
 unsigned int static PoSWorkRequired(const CBlockIndex* pindexLast, const Consensus::Params& params) {
-    arith_uint256 bnTargetLimit = (~arith_uint256(0) >> 24);
+    const arith_uint256 bnTargetLimit = (~arith_uint256(0) >> 24);
     int64_t nTargetSpacing = Params().GetConsensus().nPosTargetSpacing;
     int64_t nTargetTimespan = Params().GetConsensus().nPosTargetTimespan;
 
@@ -90,8 +91,7 @@ unsigned int static PoSWorkRequired(const CBlockIndex* pindexLast, const Consens
     if (nActualSpacing < 0)
         nActualSpacing = 1;
 
-    if(pindexLast->nHeight > params.nMaxBlockSpacingFixDeploymentHeight)
-    {
+    if(pindexLast->nHeight > params.nMaxBlockSpacingFixDeploymentHeight) {
         nActualSpacing = std::min(nActualSpacing, nTargetSpacing * 10);
     }
 
@@ -100,7 +100,9 @@ unsigned int static PoSWorkRequired(const CBlockIndex* pindexLast, const Consens
     arith_uint256 bnNew;
     bnNew.SetCompact(pindexLast->nBits);
 
+
     int64_t nInterval = nTargetTimespan / nTargetSpacing;
+
     bnNew *= ((nInterval - 1) * nTargetSpacing + nActualSpacing + nActualSpacing);
     bnNew /= ((nInterval + 1) * nTargetSpacing);
 
@@ -191,7 +193,7 @@ unsigned int GetNextWorkRequiredBTC(const CBlockIndex* pindexLast, const CBlockH
     }
 
     // Go back by what we want to be 1 day worth of blocks
-    int nHeightFirst = pindexLast->nHeight - (params.DifficultyAdjustmentInterval()-1);
+    int nHeightFirst = pindexLast->nHeight - (params.DifficultyAdjustmentInterval() - 1);
     assert(nHeightFirst >= 0);
     const CBlockIndex* pindexFirst = pindexLast->GetAncestor(nHeightFirst);
     assert(pindexFirst);

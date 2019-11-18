@@ -2975,13 +2975,15 @@ bool ResetBlockFailureFlags(CBlockIndex *pindex) {
     return g_chainstate.ResetBlockFailureFlags(pindex);
 }
 
-static void AcceptProofOfStakeBlock(const CBlock &block, CBlockIndex *pindexNew)
+static void AcceptProofOfStakeBlock(const CBlock &block, CBlockIndex *pindexNew, const Consensus::Params& consensusParams)
 {
     if(!pindexNew)
         return;
 
+    bool isPoSV3 = consensusParams.nPoSUpdgradeHFHeight < pindexNew->nHeight;
+
     if (block.IsProofOfStake()) {
-        pindexNew->SetProofOfStake();
+        pindexNew->SetProofOfStake(isPoSV3);
         pindexNew->prevoutStake = block.vtx[1]->vin[0].prevout;
         pindexNew->nStakeTime = block.nTime;
     } else {
@@ -3001,22 +3003,31 @@ static void AcceptProofOfStakeBlock(const CBlock &block, CBlockIndex *pindexNew)
 
     uint256 hash = block.GetHash();
 
+
     // ppcoin: record proof-of-stake hash value
-    if (pindexNew->IsProofOfStake()) {
+    if (pindexNew->IsProofOfStake(false)) {
         if (!mapProofOfStake.count(hash))
             LogPrintf("AcceptProofOfStakeBlock() : hashProofOfStake not found in map \n");
         pindexNew->hashProofOfStake = mapProofOfStake[hash];
     }
 
-    // ppcoin: compute stake modifier
-    uint64_t nStakeModifier = 0;
-    bool fGeneratedStakeModifier = false;
-    if (!ComputeNextStakeModifier(pindexNew, nStakeModifier, fGeneratedStakeModifier))
-        LogPrintf("AcceptProofOfStakeBlock() : ComputeNextStakeModifier() failed \n");
-    pindexNew->SetStakeModifier(nStakeModifier, fGeneratedStakeModifier);
-    pindexNew->nStakeModifierChecksum = GetStakeModifierChecksum(pindexNew);
-    if (!CheckStakeModifierCheckpoints(pindexNew->nHeight, pindexNew->nStakeModifierChecksum))
-        LogPrintf("AcceptProofOfStakeBlock() : Rejected by stake modifier checkpoint height=%d, modifier=%s \n", pindexNew->nHeight, std::to_string(nStakeModifier));
+    if(isPoSV3)
+    {
+        pindexNew->hashStakeModifierV3 = ComputeStakeModifierV3(pindexNew->pprev, pindexNew->prevoutStake.hash);
+    }
+    else
+    {
+        // ppcoin: compute stake modifier
+        uint64_t nStakeModifier = 0;
+        bool fGeneratedStakeModifier = false;
+        if (!ComputeNextStakeModifier(pindexNew, nStakeModifier, fGeneratedStakeModifier))
+            LogPrintf("AcceptProofOfStakeBlock() : ComputeNextStakeModifier() failed \n");
+        pindexNew->SetStakeModifier(nStakeModifier, fGeneratedStakeModifier);
+        pindexNew->nStakeModifierChecksum = GetStakeModifierChecksum(pindexNew);
+        if (!CheckStakeModifierCheckpoints(pindexNew->nHeight, pindexNew->nStakeModifierChecksum))
+            LogPrintf("AcceptProofOfStakeBlock() : Rejected by stake modifier checkpoint height=%d, modifier=%s \n", pindexNew->nHeight, std::to_string(nStakeModifier));
+    }
+
 
     setDirtyBlockIndex.insert(pindexNew);
 }
@@ -3254,7 +3265,6 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
             if (block.vtx[i]->IsCoinStake())
                 return state.DoS(100, error("CheckBlock() : more than one coinstake"));
 
-        uint256 hashProofOfStake;
         uint256 hash = block.GetHash();
 
         TPoSContract contract;
@@ -3279,13 +3289,6 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
             return state.DoS(100, error("CheckBlock(): block signature invalid"),
                              REJECT_INVALID, "bad-block-signature");
         }
-
-        if(!CheckProofOfStake(block, hashProofOfStake)) {
-            return state.DoS(100, error("CheckBlock(): check proof-of-stake failed for block %s\n", hash.ToString().c_str()));
-        }
-
-        if(!mapProofOfStake.count(hash)) // add to mapProofOfStake
-            mapProofOfStake.insert(std::make_pair(hash, hashProofOfStake));
     }
 
     // Check transactions
@@ -3436,17 +3439,17 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationSta
  */
 static uint256 WitnessComittmentForPoSBlock(const CBlock &block, int commitpos, bool &malleated)
 {   
-//    if(!block.IsProofOfStake())
-        return BlockWitnessMerkleRoot(block, &malleated);
+    //    if(!block.IsProofOfStake())
+    return BlockWitnessMerkleRoot(block, &malleated);
 
-//    CBlock tmpBlock = block;
-//    CMutableTransaction tempTx(*tmpBlock.vtx[1]);
+    //    CBlock tmpBlock = block;
+    //    CMutableTransaction tempTx(*tmpBlock.vtx[1]);
 
-//    auto &vout = tempTx.vout;
-//    vout.erase(std::begin(vout) + commitpos);
-//    tmpBlock.vtx[1] = MakeTransactionRef(std::move(tempTx));
-//    auto value = BlockWitnessMerkleRoot(tmpBlock, &malleated);
-//    return value;
+    //    auto &vout = tempTx.vout;
+    //    vout.erase(std::begin(vout) + commitpos);
+    //    tmpBlock.vtx[1] = MakeTransactionRef(std::move(tempTx));
+    //    auto value = BlockWitnessMerkleRoot(tmpBlock, &malleated);
+    //    return value;
 }
 
 /** NOTE: This function is not currently invoked by ConnectBlock(), so we
@@ -3722,7 +3725,21 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CVali
         return error("%s: %s", __func__, FormatStateMessage(state));
     }
 
-    AcceptProofOfStakeBlock(block, pindex);
+    uint256 hashProofOfStake;
+    auto hash = block.GetHash();
+
+    if(block.IsProofOfStake())
+    {
+        if(!CheckProofOfStake(pindex->pprev, block, hashProofOfStake, chainparams.GetConsensus())) {
+            return state.DoS(100, error("AcceptBlock(): check proof-of-stake failed for block %s\n", hash.ToString().c_str()));
+        }
+
+        if(!mapProofOfStake.count(hash)) // add to mapProofOfStake
+            mapProofOfStake.insert(std::make_pair(hash, hashProofOfStake));
+
+    }
+
+    AcceptProofOfStakeBlock(block, pindex, chainparams.GetConsensus());
 
     // Header is valid/has work, merkle tree and segwit merkle tree are good...RELAY NOW
     // (but if it does not build on our best tip, let the SendMessages loop relay it)
@@ -4548,7 +4565,7 @@ bool CChainState::LoadGenesisBlock(const CChainParams& chainparams)
         if (blockPos.IsNull())
             return error("%s: writing genesis block to disk failed", __func__);
         CBlockIndex *pindex = AddToBlockIndex(block);
-        AcceptProofOfStakeBlock(block, pindex);
+        AcceptProofOfStakeBlock(block, pindex, chainparams.GetConsensus());
         CValidationState state;
         if (!ReceivedBlockTransactions(block, state, pindex, blockPos, chainparams.GetConsensus()))
             return error("%s: genesis block not accepted (%s)", __func__, FormatStateMessage(state));
