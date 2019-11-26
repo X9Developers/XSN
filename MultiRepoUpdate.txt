@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/4b44f36a225b5355030115fea59d80abd7131258
+commit 4b44f36a225b5355030115fea59d80abd7131258
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Tue Nov 26 16:59:01 2019 -0700
+
+    web-ui: update favicon
+
 https://github.com/X9Developers/block-explorer/commit/1d6a21069878e187d0880a61cccfae5fa63cec93
 commit 1d6a21069878e187d0880a61cccfae5fa63cec93
 Author: Alexis Hernandez <alexis22229@gmail.com>
