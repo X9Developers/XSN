@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/d092c1862951242cf7a30e82ad1c34825e98dffa
+commit d092c1862951242cf7a30e82ad1c34825e98dffa
+Author: Raul Lopez <raul.hll@hotmail.com>
+Date:   Sat Dec 7 19:58:47 2019 -0600
+
+    server: add /prices endpoint
+
 https://github.com/X9Developers/block-explorer/commit/110d0b791cba4d16ea72ea5dfa03669f927315f8
 commit 110d0b791cba4d16ea72ea5dfa03669f927315f8
 Author: Jonathan <jonathan@wiringbits.net>
