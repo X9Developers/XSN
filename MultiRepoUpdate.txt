@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/08eab53ba6e812820694198d16079b0536e0fa42
+commit 08eab53ba6e812820694198d16079b0536e0fa42
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Jan 8 21:41:53 2020 -0700
+
+    server: Enable autoCommit on play evolutions
+
 https://github.com/X9Developers/block-explorer/commit/9a021b5398618edfc204546c1ff3fb21c7366c72
 commit 9a021b5398618edfc204546c1ff3fb21c7366c72
 Author: Alexis Hernandez <alexis22229@gmail.com>
