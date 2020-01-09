@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/ffd50567e1ec98323fbfb6a152cfc723897cb73d
+commit ffd50567e1ec98323fbfb6a152cfc723897cb73d
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Jan 8 20:53:11 2020 -0700
+
+    server: Fix bug that prevents bitcoin from synchronizing
+
 https://github.com/X9Developers/block-explorer/commit/d092c1862951242cf7a30e82ad1c34825e98dffa
 commit d092c1862951242cf7a30e82ad1c34825e98dffa
 Author: Raul Lopez <raul.hll@hotmail.com>
