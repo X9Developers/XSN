@@ -1,5 +1,15 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/8e01ac761265f67101ba6ca173f7a4c71bdfe71c
+commit 8e01ac761265f67101ba6ca173f7a4c71bdfe71c
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Thu Jan 9 23:43:50 2020 -0700
+
+    web-ui: update fonts
+    
+    Align ticker and principal table
+    Remove background cut
+
 https://github.com/X9Developers/block-explorer/commit/08eab53ba6e812820694198d16079b0536e0fa42
 commit 08eab53ba6e812820694198d16079b0536e0fa42
 Author: Alexis Hernandez <alexis22229@gmail.com>
