@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/864248f614ef30d89c0a44825d4a3ec01bc8eac5
+commit 864248f614ef30d89c0a44825d4a3ec01bc8eac5
+Author: Raul Lopez <raul.hll@hotmail.com>
+Date:   Sun Jan 12 23:47:46 2020 -0600
+
+    server: refactor prices synchronization
+
 https://github.com/X9Developers/block-explorer/commit/854e33ed2997c90a2bc46fcb2a78c20c469b0962
 commit 854e33ed2997c90a2bc46fcb2a78c20c469b0962
 Author: Alexis Hernandez <alexis22229@gmail.com>
