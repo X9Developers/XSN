@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/f9a21e510b7d0396918f4d096a8ea33b4e5c5414
+commit f9a21e510b7d0396918f4d096a8ea33b4e5c5414
+Author: Raul Lopez <raul.hll@hotmail.com>
+Date:   Wed Jan 15 00:14:42 2020 -0600
+
+    server: added medianInput to the response of /rewards-summary
+
 https://github.com/X9Developers/block-explorer/commit/c1dc3e0a90a1ad459f9a7b34c9a8b18b11ca3a56
 commit c1dc3e0a90a1ad459f9a7b34c9a8b18b11ca3a56
 Author: Alexis Hernandez <alexis22229@gmail.com>
