@@ -1,5 +1,15 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/854e33ed2997c90a2bc46fcb2a78c20c469b0962
+commit 854e33ed2997c90a2bc46fcb2a78c20c469b0962
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jan 18 10:13:45 2020 -0700
+
+    server: Disable CORSFilter
+    
+    As there are no authenticated APIs, there is no risk on exposing
+    the API to any web site.
+
 https://github.com/X9Developers/block-explorer/commit/f9a21e510b7d0396918f4d096a8ea33b4e5c5414
 commit f9a21e510b7d0396918f4d096a8ea33b4e5c5414
 Author: Raul Lopez <raul.hll@hotmail.com>
