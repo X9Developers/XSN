@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/bwang22/lightWallet/commit/37a382d48abeeedac4300ff20c9b90b099154e38
+commit 37a382d48abeeedac4300ff20c9b90b099154e38
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 1 21:47:17 2020 -0700
+
+    Private activity from https://github.com/bwang22/lightWallet
+
 https://github.com/bwang22/lightWallet/commit/5e9885cba94bc4b3fc497a33d1b99f61c6cb74c6
 commit 5e9885cba94bc4b3fc497a33d1b99f61c6cb74c6
 Author: Alexis Hernandez <alexis22229@gmail.com>
