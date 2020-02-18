@@ -1,5 +1,16 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/34d3fdb980c5c289cdee357736304dc641efc728
+commit 34d3fdb980c5c289cdee357736304dc641efc728
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Feb 17 22:23:20 2020 -0700
+
+    server: Fix the CORSFilter config
+    
+    The filter was being disabled while what we wanted was
+    to keep it enabled allowing all origins, which is the
+    default config.
+
 https://github.com/X9Developers/block-explorer/commit/864248f614ef30d89c0a44825d4a3ec01bc8eac5
 commit 864248f614ef30d89c0a44825d4a3ec01bc8eac5
 Author: Raul Lopez <raul.hll@hotmail.com>
