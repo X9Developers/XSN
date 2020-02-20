@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/6289636103f595be162c68f26f85500bc191d6bf
+commit 6289636103f595be162c68f26f85500bc191d6bf
+Author: Raul Lopez <raul@wiringbits.net>
+Date:   Thu Feb 20 00:44:17 2020 -0600
+
+    server: add averageWaitTime to the response of /rewards-summary
+
 https://github.com/X9Developers/block-explorer/commit/34d3fdb980c5c289cdee357736304dc641efc728
 commit 34d3fdb980c5c289cdee357736304dc641efc728
 Author: Alexis Hernandez <alexis22229@gmail.com>
