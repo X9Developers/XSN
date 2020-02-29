@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/b5b6bc56ca6343791fe5bed1e60986102eba4ff7
+commit b5b6bc56ca6343791fe5bed1e60986102eba4ff7
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 29 12:11:39 2020 -0700
+
+    infra: Update the bitcoin host
+
 https://github.com/X9Developers/block-explorer/commit/6289636103f595be162c68f26f85500bc191d6bf
 commit 6289636103f595be162c68f26f85500bc191d6bf
 Author: Raul Lopez <raul@wiringbits.net>
