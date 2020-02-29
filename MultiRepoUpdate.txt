@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/810790e584d703d42f92e18967d86a39fc4f7015
+commit 810790e584d703d42f92e18967d86a39fc4f7015
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 29 12:12:23 2020 -0700
+
+    server: Fix the filter config
+
 https://github.com/X9Developers/block-explorer/commit/b5b6bc56ca6343791fe5bed1e60986102eba4ff7
 commit b5b6bc56ca6343791fe5bed1e60986102eba4ff7
 Author: Alexis Hernandez <alexis22229@gmail.com>
