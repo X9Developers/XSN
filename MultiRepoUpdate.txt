@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/528dce79b9ec38c10ab3ad0e4a7a23c211a396e9
+commit 528dce79b9ec38c10ab3ad0e4a7a23c211a396e9
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Feb 29 12:17:46 2020 -0700
+
+    server: Upgrade sentry
+
 https://github.com/X9Developers/block-explorer/commit/810790e584d703d42f92e18967d86a39fc4f7015
 commit 810790e584d703d42f92e18967d86a39fc4f7015
 Author: Alexis Hernandez <alexis22229@gmail.com>
