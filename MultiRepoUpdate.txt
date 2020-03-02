@@ -1,5 +1,15 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/4fe89912662f2497cb987387f5f658c16720d63f
+commit 4fe89912662f2497cb987387f5f658c16720d63f
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Mar 1 22:31:59 2020 -0700
+
+    server: Add support for monitoring addresses
+    
+    When the configured addresses are involved in transactions,
+    an email is sent to the given emails.
+
 https://github.com/X9Developers/block-explorer/commit/528dce79b9ec38c10ab3ad0e4a7a23c211a396e9
 commit 528dce79b9ec38c10ab3ad0e4a7a23c211a396e9
 Author: Alexis Hernandez <alexis22229@gmail.com>
