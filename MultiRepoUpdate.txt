@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/7bf669d9b2fa6eecf091129404a508517f96b46a
+commit 7bf669d9b2fa6eecf091129404a508517f96b46a
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Fri Mar 13 11:43:48 2020 -0700
+
+    server: Add getHexEncodedBlock
+    
+    Add GET   /v2/blocks/:blockhash/hex controllers.BlocksController.getHexEncodedBlock(blockhash: String)
+
 https://github.com/X9Developers/block-explorer/commit/c29023f211e597d7eae5f39ec7c3bc712b66386f
 commit c29023f211e597d7eae5f39ec7c3bc712b66386f
 Author: Alexis Hernandez <alexis22229@gmail.com>
