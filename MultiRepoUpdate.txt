@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/54c7233766de40e363e56bfe29fbfd434fa19da8
+commit 54c7233766de40e363e56bfe29fbfd434fa19da8
+Author: Raul Lopez <raul@wiringbits.net>
+Date:   Mon Mar 16 23:45:15 2020 -0600
+
+    server: Add endpoint to get a raw transaction from block height and txindex
+
 https://github.com/X9Developers/block-explorer/commit/7bf669d9b2fa6eecf091129404a508517f96b46a
 commit 7bf669d9b2fa6eecf091129404a508517f96b46a
 Author: Adinael Perez Ruelas <adin692@gmail.com>
