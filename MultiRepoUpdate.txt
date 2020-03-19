@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/a935e0385f25877871ecc501a8e9a4f0e12fe865
+commit a935e0385f25877871ecc501a8e9a4f0e12fe865
+Author: Raul Lopez <raul@wiringbits.net>
+Date:   Wed Mar 18 23:40:51 2020 -0600
+
+    server: remove the v2/blocks/1/transactions/0/raw endpoint
+
 https://github.com/X9Developers/block-explorer/commit/188c693925097f94c50777ba7613786d4cd0338f
 commit 188c693925097f94c50777ba7613786d4cd0338f
 Author: Raul Lopez <raul@wiringbits.net>
