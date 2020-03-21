@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/bwang22/lightWallet/commit/f0121d2bef098491850cd8710ca57126565694c9
+commit f0121d2bef098491850cd8710ca57126565694c9
+Author: Yura Oleksyshyn <yuraolex@gmail.com>
+Date:   Sat Mar 21 08:12:48 2020 +0200
+
+    Private activity from https://github.com/bwang22/lightWallet
+
 https://github.com/bwang22/lightWallet/commit/a4ddd7ace951b2267ec644d9136289f49342547a
 commit a4ddd7ace951b2267ec644d9136289f49342547a
 Author: Yura Oleksyshyn <yuraolex@gmail.com>
