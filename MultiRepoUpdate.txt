@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/4ea533dd5aaf0dcf168618da9ca05a571934c377
+commit 4ea533dd5aaf0dcf168618da9ca05a571934c377
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Jun 3 22:40:58 2020 -0600
+
+    server: Update the gettxout API to not fail on spent outputs
+
 https://github.com/X9Developers/block-explorer/commit/a935e0385f25877871ecc501a8e9a4f0e12fe865
 commit a935e0385f25877871ecc501a8e9a4f0e12fe865
 Author: Raul Lopez <raul@wiringbits.net>
