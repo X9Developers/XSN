@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/2dcc51e355c8c2ece8e963b99f3f113bf90eeda6
+commit 2dcc51e355c8c2ece8e963b99f3f113bf90eeda6
+Author: Raul Lopez <raul.hll@hotmail.com>
+Date:   Sat Jun 6 16:17:57 2020 -0600
+
+    add volume and marketcap to the /prices endpoint
+
 https://github.com/X9Developers/block-explorer/commit/efb31dc5f763202e11cf1694bd9ea5e5406bf334
 commit efb31dc5f763202e11cf1694bd9ea5e5406bf334
 Author: Alexis Hernandez <alexis22229@gmail.com>
