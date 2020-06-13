@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/82ccc5e9a8cf52a32e555f83f37f7b935fc94aa7
+commit 82ccc5e9a8cf52a32e555f83f37f7b935fc94aa7
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jun 13 17:55:17 2020 -0600
+
+    server: Add kamon integration
+
 https://github.com/X9Developers/block-explorer/commit/bc2d2a9a80fc0c8f9aa86b74867b88d25ca77201
 commit bc2d2a9a80fc0c8f9aa86b74867b88d25ca77201
 Author: Alexis Hernandez <alexis22229@gmail.com>
