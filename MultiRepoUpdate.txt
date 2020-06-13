@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/ed6e47794580619dfbb2509422ae1a0c1efea0c0
+commit ed6e47794580619dfbb2509422ae1a0c1efea0c0
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jun 13 17:55:44 2020 -0600
+
+    infra: Add kamon settings for the xsn backend
+
 https://github.com/X9Developers/block-explorer/commit/582c748bc18a48978de98a93f2a7f2817eb74dd2
 commit 582c748bc18a48978de98a93f2a7f2817eb74dd2
 Author: Alexis Hernandez <alexis22229@gmail.com>
