@@ -1,5 +1,17 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/bc2d2a9a80fc0c8f9aa86b74867b88d25ca77201
+commit bc2d2a9a80fc0c8f9aa86b74867b88d25ca77201
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Jun 13 17:52:49 2020 -0600
+
+    server: Update dependencies
+    
+    - Scala 2.12.10
+    - Sbt 1.3.5
+    - play 2.8.0
+    - playsonify 2.2.0
+
 https://github.com/X9Developers/block-explorer/commit/2dcc51e355c8c2ece8e963b99f3f113bf90eeda6
 commit 2dcc51e355c8c2ece8e963b99f3f113bf90eeda6
 Author: Raul Lopez <raul.hll@hotmail.com>
