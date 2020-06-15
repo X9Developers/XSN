@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/356b97025b6c2be224fc40fb734063172bd65224
+commit 356b97025b6c2be224fc40fb734063172bd65224
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Jun 14 19:11:17 2020 -0600
+
+    travis: Upgrade to postgres 12
+
 https://github.com/X9Developers/block-explorer/commit/af58de1aab62b8fc69aeee57019fc11c6a4d4458
 commit af58de1aab62b8fc69aeee57019fc11c6a4d4458
 Author: Alexis Hernandez <alexis22229@gmail.com>
