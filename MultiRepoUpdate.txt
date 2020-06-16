@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/7f66103925b24313513d2f168e16a06e4b860673
+commit 7f66103925b24313513d2f168e16a06e4b860673
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Jun 15 19:30:12 2020 -0600
+
+    server: Fix problem on sbt dist
+
 https://github.com/X9Developers/block-explorer/commit/66213129f23c62527d8e0913edafb688fbd09ffd
 commit 66213129f23c62527d8e0913edafb688fbd09ffd
 Author: Alexis Hernandez <alexis22229@gmail.com>
