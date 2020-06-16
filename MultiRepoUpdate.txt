@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/e67b4d7748b0d7bf657c0dbf0c8ac4078dcffe83
+commit e67b4d7748b0d7bf657c0dbf0c8ac4078dcffe83
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Jun 15 18:39:11 2020 -0600
+
+    server: Increase timeouts on DockerPostgresService
+
 https://github.com/X9Developers/block-explorer/commit/63c78b11ae1c927a0ea775e0ac953f8a118d84ef
 commit 63c78b11ae1c927a0ea775e0ac953f8a118d84ef
 Author: Alexis Hernandez <alexis22229@gmail.com>
