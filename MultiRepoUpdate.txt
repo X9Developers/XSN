@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/fb82807b9792c7f00cf1a2e6a118d691ffafd957
+commit fb82807b9792c7f00cf1a2e6a118d691ffafd957
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Jun 15 19:21:15 2020 -0600
+
+    server: Add kamon traces to the XSNService
+
 https://github.com/X9Developers/block-explorer/commit/e67b4d7748b0d7bf657c0dbf0c8ac4078dcffe83
 commit e67b4d7748b0d7bf657c0dbf0c8ac4078dcffe83
 Author: Alexis Hernandez <alexis22229@gmail.com>
