@@ -1,5 +1,16 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/6a1f6b5539941e26bbf9ac08f51c45555fc3936a
+commit 6a1f6b5539941e26bbf9ac08f51c45555fc3936a
+Author: Raul Lopez <raul.hll@hotmail.com>
+Date:   Tue Jun 30 16:29:23 2020 -0600
+
+    server: Handle missing inputs error when sending a raw transaction
+    
+    The endpoint response was left as it was before at the request of
+    the wallet team but now it has a status code of 409(conflict) instead
+    of 500(internal server error) and its no longer sent to sentry.
+
 https://github.com/X9Developers/block-explorer/commit/7f66103925b24313513d2f168e16a06e4b860673
 commit 7f66103925b24313513d2f168e16a06e4b860673
 Author: Alexis Hernandez <alexis22229@gmail.com>
