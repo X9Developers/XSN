@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/c10889e90979b88e2a2ee34e27a35daa99a142ef
+commit c10889e90979b88e2a2ee34e27a35daa99a142ef
+Author: Raul Lopez <raul.hll@hotmail.com>
+Date:   Wed Jul 1 18:54:49 2020 -0600
+
+    server: Enable debug level logs
+
 https://github.com/X9Developers/block-explorer/commit/6a1f6b5539941e26bbf9ac08f51c45555fc3936a
 commit 6a1f6b5539941e26bbf9ac08f51c45555fc3936a
 Author: Raul Lopez <raul.hll@hotmail.com>
