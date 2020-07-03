@@ -1,5 +1,13 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/582e3523ba7ae530756eef244f21857ec0f032d9
+commit 582e3523ba7ae530756eef244f21857ec0f032d9
+Author: Raul Lopez <raul.hll@hotmail.com>
+Date:   Fri Jul 3 17:57:26 2020 -0600
+
+    server: handle unconfirmed transactions on xsn service and stop sending
+    all xsn service errors to sentry
+
 https://github.com/X9Developers/block-explorer/commit/c10889e90979b88e2a2ee34e27a35daa99a142ef
 commit c10889e90979b88e2a2ee34e27a35daa99a142ef
 Author: Raul Lopez <raul.hll@hotmail.com>
