@@ -1,5 +1,17 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/659694dd448811f015e7476d72672cbb410ba88b
+commit 659694dd448811f015e7476d72672cbb410ba88b
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Jul 7 19:19:41 2020 -0600
+
+    server: Set the slow SQL stamements to 5 seconds
+    
+    The default value is 2 seconds which is not enough for the big
+    queries we are running on small servers.
+    
+    Sentry is getting flood with thousands of such log statements.
+
 https://github.com/X9Developers/block-explorer/commit/582e3523ba7ae530756eef244f21857ec0f032d9
 commit 582e3523ba7ae530756eef244f21857ec0f032d9
 Author: Raul Lopez <raul.hll@hotmail.com>
