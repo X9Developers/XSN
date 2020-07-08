@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/a292e415974a5f7c49e6b87d3a2417934a428eff
+commit a292e415974a5f7c49e6b87d3a2417934a428eff
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Jul 7 19:30:57 2020 -0600
+
+    server: Fix the span usage on the XSNService
+
 https://github.com/X9Developers/block-explorer/commit/659694dd448811f015e7476d72672cbb410ba88b
 commit 659694dd448811f015e7476d72672cbb410ba88b
 Author: Alexis Hernandez <alexis22229@gmail.com>
