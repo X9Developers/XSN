@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/8eb00d6ed4a19923ff3d7d24781607b3fcf03034
+commit 8eb00d6ed4a19923ff3d7d24781607b3fcf03034
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Jul 7 19:49:52 2020 -0600
+
+    server: Add kamon traces to the LegacyLedgerSynchronizerService
+
 https://github.com/X9Developers/block-explorer/commit/a292e415974a5f7c49e6b87d3a2417934a428eff
 commit a292e415974a5f7c49e6b87d3a2417934a428eff
 Author: Alexis Hernandez <alexis22229@gmail.com>
