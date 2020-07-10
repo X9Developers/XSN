@@ -1,5 +1,15 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/77f9777eb1aeae1a3acba43a8b79151b6fce37a5
+commit 77f9777eb1aeae1a3acba43a8b79151b6fce37a5
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Thu Jul 9 22:24:05 2020 -0600
+
+    web-ui: Limit the richest addresses view to 100 results
+    
+    This is the only purpose to this view, also, add a disclaimer
+    about the inaccurate results for computing balances.
+
 https://github.com/X9Developers/block-explorer/commit/957dab08e64cd2b1db0698b09f513f3ae0cf4713
 commit 957dab08e64cd2b1db0698b09f513f3ae0cf4713
 Author: Alexis Hernandez <alexis22229@gmail.com>
