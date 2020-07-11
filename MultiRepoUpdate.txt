@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/050ada46abc3eb6ed1863901b20c88f139fdde45
+commit 050ada46abc3eb6ed1863901b20c88f139fdde45
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Fri Jul 10 22:28:24 2020 -0600
+
+    server: Add the docker postgres password
+    
+    this is to fix an error when running the tests
+
 https://github.com/X9Developers/block-explorer/commit/77f9777eb1aeae1a3acba43a8b79151b6fce37a5
 commit 77f9777eb1aeae1a3acba43a8b79151b6fce37a5
 Author: Alexis Hernandez <alexis22229@gmail.com>
