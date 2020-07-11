@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/e570b509215c9ca204234300768b08a3515ca229
+commit e570b509215c9ca204234300768b08a3515ca229
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Sat Jul 11 07:42:05 2020 -0600
+
+    server: Stop exluding the hidden_addresses on most queries
+
 https://github.com/X9Developers/block-explorer/commit/050ada46abc3eb6ed1863901b20c88f139fdde45
 commit 050ada46abc3eb6ed1863901b20c88f139fdde45
 Author: Adinael Perez Ruelas <adin692@gmail.com>
