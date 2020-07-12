@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/0d59e1cda2b75570dd51deadb00b50eb71903bda
+commit 0d59e1cda2b75570dd51deadb00b50eb71903bda
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sun Jul 12 08:25:22 2020 -0600
+
+    server: Remove useless cache classes
+
 https://github.com/X9Developers/block-explorer/commit/62c68297f794dd0d542d2972d1ed5c625d4793d0
 commit 62c68297f794dd0d542d2972d1ed5c625d4793d0
 Author: Alexis Hernandez <alexis22229@gmail.com>
