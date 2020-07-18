@@ -1,5 +1,15 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/d90423982d71a2919e0668259fdf0d74391cba0e
+commit d90423982d71a2919e0668259fdf0d74391cba0e
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Jul 17 21:43:18 2020 -0600
+
+    server: Hide warnings from kamon.instrumentation.jdbc
+    
+    They started being really annoying as the configuration to update
+    the slow queries threshold isn't working as expected.
+
 https://github.com/X9Developers/block-explorer/commit/0d59e1cda2b75570dd51deadb00b50eb71903bda
 commit 0d59e1cda2b75570dd51deadb00b50eb71903bda
 Author: Alexis Hernandez <alexis22229@gmail.com>
