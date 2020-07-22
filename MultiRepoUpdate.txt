@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/5c88ee1808b07c821d617eb6a4c65fa51c3ad01c
+commit 5c88ee1808b07c821d617eb6a4c65fa51c3ad01c
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Jul 21 21:43:18 2020 -0600
+
+    server: Disable more noisy logs from Kamon
+
 https://github.com/X9Developers/block-explorer/commit/d90423982d71a2919e0668259fdf0d74391cba0e
 commit d90423982d71a2919e0668259fdf0d74391cba0e
 Author: Alexis Hernandez <alexis22229@gmail.com>
