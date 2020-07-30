@@ -1,5 +1,21 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/4ea6f78c5b207a04f8b8476b69bf6b2a139b0f58
+commit 4ea6f78c5b207a04f8b8476b69bf6b2a139b0f58
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Thu Jul 30 10:57:41 2020 -0600
+
+    build(deps): bump js-yaml from 3.12.0 to 3.14.0 in /web-ui (#170)
+    
+    Bumps [js-yaml](https://github.com/nodeca/js-yaml) from 3.12.0 to 3.14.0.
+    - [Release notes](https://github.com/nodeca/js-yaml/releases)
+    - [Changelog](https://github.com/nodeca/js-yaml/blob/master/CHANGELOG.md)
+    - [Commits](https://github.com/nodeca/js-yaml/compare/3.12.0...3.14.0)
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+
 https://github.com/X9Developers/block-explorer/commit/7d3a4c9b1f0d2aae043f2dea3ce2cb7acc437062
 commit 7d3a4c9b1f0d2aae043f2dea3ce2cb7acc437062
 Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
