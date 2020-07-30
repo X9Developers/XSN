@@ -1,5 +1,21 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/f314b0b762db3dd6311e6188d5584e5442e3307e
+commit f314b0b762db3dd6311e6188d5584e5442e3307e
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Thu Jul 30 10:53:54 2020 -0600
+
+    build(deps): bump webpack-dev-server from 3.1.9 to 3.11.0 in /web-ui (#168)
+    
+    Bumps [webpack-dev-server](https://github.com/webpack/webpack-dev-server) from 3.1.9 to 3.11.0.
+    - [Release notes](https://github.com/webpack/webpack-dev-server/releases)
+    - [Changelog](https://github.com/webpack/webpack-dev-server/blob/master/CHANGELOG.md)
+    - [Commits](https://github.com/webpack/webpack-dev-server/compare/v3.1.9...v3.11.0)
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+
 https://github.com/X9Developers/block-explorer/commit/c496dad667fa02992593c9313a9b75b3d85cfe47
 commit c496dad667fa02992593c9313a9b75b3d85cfe47
 Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
