@@ -1,5 +1,20 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/9654985da02ddc5bcb9a9aab2f32d57ce31b82ee
+commit 9654985da02ddc5bcb9a9aab2f32d57ce31b82ee
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Thu Jul 30 10:48:53 2020 -0600
+
+    build(deps): bump acorn from 5.7.3 to 5.7.4 in /web-ui (#153)
+    
+    Bumps [acorn](https://github.com/acornjs/acorn) from 5.7.3 to 5.7.4.
+    - [Release notes](https://github.com/acornjs/acorn/releases)
+    - [Commits](https://github.com/acornjs/acorn/compare/5.7.3...5.7.4)
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+
 https://github.com/X9Developers/block-explorer/commit/d7fcb4b905e37f113ba670d7fbbdc6fbc523dc36
 commit d7fcb4b905e37f113ba670d7fbbdc6fbc523dc36
 Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
