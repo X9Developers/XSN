@@ -1,5 +1,20 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/c496dad667fa02992593c9313a9b75b3d85cfe47
+commit c496dad667fa02992593c9313a9b75b3d85cfe47
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Thu Jul 30 10:49:16 2020 -0600
+
+    build(deps): bump bootstrap from 3.3.7 to 3.4.1 in /web-ui (#148)
+    
+    Bumps [bootstrap](https://github.com/twbs/bootstrap) from 3.3.7 to 3.4.1.
+    - [Release notes](https://github.com/twbs/bootstrap/releases)
+    - [Commits](https://github.com/twbs/bootstrap/compare/v3.3.7...v3.4.1)
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+
 https://github.com/X9Developers/block-explorer/commit/4c82a07f373b0cd4a21afc223b428bcb2f299d7a
 commit 4c82a07f373b0cd4a21afc223b428bcb2f299d7a
 Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
