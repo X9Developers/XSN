@@ -1,5 +1,20 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/8eed37c06380383aa778056420cc288bd06bfc72
+commit 8eed37c06380383aa778056420cc288bd06bfc72
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Thu Jul 30 10:46:00 2020 -0600
+
+    build(deps): bump elliptic from 6.4.1 to 6.5.3 in /web-ui (#166)
+    
+    Bumps [elliptic](https://github.com/indutny/elliptic) from 6.4.1 to 6.5.3.
+    - [Release notes](https://github.com/indutny/elliptic/releases)
+    - [Commits](https://github.com/indutny/elliptic/compare/v6.4.1...v6.5.3)
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+
 https://github.com/X9Developers/block-explorer/commit/4b12c0ca5eb450670878f4c1543fd558ba0cc70c
 commit 4b12c0ca5eb450670878f4c1543fd558ba0cc70c
 Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
