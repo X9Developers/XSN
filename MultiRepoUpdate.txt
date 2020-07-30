@@ -1,5 +1,20 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/d7fcb4b905e37f113ba670d7fbbdc6fbc523dc36
+commit d7fcb4b905e37f113ba670d7fbbdc6fbc523dc36
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Thu Jul 30 10:47:54 2020 -0600
+
+    build(deps): bump https-proxy-agent from 2.2.1 to 2.2.4 in /web-ui (#157)
+    
+    Bumps [https-proxy-agent](https://github.com/TooTallNate/node-https-proxy-agent) from 2.2.1 to 2.2.4.
+    - [Release notes](https://github.com/TooTallNate/node-https-proxy-agent/releases)
+    - [Commits](https://github.com/TooTallNate/node-https-proxy-agent/compare/2.2.1...2.2.4)
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+
 https://github.com/X9Developers/block-explorer/commit/10e4a140a45785684be62b6e5d0e26918fd687de
 commit 10e4a140a45785684be62b6e5d0e26918fd687de
 Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
