@@ -1,5 +1,20 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/7d3a4c9b1f0d2aae043f2dea3ce2cb7acc437062
+commit 7d3a4c9b1f0d2aae043f2dea3ce2cb7acc437062
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Thu Jul 30 10:55:37 2020 -0600
+
+    build(deps): bump lodash.mergewith from 4.6.1 to 4.6.2 in /web-ui (#169)
+    
+    Bumps [lodash.mergewith](https://github.com/lodash/lodash) from 4.6.1 to 4.6.2.
+    - [Release notes](https://github.com/lodash/lodash/releases)
+    - [Commits](https://github.com/lodash/lodash/commits)
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+
 https://github.com/X9Developers/block-explorer/commit/f314b0b762db3dd6311e6188d5584e5442e3307e
 commit f314b0b762db3dd6311e6188d5584e5442e3307e
 Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
