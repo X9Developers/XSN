@@ -1,5 +1,20 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/890a80f0c2b3e36364a1b803b93f82e99e349c1f
+commit 890a80f0c2b3e36364a1b803b93f82e99e349c1f
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Thu Jul 30 11:01:18 2020 -0600
+
+    build(deps): bump fstream from 1.0.11 to 1.0.12 in /web-ui (#171)
+    
+    Bumps [fstream](https://github.com/npm/fstream) from 1.0.11 to 1.0.12.
+    - [Release notes](https://github.com/npm/fstream/releases)
+    - [Commits](https://github.com/npm/fstream/compare/v1.0.11...v1.0.12)
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+
 https://github.com/X9Developers/block-explorer/commit/4ea6f78c5b207a04f8b8476b69bf6b2a139b0f58
 commit 4ea6f78c5b207a04f8b8476b69bf6b2a139b0f58
 Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
