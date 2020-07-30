@@ -1,5 +1,21 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/19407dddef7c9ad8ba8818bf8b070eaca7e3691c
+commit 19407dddef7c9ad8ba8818bf8b070eaca7e3691c
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Thu Jul 30 10:46:48 2020 -0600
+
+    build(deps): bump handlebars from 4.0.12 to 4.7.6 in /web-ui (#167)
+    
+    Bumps [handlebars](https://github.com/wycats/handlebars.js) from 4.0.12 to 4.7.6.
+    - [Release notes](https://github.com/wycats/handlebars.js/releases)
+    - [Changelog](https://github.com/handlebars-lang/handlebars.js/blob/master/release-notes.md)
+    - [Commits](https://github.com/wycats/handlebars.js/compare/v4.0.12...v4.7.6)
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+
 https://github.com/X9Developers/block-explorer/commit/8eed37c06380383aa778056420cc288bd06bfc72
 commit 8eed37c06380383aa778056420cc288bd06bfc72
 Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
