@@ -304,7 +304,7 @@ bool TPoSUtils::CheckContract(const CTransactionRef &txContract, TPoSContract &c
         auto hashMessage = SerializeHash(tmpContract.rawTx->vin.front().prevout);
         std::string strVerifyHashError;
 
-        if (nBlockHeight >= nBlockHeight >= Params().GetConsensus().nTPoSSignatureUpgradeHFHeight) {
+        if (nBlockHeight >= Params().GetConsensus().nTPoSSignatureUpgradeHFHeight) {
             if(!CMessageSigner::VerifyMessage(tmpContract.tposAddress.Get(), tmpContract.vchSignature, std::string(hashMessage.begin(), hashMessage.end()), strVerifyHashError)) {
                 if(!CHashSigner::VerifyHash(hashMessage, tmpContract.tposAddress.Get(), tmpContract.vchSignature, strVerifyHashError)) {
                     strError = strprintf("%s : TPoS contract signature is invalid %s", __func__, strError);
