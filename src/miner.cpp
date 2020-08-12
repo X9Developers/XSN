@@ -684,7 +684,7 @@ void static XSNMiner(const CChainParams& chainparams, CConnman& connman,
             {
                 LogPrintf("CPUMiner : proof-of-stake block found %s \n", pblock->GetHash().ToString().c_str());
 
-                CBlockSigner signer(*pblock, pwallet, contract);
+                CBlockSigner signer(*pblock, pwallet, contract, pindexPrev->nHeight + 1);
 
                 if (!signer.SignBlock()) {
                     LogPrintf("XSNMiner(): Signing new block failed \n");

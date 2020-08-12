@@ -99,6 +99,7 @@ public:
         consensus.nPosTargetSpacing = 1 * 60; // XSN: 1 minutes
         consensus.nPosTargetTimespan = 60 * 40;
         consensus.nPoSUpdgradeHFHeight = 898488; // 4 December 2019
+        consensus.nTPoSSignatureUpgradeHFHeight = 1264447;
         consensus.nMerchantnodeMinimumConfirmations = 1;
         consensus.nMasternodeMinimumConfirmations = 15;
         consensus.nStakeMinAge = 60 * 60;

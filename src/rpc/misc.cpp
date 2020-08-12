@@ -518,7 +518,7 @@ UniValue getstakingstatus(const JSONRPCRequest& request)
         auto helper = [&txId, &tposStatus] {
             TPoSContract contract;
             std::string strError;
-            if(!TPoSUtils::CheckContract(txId, contract, true, true, strError))
+            if(!TPoSUtils::CheckContract(txId, contract, chainActive.Tip()->nHeight, true, true, strError))
             {
                 tposStatus = strError;
                 return false;

@@ -1489,12 +1489,11 @@ void CWallet::MarkConflicted(const uint256& hashBlock, const uint256& hashTx)
     }
 }
 
-bool CWallet::AddToWalletIfTPoSContract(const CTransactionRef &tx)
+bool CWallet::AddToWalletIfTPoSContract(const CTransactionRef &tx, const CBlockIndex *pindex)
 {
     AssertLockHeld(cs_wallet);
 
-    if(TPoSUtils::IsTPoSContract(tx))
-    {
+    if(TPoSUtils::IsTPoSContract(tx)) {
         // TODO: FIND CORRECT CONDITIONS TO erase contract
         //        if(!mempool.exists(tx.GetHash()))
         //        {
@@ -1511,38 +1510,34 @@ bool CWallet::AddToWalletIfTPoSContract(const CTransactionRef &tx)
         //            return true;
         //        }
         //        else
-        {
-            bool isMerchant = TPoSUtils::IsTPoSMerchantContract(this, tx);
-            bool isOwner = TPoSUtils::IsTPoSOwnerContract(this, tx);
+        bool isMerchant = TPoSUtils::IsTPoSMerchantContract(this, tx);
+        bool isOwner = TPoSUtils::IsTPoSOwnerContract(this, tx);
 
-            if(isMerchant || isOwner)
-            {
-                TPoSContract contract;
-                std::string strError;
-                if(!TPoSUtils::CheckContract(tx, contract, true, false, strError))
-                {
-                    return error(strError.c_str());
-                }
-
-                CWalletTx wtx(this, tx);
-                if(LoadTPoSContract(wtx))
-                {
-                    WalletBatch walletDb(*database);
-                    walletDb.WriteTPoSContractTx(wtx.GetHash(), wtx);
-
-
-                    if(isMerchant && !isOwner) {
-                        AddWatchOnly(GetScriptForDestination(contract.tposAddress.Get()));
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-
-
-                return true;
+        if(isMerchant || isOwner) {
+            TPoSContract contract;
+            std::string strError;
+            if(!TPoSUtils::CheckContract(tx, contract, pindex->nHeight, true, false, strError)) {
+                return error(strError.c_str());
             }
+
+            CWalletTx wtx(this, tx);
+            if(LoadTPoSContract(wtx))
+            {
+                WalletBatch walletDb(*database);
+                walletDb.WriteTPoSContractTx(wtx.GetHash(), wtx);
+
+
+                if(isMerchant && !isOwner) {
+                    AddWatchOnly(GetScriptForDestination(contract.tposAddress.Get()));
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+
+            return true;
         }
     }
 
@@ -1552,7 +1547,7 @@ bool CWallet::AddToWalletIfTPoSContract(const CTransactionRef &tx)
 void CWallet::SyncTransaction(const CTransactionRef& ptx, const CBlockIndex *pindex, int posInBlock) {
     const CTransaction& tx = *ptx;
 
-    AddToWalletIfTPoSContract(ptx);
+    AddToWalletIfTPoSContract(ptx, pindex);
 
     if (!AddToWalletIfInvolvingMe(ptx, pindex, posInBlock, true))
         return; // Not one of ours

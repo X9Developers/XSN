@@ -732,7 +732,7 @@ private:
     /* Mark a transaction (and its in-wallet descendants) as conflicting with a particular block. */
     void MarkConflicted(const uint256& hashBlock, const uint256& hashTx);
 
-    bool AddToWalletIfTPoSContract(const CTransactionRef &tx);
+    bool AddToWalletIfTPoSContract(const CTransactionRef &tx, const CBlockIndex *pindex);
 
     void SyncMetaData(std::pair<TxSpends::iterator, TxSpends::iterator>);
 

@@ -20,10 +20,11 @@ static CPubKey::InputScriptType GetScriptTypeFromDestination(const CTxDestinatio
     return CPubKey::InputScriptType::SPENDUNKNOWN;
 }
 
-CBlockSigner::CBlockSigner(CBlock &block, const CKeyStore *keystore, const TPoSContract &contract) :
+CBlockSigner::CBlockSigner(CBlock &block, const CKeyStore *keystore, const TPoSContract &contract, int chainHeight) :
     refBlock(block),
     refKeystore(keystore),
-    refContract(contract)
+    refContract(contract),
+    nChainHeight(chainHeight)
 {
 
 }
@@ -31,7 +32,7 @@ CBlockSigner::CBlockSigner(CBlock &block, const CKeyStore *keystore, const TPoSC
 bool CBlockSigner::SignBlock()
 {
     CKey keySecret;
-    CPubKey::InputScriptType scriptType;
+    CPubKey::InputScriptType scriptType { CPubKey::InputScriptType::SPENDUNKNOWN };
 
     if(refBlock.IsProofOfStake())
     {
@@ -69,8 +70,13 @@ bool CBlockSigner::SignBlock()
             scriptType = GetScriptTypeFromDestination(destination);
         }
     }
-//?
-    return CHashSigner::SignHash(refBlock.IsTPoSBlock() ? refBlock.GetTPoSHash() : refBlock.GetHash(), keySecret, scriptType, refBlock.vchBlockSig);
+
+    if (nChainHeight >= Params().GetConsensus().nTPoSSignatureUpgradeHFHeight) {
+        const auto &hash = refBlock.IsTPoSBlock() ? refBlock.GetTPoSHash() : refBlock.GetHash();
+        return CMessageSigner::SignMessage(std::string(hash.begin(), hash.end()), refBlock.vchBlockSig, keySecret, scriptType);
+    } else {
+        return CHashSigner::SignHash(refBlock.IsTPoSBlock() ? refBlock.GetTPoSHash() : refBlock.GetHash(), keySecret, scriptType, refBlock.vchBlockSig);
+    }
 }
 
 bool CBlockSigner::CheckBlockSignature() const
@@ -104,5 +110,9 @@ bool CBlockSigner::CheckBlockSignature() const
     }
 
     std::string strError;
-    return CHashSigner::VerifyHash(hashMessage, destination, refBlock.vchBlockSig, strError);
+    if (nChainHeight >= Params().GetConsensus().nTPoSSignatureUpgradeHFHeight) {
+        return CMessageSigner::VerifyMessage(destination, refBlock.vchBlockSig, std::string(hashMessage.begin(), hashMessage.end()), strError);
+    } else {
+        return CHashSigner::VerifyHash(hashMessage, destination, refBlock.vchBlockSig, strError);
+    }
 }

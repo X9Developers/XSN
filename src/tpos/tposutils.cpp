@@ -171,6 +171,11 @@ bool TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
         auto vchSignatureCopy = vchSignature;
         vchSignature.clear();
         auto hashMessage = SerializeHash(firstInput);
+
+        // TODO(yuraolex): activate this after HF
+        // if(!CMessageSigner::SignMessage(std::string(hashMessage.begin(), hashMessage.end()), vchSignature, key, strError)) {
+        //     strError = "Error: Failed to sign tpos contract";
+        // }
         if(!key.SignCompact(hashMessage, vchSignature))
         {
             strError = "Error: Failed to sign tpos contract";
@@ -268,7 +273,7 @@ COutPoint TPoSUtils::GetContractCollateralOutpoint(const TPoSContract &contract)
     return result;
 }
 
-bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contract, bool fCheckSignature, bool fCheckContractOutpoint, std::string &strError)
+bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contract, int nBlockHeight, bool fCheckSignature, bool fCheckContractOutpoint, std::string &strError)
 {
     CTransactionRef tx;
     uint256 hashBlock;
@@ -280,11 +285,11 @@ bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contr
         return error(strError.c_str());
     }
 
-    return CheckContract(tx, contract, fCheckSignature, fCheckContractOutpoint, strError);
+    return CheckContract(tx, contract, nBlockHeight, fCheckSignature, fCheckContractOutpoint, strError);
 
 }
 
-bool TPoSUtils::CheckContract(const CTransactionRef &txContract, TPoSContract &contract, bool fCheckSignature, bool fCheckContractOutpoint, std::string &strError)
+bool TPoSUtils::CheckContract(const CTransactionRef &txContract, TPoSContract &contract, int nBlockHeight, bool fCheckSignature, bool fCheckContractOutpoint, std::string &strError)
 {
     TPoSContract tmpContract = TPoSContract::FromTPoSContractTx(txContract);
 
@@ -298,10 +303,19 @@ bool TPoSUtils::CheckContract(const CTransactionRef &txContract, TPoSContract &c
     {
         auto hashMessage = SerializeHash(tmpContract.rawTx->vin.front().prevout);
         std::string strVerifyHashError;
-        if(!CHashSigner::VerifyHash(hashMessage, tmpContract.tposAddress.Get(), tmpContract.vchSignature, strVerifyHashError))
-        {
-            strError = strprintf("%s : TPoS contract signature is invalid %s", __func__, strError);
-            return error(strError.c_str());
+
+        if (nBlockHeight >= nBlockHeight >= Params().GetConsensus().nTPoSSignatureUpgradeHFHeight) {
+            if(!CMessageSigner::VerifyMessage(tmpContract.tposAddress.Get(), tmpContract.vchSignature, std::string(hashMessage.begin(), hashMessage.end()), strVerifyHashError)) {
+                if(!CHashSigner::VerifyHash(hashMessage, tmpContract.tposAddress.Get(), tmpContract.vchSignature, strVerifyHashError)) {
+                    strError = strprintf("%s : TPoS contract signature is invalid %s", __func__, strError);
+                    return error(strError.c_str());
+                }
+            }
+        } else {
+            if(!CHashSigner::VerifyHash(hashMessage, tmpContract.tposAddress.Get(), tmpContract.vchSignature, strVerifyHashError)) {
+                strError = strprintf("%s : TPoS contract signature is invalid %s", __func__, strError);
+                return error(strError.c_str());
+            }
         }
     }
 

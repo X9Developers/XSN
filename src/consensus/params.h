@@ -101,6 +101,7 @@ struct Params {
     int nTPoSContractSignatureDeploymentTime;
     int nMaxBlockSpacingFixDeploymentHeight;
     int nPoSUpdgradeHFHeight;
+    int nTPoSSignatureUpgradeHFHeight;
 };
 } // namespace Consensus
 

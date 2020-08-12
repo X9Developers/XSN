@@ -635,11 +635,11 @@ static UniValue tposcontract(const JSONRPCRequest& request)
                 throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
             CTransactionRef tx(MakeTransactionRef(std::move(mtx)));
 
-            fCheckResult = TPoSUtils::CheckContract(tx, contract, fCheckSignature, fCheckSpent, strError);
+            fCheckResult = TPoSUtils::CheckContract(tx, contract, chainActive.Tip()->nHeight, fCheckSignature, fCheckSpent, strError);
         }
         else if(!txIdObj.isNull())
         {
-            fCheckResult = TPoSUtils::CheckContract(ParseHashStr(txIdObj.get_str(), "txid"), contract, fCheckSignature, fCheckSpent, strError);
+            fCheckResult = TPoSUtils::CheckContract(ParseHashStr(txIdObj.get_str(), "txid"), contract, chainActive.Tip()->nHeight, fCheckSignature, fCheckSpent, strError);
         }
         else
         {
