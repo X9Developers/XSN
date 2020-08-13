@@ -173,11 +173,10 @@ bool TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
         auto hashMessage = SerializeHash(firstInput);
 
         // TODO(yuraolex): activate this after HF
-        // if(!CMessageSigner::SignMessage(std::string(hashMessage.begin(), hashMessage.end()), vchSignature, key, strError)) {
-        //     strError = "Error: Failed to sign tpos contract";
-        // }
-        if(!key.SignCompact(hashMessage, vchSignature))
-        {
+//        if (!CMessageSigner::SignMessage(std::string(hashMessage.begin(), hashMessage.end()), vchSignature, key, CPubKey::InputScriptType::SPENDP2PKH)) {
+//            strError = "Error: Failed to sign tpos contract";
+//        }
+        if (!key.SignCompact(hashMessage, vchSignature)) {
             strError = "Error: Failed to sign tpos contract";
         }
         it->scriptPubKey.FindAndDelete(CScript(vchSignatureCopy));

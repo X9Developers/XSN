@@ -614,21 +614,18 @@ static UniValue tposcontract(const JSONRPCRequest& request)
         bool fCheckSpent = true;
         bool fCheckResult = false;
 
-        if(checkSpentObj.isNum())
-        {
+        if (checkSpentObj.isNum()) {
             fCheckSpent = checkSpentObj.get_int() != 0;
         }
 
-        if(checkSignatureObj.isNum())
-        {
+        if (checkSignatureObj.isNum()) {
             fCheckSignature = checkSignatureObj.get_int() != 0;
         }
 
         std::string strError;
         TPoSContract contract;
 
-        if(!hexObj.isNull())
-        {
+        if (!hexObj.isNull()) {
             // parse hex string from parameter
             CMutableTransaction mtx;
             if (!DecodeHexTx(mtx, hexObj.get_str()))
@@ -636,22 +633,15 @@ static UniValue tposcontract(const JSONRPCRequest& request)
             CTransactionRef tx(MakeTransactionRef(std::move(mtx)));
 
             fCheckResult = TPoSUtils::CheckContract(tx, contract, chainActive.Tip()->nHeight, fCheckSignature, fCheckSpent, strError);
-        }
-        else if(!txIdObj.isNull())
-        {
+        } else if(!txIdObj.isNull()) {
             fCheckResult = TPoSUtils::CheckContract(ParseHashStr(txIdObj.get_str(), "txid"), contract, chainActive.Tip()->nHeight, fCheckSignature, fCheckSpent, strError);
-        }
-        else
-        {
+        } else {
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter");
         }
 
-        if(fCheckResult)
-        {
+        if (fCheckResult) {
             return "Contract is valid";
-        }
-        else
-        {
+        } else {
             return strprintf("Contract invalid, error: %s", strError);
         }
     }

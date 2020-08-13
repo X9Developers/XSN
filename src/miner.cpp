@@ -588,6 +588,8 @@ void static XSNMiner(const CChainParams& chainparams, CConnman& connman,
     std::shared_ptr<CReserveScript> coinbaseScript;
     pwallet->GetScriptForMining(coinbaseScript);
 
+    bool fRegtest = Params().MineBlocksOnDemand();
+
     while (true) {
         try {
 
@@ -601,7 +603,7 @@ void static XSNMiner(const CChainParams& chainparams, CConnman& connman,
 
             do {
                 bool fvNodesEmpty = connman.GetNodeCount(CConnman::CONNECTIONS_ALL) == 0;
-                if (!fvNodesEmpty && !IsInitialBlockDownload() && masternodeSync.IsSynced())
+                if (fRegtest || (!fvNodesEmpty && !IsInitialBlockDownload() && masternodeSync.IsSynced()))
                     break;
                 MilliSleep(1000);
             } while (true);
@@ -610,11 +612,9 @@ void static XSNMiner(const CChainParams& chainparams, CConnman& connman,
             uint256 hashTPoSContractTxId;
             TPoSContract contract;
 
-            if(fProofOfStake)
-            {
+            if(fProofOfStake) {
                 if (chainActive.Tip()->nHeight < chainparams.GetConsensus().nLastPoWBlock ||
-                        pwallet->IsLocked() || !masternodeSync.IsSynced() || !merchantnodeSync.IsSynced())
-                {
+                        pwallet->IsLocked() || !masternodeSync.IsSynced() || !merchantnodeSync.IsSynced()) {
                     nLastCoinStakeSearchInterval = 0;
                     MilliSleep(5000);
                     continue;
@@ -625,8 +625,7 @@ void static XSNMiner(const CChainParams& chainparams, CConnman& connman,
                 isTPoS = tposParams.fUseTPoS;
                 hashTPoSContractTxId = tposParams.hashTPoSContractTxId;
 
-                if(isTPoS)
-                {
+                if(isTPoS) {
                     auto it = pwallet->tposMerchantContracts.find(hashTPoSContractTxId);
                     if(it != std::end(pwallet->tposMerchantContracts))
                         contract = it->second;
@@ -653,8 +652,7 @@ void static XSNMiner(const CChainParams& chainparams, CConnman& connman,
                 }
             }
 
-            if(!fProofOfStake && chainActive.Tip()->nHeight >= chainparams.GetConsensus().nLastPoWBlock)
-            {
+            if(!fProofOfStake && chainActive.Tip()->nHeight >= chainparams.GetConsensus().nLastPoWBlock) {
                 return;
             }
 
@@ -667,8 +665,7 @@ void static XSNMiner(const CChainParams& chainparams, CConnman& connman,
 
             BlockAssembler assemlber(chainparams);
             auto pblocktemplate = assemlber.CreateNewBlock(pwallet, coinbaseScript->reserveScript, fProofOfStake, contract, true);
-            if (!pblocktemplate.get())
-            {
+            if (!pblocktemplate.get()) {
                 LogPrintf("XsnMiner -- Failed to find a coinstake\n");
                 MilliSleep(5000);
                 continue;
@@ -680,8 +677,7 @@ void static XSNMiner(const CChainParams& chainparams, CConnman& connman,
                       ::GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION));
 
             //Sign block
-            if (fProofOfStake)
-            {
+            if (fProofOfStake) {
                 LogPrintf("CPUMiner : proof-of-stake block found %s \n", pblock->GetHash().ToString().c_str());
 
                 CBlockSigner signer(*pblock, pwallet, contract, pindexPrev->nHeight + 1);
@@ -717,16 +713,13 @@ void static XSNMiner(const CChainParams& chainparams, CConnman& connman,
             //
             int64_t nStart = GetTime();
             arith_uint256 hashTarget = arith_uint256().SetCompact(pblock->nBits);
-            while (true)
-            {
+            while (true) {
                 unsigned int nHashesDone = 0;
 
                 uint256 hash;
-                while (true)
-                {
+                while (true) {
                     hash = pblock->GetHash();
-                    if (UintToArith256(hash) <= hashTarget)
-                    {
+                    if (UintToArith256(hash) <= hashTarget) {
                         // Found a solution
                         SetThreadPriority(THREAD_PRIORITY_NORMAL);
                         LogPrintf("XsnMiner:\n  proof-of-work found\n  hash: %s\n  target: %s\n", hash.GetHex(), hashTarget.GetHex());
@@ -763,23 +756,19 @@ void static XSNMiner(const CChainParams& chainparams, CConnman& connman,
                 if (UpdateTime(pblock.get(), chainparams.GetConsensus(), pindexPrev) < 0)
                     break; // Recreate the block if the clock has run backwards,
                 // so that we can use the correct time.
-                if (chainparams.GetConsensus().fPowAllowMinDifficultyBlocks)
-                {
+                if (chainparams.GetConsensus().fPowAllowMinDifficultyBlocks) {
                     // Changing pblock->nTime can change work required on testnet:
                     hashTarget.SetCompact(pblock->nBits);
                 }
 
             }
         }
-        catch (const boost::thread_interrupted&)
-        {
+        catch (const boost::thread_interrupted&) {
             LogPrintf("XsnMiner -- terminated\n");
             throw;
         }
-        catch (const std::runtime_error &e)
-        {
+        catch (const std::runtime_error &e) {
             LogPrintf("XsnMiner -- runtime error: %s\n", e.what());
-            //            return;
         }
     }
 }

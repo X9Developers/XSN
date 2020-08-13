@@ -91,21 +91,17 @@ bool CBlockSigner::CheckBlockSignature() const
 
     CTxDestination destination;
 
-    if(!ExtractDestination(txout.scriptPubKey, destination))
-    {
+    if(!ExtractDestination(txout.scriptPubKey, destination)) {
         return error("CBlockSigner::CheckBlockSignature() : failed to extract destination from script: %s", txout.scriptPubKey.ToString());
     }
 
     auto hashMessage = refBlock.IsTPoSBlock() ? refBlock.GetTPoSHash() : refBlock.GetHash();
-    if(refBlock.IsProofOfStake())
-    {
-        if(refBlock.IsTPoSBlock())
-        {
+    if(refBlock.IsProofOfStake()) {
+        if(refBlock.IsTPoSBlock()) {
             destination = refContract.merchantAddress.Get();
         }
     }
-    else
-    {
+    else {
         return true;
     }
 
