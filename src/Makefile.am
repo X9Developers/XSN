@@ -24,6 +24,8 @@ BITCOIN_INCLUDES=-I$(builddir) $(BDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFL
 BITCOIN_INCLUDES += -I$(srcdir)/secp256k1/include
 BITCOIN_INCLUDES += $(UNIVALUE_CFLAGS)
 
+BLS_LIBS=-lchiabls -lgmp
+
 LIBBITCOIN_SERVER=libxsn_server.a
 LIBBITCOIN_COMMON=libxsn_common.a
 LIBBITCOIN_CONSENSUS=libxsn_consensus.a
@@ -76,7 +78,6 @@ endif
 .PHONY: FORCE check-symbols check-security
 # xsn core #
 BITCOIN_CORE_H = \
-  activemasternode.h \
   addrdb.h \
   addrman.h \
   base58.h \
@@ -104,6 +105,13 @@ BITCOIN_CORE_H = \
   core_io.h \
   core_memusage.h \
   cuckoocache.h \
+  evo/cbtx.h \
+  evo/deterministicmns.h \
+  evo/evodb.h \
+  evo/mnauth.h \
+  evo/providertx.h \
+  evo/simplifiedmns.h \
+  evo/specialtx.h \
   dsnotificationinterface.h \
   fs.h \
   flat-database.h \
@@ -119,7 +127,6 @@ BITCOIN_CORE_H = \
   index/txindex.h \
   indirectmap.h \
   init.h \
-  instantx.h \
   interfaces/handler.h \
   interfaces/node.h \
   interfaces/wallet.h \
@@ -129,12 +136,25 @@ BITCOIN_CORE_H = \
   kernel.h \
   dbwrapper.h \
   limitedmap.h \
+  llmq/quorums.h \
+  llmq/quorums_blockprocessor.h \
+  llmq/quorums_commitment.h \
+  llmq/quorums_chainlocks.h \
+  llmq/quorums_debug.h \
+  llmq/quorums_dkgsessionhandler.h \
+  llmq/quorums_dkgsessionmgr.h \
+  llmq/quorums_dkgsession.h \
+  llmq/quorums_init.h \
+  llmq/quorums_instantsend.h \
+  llmq/quorums_signing.h \
+  llmq/quorums_signing_shares.h \
+  llmq/quorums_utils.h \
   logging.h \
-  masternode.h \
-  masternode-payments.h \
-  masternode-sync.h \
-  masternodeman.h \
-  masternodeconfig.h \
+  masternode/activemasternode.h \
+  masternode/masternode-meta.h \
+  masternode/masternode-payments.h \
+  masternode/masternode-sync.h \
+  masternode/masternode-utils.h \
   messagesigner.h \
   memusage.h \
   merkleblock.h \
@@ -227,7 +247,6 @@ libxsn_util_a-clientversion.$(OBJEXT): obj/build.h
 libxsn_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
 libxsn_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libxsn_server_a_SOURCES = \
-  activemasternode.cpp \
   addrdb.cpp \
   addrman.cpp \
   bloom.cpp \
@@ -237,11 +256,17 @@ libxsn_server_a_SOURCES = \
   checkpoints.cpp \
   consensus/tx_verify.cpp \
   dsnotificationinterface.cpp \
+  evo/cbtx.cpp \
+  evo/deterministicmns.cpp \
+  evo/evodb.cpp \
+  evo/mnauth.cpp \
+  evo/providertx.cpp \
+  evo/simplifiedmns.cpp \
+  evo/specialtx.cpp \
   httprpc.cpp \
   httpserver.cpp \
   index/txindex.cpp \
   init.cpp \
-  instantx.cpp \
   kernel.cpp \
   dbwrapper.cpp \
   governance/governance.cpp \
@@ -250,11 +275,24 @@ libxsn_server_a_SOURCES = \
   governance/governance-validators.cpp \
   governance/governance-vote.cpp \
   governance/governance-votedb.cpp \
-  masternode.cpp \
-  masternode-payments.cpp \
-  masternode-sync.cpp \
-  masternodeconfig.cpp \
-  masternodeman.cpp \
+  llmq/quorums.cpp \
+  llmq/quorums_blockprocessor.cpp \
+  llmq/quorums_commitment.cpp \
+  llmq/quorums_chainlocks.cpp \
+  llmq/quorums_debug.cpp \
+  llmq/quorums_dkgsessionhandler.cpp \
+  llmq/quorums_dkgsessionmgr.cpp \
+  llmq/quorums_dkgsession.cpp \
+  llmq/quorums_init.cpp \
+  llmq/quorums_instantsend.cpp \
+  llmq/quorums_signing.cpp \
+  llmq/quorums_signing_shares.cpp \
+  llmq/quorums_utils.cpp \
+  masternode/activemasternode.cpp \
+  masternode/masternode-meta.cpp \
+  masternode/masternode-payments.cpp \
+  masternode/masternode-sync.cpp \
+  masternode/masternode-utils.cpp \
   merkleblock.cpp \
   messagesigner.cpp \
   miner.cpp \
@@ -386,6 +424,8 @@ libxsn_consensus_a_SOURCES = \
   amount.h \
   arith_uint256.cpp \
   arith_uint256.h \
+  bls/bls.cpp \
+  bls/bls.h \
   consensus/merkle.cpp \
   consensus/merkle.h \
   consensus/params.h \
@@ -446,6 +486,11 @@ libxsn_common_a_SOURCES = \
 libxsn_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libxsn_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libxsn_util_a_SOURCES = \
+  bls/bls_batchverifier.h \
+  bls/bls_ies.cpp \
+  bls/bls_ies.h \
+  bls/bls_worker.cpp \
+  bls/bls_worker.h \
   support/lockedpool.cpp \
   chainparamsbase.cpp \
   clientversion.cpp \
@@ -506,7 +551,7 @@ xsnd_LDADD = \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-xsnd_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
+xsnd_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) $(BLS_LIBS)
 
 # xsn-cli binary #
 xsn_cli_SOURCES = xsn-cli.cpp
@@ -524,7 +569,7 @@ xsn_cli_LDADD = \
   $(LIBBITCOIN_UTIL) \
   $(LIBBITCOIN_CRYPTO)
 
-xsn_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
+xsn_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS) $(BLS_LIBS)
 #
 
 # xsn-tx binary #
@@ -545,7 +590,7 @@ xsn_tx_LDADD = \
   $(LIBBITCOIN_CRYPTO) \
   $(LIBSECP256K1)
 
-xsn_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
+xsn_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS) $(BLS_LIBS)
 #
 
 # xsnconsensus library #
@@ -558,7 +603,7 @@ if GLIBC_BACK_COMPAT
 endif
 
 libxsnconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
-libxsnconsensus_la_LIBADD = $(LIBSECP256K1)
+libxsnconsensus_la_LIBADD = $(LIBSECP256K1) $(BLS_LIBS)
 libxsnconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_BITCOIN_INTERNAL
 libxsnconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 
@@ -587,8 +632,10 @@ CLEANFILES += wallet/test/*.gcda wallet/test/*.gcno
 CLEANFILES += zmq/*.gcda zmq/*.gcno
 CLEANFILES += obj/build.h
 
-EXTRA_DIST = $(CTAES_DIST)
+IMMER_DIST = immer
 
+EXTRA_DIST = $(CTAES_DIST)
+EXTRA_DIST += $(IMMER_DIST)
 
 config/xsn-config.h: config/stamp-h1
 	@$(MAKE) -C $(top_builddir) $(subdir)/$(@)
