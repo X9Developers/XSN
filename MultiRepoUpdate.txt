@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/ca74802919201924bf73a6b1ef2c68a5b041ec10
+commit ca74802919201924bf73a6b1ef2c68a5b041ec10
+Author: Alexander Bai <vhurryharry@gmail.com>
+Date:   Thu Aug 20 12:10:59 2020 -0400
+
+    server: added troubleshooting for out of memory exception.
+
 https://github.com/X9Developers/block-explorer/commit/890a80f0c2b3e36364a1b803b93f82e99e349c1f
 commit 890a80f0c2b3e36364a1b803b93f82e99e349c1f
 Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
