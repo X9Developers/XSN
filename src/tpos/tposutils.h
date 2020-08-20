@@ -36,6 +36,19 @@ public:
                  uint16_t nOperatorReward,
                  std::vector<unsigned char> vchSignature);
 
+    ADD_SERIALIZE_METHODS;
+
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action)
+    {
+        READWRITE(nVersion);
+        READWRITE(nType);
+        READWRITE(nOperatorReward);
+        READWRITE(scriptTPoSAddress);
+        READWRITE(scriptMerchantAddress);
+        READWRITE(vchSig);
+    }
+
     bool IsValid() const;
 
     static TPoSContract FromTPoSContractTx(const CTransactionRef tx);
@@ -65,9 +78,10 @@ public:
     static bool CreateTPoSTransaction(CWallet *wallet,
                                       CTransactionRef &transactionOut,
                                       CReserveKey &reserveKey,
-                                      const CBitcoinAddress &tposAddress,
-                                      const CBitcoinAddress &merchantAddress,
+                                      const CTxDestination &tposAddress,
+                                      const CTxDestination &merchantAddress,
                                       int merchantCommission,
+                                      bool createLegacyContract,
                                       std::string &strError);
 
     static bool CreateCancelContractTransaction(CWallet *wallet,

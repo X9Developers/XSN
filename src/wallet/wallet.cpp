@@ -1550,7 +1550,10 @@ bool CWallet::AddToWalletIfTPoSContract(const CTransactionRef &tx, const CBlockI
 void CWallet::SyncTransaction(const CTransactionRef& ptx, const CBlockIndex *pindex, int posInBlock) {
     const CTransaction& tx = *ptx;
 
-    AddToWalletIfTPoSContract(ptx, pindex);
+    // can't add without index
+    if (pindex) {
+        AddToWalletIfTPoSContract(ptx, pindex);
+    }
 
     if (!AddToWalletIfInvolvingMe(ptx, pindex, posInBlock, true))
         return; // Not one of ours
@@ -3307,7 +3310,7 @@ bool CWallet::GetBudgetSystemCollateralTX(CWalletTx& tx, uint256 hash, CAmount a
 }
 
 bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CTransactionRef& tx, CReserveKey& reservekey, CAmount& nFeeRet,
-                                int& nChangePosInOut, std::string& strFailReason, const CCoinControl& coin_control, bool sign, OnTransactionToBeSigned onTxToBeSigned)
+                                int& nChangePosInOut, std::string& strFailReason, const CCoinControl& coin_control, bool sign)
 {
     CAmount nValue = 0;
     int nChangePosRequest = nChangePosInOut;
@@ -3634,9 +3637,6 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CTransac
         for (const auto& coin : selected_coins) {
             txNew.vin.push_back(CTxIn(coin.outpoint, CScript(), nSequence));
         }
-
-        if(onTxToBeSigned)
-            onTxToBeSigned(txNew);
 
         if (sign)
         {

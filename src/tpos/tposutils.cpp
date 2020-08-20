@@ -115,21 +115,12 @@ bool TPoSUtils::IsTPoSOwnerContract(CWallet *wallet, const CTransactionRef &tx)
 bool TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
                                       CTransactionRef &transactionOut,
                                       CReserveKey& reservekey,
-                                      const CBitcoinAddress &tposAddress,
-                                      const CBitcoinAddress &merchantAddress,
+                                      const CTxDestination &tposAddress,
+                                      const CTxDestination &merchantAddress,
                                       int merchantCommission,
+                                      bool createLegacyContract,
                                       std::string &strError)
 {
-    auto tposAddressAsStr = tposAddress.ToString();
-    auto merchantAddressAsStr = merchantAddress.ToString();
-
-    CScript metadataScriptPubKey;
-    metadataScriptPubKey << OP_RETURN
-                         << std::vector<unsigned char>(tposAddressAsStr.begin(), tposAddressAsStr.end())
-                         << std::vector<unsigned char>(merchantAddressAsStr.begin(), merchantAddressAsStr.end())
-                         << (100 - merchantCommission);
-
-
     if(wallet->IsLocked())
     {
         strError = "Error: Wallet is locked";
@@ -138,70 +129,109 @@ bool TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
 
     CKey key;
     CKeyID keyID;
-    if(!tposAddress.GetKeyID(keyID)) {
-        strError = "Error: TPoS Address is not P2PKH";
-        return false;
+
+    if (createLegacyContract) {
+        if(auto tmpKeyID = boost::get<CKeyID>(&tposAddress)) {
+            keyID = *tmpKeyID;
+        } else {
+            strError = "Error: TPoS Address is not P2PKH";
+            return false;
+        }
+    } else {
+        keyID = GetKeyForDestination(CBasicKeyStore{}, tposAddress);
     }
+
     if (!wallet->GetKey(keyID, key)) {
         strError = "Error: Failed to get private key associated with TPoS address";
         return false;
     }
-    std::vector<unsigned char> vchSignature;
-    key.SignCompact(SerializeHash(COutPoint()), vchSignature);
-    metadataScriptPubKey << vchSignature;
+
+    // dummy signature, just to know size
+    std::vector<unsigned char> vchSignature(CPubKey::COMPACT_SIGNATURE_SIZE, '0');
+
+    CScript metadataScriptPubKey;
+
+    if (createLegacyContract) {
+        auto tposAddressAsStr = EncodeDestination(tposAddress);
+        auto merchantAddressAsStr = EncodeDestination(merchantAddress);
+        metadataScriptPubKey << OP_RETURN
+                             << std::vector<unsigned char>(tposAddressAsStr.begin(), tposAddressAsStr.end())
+                             << std::vector<unsigned char>(merchantAddressAsStr.begin(), merchantAddressAsStr.end())
+                             << (100 - merchantCommission)
+                             << vchSignature;
+    } else {
+        CDataStream ds(SER_NETWORK, PROTOCOL_VERSION);
+        ds << TPoSContract({}, merchantAddress, tposAddress, merchantCommission, vchSignature);
+        std::vector<unsigned char> payload(ds.begin(), ds.end());
+        metadataScriptPubKey << OP_RETURN << payload;
+    }
 
     std::vector<CRecipient> vecSend {
         { metadataScriptPubKey, 0, false },
-        { GetScriptForDestination(tposAddress.Get()), TPOS_CONTRACT_COLATERAL, false }
+        { GetScriptForDestination(tposAddress), TPOS_CONTRACT_COLATERAL, false }
     };
-
 
     CAmount nFeeRequired;
 
-    // this delegate will be executed right before signing. This will allow us to tweak transaction and do
-    // some tpos specific thing, like signing contract.
-    auto txModifier = [&strError, &key](CMutableTransaction &tx, std::vector<unsigned char> vchSignature) {
-        auto firstInput = tx.vin.front().prevout;
-
-        auto it = std::find_if(tx.vout.begin(), tx.vout.end(), [](const CTxOut &txOut) {
-            return txOut.scriptPubKey.IsUnspendable();
-        });
-
-        auto vchSignatureCopy = vchSignature;
-        vchSignature.clear();
-        auto hashMessage = SerializeHash(firstInput);
-
-        // TODO(yuraolex): activate this after HF
-        //        if (!CMessageSigner::SignMessage(std::string(hashMessage.begin(), hashMessage.end()), vchSignature, key, CPubKey::InputScriptType::SPENDP2PKH)) {
-        //            strError = "Error: Failed to sign tpos contract";
-        //        }
-        if (!key.SignCompact(hashMessage, vchSignature)) {
-            strError = "Error: Failed to sign tpos contract";
-        }
-        it->scriptPubKey.FindAndDelete(CScript(vchSignatureCopy));
-        it->scriptPubKey << vchSignature;
-    };
-
-    auto txModifierBinded = std::bind(txModifier, std::placeholders::_1, vchSignature);
-
     int nChangePos = -1;
-    if (!wallet->CreateTransaction(vecSend, transactionOut, reservekey, nFeeRequired, nChangePos, strError, {}, true, txModifierBinded)) {
+    if (!wallet->CreateTransaction(vecSend, transactionOut, reservekey, nFeeRequired, nChangePos, strError, {}, false)) {
         if (TPOS_CONTRACT_COLATERAL + nFeeRequired > wallet->GetBalance())
             strError = strprintf("Error: This transaction requires a transaction fee of at least %s because of its amount, complexity, or use of recently received funds!", FormatMoney(nFeeRequired));
         LogPrintf("Error() : %s\n", strError);
         return false;
     }
 
+    CMutableTransaction tx(*transactionOut);
+    auto firstInput = tx.vin.front().prevout;
+
+    auto it = std::find_if(tx.vout.begin(), tx.vout.end(), [](const CTxOut &txOut) {
+        return txOut.scriptPubKey.IsUnspendable();
+    });
+
+    auto vchSignatureCopy = vchSignature;
+    vchSignature.clear();
+    auto hashMessage = SerializeHash(firstInput);
+
+    if (createLegacyContract) {
+        if (!key.SignCompact(hashMessage, vchSignature)) {
+            strError = "Error: Failed to sign tpos contract";
+            return false;
+        }
+
+        it->scriptPubKey.FindAndDelete(CScript(vchSignatureCopy));
+        it->scriptPubKey << vchSignature;
+    } else {
+        if (!CMessageSigner::SignMessage(std::string(hashMessage.begin(), hashMessage.end()), vchSignature, key, CPubKey::InputScriptType::SPENDP2PKH)) {
+            strError = "Error: Failed to sign tpos contract";
+            return false;
+        }
+
+        CDataStream ds(SER_NETWORK, PROTOCOL_VERSION);
+        // construct new contract replacing old payload with new one
+        ds << TPoSContract({}, merchantAddress, tposAddress, merchantCommission, vchSignature);
+        std::vector<unsigned char> payload(ds.begin(), ds.end());
+        it->scriptPubKey.clear();
+        it->scriptPubKey << OP_RETURN << payload;
+    }
+
     if (!strError.empty()) {
         return false;
     }
 
+    if(!wallet->SignTransaction(tx)) {
+        strError = "Failed to sign transaction after filling";
+        return false;
+    }
+
     std::string reason;
-    if (!IsStandardTx(*transactionOut, reason)) {
+    if (!IsStandardTx(tx, reason)) {
         strError = strprintf("Error: Not standard tx: %s\n", reason.c_str());
         LogPrintf(strError.c_str());
         return false;
     }
+
+    // swap signed tx with partial
+    transactionOut = MakeTransactionRef(tx);
 
     return true;
 }
@@ -446,7 +476,7 @@ TPoSContract::TPoSContract(CTransactionRef tx, CTxDestination merchantAddress, C
 
 bool TPoSContract::IsValid() const
 {
-    return !txContract && !txContract->IsNull() && !scriptMerchantAddress.empty()
+    return txContract && !txContract->IsNull() && !scriptMerchantAddress.empty()
             && !scriptTPoSAddress.empty() && nOperatorReward <= 100;
 }
 
