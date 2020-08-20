@@ -1,5 +1,36 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/6de210cabd91649988aaabedc265215b1dddd2a1
+commit 6de210cabd91649988aaabedc265215b1dddd2a1
+Author: Alexander Bai <vhurryharry@gmail.com>
+Date:   Thu Aug 20 16:14:25 2020 -0400
+
+    server: added new api endpoint for paginated block list
+    
+    server: fixed the SQL query to get blocks
+    
+    server: created new blocks API and recovered the latest blocks api.
+    
+    server: added separate getBlocks workflow, changed tx count field name.
+    
+    server: added different codec for blocks.
+    
+    server: created BlockInfo model and updated tests
+    
+    server: updated sql query to get block by blockhash/height
+    
+    server: fixed test for getblock by height
+    
+    server: added test for new api endpoint
+    
+    server: refactored sql queries
+    
+    server: removed difficulty and blockWrites from block header
+    
+    server: simplified BlockInfo class
+    
+    server: added tests for paginated getBlocks
+
 https://github.com/X9Developers/block-explorer/commit/85ab2472f2ad0d87f8b0a2a078ec82a17d6968ba
 commit 85ab2472f2ad0d87f8b0a2a078ec82a17d6968ba
 Author: Alexis Hernandez <alexis22229@gmail.com>
