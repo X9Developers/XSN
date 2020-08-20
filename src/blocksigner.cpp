@@ -46,15 +46,18 @@ bool CBlockSigner::SignBlock()
 
         if(refBlock.IsTPoSBlock())
         {
-            CKeyID merchantKeyID;
-            if(!refContract.merchantAddress.GetKeyID(merchantKeyID))
+            if(!refContract.scriptMerchantAddress.IsPayToPublicKeyHash()) {
                 return error("CBlockSigner::SignBlock() : merchant address is not P2PKH, critical error, can't accept.");
+            }
 
-            if(merchantKeyID != activeMerchantnode.pubKeyMerchantnode.GetID())
+            CTxDestination dest;
+            ExtractDestination(refContract.scriptMerchantAddress, dest);
+
+            if(dest != CTxDestination(activeMerchantnode.pubKeyMerchantnode.GetID())) {
                 return error("CBlockSigner::SignBlock() : contract address is different from merchantnode address, won't sign.");
+            }
 
             scriptType = CPubKey::InputScriptType::SPENDP2PKH;
-
             keySecret = activeMerchantnode.keyMerchantnode;
         }
         else
@@ -98,7 +101,9 @@ bool CBlockSigner::CheckBlockSignature() const
     auto hashMessage = refBlock.IsTPoSBlock() ? refBlock.GetTPoSHash() : refBlock.GetHash();
     if(refBlock.IsProofOfStake()) {
         if(refBlock.IsTPoSBlock()) {
-            destination = refContract.merchantAddress.Get();
+            if (!ExtractDestination(refContract.scriptMerchantAddress, destination)) {
+                return error("CBlockSigner::CheckBlockSignature() : failed to extract destination from script: %s", refContract.scriptMerchantAddress.ToString());
+            }
         }
     }
     else {

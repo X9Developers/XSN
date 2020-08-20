@@ -539,9 +539,12 @@ UniValue getstakingstatus(const JSONRPCRequest& request)
                 return false;
             }
 
-            auto merchantnodePayee = CBitcoinAddress(activeMerchantnode.pubKeyMerchantnode.GetID());
+            auto merchantnodePayee = CTxDestination(activeMerchantnode.pubKeyMerchantnode.GetID());
 
-            if(contract.merchantAddress != merchantnodePayee)
+            CTxDestination merchantAddress;
+            ExtractDestination(contract.scriptMerchantAddress, merchantAddress);
+
+            if(merchantAddress != merchantnodePayee)
             {
                 tposStatus = "Merchantnode is not configured for contract: " + txId.ToString();
             }

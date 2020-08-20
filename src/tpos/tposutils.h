@@ -14,24 +14,31 @@ class CMutableTransaction;
 class CReserveKey;
 class CValidationState;
 
-struct TPoSContract
+class TPoSContract
 {
+public:
+    static const uint16_t CURRENT_VERSION = 2;
+
+public:
+    uint16_t nVersion{CURRENT_VERSION};                    // message version
+    uint16_t nType{0};                                     // only 0 supported for now
+    uint16_t nOperatorReward { 0 };                        // operator reward in % from 0 to 100
+    CScript scriptTPoSAddress;
+    CScript scriptMerchantAddress;
+    std::vector<unsigned char> vchSig;
+
+    CTransactionRef txContract; // memonly
+
     TPoSContract() = default;
     TPoSContract(CTransactionRef tx,
-                 CBitcoinAddress merchantAddress,
-                 CBitcoinAddress tposAddress,
-                 short stakePercentage,
+                 CTxDestination merchantAddress,
+                 CTxDestination tposAddress,
+                 uint16_t nOperatorReward,
                  std::vector<unsigned char> vchSignature);
 
     bool IsValid() const;
 
     static TPoSContract FromTPoSContractTx(const CTransactionRef tx);
-
-    CTransactionRef rawTx;
-    CBitcoinAddress merchantAddress;
-    CBitcoinAddress tposAddress;
-    std::vector<unsigned char> vchSignature;
-    int stakePercentage = 0;
 };
 
 class TPoSUtils

@@ -18,7 +18,7 @@ static const std::string TPOSEXPORTHEADER("TPOSOWNERINFO");
 static const int TPOSEXPORTHEADERWIDTH = 40;
 static const int TPOS_CONTRACT_COLATERAL = 1 * COIN;
 
-std::string ParseAddressFromMetadata(std::string str)
+static std::string ParseAddressFromMetadata(std::string str)
 {
     auto tposAddressRaw = ParseHex(str);
     std::string addressAsStr(tposAddressRaw.size(), '0');
@@ -61,30 +61,25 @@ bool TPoSUtils::GetTPoSPayments(const CWallet *wallet,
     CTxDestination address;
     auto scriptKernel = tx->vout.at(1).scriptPubKey;
     commissionAmount = stakeAmount = 0;
-    if(ExtractDestination(scriptKernel, address))
-    {
-        CBitcoinAddress tmpAddress(address);
+    auto it = std::find_if(std::begin(tposContracts), std::end(tposContracts), [script = scriptKernel](const TPoSContract &entry) {
+        return entry.scriptTPoSAddress == script;
+    });
 
-        auto it = std::find_if(std::begin(tposContracts), std::end(tposContracts), [tmpAddress](const TPoSContract &entry) {
-            return entry.tposAddress == tmpAddress;
+    if(it != std::end(tposContracts))
+    {
+        auto merchantScript = it->scriptMerchantAddress;
+        auto commissionIt = std::find_if(std::begin(tx->vout), std::end(tx->vout), [merchantScript](const CTxOut &txOut) {
+            return txOut.scriptPubKey == merchantScript;
         });
 
-        if(it != std::end(tposContracts))
+        if(commissionIt != tx->vout.end())
         {
-            auto merchantScript = GetScriptForDestination(it->merchantAddress.Get());
-            auto commissionIt = std::find_if(std::begin(tx->vout), std::end(tx->vout), [merchantScript](const CTxOut &txOut) {
-                return txOut.scriptPubKey == merchantScript;
-            });
+            stakeAmount = nNet;
+            commissionAmount = commissionIt->nValue;
+            ExtractDestination(it->scriptTPoSAddress, tposAddress);
+            ExtractDestination(it->scriptMerchantAddress, merchantAddress);
 
-            if(commissionIt != tx->vout.end())
-            {
-                stakeAmount = nNet;
-                commissionAmount = commissionIt->nValue;
-                tposAddress = tmpAddress.Get();
-                merchantAddress = it->merchantAddress.Get();
-
-                return true;
-            }
+            return true;
         }
     }
 
@@ -96,19 +91,25 @@ bool TPoSUtils::IsTPoSMerchantContract(CWallet *wallet, const CTransactionRef &t
 {
     TPoSContract contract = TPoSContract::FromTPoSContractTx(tx);
 
-    bool isMerchantNode = GetScriptForDestination(contract.merchantAddress.Get()) ==
+    bool isMerchantNode = contract.scriptMerchantAddress ==
             GetScriptForDestination(activeMerchantnode.pubKeyMerchantnode.GetID());
 
+    CTxDestination dest;
+    ExtractDestination(contract.scriptMerchantAddress, dest);
+
     return contract.IsValid() && (isMerchantNode ||
-                                  IsMine(*wallet, contract.merchantAddress.Get()) == ISMINE_SPENDABLE);
+                                  IsMine(*wallet, dest) == ISMINE_SPENDABLE);
 }
 
 bool TPoSUtils::IsTPoSOwnerContract(CWallet *wallet, const CTransactionRef &tx)
 {
     TPoSContract contract = TPoSContract::FromTPoSContractTx(tx);
 
+    CTxDestination dest;
+    ExtractDestination(contract.scriptTPoSAddress, dest);
+
     return contract.IsValid() &&
-            IsMine(*wallet, contract.tposAddress.Get()) == ISMINE_SPENDABLE;
+            IsMine(*wallet, dest) == ISMINE_SPENDABLE;
 }
 
 bool TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
@@ -137,13 +138,11 @@ bool TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
 
     CKey key;
     CKeyID keyID;
-    if(!tposAddress.GetKeyID(keyID))
-    {
+    if(!tposAddress.GetKeyID(keyID)) {
         strError = "Error: TPoS Address is not P2PKH";
         return false;
     }
-    if (!wallet->GetKey(keyID, key))
-    {
+    if (!wallet->GetKey(keyID, key)) {
         strError = "Error: Failed to get private key associated with TPoS address";
         return false;
     }
@@ -173,9 +172,9 @@ bool TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
         auto hashMessage = SerializeHash(firstInput);
 
         // TODO(yuraolex): activate this after HF
-//        if (!CMessageSigner::SignMessage(std::string(hashMessage.begin(), hashMessage.end()), vchSignature, key, CPubKey::InputScriptType::SPENDP2PKH)) {
-//            strError = "Error: Failed to sign tpos contract";
-//        }
+        //        if (!CMessageSigner::SignMessage(std::string(hashMessage.begin(), hashMessage.end()), vchSignature, key, CPubKey::InputScriptType::SPENDP2PKH)) {
+        //            strError = "Error: Failed to sign tpos contract";
+        //        }
         if (!key.SignCompact(hashMessage, vchSignature)) {
             strError = "Error: Failed to sign tpos contract";
         }
@@ -186,20 +185,19 @@ bool TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
     auto txModifierBinded = std::bind(txModifier, std::placeholders::_1, vchSignature);
 
     int nChangePos = -1;
-    if (!wallet->CreateTransaction(vecSend, transactionOut, reservekey, nFeeRequired, nChangePos, strError, {}, true, txModifierBinded))
-    {
+    if (!wallet->CreateTransaction(vecSend, transactionOut, reservekey, nFeeRequired, nChangePos, strError, {}, true, txModifierBinded)) {
         if (TPOS_CONTRACT_COLATERAL + nFeeRequired > wallet->GetBalance())
             strError = strprintf("Error: This transaction requires a transaction fee of at least %s because of its amount, complexity, or use of recently received funds!", FormatMoney(nFeeRequired));
         LogPrintf("Error() : %s\n", strError);
         return false;
     }
 
-    if(!strError.empty())
+    if (!strError.empty()) {
         return false;
+    }
 
     std::string reason;
-    if(!IsStandardTx(*transactionOut, reason))
-    {
+    if (!IsStandardTx(*transactionOut, reason)) {
         strError = strprintf("Error: Not standard tx: %s\n", reason.c_str());
         LogPrintf(strError.c_str());
         return false;
@@ -210,38 +208,33 @@ bool TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
 
 bool TPoSUtils::CreateCancelContractTransaction(CWallet *wallet, CTransactionRef &txOut, CReserveKey &reserveKey, const TPoSContract &contract, string &strError)
 {
-    if(wallet->IsLocked())
-    {
+    if (wallet->IsLocked()) {
         strError = "Error: Wallet is locked";
         return false;
     }
 
     COutPoint prevOutpoint = GetContractCollateralOutpoint(contract);
-    if(prevOutpoint.IsNull())
-    {
+    if (prevOutpoint.IsNull()) {
         strError = "Error: Contract collateral is invalid";
         return false;
     }
 
     Coin coin;
-    if(!pcoinsTip->GetCoin(prevOutpoint, coin) || coin.IsSpent())
-    {
+    if (!pcoinsTip->GetCoin(prevOutpoint, coin) || coin.IsSpent()) {
         strError = "Error: Collateral is already spent";
         return false;
     }
 
-    auto &prevOutput = contract.rawTx->vout.at(prevOutpoint.n);
+    auto &prevOutput = contract.txContract->vout.at(prevOutpoint.n);
 
     CAmount nFeeRet;
     int nChangePosRet;
     CCoinControl coinControl;
-    //    coinControl.fUsePrivateSend = false;
     coinControl.nCoinType = ONLY_MERCHANTNODE_COLLATERAL;
     coinControl.Select(prevOutpoint);
-    if(!wallet->CreateTransaction({ { prevOutput.scriptPubKey, prevOutput.nValue, true } }, txOut,
-                                  reserveKey, nFeeRet, nChangePosRet,
-                                  strError, coinControl, true))
-    {
+    if (!wallet->CreateTransaction({ { prevOutput.scriptPubKey, prevOutput.nValue, true } }, txOut,
+                                   reserveKey, nFeeRet, nChangePosRet,
+                                   strError, coinControl, true)) {
         LogPrintf("Error() : %s\n", strError.c_str());
         return false;
     }
@@ -252,19 +245,16 @@ bool TPoSUtils::CreateCancelContractTransaction(CWallet *wallet, CTransactionRef
 COutPoint TPoSUtils::GetContractCollateralOutpoint(const TPoSContract &contract)
 {
     COutPoint result;
-    if(!contract.rawTx)
-    {
+    if (!contract.txContract) {
         return result;
     }
 
 
-    const auto &vout = contract.rawTx->vout;
-    for(size_t i = 0; i < vout.size(); ++i)
-    {
-        if(vout[i].scriptPubKey == GetScriptForDestination(contract.tposAddress.Get()) &&
-                vout[i].nValue == TPOS_CONTRACT_COLATERAL)
-        {
-            result = COutPoint(contract.rawTx->GetHash(), i);
+    const auto &vout = contract.txContract->vout;
+    for (size_t i = 0; i < vout.size(); ++i) {
+        if(vout[i].scriptPubKey == contract.scriptTPoSAddress &&
+                vout[i].nValue == TPOS_CONTRACT_COLATERAL) {
+            result = COutPoint(contract.txContract->GetHash(), i);
             break;
         }
     }
@@ -276,8 +266,7 @@ bool TPoSUtils::CheckContract(const uint256 &hashContractTx, TPoSContract &contr
 {
     CTransactionRef tx;
     uint256 hashBlock;
-    if(!GetTransaction(hashContractTx, tx, Params().GetConsensus(), hashBlock, true))
-    {
+    if (!GetTransaction(hashContractTx, tx, Params().GetConsensus(), hashBlock, true)) {
         strError = strprintf("%s : failed to get transaction for tpos contract %s", __func__,
                              hashContractTx.ToString());
 
@@ -292,27 +281,32 @@ bool TPoSUtils::CheckContract(const CTransactionRef &txContract, TPoSContract &c
 {
     TPoSContract tmpContract = TPoSContract::FromTPoSContractTx(txContract);
 
-    if(!tmpContract.IsValid())
-    {
+    if (!tmpContract.IsValid()) {
         strError = "CheckContract() : invalid transaction for tpos contract";
         return error(strError.c_str());
     }
 
     if(fCheckSignature)
     {
-        auto hashMessage = SerializeHash(tmpContract.rawTx->vin.front().prevout);
+        auto hashMessage = SerializeHash(tmpContract.txContract->vin.front().prevout);
         std::string strVerifyHashError;
 
+        CTxDestination tposAddress;
+        if(!ExtractDestination(tmpContract.scriptTPoSAddress, tposAddress)) {
+            strError = strprintf("%s : TPoS contract invalid tpos address", __func__);
+            return error(strError.c_str());
+        }
+
         if (nBlockHeight >= Params().GetConsensus().nTPoSSignatureUpgradeHFHeight) {
-            if(!CMessageSigner::VerifyMessage(tmpContract.tposAddress.Get(), tmpContract.vchSignature, std::string(hashMessage.begin(), hashMessage.end()), strVerifyHashError)) {
-                if(!CHashSigner::VerifyHash(hashMessage, tmpContract.tposAddress.Get(), tmpContract.vchSignature, strVerifyHashError)) {
-                    strError = strprintf("%s : TPoS contract signature is invalid %s", __func__, strError);
+            if(!CMessageSigner::VerifyMessage(tposAddress, tmpContract.vchSig, std::string(hashMessage.begin(), hashMessage.end()), strVerifyHashError)) {
+                if(!CHashSigner::VerifyHash(hashMessage, tposAddress, tmpContract.vchSig, strVerifyHashError)) {
+                    strError = strprintf("%s : TPoS contract signature is invalid %s", __func__, strVerifyHashError);
                     return error(strError.c_str());
                 }
             }
         } else {
-            if(!CHashSigner::VerifyHash(hashMessage, tmpContract.tposAddress.Get(), tmpContract.vchSignature, strVerifyHashError)) {
-                strError = strprintf("%s : TPoS contract signature is invalid %s", __func__, strError);
+            if(!CHashSigner::VerifyHash(hashMessage, tposAddress, tmpContract.vchSig, strVerifyHashError)) {
+                strError = strprintf("%s : TPoS contract signature is invalid %s", __func__, strVerifyHashError);
                 return error(strError.c_str());
             }
         }
@@ -337,34 +331,41 @@ bool TPoSUtils::CheckContract(const CTransactionRef &txContract, TPoSContract &c
 bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &block, int nBlockHeight, CAmount expectedReward, CAmount actualReward)
 {
     auto contract = TPoSContract::FromTPoSContractTx(block.txTPoSContract);
-    CBitcoinAddress merchantAddress = contract.merchantAddress;
-    CScript scriptMerchantPubKey = GetScriptForDestination(merchantAddress.Get());
 
     const auto &coinstake = block.vtx[1];
 
-    if(coinstake->vout[1].scriptPubKey != GetScriptForDestination(contract.tposAddress.Get()))
+    CTxDestination tposAddress;
+    ExtractDestination(contract.scriptTPoSAddress, tposAddress);
+
+    CTxDestination merchantAddress;
+    ExtractDestination(contract.scriptMerchantAddress, merchantAddress);
+
+    if(coinstake->vout[1].scriptPubKey != contract.scriptTPoSAddress)
     {
         CTxDestination dest;
-        if(!ExtractDestination(coinstake->vout[1].scriptPubKey, dest))
+        if(!ExtractDestination(coinstake->vout[1].scriptPubKey, dest)) {
             return state.DoS(100, error("IsMerchantPaymentValid -- ERROR: coinstake extract destination failed"), REJECT_INVALID, "bad-merchant-payee");
+        }
 
         // ban him, something is incorrect completely
         return state.DoS(100, error("IsMerchantPaymentValid -- ERROR: coinstake is invalid expected: %s, actual %s\n",
-                                    contract.tposAddress.ToString().c_str(), CBitcoinAddress(dest).ToString().c_str()), REJECT_INVALID, "bad-merchant-payee");
+                                    EncodeDestination(tposAddress).c_str(), EncodeDestination(dest).c_str()), REJECT_INVALID, "bad-merchant-payee");
     }
 
     CAmount merchantPayment = 0;
+    auto scriptMerchantPubKey = contract.scriptMerchantAddress;
     merchantPayment = std::accumulate(std::begin(coinstake->vout) + 2, std::end(coinstake->vout), CAmount(0), [scriptMerchantPubKey](CAmount accum, const CTxOut &txOut) {
-            return txOut.scriptPubKey == scriptMerchantPubKey ? accum + txOut.nValue : accum;
-});
+        return txOut.scriptPubKey == scriptMerchantPubKey ? accum + txOut.nValue : accum;
+    });
 
     if(merchantPayment > 0)
     {
-        auto maxAllowedValue = (expectedReward / 100) * (100 - contract.stakePercentage);
+        auto maxAllowedValue = (expectedReward / 100) * contract.nOperatorReward;
         // ban, we know fur sure that merchant tries to get more than he is allowed
-        if(merchantPayment > maxAllowedValue)
-            return state.DoS(100, error("IsMerchantPaymentValid -- ERROR: merchant was paid more than allowed: %s\n", contract.merchantAddress.ToString().c_str()),
+        if(merchantPayment > maxAllowedValue) {
+            return state.DoS(100, error("IsMerchantPaymentValid -- ERROR: merchant was paid more than allowed: %s\n", EncodeDestination(merchantAddress).c_str()),
                              REJECT_INVALID, "bad-merchant-payee");
+        }
     }
     else
     {
@@ -387,27 +388,36 @@ bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &bl
     }
 
     CKeyID coinstakeKeyID;
-    if(!merchantAddress.GetKeyID(coinstakeKeyID))
-        return state.DoS(0, error("IsMerchantPaymentValid -- ERROR: coin stake was paid to invalid address\n"),
-                         REJECT_INVALID, "bad-merchant-payee", true);
+    // legacy way supports only P2PKH, after HF support both P2PKH and P2WPKH
+    if (nBlockHeight >= Params().GetConsensus().nTPoSSignatureUpgradeHFHeight) {
+        coinstakeKeyID = GetKeyForDestination(CBasicKeyStore{}, merchantAddress);
+        if (coinstakeKeyID.IsNull()) {
+            return state.DoS(0, error("IsMerchantPaymentValid -- ERROR: coin stake was paid to invalid address\n"),
+                             REJECT_INVALID, "bad-merchant-payee", true);
+        }
+    } else {
+        if (auto keyID = boost::get<CKeyID>(&merchantAddress)) {
+            coinstakeKeyID = *keyID;
+        } else {
+            return state.DoS(0, error("IsMerchantPaymentValid -- ERROR: coin stake was paid to invalid address\n"),
+                             REJECT_INVALID, "bad-merchant-payee", true);
+        }
+    }
 
     CMerchantnode merchantNode;
-    if(!merchantnodeman.Get(coinstakeKeyID, merchantNode))
-    {
-        return state.DoS(0, error("IsMerchantPaymentValid -- ERROR: failed to find merchantnode with address: %s\n", merchantAddress.ToString().c_str()),
+    if (!merchantnodeman.Get(coinstakeKeyID, merchantNode)) {
+        return state.DoS(0, error("IsMerchantPaymentValid -- ERROR: failed to find merchantnode with address: %s\n", EncodeDestination(merchantAddress).c_str()),
                          REJECT_INVALID, "bad-merchant-payee", true);
     }
 
-    if(merchantNode.hashTPoSContractTx != block.hashTPoSContractTx)
-    {
+    if (merchantNode.hashTPoSContractTx != block.hashTPoSContractTx) {
         return state.DoS(100, error("IsMerchantPaymentValid -- ERROR: merchantnode contract is invalid expected: %s, actual %s\n",
                                     block.hashTPoSContractTx.ToString().c_str(), merchantNode.hashTPoSContractTx.ToString().c_str()),
                          REJECT_INVALID, "bad-merchant-payee");
     }
 
-    if(!merchantNode.IsValidForPayment())
-    {
-        return state.DoS(0, error("IsMerchantPaymentValid -- ERROR: merchantnode with address: %s is not valid for payment\n", merchantAddress.ToString().c_str()),
+    if (!merchantNode.IsValidForPayment()) {
+        return state.DoS(0, error("IsMerchantPaymentValid -- ERROR: merchantnode with address: %s is not valid for payment\n", EncodeDestination(merchantAddress).c_str()),
                          REJECT_INVALID, "bad-merchant-payee", true);
     }
 
@@ -416,54 +426,54 @@ bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &bl
 
 #endif
 
-TPoSContract::TPoSContract(CTransactionRef tx, CBitcoinAddress merchantAddress, CBitcoinAddress tposAddress, short stakePercentage, std::vector<unsigned char> vchSignature)
+TPoSContract::TPoSContract(CTransactionRef tx, CTxDestination merchantAddress, CTxDestination tposAddress, uint16_t nOperatorReward, std::vector<unsigned char> vchSignature)
 {
-    this->rawTx = tx;
-    this->merchantAddress = merchantAddress;
-    this->tposAddress = tposAddress;
-    this->vchSignature = vchSignature;
-    this->stakePercentage = stakePercentage;
+    this->txContract = tx;
+
+    CBasicKeyStore dummyKeystore;
+
+    if (!GetKeyForDestination(dummyKeystore, merchantAddress).IsNull()) {
+        this->scriptMerchantAddress = GetScriptForDestination(merchantAddress);
+    }
+
+    if (!GetKeyForDestination(dummyKeystore, tposAddress).IsNull()) {
+        this->scriptTPoSAddress = GetScriptForDestination(tposAddress);
+    }
+
+    this->vchSig = vchSignature;
+    this->nOperatorReward = nOperatorReward;
 }
 
 bool TPoSContract::IsValid() const
 {
-    return rawTx && !rawTx->IsNull() && merchantAddress.IsValid() && tposAddress.IsValid() &&
-            stakePercentage > 0 && stakePercentage < 100;
+    return !txContract && !txContract->IsNull() && !scriptMerchantAddress.empty()
+            && !scriptTPoSAddress.empty() && nOperatorReward <= 100;
 }
 
 TPoSContract TPoSContract::FromTPoSContractTx(const CTransactionRef tx)
 {
-    try
-    {
-        if(tx->vout.size() >= 2 && tx->vout.size() <= 3 )
-        {
+    try {
+        if(tx->vout.size() >= 2 && tx->vout.size() <= 3) {
             const CTxOut *metadataOutPtr = nullptr;
             bool colateralFound = false;
-            for(const CTxOut &txOut : tx->vout)
-            {
-                if(txOut.scriptPubKey.IsUnspendable())
-                {
+            for(const CTxOut &txOut : tx->vout) {
+                if (txOut.scriptPubKey.IsUnspendable()) {
                     metadataOutPtr = &txOut;
-                }
-                else if(txOut.nValue == TPOS_CONTRACT_COLATERAL)
-                {
+                } else if(txOut.nValue == TPOS_CONTRACT_COLATERAL) {
                     colateralFound = true;
                 }
             }
 
-            if(metadataOutPtr && colateralFound)
-            {
+            if (metadataOutPtr && colateralFound) {
                 const auto &metadataOut = *metadataOutPtr;
                 std::vector<std::vector<unsigned char>> vSolutions;
                 txnouttype whichType;
-                if (Solver(metadataOut.scriptPubKey, whichType, vSolutions) && whichType == TX_NULL_DATA)
-                {
+                if (Solver(metadataOut.scriptPubKey, whichType, vSolutions) && whichType == TX_NULL_DATA) {
                     // Here we can have a chance that it is transaction which is a tpos contract, let's check if it has
                     std::stringstream stringStream(metadataOut.scriptPubKey.ToString());
 
                     std::string tokens[5];
-                    for(auto &token : tokens)
-                    {
+                    for (auto &token : tokens) {
                         stringStream >> token;
                     }
 
@@ -471,21 +481,28 @@ TPoSContract TPoSContract::FromTPoSContractTx(const CTransactionRef tx)
                     CBitcoinAddress merchantAddress(ParseAddressFromMetadata(tokens[2]));
                     int commission = std::stoi(tokens[3]);
                     std::vector<unsigned char> vchSignature = ParseHex(tokens[4]);
-                    if(tokens[0] == GetOpName(OP_RETURN) && tposAddress.IsValid() && merchantAddress.IsValid() &&
-                            commission > 0 && commission < 100)
-                    {
+                    if(tokens[0] == GetOpName(OP_RETURN)) {
+                        if(tposAddress.IsValid() && merchantAddress.IsValid() && commission > 0 && commission < 100) {
+                            // legacy contract
+                            TPoSContract contract(tx,
+                                                  merchantAddress.Get(),
+                                                  tposAddress.Get(),
+                                                  commission, vchSignature);
+                            contract.nVersion = 1; // legacy version
+                            return contract;
+                        } else {
 
-                        // if we get to this point, it means that we have found tpos contract that was created for us to act as merchant.
-                        return TPoSContract(tx, merchantAddress, tposAddress, commission, vchSignature);
+                        }
                     }
+
+                    // if we get to this point, it means that we have found tpos contract that was created for us to act as merchant.
+
                 }
             }
         }
-    }
-    catch(std::exception &ex)
-    {
+    } catch(std::exception &ex) {
         LogPrintf("Failed to parse tpos which had to be tpos, %s\n", ex.what());
     }
 
-    return TPoSContract();
+    return TPoSContract{};
 }

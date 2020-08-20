@@ -223,7 +223,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(CWallet *wallet, 
 
                 if(tposContract.IsValid())
                 {
-                    pblock->hashTPoSContractTx = tposContract.rawTx->GetHash();
+                    pblock->hashTPoSContractTx = tposContract.txContract->GetHash();
                 }
 
                 fStakeFound = true;
@@ -636,13 +636,16 @@ void static XSNMiner(const CChainParams& chainparams, CConnman& connman,
 
                     isValidForPayment &= merchantNode.IsValidForPayment();
                     auto merchantnodePayee = CBitcoinAddress(activeMerchantnode.pubKeyMerchantnode.GetID());
-                    bool isValidContract = contract.merchantAddress == merchantnodePayee;
+                    CTxDestination merchantAddress;
+                    ExtractDestination(contract.scriptMerchantAddress, merchantAddress);
+
+                    bool isValidContract = merchantAddress == merchantnodePayee.Get();
                     if(!isValidForPayment || !isValidContract)
                     {
                         LogPrintf("Won't tpos, merchant node valid for payment: %d isValidContract: %d\n Contract address: %s, merchantnode address: %s\n",
                                   isValidForPayment,
                                   isValidContract,
-                                  contract.merchantAddress.ToString(),
+                                  EncodeDestination(merchantAddress),
                                   merchantnodePayee.ToString());
 
                         nLastCoinStakeSearchInterval = 0;

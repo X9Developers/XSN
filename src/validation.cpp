@@ -1823,14 +1823,14 @@ static bool CheckBlockSignature(const CBlock& block, CValidationState& state, co
         int nBlockHeight = pindexPrev->nHeight + 1;
         if(block.IsTPoSBlock()) {
             bool fCheckTPoSSignature = block.GetBlockTime() >
-                    Params().GetConsensus().nTPoSContractSignatureDeploymentTime;
+                    consensusParams.nTPoSContractSignatureDeploymentTime;
 
             std::string strError;
             if(!TPoSUtils::CheckContract(block.hashTPoSContractTx, contract, nBlockHeight, fCheckTPoSSignature, fCheckContractOutpoint, strError)) {
                 return state.DoS(100, error("CheckBlock(): check contract failed, %s for tpos block %s\n", strError, hash.ToString().c_str()));
             }
 
-            block.txTPoSContract = contract.rawTx;
+            block.txTPoSContract = contract.txContract;
         }
 
         CBlock blockTmp = block;

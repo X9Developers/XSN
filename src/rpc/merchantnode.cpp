@@ -485,12 +485,20 @@ static UniValue tposcontract(const JSONRPCRequest& request)
         auto parseContract = [](const TPoSContract &contract) {
             UniValue object(UniValue::VOBJ);
 
-            object.push_back(Pair("txid", contract.rawTx->GetHash().ToString()));
-            object.push_back(Pair("tposAddress", contract.tposAddress.ToString()));
-            object.push_back(Pair("merchantAddress", contract.merchantAddress.ToString()));
-            object.push_back(Pair("commission", 100 - contract.stakePercentage)); // show merchant commission
-            if(contract.vchSignature.empty())
+            auto scriptToAddressString = [](const CScript &script) {
+                CTxDestination dest;
+                ExtractDestination(script, dest);
+                return EncodeDestination(dest);
+            };
+
+            object.push_back(Pair("version", contract.nVersion));
+            object.push_back(Pair("txid", contract.txContract->GetHash().ToString()));
+            object.push_back(Pair("tposAddress", scriptToAddressString(contract.scriptTPoSAddress)));
+            object.push_back(Pair("merchantAddress", scriptToAddressString(contract.scriptMerchantAddress)));
+            object.push_back(Pair("commission", contract.nOperatorReward)); // show merchant commission
+            if(contract.vchSig.empty()) {
                 object.push_back(Pair("deprecated", true));
+            }
 
             return object;
         };
@@ -587,7 +595,7 @@ static UniValue tposcontract(const JSONRPCRequest& request)
         if(!tmpContract.IsValid())
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Contract is invalid");
 
-        pwallet->RemoveWatchOnly(GetScriptForDestination(tmpContract.tposAddress.Get()));
+        pwallet->RemoveWatchOnly(tmpContract.scriptTPoSAddress);
         pwallet->RemoveTPoSContract(tposContractHashID);
     }
     else if(strCommand == "validate")
