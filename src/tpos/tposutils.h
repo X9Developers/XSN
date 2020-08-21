@@ -8,6 +8,7 @@
 #include <pubkey.h>
 #include <key_io.h>
 
+class CKeyStore;
 class CWallet;
 class CWalletTx;
 class CMutableTransaction;
@@ -69,6 +70,20 @@ public:
     static bool CheckContract(const uint256 &hashContractTx, TPoSContract &contract, int nBlockHeight, bool fCheckSignature, bool fCheckContractOutpoint, std::string &strError);
     static bool CheckContract(const CTransactionRef &txContract, TPoSContract &contract, int nBlockHeight, bool fCheckSignature, bool fCheckContractOutpoint, std::string &strError);
     static bool IsMerchantPaymentValid(CValidationState &state, const CBlock &block, int nBlockHeight, CAmount expectedReward, CAmount actualReward);
+
+    static std::vector<unsigned char> GenerateContractPayload(const TPoSContract &contract);
+    static CScript GenerateLegacyContractScript(const CTxDestination &tposAddress,
+                                                const CTxDestination &merchantAddress,
+                                                uint16_t nOperatorReward,
+                                                const std::vector<unsigned char> &vchSignature);
+
+    static bool SignTPoSContract(CMutableTransaction &tx, CKeyStore *keystore,
+                                 TPoSContract contract);
+    static bool CreateTPoSTransaction(CMutableTransaction &txOut,
+                                      const CTxDestination &tposAddress,
+                                      const CTxDestination &merchantAddress,
+                                      int nOperatorReward,
+                                      bool createLegacyContract, std::string &strError);
 
 #ifdef ENABLE_WALLET
     static bool GetTPoSPayments(const CWallet *wallet,

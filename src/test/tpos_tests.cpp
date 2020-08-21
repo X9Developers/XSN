@@ -103,62 +103,19 @@ static void SignTransaction(CMutableTransaction& tx, const CKey& coinbaseKey)
 
 static CMutableTransaction CreateContractTx(const CTxDestination &tposAddress, const CTxDestination &merchantAddress, uint16_t nOperatorReward, bool legacyContract)
 {
-    auto scriptTPoSAddress = GetScriptForDestination(tposAddress);
-    auto scriptMerchantAddress = GetScriptForDestination(CTxDestination(merchantAddress));
-
     CMutableTransaction tx;
-
-    CScript scriptContractMetadata;
-
-    // dummy signature, just to know size
-    std::vector<unsigned char> vchSignature(CPubKey::COMPACT_SIGNATURE_SIZE, '0');
-
-    if (legacyContract) {
-        auto tposAddressAsStr = EncodeDestination(tposAddress);
-        auto merchantAddressAsStr = EncodeDestination(merchantAddress);
-        scriptContractMetadata << OP_RETURN
-                             << std::vector<unsigned char>(tposAddressAsStr.begin(), tposAddressAsStr.end())
-                             << std::vector<unsigned char>(merchantAddressAsStr.begin(), merchantAddressAsStr.end())
-                             << (100 - nOperatorReward)
-                             << vchSignature;
-    }
-
-    tx.vout.push_back(CTxOut(1 * COIN, scriptTPoSAddress));
-    tx.vout.push_back(CTxOut(0, scriptContractMetadata));
+    std::string strError;
+    TPoSUtils::CreateTPoSTransaction(tx, tposAddress, merchantAddress, nOperatorReward, legacyContract, strError);
     return tx;
 }
 
 static void SignContract(CMutableTransaction &tx, const CKey &key, bool legacyContract)
 {
-    std::vector<unsigned char> vchSignature(CPubKey::COMPACT_SIGNATURE_SIZE, '0');
-    auto firstInput = tx.vin.front().prevout;
-
-    auto it = std::find_if(tx.vout.begin(), tx.vout.end(), [](const CTxOut &txOut) {
-        return txOut.scriptPubKey.IsUnspendable();
-    });
-
-    auto vchSignatureCopy = vchSignature;
-    vchSignature.clear();
-    auto hashMessage = SerializeHash(firstInput);
-    if (legacyContract) {
-        if (!key.SignCompact(hashMessage, vchSignature)) {
-            return;
-        }
-
-        it->scriptPubKey.FindAndDelete(CScript(vchSignatureCopy));
-        it->scriptPubKey << vchSignature;
-    } else {
-        if (!CMessageSigner::SignMessage(std::string(hashMessage.begin(), hashMessage.end()), vchSignature, key, CPubKey::InputScriptType::SPENDP2PKH)) {
-            return;
-        }
-
-        CDataStream ds(SER_NETWORK, PROTOCOL_VERSION);
-        // construct new contract replacing old payload with new one
-//        ds << TPoSContract({}, merchantAddress, tposAddress, merchantCommission, vchSignature);
-        std::vector<unsigned char> payload(ds.begin(), ds.end());
-        it->scriptPubKey.clear();
-        it->scriptPubKey << OP_RETURN << payload;
-    }
+    CBasicKeyStore keystore;
+    keystore.AddKeyPubKey(key, key.GetPubKey());
+    auto contract = TPoSContract::FromTPoSContractTx(MakeTransactionRef(tx));
+    contract.nVersion = legacyContract ? 1 : 2;
+    TPoSUtils::SignTPoSContract(tx, &keystore, contract);
 }
 
 BOOST_AUTO_TEST_SUITE(tpos_tests)
@@ -183,10 +140,11 @@ BOOST_FIXTURE_TEST_CASE(tpos_create_legacy_contract, TestChain100Setup)
     BOOST_ASSERT(TPoSUtils::CheckContract(MakeTransactionRef(unsignedContract), tmp, 1, false, false, strError));
     BOOST_ASSERT(!TPoSUtils::CheckContract(MakeTransactionRef(unsignedContract), tmp, 1, true, true, strError));
 
-    FundTransaction(unsignedContract, utxos, unsignedContract.vout[0].scriptPubKey);
+    FundTransaction(unsignedContract, utxos, unsignedContract.vout[1].scriptPubKey);
     SignContract(unsignedContract, tposAddressKey, true);
     SignTransaction(unsignedContract, coinbaseKey);
     BOOST_ASSERT(TPoSUtils::CheckContract(MakeTransactionRef(unsignedContract), tmp, 1, true, false, strError));
+    BOOST_ASSERT(TPoSUtils::CheckContract(MakeTransactionRef(unsignedContract), tmp, Params().GetConsensus().nTPoSSignatureUpgradeHFHeight, true, false, strError));
 
     auto contract = TPoSContract::FromTPoSContractTx(MakeTransactionRef(unsignedContract));
     BOOST_ASSERT(contract.IsValid());
@@ -195,12 +153,12 @@ BOOST_FIXTURE_TEST_CASE(tpos_create_legacy_contract, TestChain100Setup)
     LOCK(cs_main);
 
     BOOST_CHECK_EQUAL(
-            true,
-            AcceptToMemoryPool(mempool, state, contract.txContract,
-                nullptr /* pfMissingInputs */,
-                nullptr /* plTxnReplaced */,
-                true /* bypass_limits */,
-                0 /* nAbsurdFee */));
+                true,
+                AcceptToMemoryPool(mempool, state, contract.txContract,
+                                   nullptr /* pfMissingInputs */,
+                                   nullptr /* plTxnReplaced */,
+                                   true /* bypass_limits */,
+                                   0 /* nAbsurdFee */));
 }
 
 BOOST_FIXTURE_TEST_CASE(tpos_create_invalid_legacy_contract, TestChain100Setup)
@@ -209,7 +167,6 @@ BOOST_FIXTURE_TEST_CASE(tpos_create_invalid_legacy_contract, TestChain100Setup)
     m_coinbase_txns.emplace_back(CreateAndProcessBlock({}, GetScriptForRawPubKey(coinbaseKey.GetPubKey())).vtx[0]);
     m_coinbase_txns.emplace_back(CreateAndProcessBlock({}, GetScriptForRawPubKey(coinbaseKey.GetPubKey())).vtx[0]);
 
-    CScript scriptPubKey = CScript() << ToByteVector(coinbaseKey.GetPubKey()) << OP_CHECKSIG;
     auto utxos = BuildSimpleUtxoMap(m_coinbase_txns);
 
     CKey tposAddressKey;
@@ -230,7 +187,7 @@ BOOST_FIXTURE_TEST_CASE(tpos_create_invalid_legacy_contract, TestChain100Setup)
 
     auto unsignedContract = createContract(1);
 
-    FundTransaction(unsignedContract, utxos, unsignedContract.vout[0].scriptPubKey);
+    FundTransaction(unsignedContract, utxos, unsignedContract.vout[1].scriptPubKey);
     unsignedContract.vin[0].prevout = COutPoint(m_coinbase_txns[2]->GetHash(), 0);
     SignContract(unsignedContract, tposAddressKey, true);
     BOOST_ASSERT(TPoSUtils::CheckContract(MakeTransactionRef(unsignedContract), tmp, 1, true, false, strError));
@@ -247,12 +204,37 @@ BOOST_FIXTURE_TEST_CASE(tpos_create_invalid_legacy_contract, TestChain100Setup)
     LOCK(cs_main);
 
     BOOST_CHECK_EQUAL(
-            false,
-            AcceptToMemoryPool(mempool, state, contract.txContract,
-                nullptr /* pfMissingInputs */,
-                nullptr /* plTxnReplaced */,
-                true /* bypass_limits */,
-                0 /* nAbsurdFee */));
+                false,
+                AcceptToMemoryPool(mempool, state, contract.txContract,
+                                   nullptr /* pfMissingInputs */,
+                                   nullptr /* plTxnReplaced */,
+                                   true /* bypass_limits */,
+                                   0 /* nAbsurdFee */));
 }
+
+BOOST_FIXTURE_TEST_CASE(tpos_create_new_contract, TestChain100Setup)
+{
+    m_coinbase_txns.emplace_back(CreateAndProcessBlock({}, GetScriptForRawPubKey(coinbaseKey.GetPubKey())).vtx[0]);
+    m_coinbase_txns.emplace_back(CreateAndProcessBlock({}, GetScriptForRawPubKey(coinbaseKey.GetPubKey())).vtx[0]);
+
+    auto utxos = BuildSimpleUtxoMap(m_coinbase_txns);
+
+
+    CKey tposAddressKey;
+    tposAddressKey.MakeNewKey(true);
+    CKey merchantAddressKey;
+    merchantAddressKey.MakeNewKey(true);
+    auto unsignedContract = CreateContractTx(WitnessV0KeyHash(tposAddressKey.GetPubKey().GetID()), WitnessV0KeyHash(merchantAddressKey.GetPubKey().GetID()), 1, false);
+    TPoSContract tmp;
+    std::string strError;
+    BOOST_ASSERT(TPoSUtils::CheckContract(MakeTransactionRef(unsignedContract), tmp, 1, false, false, strError));
+    FundTransaction(unsignedContract, utxos, unsignedContract.vout[1].scriptPubKey);
+    SignContract(unsignedContract, tposAddressKey, false);
+    // shouldn't be allowed before HF.
+    BOOST_ASSERT(!TPoSUtils::CheckContract(MakeTransactionRef(unsignedContract), tmp, 1, true, false, strError));
+    // but should be ok after HF.
+    BOOST_ASSERT(TPoSUtils::CheckContract(MakeTransactionRef(unsignedContract), tmp, Params().GetConsensus().nTPoSSignatureUpgradeHFHeight, true, false, strError));
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()

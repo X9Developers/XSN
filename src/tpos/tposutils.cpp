@@ -121,57 +121,23 @@ bool TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
                                       bool createLegacyContract,
                                       std::string &strError)
 {
-    if(wallet->IsLocked())
-    {
+    if (wallet->IsLocked()) {
         strError = "Error: Wallet is locked";
         return false;
     }
 
-    CKey key;
-    CKeyID keyID;
+    CAmount nFeeRequired;
 
-    if (createLegacyContract) {
-        if(auto tmpKeyID = boost::get<CKeyID>(&tposAddress)) {
-            keyID = *tmpKeyID;
-        } else {
-            strError = "Error: TPoS Address is not P2PKH";
-            return false;
-        }
-    } else {
-        keyID = GetKeyForDestination(CBasicKeyStore{}, tposAddress);
-    }
-
-    if (!wallet->GetKey(keyID, key)) {
-        strError = "Error: Failed to get private key associated with TPoS address";
+    CMutableTransaction baseTx;
+    if(!CreateTPoSTransaction(baseTx, tposAddress, merchantAddress, merchantCommission, createLegacyContract, strError)) {
         return false;
     }
 
-    // dummy signature, just to know size
-    std::vector<unsigned char> vchSignature(CPubKey::COMPACT_SIGNATURE_SIZE, '0');
+    std::vector<CRecipient> vecSend;
 
-    CScript metadataScriptPubKey;
-
-    if (createLegacyContract) {
-        auto tposAddressAsStr = EncodeDestination(tposAddress);
-        auto merchantAddressAsStr = EncodeDestination(merchantAddress);
-        metadataScriptPubKey << OP_RETURN
-                             << std::vector<unsigned char>(tposAddressAsStr.begin(), tposAddressAsStr.end())
-                             << std::vector<unsigned char>(merchantAddressAsStr.begin(), merchantAddressAsStr.end())
-                             << (100 - merchantCommission)
-                             << vchSignature;
-    } else {
-        CDataStream ds(SER_NETWORK, PROTOCOL_VERSION);
-        ds << TPoSContract({}, merchantAddress, tposAddress, merchantCommission, vchSignature);
-        std::vector<unsigned char> payload(ds.begin(), ds.end());
-        metadataScriptPubKey << OP_RETURN << payload;
+    for (auto &&out : baseTx.vout) {
+        vecSend.push_back(CRecipient {out.scriptPubKey, out.nValue, false});
     }
-
-    std::vector<CRecipient> vecSend {
-        { metadataScriptPubKey, 0, false },
-        { GetScriptForDestination(tposAddress), TPOS_CONTRACT_COLATERAL, false }
-    };
-
-    CAmount nFeeRequired;
 
     int nChangePos = -1;
     if (!wallet->CreateTransaction(vecSend, transactionOut, reservekey, nFeeRequired, nChangePos, strError, {}, false)) {
@@ -181,57 +147,31 @@ bool TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
         return false;
     }
 
-    CMutableTransaction tx(*transactionOut);
-    auto firstInput = tx.vin.front().prevout;
+    baseTx = *transactionOut;
 
-    auto it = std::find_if(tx.vout.begin(), tx.vout.end(), [](const CTxOut &txOut) {
-        return txOut.scriptPubKey.IsUnspendable();
-    });
-
-    auto vchSignatureCopy = vchSignature;
-    vchSignature.clear();
-    auto hashMessage = SerializeHash(firstInput);
-
-    if (createLegacyContract) {
-        if (!key.SignCompact(hashMessage, vchSignature)) {
-            strError = "Error: Failed to sign tpos contract";
-            return false;
-        }
-
-        it->scriptPubKey.FindAndDelete(CScript(vchSignatureCopy));
-        it->scriptPubKey << vchSignature;
-    } else {
-        if (!CMessageSigner::SignMessage(std::string(hashMessage.begin(), hashMessage.end()), vchSignature, key, CPubKey::InputScriptType::SPENDP2PKH)) {
-            strError = "Error: Failed to sign tpos contract";
-            return false;
-        }
-
-        CDataStream ds(SER_NETWORK, PROTOCOL_VERSION);
-        // construct new contract replacing old payload with new one
-        ds << TPoSContract({}, merchantAddress, tposAddress, merchantCommission, vchSignature);
-        std::vector<unsigned char> payload(ds.begin(), ds.end());
-        it->scriptPubKey.clear();
-        it->scriptPubKey << OP_RETURN << payload;
+    if (!SignTPoSContract(baseTx, wallet, TPoSContract::FromTPoSContractTx(transactionOut))) {
+        strError = "Failed to sign tpos contract";
+        return false;
     }
 
     if (!strError.empty()) {
         return false;
     }
 
-    if(!wallet->SignTransaction(tx)) {
+    if(!wallet->SignTransaction(baseTx)) {
         strError = "Failed to sign transaction after filling";
         return false;
     }
 
     std::string reason;
-    if (!IsStandardTx(tx, reason)) {
+    if (!IsStandardTx(baseTx, reason)) {
         strError = strprintf("Error: Not standard tx: %s\n", reason.c_str());
         LogPrintf(strError.c_str());
         return false;
     }
 
     // swap signed tx with partial
-    transactionOut = MakeTransactionRef(tx);
+    transactionOut = MakeTransactionRef(baseTx);
 
     return true;
 }
@@ -390,8 +330,8 @@ bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &bl
     CAmount merchantPayment = 0;
     auto scriptMerchantPubKey = contract.scriptMerchantAddress;
     merchantPayment = std::accumulate(std::begin(coinstake->vout) + 2, std::end(coinstake->vout), CAmount(0), [scriptMerchantPubKey](CAmount accum, const CTxOut &txOut) {
-        return txOut.scriptPubKey == scriptMerchantPubKey ? accum + txOut.nValue : accum;
-    });
+            return txOut.scriptPubKey == scriptMerchantPubKey ? accum + txOut.nValue : accum;
+});
 
     if(merchantPayment > 0)
     {
@@ -459,6 +399,113 @@ bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &bl
     return true;
 }
 
+std::vector<unsigned char> TPoSUtils::GenerateContractPayload(const TPoSContract &contract)
+{
+    CDataStream ds(SER_NETWORK, PROTOCOL_VERSION);
+    ds << contract;
+    std::vector<unsigned char> payload(ds.begin(), ds.end());
+    return payload;
+}
+
+CScript TPoSUtils::GenerateLegacyContractScript(const CTxDestination &tposAddress,
+                                                const CTxDestination &merchantAddress,
+                                                uint16_t nOperatorReward,
+                                                const std::vector<unsigned char> &vchSignature)
+{
+    CScript metadataScriptPubKey;
+    auto tposAddressAsStr = EncodeDestination(tposAddress);
+    auto merchantAddressAsStr = EncodeDestination(merchantAddress);
+    metadataScriptPubKey << OP_RETURN
+                         << std::vector<unsigned char>(tposAddressAsStr.begin(), tposAddressAsStr.end())
+                         << std::vector<unsigned char>(merchantAddressAsStr.begin(), merchantAddressAsStr.end())
+                         << (100 - nOperatorReward)
+                         << vchSignature;
+    return metadataScriptPubKey;
+}
+
+bool TPoSUtils::SignTPoSContract(CMutableTransaction &tx, CKeyStore *keystore, TPoSContract contract)
+{
+    auto it = std::find_if(tx.vout.begin(), tx.vout.end(), [](const CTxOut &txOut) {
+        return txOut.scriptPubKey.IsUnspendable();
+    });
+
+    CTxDestination tposAddress, merchantAddress;
+    ExtractDestination(contract.scriptTPoSAddress, tposAddress);
+    ExtractDestination(contract.scriptMerchantAddress, merchantAddress);
+    auto keyID = GetKeyForDestination(CBasicKeyStore{}, tposAddress);
+
+    CKey key;
+    if (!keystore->GetKey(keyID, key)) {
+        return false;
+    }
+
+    if (it != tx.vout.end()) {
+        auto hashMessage = SerializeHash(tx.vin.front().prevout);
+
+        if (contract.nVersion == 1) {
+            if (!key.SignCompact(hashMessage, contract.vchSig)) {
+                return false;
+            }
+
+            it->scriptPubKey = GenerateLegacyContractScript(tposAddress, merchantAddress, contract.nOperatorReward, contract.vchSig);
+            return true;
+        } else if (contract.nVersion == 2) {
+            auto type = contract.scriptTPoSAddress.IsPayToPublicKeyHash() ? CPubKey::InputScriptType::SPENDP2PKH : CPubKey::InputScriptType::SPENDWITNESS;
+            if (!CMessageSigner::SignMessage(std::string(hashMessage.begin(), hashMessage.end()), contract.vchSig, key, type)) {
+                return false;
+            }
+
+            it->scriptPubKey.clear();
+            it->scriptPubKey << OP_RETURN << GenerateContractPayload(contract);
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool TPoSUtils::CreateTPoSTransaction(CMutableTransaction &txOut, const CTxDestination &tposAddress, const CTxDestination &merchantAddress, int nOperatorReward, bool createLegacyContract, std::string &strError)
+{
+    CKey key;
+    CKeyID keyID;
+
+    if (createLegacyContract) {
+        if(auto tmpKeyID = boost::get<CKeyID>(&tposAddress)) {
+            keyID = *tmpKeyID;
+        } else {
+            strError = "Error: TPoS Address is not P2PKH";
+            return false;
+        }
+    } else {
+        keyID = GetKeyForDestination(CBasicKeyStore{}, tposAddress);
+        if (keyID.IsNull()) {
+            strError = "Error: TPoS Address is not supported";
+            return false;
+        }
+    }
+
+    // dummy signature, just to know size
+    std::vector<unsigned char> vchSignature(CPubKey::COMPACT_SIGNATURE_SIZE, '0');
+
+    CScript metadataScriptPubKey;
+
+    if (createLegacyContract) {
+        metadataScriptPubKey = GenerateLegacyContractScript(tposAddress, merchantAddress,
+                                                            nOperatorReward, vchSignature);
+    } else {
+        metadataScriptPubKey << OP_RETURN
+                             << GenerateContractPayload(TPoSContract({}, merchantAddress,
+                                                                     tposAddress, nOperatorReward,
+                                                                     vchSignature));
+    }
+
+    txOut = CMutableTransaction{};
+    txOut.vout.emplace_back(0, metadataScriptPubKey);
+    txOut.vout.emplace_back(TPOS_CONTRACT_COLATERAL, GetScriptForDestination(tposAddress));
+
+    return true;
+}
+
 TPoSContract::TPoSContract(CTransactionRef tx, CTxDestination merchantAddress, CTxDestination tposAddress, uint16_t nOperatorReward, std::vector<unsigned char> vchSignature)
 {
     this->txContract = tx;
@@ -505,31 +552,42 @@ TPoSContract TPoSContract::FromTPoSContractTx(const CTransactionRef tx)
                     // Here we can have a chance that it is transaction which is a tpos contract, let's check if it has
                     std::stringstream stringStream(metadataOut.scriptPubKey.ToString());
 
-                    std::string tokens[5];
-                    for (auto &token : tokens) {
-                        stringStream >> token;
+                    std::vector<std::string> tokens;
+                    std::string token;
+                    while(stringStream >> token) {
+                        tokens.emplace_back(token);
                     }
 
-                    CBitcoinAddress tposAddress(ParseAddressFromMetadata(tokens[1]));
-                    CBitcoinAddress merchantAddress(ParseAddressFromMetadata(tokens[2]));
-                    int commission = std::stoi(tokens[3]);
-                    std::vector<unsigned char> vchSignature = ParseHex(tokens[4]);
-                    if(tokens[0] == GetOpName(OP_RETURN)) {
-                        if(tposAddress.IsValid() && merchantAddress.IsValid() && commission > 0 && commission < 100) {
+                    if(tokens.at(0) == GetOpName(OP_RETURN)) {
+
+                        if (tokens.size() == 2) {
+                            // check for new contract
+                            CDataStream ds(ParseHex(tokens.at(1)), SER_NETWORK, PROTOCOL_VERSION);
+                                    TPoSContract contract;
+                            ds >> contract;
+                            contract.txContract = tx;
+                            if (contract.IsValid()) {
+                                return contract;
+                            }
+                        } else if (tokens.size() == 5) {
+
+                            CBitcoinAddress tposAddress(ParseAddressFromMetadata(tokens[1]));
+                            CBitcoinAddress merchantAddress(ParseAddressFromMetadata(tokens[2]));
+                            int commission = std::stoi(tokens[3]);
+                            std::vector<unsigned char> vchSignature = ParseHex(tokens[4]);
+
                             // legacy contract
                             TPoSContract contract(tx,
                                                   merchantAddress.Get(),
                                                   tposAddress.Get(),
                                                   commission, vchSignature);
                             contract.nVersion = 1; // legacy version
-                            return contract;
-                        } else {
 
+                            if(contract.IsValid() && commission > 0 && commission < 100) {
+                                return contract;
+                            }
                         }
                     }
-
-                    // if we get to this point, it means that we have found tpos contract that was created for us to act as merchant.
-
                 }
             }
         }
