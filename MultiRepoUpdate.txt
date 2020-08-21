@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/3ef0b7bfdf00e0384d9aac2eaa7df1a7519601d9
+commit 3ef0b7bfdf00e0384d9aac2eaa7df1a7519601d9
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Thu Aug 20 22:14:13 2020 -0600
+
+    circleci: Enable the server to be build by circleci
+
 https://github.com/X9Developers/block-explorer/commit/ca74802919201924bf73a6b1ef2c68a5b041ec10
 commit ca74802919201924bf73a6b1ef2c68a5b041ec10
 Author: Alexander Bai <vhurryharry@gmail.com>
