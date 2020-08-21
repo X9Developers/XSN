@@ -164,7 +164,7 @@ bool TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
     }
 
     std::string reason;
-    if (!IsStandardTx(baseTx, reason)) {
+    if (!IsStandardTx(baseTx, reason, true)) {
         strError = strprintf("Error: Not standard tx: %s\n", reason.c_str());
         LogPrintf(strError.c_str());
         return false;

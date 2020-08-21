@@ -461,7 +461,8 @@ static UniValue tposcontract(const JSONRPCRequest& request)
         strCommand = request.params[0].get_str();
     }
 
-    if (request.fHelp  || (strCommand != "list" && strCommand != "create" && strCommand != "refresh" && strCommand != "cleanup" && strCommand != "validate"))
+    if (request.fHelp  || (strCommand != "list" && strCommand != "create" && strCommand != "refresh" && strCommand != "cleanup" && strCommand != "validate"
+                           && strCommand != "encode" && strCommand != "describe"))
         throw std::runtime_error(
                 "tposcontract \"command\"...\n"
                 "Set of commands to execute merchantnode related actions\n"
@@ -472,9 +473,32 @@ static UniValue tposcontract(const JSONRPCRequest& request)
                 "  list             - Print list of all tpos contracts that you are owner or merchant\n"
                 "  refresh          - Refresh tpos contract for merchant to fetch all coins from blockchain.\n"
                 "  cleanup          - Cleanup old entries of tpos contract.\n"
-                "  validate         - Validates transaction checking if it's a valid contract"
+                "  validate         - Validates transaction checking if it's a valid contract.\n"
+                "  encode           - Encoded payload for tpos contract.\n"
+                "  describe         - Describes tpos contract."
                 );
 
+
+    auto parseContract = [](const TPoSContract &contract) {
+        UniValue object(UniValue::VOBJ);
+
+        auto scriptToAddressString = [](const CScript &script) {
+            CTxDestination dest;
+            ExtractDestination(script, dest);
+            return EncodeDestination(dest);
+        };
+
+        object.push_back(Pair("version", contract.nVersion));
+        object.push_back(Pair("txid", contract.txContract->GetHash().ToString()));
+        object.push_back(Pair("tposAddress", scriptToAddressString(contract.scriptTPoSAddress)));
+        object.push_back(Pair("merchantAddress", scriptToAddressString(contract.scriptMerchantAddress)));
+        object.push_back(Pair("commission", contract.nOperatorReward)); // show merchant commission
+        if(contract.vchSig.empty()) {
+            object.push_back(Pair("deprecated", true));
+        }
+
+        return object;
+    };
 
     if (strCommand == "list")
     {
@@ -482,26 +506,6 @@ static UniValue tposcontract(const JSONRPCRequest& request)
         UniValue merchantArray(UniValue::VARR);
         UniValue ownerArray(UniValue::VARR);
 
-        auto parseContract = [](const TPoSContract &contract) {
-            UniValue object(UniValue::VOBJ);
-
-            auto scriptToAddressString = [](const CScript &script) {
-                CTxDestination dest;
-                ExtractDestination(script, dest);
-                return EncodeDestination(dest);
-            };
-
-            object.push_back(Pair("version", contract.nVersion));
-            object.push_back(Pair("txid", contract.txContract->GetHash().ToString()));
-            object.push_back(Pair("tposAddress", scriptToAddressString(contract.scriptTPoSAddress)));
-            object.push_back(Pair("merchantAddress", scriptToAddressString(contract.scriptMerchantAddress)));
-            object.push_back(Pair("commission", contract.nOperatorReward)); // show merchant commission
-            if(contract.vchSig.empty()) {
-                object.push_back(Pair("deprecated", true));
-            }
-
-            return object;
-        };
 
         for(auto &&it : pwallet->tposMerchantContracts)
         {
@@ -593,6 +597,33 @@ static UniValue tposcontract(const JSONRPCRequest& request)
 
         pwallet->RemoveWatchOnly(tmpContract.scriptTPoSAddress);
         pwallet->RemoveTPoSContract(tposContractHashID);
+    }
+    else if (strCommand == "encode")
+    {
+        if(request.params.size() < 5) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER,
+                               "Expected format: tposcontract encode tpos_address merchant_address commission signature");
+        }
+
+        CTxDestination tposAddress = DecodeDestination(request.params[1].get_str());
+        CTxDestination merchantAddress = DecodeDestination(request.params[2].get_str());
+        int commission = std::stoi(request.params[3].get_str());
+        auto vchSig = ParseHex(request.params[4].get_str());
+        TPoSContract contract({}, merchantAddress, tposAddress, commission, vchSig);
+        return HexStr(TPoSUtils::GenerateContractPayload(contract));
+    }
+    else if (strCommand == "describe")
+    {
+        if(request.params.size() < 2)
+            throw JSONRPCError(RPC_INVALID_PARAMETER,
+                               "Expected format: tposcontract describe tposcontract_tx(hex)");
+
+        CMutableTransaction mtx;
+        if (!DecodeHexTx(mtx, request.params[1].get_str()))
+            throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
+        CTransactionRef tx(MakeTransactionRef(std::move(mtx)));
+
+        return parseContract(TPoSContract::FromTPoSContractTx(tx));
     }
     else if(strCommand == "validate")
     {
