@@ -613,6 +613,14 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
         return state.Invalid(false, REJECT_DUPLICATE, "txn-already-in-mempool");
     }
 
+    if (TPoSUtils::IsTPoSContract(ptx)) {
+        TPoSContract contract;
+        std::string strError;
+        if (!TPoSUtils::CheckContract(ptx, contract, chainActive.Height(), true, false, strError)) {
+            return state.Invalid(false, REJECT_INVALID, "tpos-invaid-contract");
+        }
+    }
+
     // Check for conflicts with in-memory transactions
     std::set<uint256> setConflicts;
     for (const CTxIn &txin : tx.vin)

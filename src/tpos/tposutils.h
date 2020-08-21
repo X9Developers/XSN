@@ -65,6 +65,11 @@ public:
 
     static bool IsTPoSContract(const CTransactionRef &tx);
 
+    static COutPoint GetContractCollateralOutpoint(const TPoSContract &contract);
+    static bool CheckContract(const uint256 &hashContractTx, TPoSContract &contract, int nBlockHeight, bool fCheckSignature, bool fCheckContractOutpoint, std::string &strError);
+    static bool CheckContract(const CTransactionRef &txContract, TPoSContract &contract, int nBlockHeight, bool fCheckSignature, bool fCheckContractOutpoint, std::string &strError);
+    static bool IsMerchantPaymentValid(CValidationState &state, const CBlock &block, int nBlockHeight, CAmount expectedReward, CAmount actualReward);
+
 #ifdef ENABLE_WALLET
     static bool GetTPoSPayments(const CWallet *wallet,
                                 const CTransactionRef &tx,
@@ -90,12 +95,9 @@ public:
                                                 const TPoSContract &contract,
                                                 std::string &strError);
 
-    static COutPoint GetContractCollateralOutpoint(const TPoSContract &contract);
-    static bool CheckContract(const uint256 &hashContractTx, TPoSContract &contract, int nBlockHeight, bool fCheckSignature, bool fCheckContractOutpoint, std::string &strError);
-    static bool CheckContract(const CTransactionRef &txContract, TPoSContract &contract, int nBlockHeight, bool fCheckSignature, bool fCheckContractOutpoint, std::string &strError);
-    static bool IsMerchantPaymentValid(CValidationState &state, const CBlock &block, int nBlockHeight, CAmount expectedReward, CAmount actualReward);
 
 #endif
+
 
 };
 

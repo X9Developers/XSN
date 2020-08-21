@@ -431,6 +431,7 @@ test/test_xsn_fuzzy.cpp
 test/test_xsn_main.cpp
 test/timedata_tests.cpp
 test/torcontrol_tests.cpp
+test/tpos_tests.cpp
 test/transaction_tests.cpp
 test/txvalidation_tests.cpp
 test/txvalidationcache_tests.cpp

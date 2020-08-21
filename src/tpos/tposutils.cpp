@@ -272,13 +272,14 @@ bool TPoSUtils::CreateCancelContractTransaction(CWallet *wallet, CTransactionRef
     return true;
 }
 
+#endif
+
 COutPoint TPoSUtils::GetContractCollateralOutpoint(const TPoSContract &contract)
 {
     COutPoint result;
     if (!contract.txContract) {
         return result;
     }
-
 
     const auto &vout = contract.txContract->vout;
     for (size_t i = 0; i < vout.size(); ++i) {
@@ -318,6 +319,10 @@ bool TPoSUtils::CheckContract(const CTransactionRef &txContract, TPoSContract &c
 
     if(fCheckSignature)
     {
+        if (tmpContract.txContract->vin.empty()) {
+            return false;
+        }
+
         auto hashMessage = SerializeHash(tmpContract.txContract->vin.front().prevout);
         std::string strVerifyHashError;
 
@@ -453,8 +458,6 @@ bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &bl
 
     return true;
 }
-
-#endif
 
 TPoSContract::TPoSContract(CTransactionRef tx, CTxDestination merchantAddress, CTxDestination tposAddress, uint16_t nOperatorReward, std::vector<unsigned char> vchSignature)
 {

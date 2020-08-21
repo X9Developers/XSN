@@ -1492,7 +1492,7 @@ void CWallet::MarkConflicted(const uint256& hashBlock, const uint256& hashTx)
     }
 }
 
-bool CWallet::AddToWalletIfTPoSContract(const CTransactionRef &tx, const CBlockIndex *pindex)
+bool CWallet::AddToWalletIfTPoSContract(const CTransactionRef &tx)
 {
     AssertLockHeld(cs_wallet);
 
@@ -1519,9 +1519,6 @@ bool CWallet::AddToWalletIfTPoSContract(const CTransactionRef &tx, const CBlockI
         if(isMerchant || isOwner) {
             TPoSContract contract;
             std::string strError;
-            if(!TPoSUtils::CheckContract(tx, contract, pindex->nHeight, true, false, strError)) {
-                return error(strError.c_str());
-            }
 
             CWalletTx wtx(this, tx);
             if(LoadTPoSContract(wtx))
@@ -1550,10 +1547,7 @@ bool CWallet::AddToWalletIfTPoSContract(const CTransactionRef &tx, const CBlockI
 void CWallet::SyncTransaction(const CTransactionRef& ptx, const CBlockIndex *pindex, int posInBlock) {
     const CTransaction& tx = *ptx;
 
-    // can't add without index
-    if (pindex) {
-        AddToWalletIfTPoSContract(ptx, pindex);
-    }
+    AddToWalletIfTPoSContract(ptx);
 
     if (!AddToWalletIfInvolvingMe(ptx, pindex, posInBlock, true))
         return; // Not one of ours
