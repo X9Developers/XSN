@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/bc75c666510eae60b7c42c2aa7d0ac69cad03d53
+commit bc75c666510eae60b7c42c2aa7d0ac69cad03d53
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Aug 22 17:09:51 2020 -0600
+
+    circleci: Start building the web-ui project (#176)
+
 https://github.com/X9Developers/block-explorer/commit/3ef0b7bfdf00e0384d9aac2eaa7df1a7519601d9
 commit 3ef0b7bfdf00e0384d9aac2eaa7df1a7519601d9
 Author: Alexis Hernandez <alexis22229@gmail.com>
