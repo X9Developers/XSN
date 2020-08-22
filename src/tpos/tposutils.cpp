@@ -273,7 +273,9 @@ bool TPoSUtils::CheckContract(const CTransactionRef &txContract, TPoSContract &c
         }
 
         if (nBlockHeight >= Params().GetConsensus().nTPoSSignatureUpgradeHFHeight) {
-            if(!CMessageSigner::VerifyMessage(tposAddress, tmpContract.vchSig, std::string(hashMessage.begin(), hashMessage.end()), strVerifyHashError)) {
+            auto prevout = tmpContract.txContract->vin.front().prevout;
+            std::string newHashMessage = prevout.hash.ToString() + ":" + std::to_string(prevout.n);
+            if(!CMessageSigner::VerifyMessage(tposAddress, tmpContract.vchSig, newHashMessage, strVerifyHashError)) {
                 if(!CHashSigner::VerifyHash(hashMessage, tposAddress, tmpContract.vchSig, strVerifyHashError)) {
                     strError = strprintf("%s : TPoS contract signature is invalid %s", __func__, strVerifyHashError);
                     return error(strError.c_str());
@@ -450,8 +452,10 @@ bool TPoSUtils::SignTPoSContract(CMutableTransaction &tx, CKeyStore *keystore, T
             it->scriptPubKey = GenerateLegacyContractScript(tposAddress, merchantAddress, contract.nOperatorReward, contract.vchSig);
             return true;
         } else if (contract.nVersion == 2) {
+            auto prevout = tx.vin.front().prevout;
+            std::string newHashMessage = prevout.hash.ToString() + ":" + std::to_string(prevout.n);
             auto type = contract.scriptTPoSAddress.IsPayToPublicKeyHash() ? CPubKey::InputScriptType::SPENDP2PKH : CPubKey::InputScriptType::SPENDWITNESS;
-            if (!CMessageSigner::SignMessage(std::string(hashMessage.begin(), hashMessage.end()), contract.vchSig, key, type)) {
+            if (!CMessageSigner::SignMessage(newHashMessage, contract.vchSig, key, type)) {
                 return false;
             }
 
