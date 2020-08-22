@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/85ab2472f2ad0d87f8b0a2a078ec82a17d6968ba
+commit 85ab2472f2ad0d87f8b0a2a078ec82a17d6968ba
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Sat Aug 22 17:23:12 2020 -0600
+
+    Replace travis by circleci (#177)
+
 https://github.com/X9Developers/block-explorer/commit/bc75c666510eae60b7c42c2aa7d0ac69cad03d53
 commit bc75c666510eae60b7c42c2aa7d0ac69cad03d53
 Author: Alexis Hernandez <alexis22229@gmail.com>
