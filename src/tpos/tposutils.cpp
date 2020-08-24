@@ -573,12 +573,16 @@ TPoSContract TPoSContract::FromTPoSContractTx(const CTransactionRef tx)
                             if (contract.IsValid()) {
                                 return contract;
                             }
-                        } else if (tokens.size() == 5) {
+                        } else if (tokens.size() > 3 && tokens.size() < 6) {
 
                             CBitcoinAddress tposAddress(ParseAddressFromMetadata(tokens[1]));
                             CBitcoinAddress merchantAddress(ParseAddressFromMetadata(tokens[2]));
                             int commission = std::stoi(tokens[3]);
-                            std::vector<unsigned char> vchSignature = ParseHex(tokens[4]);
+                            std::vector<unsigned char> vchSignature;
+
+                            if (tokens.size() > 4) {
+                                vchSignature = ParseHex(tokens[4]);
+                            }
 
                             // legacy contract
                             TPoSContract contract(tx,
