@@ -74,11 +74,11 @@ bool CBlockSigner::SignBlock()
         }
     }
 
+    const auto &hash = refBlock.IsTPoSBlock() ? refBlock.GetTPoSHash() : refBlock.GetHash();
     if (nChainHeight >= Params().GetConsensus().nTPoSSignatureUpgradeHFHeight) {
-        const auto &hash = refBlock.IsTPoSBlock() ? refBlock.GetTPoSHash() : refBlock.GetHash();
         return CMessageSigner::SignMessage(std::string(hash.begin(), hash.end()), refBlock.vchBlockSig, keySecret, scriptType);
     } else {
-        return CHashSigner::SignHash(refBlock.IsTPoSBlock() ? refBlock.GetTPoSHash() : refBlock.GetHash(), keySecret, scriptType, refBlock.vchBlockSig);
+        return CHashSigner::SignHash(hash, keySecret, scriptType, refBlock.vchBlockSig);
     }
 }
 
