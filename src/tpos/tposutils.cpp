@@ -335,18 +335,13 @@ bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &bl
             return txOut.scriptPubKey == scriptMerchantPubKey ? accum + txOut.nValue : accum;
 });
 
-    if(merchantPayment > 0)
-    {
+    if(merchantPayment > 0) {
         auto maxAllowedValue = (expectedReward / 100) * contract.nOperatorReward;
         // ban, we know fur sure that merchant tries to get more than he is allowed
         if(merchantPayment > maxAllowedValue) {
             return state.DoS(100, error("IsMerchantPaymentValid -- ERROR: merchant was paid more than allowed: %s\n", EncodeDestination(merchantAddress).c_str()),
                              REJECT_INVALID, "bad-merchant-payee");
         }
-    }
-    else
-    {
-        LogPrintf("IsMerchantPaymentValid -- WARNING: merchant wasn't paid, this is weird, but totally acceptable. Shouldn't happen.\n");
     }
 
     if(!merchantnodeSync.IsSynced())
@@ -530,8 +525,15 @@ TPoSContract::TPoSContract(CTransactionRef tx, CTxDestination merchantAddress, C
 
 bool TPoSContract::IsValid() const
 {
-    return txContract && !txContract->IsNull() && !scriptMerchantAddress.empty()
-            && !scriptTPoSAddress.empty() && nOperatorReward <= 100;
+    if (txContract && !txContract->IsNull() && !scriptMerchantAddress.empty() && !scriptTPoSAddress.empty()) {
+        switch(nVersion) {
+        case 1: return nOperatorReward > 0 && nOperatorReward < 100; // legacy contract
+        case 2: return nOperatorReward >= 0 && nOperatorReward <= 100; // new contract
+        default:
+            break;
+        }
+    }
+    return false;
 }
 
 TPoSContract TPoSContract::FromTPoSContractTx(const CTransactionRef tx)
