@@ -347,7 +347,7 @@ bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &bl
 
     if(merchantPayment > 0)
     {
-        auto maxAllowedValue = (expectedReward / 100) * (100 - contract.stakePercentage);
+        auto maxAllowedValue = expectedReward * (100 - contract.stakePercentage) / 100;
         // ban, we know fur sure that merchant tries to get more than he is allowed
         if(merchantPayment > maxAllowedValue)
             return state.DoS(100, error("IsMerchantPaymentValid -- ERROR: merchant was paid more than allowed: %s\n", contract.merchantAddress.ToString().c_str()),
