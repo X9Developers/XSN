@@ -9,7 +9,7 @@
  * network protocol versioning
  */
 
-static const int PROTOCOL_VERSION = 702110;
+static const int PROTOCOL_VERSION = 70210;
 
 static const int PRETPOS_SIGNTURE_FIX_PROTO_VERSION = 70209;
 
