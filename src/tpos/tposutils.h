@@ -85,6 +85,9 @@ public:
                                       int nOperatorReward,
                                       bool createLegacyContract, std::string &strError);
 
+    static CAmount GetOperatorPayment(CAmount basePayment, int nOperatorReward);
+    static CAmount GetOwnerPayment(CAmount basePayment, int nOperatorReward);
+
 #ifdef ENABLE_WALLET
     static bool GetTPoSPayments(const CWallet *wallet,
                                 const CTransactionRef &tx,
@@ -115,5 +118,7 @@ public:
 
 
 };
+
+bool IsTPoSNewSignaturesHardForkActivated(int nChainHeight);
 
 #endif // TPOSUTILS_H

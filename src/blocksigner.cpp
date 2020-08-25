@@ -75,7 +75,7 @@ bool CBlockSigner::SignBlock()
     }
 
     const auto &hash = refBlock.IsTPoSBlock() ? refBlock.GetTPoSHash() : refBlock.GetHash();
-    if (nChainHeight >= Params().GetConsensus().nTPoSSignatureUpgradeHFHeight) {
+    if (IsTPoSNewSignaturesHardForkActivated(nChainHeight)) {
         return CMessageSigner::SignMessage(std::string(hash.begin(), hash.end()), refBlock.vchBlockSig, keySecret, scriptType);
     } else {
         return CHashSigner::SignHash(hash, keySecret, scriptType, refBlock.vchBlockSig);
@@ -111,7 +111,7 @@ bool CBlockSigner::CheckBlockSignature() const
     }
 
     std::string strError;
-    if (nChainHeight >= Params().GetConsensus().nTPoSSignatureUpgradeHFHeight) {
+    if (IsTPoSNewSignaturesHardForkActivated(nChainHeight)) {
         return CMessageSigner::VerifyMessage(destination, refBlock.vchBlockSig, std::string(hashMessage.begin(), hashMessage.end()), strError);
     } else {
         return CHashSigner::VerifyHash(hashMessage, destination, refBlock.vchBlockSig, strError);

@@ -12,6 +12,7 @@
 #include <tpos/tposutils.h>
 #include <keystore.h>
 #include <messagesigner.h>
+#include <masternode-payments.h>
 
 #include <numeric>
 #include <boost/test/unit_test.hpp>
@@ -219,7 +220,6 @@ BOOST_FIXTURE_TEST_CASE(tpos_create_new_contract, TestChain100Setup)
 
     auto utxos = BuildSimpleUtxoMap(m_coinbase_txns);
 
-
     CKey tposAddressKey;
     tposAddressKey.MakeNewKey(true);
     CKey merchantAddressKey;
@@ -236,5 +236,51 @@ BOOST_FIXTURE_TEST_CASE(tpos_create_new_contract, TestChain100Setup)
     BOOST_ASSERT(TPoSUtils::CheckContract(MakeTransactionRef(unsignedContract), tmp, Params().GetConsensus().nTPoSSignatureUpgradeHFHeight, true, false, strError));
 }
 
+BOOST_FIXTURE_TEST_CASE(tpos_contract_payment, TestChain100Setup)
+{
+    CAmount basePayment = 10 * COIN;
+    BOOST_CHECK_EQUAL(basePayment, TPoSUtils::GetOwnerPayment(basePayment, 0));
+    BOOST_CHECK_EQUAL(0, TPoSUtils::GetOperatorPayment(basePayment, 0));
+
+    BOOST_CHECK_EQUAL(0, TPoSUtils::GetOwnerPayment(basePayment, 100));
+    BOOST_CHECK_EQUAL(basePayment, TPoSUtils::GetOperatorPayment(basePayment, 100));
+
+    BOOST_CHECK_EQUAL(5 * COIN, TPoSUtils::GetOwnerPayment(basePayment, 50));
+    BOOST_CHECK_EQUAL(5 * COIN, TPoSUtils::GetOperatorPayment(basePayment, 50));
+
+    BOOST_CHECK_EQUAL(9 * COIN, TPoSUtils::GetOwnerPayment(basePayment, 10));
+    BOOST_CHECK_EQUAL(1 * COIN, TPoSUtils::GetOperatorPayment(basePayment, 10));
+}
+
+BOOST_FIXTURE_TEST_CASE(tpos_adjust_mn_payment, TestChain100Setup)
+{
+    CMutableTransaction txCoinstake;
+    txCoinstake.vout.resize(1);
+    auto scriptCoinstake = GetScriptForDestination(coinbaseKey.GetPubKey().GetID());
+    CKey keyMNPayment;
+    keyMNPayment.MakeNewKey(true);
+    auto scriptMnPayment = GetScriptForDestination(keyMNPayment.GetPubKey().GetID());
+    auto nCoinstakePayment = 10 * COIN;
+    txCoinstake.vout.emplace_back(nCoinstakePayment, scriptCoinstake);
+
+    auto sum = [](const CMutableTransaction &tx) {
+        return std::accumulate(tx.vout.begin(), tx.vout.end(), CAmount(0), [](CAmount accum, const CTxOut &out) {
+            return accum + out.nValue;
+        });
+    };
+
+    {
+        CMutableTransaction txNoContractCoinstake = txCoinstake;
+        auto nMNPayment = nCoinstakePayment / 2;
+        CTxOut outMNPayment(nMNPayment, scriptMnPayment);
+        txNoContractCoinstake.vout.push_back(outMNPayment);
+        AdjustMasternodePayment(txNoContractCoinstake, outMNPayment, TPoSContract{});
+        BOOST_CHECK_EQUAL(scriptCoinstake.ToString(), txNoContractCoinstake.vout[1].scriptPubKey.ToString());
+        BOOST_CHECK_EQUAL(nCoinstakePayment - nMNPayment, txNoContractCoinstake.vout[1].nValue);
+        BOOST_CHECK_EQUAL(outMNPayment.nValue, txNoContractCoinstake.vout[2].nValue);
+        BOOST_CHECK_EQUAL(outMNPayment.scriptPubKey.ToString(), txNoContractCoinstake.vout[2].scriptPubKey.ToString());
+        BOOST_ASSERT(nCoinstakePayment >= sum(txNoContractCoinstake));
+    }
+}
 
 BOOST_AUTO_TEST_SUITE_END()

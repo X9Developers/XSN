@@ -617,7 +617,7 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
         TPoSContract contract;
         std::string strError;
         if (!TPoSUtils::CheckContract(ptx, contract, chainActive.Height(), true, false, strError)) {
-            return state.Invalid(false, REJECT_INVALID, "tpos-invaid-contract");
+            return state.Invalid(false, REJECT_INVALID, "tpos-invalid-contract");
         }
     }
 

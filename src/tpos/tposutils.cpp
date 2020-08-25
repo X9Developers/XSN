@@ -272,7 +272,7 @@ bool TPoSUtils::CheckContract(const CTransactionRef &txContract, TPoSContract &c
             return error(strError.c_str());
         }
 
-        if (nBlockHeight >= Params().GetConsensus().nTPoSSignatureUpgradeHFHeight) {
+        if (IsTPoSNewSignaturesHardForkActivated(nBlockHeight)) {
             auto prevout = tmpContract.txContract->vin.front().prevout;
             std::string newHashMessage = prevout.hash.ToString() + ":" + std::to_string(prevout.n);
             if(!CMessageSigner::VerifyMessage(tposAddress, tmpContract.vchSig, newHashMessage, strVerifyHashError)) {
@@ -361,7 +361,7 @@ bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &bl
 
     CKeyID coinstakeKeyID;
     // legacy way supports only P2PKH, after HF support both P2PKH and P2WPKH
-    if (nBlockHeight >= Params().GetConsensus().nTPoSSignatureUpgradeHFHeight) {
+    if (IsTPoSNewSignaturesHardForkActivated(nBlockHeight)) {
         coinstakeKeyID = GetKeyForDestination(CBasicKeyStore{}, merchantAddress);
         if (coinstakeKeyID.IsNull()) {
             return state.DoS(0, error("IsMerchantPaymentValid -- ERROR: coin stake was paid to invalid address\n"),
@@ -505,6 +505,16 @@ bool TPoSUtils::CreateTPoSTransaction(CMutableTransaction &txOut, const CTxDesti
     return true;
 }
 
+CAmount TPoSUtils::GetOperatorPayment(CAmount basePayment, int nOperatorReward)
+{
+    return (basePayment / 100) * nOperatorReward;
+}
+
+CAmount TPoSUtils::GetOwnerPayment(CAmount basePayment, int nOperatorReward)
+{
+    return (basePayment / 100) * (100 - nOperatorReward);
+}
+
 TPoSContract::TPoSContract(CTransactionRef tx, CTxDestination merchantAddress, CTxDestination tposAddress, uint16_t nOperatorReward, std::vector<unsigned char> vchSignature)
 {
     this->txContract = tx;
@@ -606,4 +616,9 @@ TPoSContract TPoSContract::FromTPoSContractTx(const CTransactionRef tx)
     }
 
     return TPoSContract{};
+}
+
+bool IsTPoSNewSignaturesHardForkActivated(int nChainHeight)
+{
+    return nChainHeight >= Params().GetConsensus().nTPoSSignatureUpgradeHFHeight;
 }
