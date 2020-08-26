@@ -71,6 +71,8 @@ private Q_SLOTS:
     void recentRequestsView_selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
     void updateDisplayUnit();
     void showMenu(const QPoint &point);
+    void onUpdateBech32(const int state);
+    void onUpdateLegacy(const int state);
     void copyURI();
     void copyLabel();
     void copyMessage();

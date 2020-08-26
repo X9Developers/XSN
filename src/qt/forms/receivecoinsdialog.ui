@@ -169,13 +169,24 @@
              </property>
             </widget>
            </item>
-           <item>
-            <widget class="QCheckBox" name="useBech32">
-             <property name="text">
-              <string>Use Bech32</string>
-             </property>
-            </widget>
-           </item>
+					 <item>
+						<layout class="QHBoxLayout" name="horizontalLayout">           
+							<item>
+								<widget class="QCheckBox" name="useBech32">
+								<property name="text">
+								<string>Use Bech32</string>
+								</property>
+								</widget>
+							</item>
+							<item>
+								<widget class="QCheckBox" name="useLegacy">
+								<property name="text">
+								<string>Use Legacy</string>
+								</property>
+								</widget>
+							</item>
+						</layout>
+					 </item>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout">
              <property name="spacing">
