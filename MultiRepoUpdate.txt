@@ -1,5 +1,16 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/7f40f284a4a25172ff08cbd5afdbdd5b6c3534ba
+commit 7f40f284a4a25172ff08cbd5afdbdd5b6c3534ba
+Author: Alexander Bai <vhurryharry@gmail.com>
+Date:   Thu Aug 27 00:24:47 2020 -0400
+
+    server: added new api endpoint for paginated transaction list
+    
+    server: Improved SQL query
+    
+    server: Updated tests for transaction endpoint
+
 https://github.com/X9Developers/block-explorer/commit/c73bcc6725ad827e3e339abd49714e81d260e0a3
 commit c73bcc6725ad827e3e339abd49714e81d260e0a3
 Author: Alexander Bai <vhurryharry@gmail.com>
