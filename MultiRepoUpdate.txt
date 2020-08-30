@@ -1,5 +1,45 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/5501a435b6989594a81449c996e5e86a54f2e6fd
+commit 5501a435b6989594a81449c996e5e86a54f2e6fd
+Author: James Truong <trueeyedev@gmail.com>
+Date:   Mon Aug 31 05:11:17 2020 +1000
+
+    server: optimize masternodes api
+    
+    server: masternode syncing conditionally (enabled/disabled)
+    
+    server: improve PR (optimize masternodes api) #185
+    
+    - MasternodeRepository, MasternodeSynchronizerActor in seperated file
+    - bind MasternodeRepository and its ActorImpl
+    
+    - Right now, have an issue with Cyclic Reference
+    
+    - fix compiler error
+    
+    - handle MasternodeNotFoundError
+    
+    Code Style
+    
+    - Added second MasternodesControllerSpec2 for testing
+    - ScalaFmt
+    
+    server: masternodes testing added
+    
+    server: MasternodesControllerSpec2 removed
+    
+    MasternodesControllerSpec class name typo
+    
+    server: optimize masternodes api minor updates
+    - disable ActorsModule while testing
+    - get -> getAll, getOne -> find
+    - other minor updates
+    
+    enable the ActorsModule in testing
+    
+    - unused import issue fixed
+
 https://github.com/X9Developers/block-explorer/commit/6de210cabd91649988aaabedc265215b1dddd2a1
 commit 6de210cabd91649988aaabedc265215b1dddd2a1
 Author: Alexander Bai <vhurryharry@gmail.com>
