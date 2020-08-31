@@ -280,6 +280,16 @@ BOOST_FIXTURE_TEST_CASE(tpos_adjust_mn_payment, TestChain100Setup)
         BOOST_CHECK_EQUAL(outMNPayment.nValue, txNoContractCoinstake.vout[2].nValue);
         BOOST_CHECK_EQUAL(outMNPayment.scriptPubKey.ToString(), txNoContractCoinstake.vout[2].scriptPubKey.ToString());
         BOOST_ASSERT(nCoinstakePayment >= sum(txNoContractCoinstake));
+        BOOST_CHECK_EQUAL(3, txNoContractCoinstake.vout.size());
+    }
+
+    {
+        CMutableTransaction txNoContractNoMnCoinstake = txCoinstake;
+        AdjustMasternodePayment(txNoContractNoMnCoinstake, {}, TPoSContract{});
+        BOOST_CHECK_EQUAL(scriptCoinstake.ToString(), txNoContractNoMnCoinstake.vout[1].scriptPubKey.ToString());
+        BOOST_CHECK_EQUAL(nCoinstakePayment, txNoContractNoMnCoinstake.vout[1].nValue);
+        BOOST_CHECK_EQUAL(2, txNoContractNoMnCoinstake.vout.size());
+        BOOST_ASSERT(nCoinstakePayment >= sum(txNoContractNoMnCoinstake));
     }
 }
 
