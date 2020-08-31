@@ -252,7 +252,7 @@ BOOST_FIXTURE_TEST_CASE(tpos_contract_payment, TestChain100Setup)
     BOOST_CHECK_EQUAL(1 * COIN, TPoSUtils::GetOperatorPayment(basePayment, 10));
 }
 
-BOOST_FIXTURE_TEST_CASE(tpos_adjust_mn_payment, TestChain100Setup)
+BOOST_FIXTURE_TEST_CASE(tpos_no_contract_adjust_mn_payment, TestChain100Setup)
 {
     CMutableTransaction txCoinstake;
     txCoinstake.vout.resize(1);
@@ -269,6 +269,7 @@ BOOST_FIXTURE_TEST_CASE(tpos_adjust_mn_payment, TestChain100Setup)
         });
     };
 
+    // no contract, MN payment, no split
     {
         CMutableTransaction txNoContractCoinstake = txCoinstake;
         auto nMNPayment = nCoinstakePayment / 2;
@@ -283,6 +284,29 @@ BOOST_FIXTURE_TEST_CASE(tpos_adjust_mn_payment, TestChain100Setup)
         BOOST_CHECK_EQUAL(3, txNoContractCoinstake.vout.size());
     }
 
+    // no contract, MN payment, split
+    {
+        CMutableTransaction txNoContractCoinstake = txCoinstake;
+        auto nMNPayment = nCoinstakePayment / 2;
+        CTxOut outMNPayment(nMNPayment, scriptMnPayment);
+        txNoContractCoinstake.vout.back().nValue /= 2;
+        txNoContractCoinstake.vout.push_back(CTxOut(txNoContractCoinstake.vout.back().nValue, scriptCoinstake));
+        txNoContractCoinstake.vout.push_back(outMNPayment);
+        AdjustMasternodePayment(txNoContractCoinstake, outMNPayment, TPoSContract{});
+        CAmount amount = 0;
+        for (int i = 1; i < 3; ++i) {
+            BOOST_CHECK_EQUAL(scriptCoinstake.ToString(), txNoContractCoinstake.vout[i].scriptPubKey.ToString());
+            amount += txNoContractCoinstake.vout[i].nValue;
+        }
+
+        BOOST_CHECK_EQUAL(nCoinstakePayment - nMNPayment, amount);
+        BOOST_CHECK_EQUAL(outMNPayment.nValue, txNoContractCoinstake.vout[3].nValue);
+        BOOST_CHECK_EQUAL(outMNPayment.scriptPubKey.ToString(), txNoContractCoinstake.vout[3].scriptPubKey.ToString());
+        BOOST_ASSERT(nCoinstakePayment >= sum(txNoContractCoinstake));
+        BOOST_CHECK_EQUAL(4, txNoContractCoinstake.vout.size());
+    }
+
+    // no contract, no MN payment, no split
     {
         CMutableTransaction txNoContractNoMnCoinstake = txCoinstake;
         AdjustMasternodePayment(txNoContractNoMnCoinstake, {}, TPoSContract{});
@@ -290,6 +314,135 @@ BOOST_FIXTURE_TEST_CASE(tpos_adjust_mn_payment, TestChain100Setup)
         BOOST_CHECK_EQUAL(nCoinstakePayment, txNoContractNoMnCoinstake.vout[1].nValue);
         BOOST_CHECK_EQUAL(2, txNoContractNoMnCoinstake.vout.size());
         BOOST_ASSERT(nCoinstakePayment >= sum(txNoContractNoMnCoinstake));
+    }
+
+    // no contract, no MN payment, split
+    {
+        CMutableTransaction txNoContractNoMnCoinstake = txCoinstake;
+        txNoContractNoMnCoinstake.vout.back().nValue /= 2;
+        txNoContractNoMnCoinstake.vout.push_back(CTxOut(txNoContractNoMnCoinstake.vout.back().nValue, scriptCoinstake));
+        AdjustMasternodePayment(txNoContractNoMnCoinstake, {}, TPoSContract{});
+        BOOST_CHECK_EQUAL(3, txNoContractNoMnCoinstake.vout.size());
+        BOOST_ASSERT(nCoinstakePayment >= sum(txNoContractNoMnCoinstake));
+
+        for (int i = 1; i < 3; ++i) {
+            BOOST_CHECK_EQUAL(scriptCoinstake.ToString(), txNoContractNoMnCoinstake.vout[i].scriptPubKey.ToString());
+        }
+    }
+}
+
+BOOST_FIXTURE_TEST_CASE(tpos_contract_adjust_mn_payment, TestChain100Setup)
+{
+    CMutableTransaction txCoinstake;
+    txCoinstake.vout.resize(1);
+    auto scriptCoinstake = GetScriptForDestination(coinbaseKey.GetPubKey().GetID());
+    CKey keyMNPayment;
+    keyMNPayment.MakeNewKey(true);
+    auto scriptMnPayment = GetScriptForDestination(keyMNPayment.GetPubKey().GetID());
+    auto nCoinstakePayment = 10 * COIN;
+    txCoinstake.vout.emplace_back(nCoinstakePayment, scriptCoinstake);
+
+    CMutableTransaction txSplitCoinstake;
+    txSplitCoinstake.vout.resize(1);
+    txSplitCoinstake.vout.emplace_back(nCoinstakePayment / 2, scriptCoinstake);
+
+    auto sum = [](const CMutableTransaction &tx) {
+        return std::accumulate(tx.vout.begin(), tx.vout.end(), CAmount(0), [](CAmount accum, const CTxOut &out) {
+            return accum + out.nValue;
+        });
+    };
+
+    CKey keyMerhchant;
+    keyMerhchant.MakeNewKey(true);
+    auto merchantAddress = WitnessV0KeyHash(keyMerhchant.GetPubKey().GetID());
+    auto scriptMerchant = GetScriptForDestination(merchantAddress);
+
+    auto txContract = CreateContractTx(coinbaseKey.GetPubKey().GetID(), merchantAddress, 50, false);
+    auto contract = TPoSContract::FromTPoSContractTx(MakeTransactionRef(txContract));
+
+    BOOST_ASSERT(contract.IsValid());
+
+    auto nOwnerReward = TPoSUtils::GetOwnerPayment(nCoinstakePayment, contract.nOperatorReward);
+    auto nOperatorReward = TPoSUtils::GetOperatorPayment(nCoinstakePayment, contract.nOperatorReward);
+
+    // prepare no split tx
+    txCoinstake.vout.back().nValue = nOwnerReward;
+    txCoinstake.vout.emplace_back(nOperatorReward, scriptMerchant);
+
+    // prepare split tx
+    txSplitCoinstake.vout.back().nValue = nOwnerReward / 2;
+    txSplitCoinstake.vout.emplace_back(txSplitCoinstake.vout.back());
+    txSplitCoinstake.vout.emplace_back(nOperatorReward, scriptMerchant);
+
+    // contract, MN payment, no split
+    {
+        auto nAdjustedReward = nCoinstakePayment / 2;
+        CMutableTransaction txTPoSCoinstake = txCoinstake;
+        auto nMNPayment = nCoinstakePayment / 2;
+        CTxOut outMNPayment(nMNPayment, scriptMnPayment);
+        txTPoSCoinstake.vout.push_back(outMNPayment);
+        AdjustMasternodePayment(txTPoSCoinstake, outMNPayment, contract);
+        BOOST_CHECK_EQUAL(4, txTPoSCoinstake.vout.size());
+        BOOST_CHECK_EQUAL(contract.scriptTPoSAddress.ToString(), txTPoSCoinstake.vout[1].scriptPubKey.ToString());
+        BOOST_CHECK_EQUAL(TPoSUtils::GetOwnerPayment(nAdjustedReward, contract.nOperatorReward), txTPoSCoinstake.vout[1].nValue);
+        BOOST_CHECK_EQUAL(TPoSUtils::GetOperatorPayment(nAdjustedReward, contract.nOperatorReward), txTPoSCoinstake.vout[2].nValue);
+        BOOST_CHECK_EQUAL(scriptMerchant.ToString(), txTPoSCoinstake.vout[2].scriptPubKey.ToString());
+        BOOST_CHECK_EQUAL(outMNPayment.nValue, txTPoSCoinstake.vout[3].nValue);
+        BOOST_CHECK_EQUAL(outMNPayment.scriptPubKey.ToString(), txTPoSCoinstake.vout[3].scriptPubKey.ToString());
+        BOOST_ASSERT(nCoinstakePayment >= sum(txTPoSCoinstake));
+    }
+
+    // contract, MN payment, split
+    {
+        auto nAdjustedReward = nCoinstakePayment / 2;
+        CMutableTransaction txContractSplitCoinstake = txSplitCoinstake;
+        auto nMNPayment = nCoinstakePayment / 2;
+        CTxOut outMNPayment(nMNPayment, scriptMnPayment);
+        txContractSplitCoinstake.vout.push_back(outMNPayment);
+        AdjustMasternodePayment(txContractSplitCoinstake, outMNPayment, contract);
+        BOOST_CHECK_EQUAL(5, txContractSplitCoinstake.vout.size());
+        CAmount amount = 0;
+        for (int i = 1; i < 3; ++i) {
+            BOOST_CHECK_EQUAL(contract.scriptTPoSAddress.ToString(), txContractSplitCoinstake.vout[i].scriptPubKey.ToString());
+            amount += txContractSplitCoinstake.vout[i].nValue;
+        }
+
+        BOOST_CHECK_EQUAL(TPoSUtils::GetOwnerPayment(nAdjustedReward, contract.nOperatorReward), amount);
+        BOOST_CHECK_EQUAL(TPoSUtils::GetOperatorPayment(nAdjustedReward, contract.nOperatorReward), txContractSplitCoinstake.vout[3].nValue);
+        BOOST_CHECK_EQUAL(scriptMerchant.ToString(), txContractSplitCoinstake.vout[3].scriptPubKey.ToString());
+        BOOST_CHECK_EQUAL(outMNPayment.nValue, txContractSplitCoinstake.vout[4].nValue);
+        BOOST_CHECK_EQUAL(outMNPayment.scriptPubKey.ToString(), txContractSplitCoinstake.vout[4].scriptPubKey.ToString());
+        BOOST_ASSERT(nCoinstakePayment >= sum(txContractSplitCoinstake));
+    }
+
+    // contract, no MN payment, no split
+    {
+        CMutableTransaction txNoMnCoinstake = txCoinstake;
+        AdjustMasternodePayment(txNoMnCoinstake, {}, contract);
+        BOOST_CHECK_EQUAL(3, txNoMnCoinstake.vout.size());
+        BOOST_CHECK_EQUAL(contract.scriptTPoSAddress.ToString(), txNoMnCoinstake.vout[1].scriptPubKey.ToString());
+        BOOST_CHECK_EQUAL(TPoSUtils::GetOwnerPayment(nCoinstakePayment, contract.nOperatorReward), txNoMnCoinstake.vout[1].nValue);
+        BOOST_CHECK_EQUAL(TPoSUtils::GetOperatorPayment(nCoinstakePayment, contract.nOperatorReward), txNoMnCoinstake.vout[2].nValue);
+        BOOST_CHECK_EQUAL(scriptMerchant.ToString(), txNoMnCoinstake.vout[2].scriptPubKey.ToString());
+        BOOST_ASSERT(nCoinstakePayment >= sum(txNoMnCoinstake));
+    }
+
+    // contract, no MN payment, split
+    {
+        CMutableTransaction txSplitNoMnCoinstake = txSplitCoinstake;
+        AdjustMasternodePayment(txSplitNoMnCoinstake, {}, contract);
+        BOOST_CHECK_EQUAL(4, txSplitNoMnCoinstake.vout.size());
+        BOOST_ASSERT(nCoinstakePayment >= sum(txSplitNoMnCoinstake));
+
+        CAmount amount = 0;
+        for (int i = 1; i < 3; ++i) {
+            BOOST_CHECK_EQUAL(contract.scriptTPoSAddress.ToString(), txSplitNoMnCoinstake.vout[i].scriptPubKey.ToString());
+            amount += txSplitNoMnCoinstake.vout[i].nValue;
+        }
+
+        BOOST_CHECK_EQUAL(TPoSUtils::GetOwnerPayment(nCoinstakePayment, contract.nOperatorReward), amount);
+        BOOST_CHECK_EQUAL(TPoSUtils::GetOperatorPayment(nCoinstakePayment, contract.nOperatorReward), txSplitNoMnCoinstake.vout[3].nValue);
+        BOOST_CHECK_EQUAL(scriptMerchant.ToString(), txSplitNoMnCoinstake.vout[3].scriptPubKey.ToString());
     }
 }
 
