@@ -156,6 +156,12 @@ void SignVerifyMessageDialog::on_signMessageButton_SM_clicked()
     CWallet* pwallet = wallets.size() > 0 ? wallets[0] : nullptr;
 
     CKeyID keyID = GetKeyForDestination(*pwallet, destination);
+    if(keyID.IsNull()) {
+        ui->statusLabel_SM->setStyleSheet("QLabel { color: red; }");
+        ui->statusLabel_SM->setText(tr("Invalid address, supporting p2pkh or p2wpkh"));
+        return;
+    }
+
     CKey key;
     if (!model->wallet().getPrivKey(keyID, key)) {
         ui->statusLabel_SM->setStyleSheet("QLabel { color: red; }");
