@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/3092dd53383e0412a49b2878fe908a51b61aa441
+commit 3092dd53383e0412a49b2878fe908a51b61aa441
+Author: Alexander Bai <vhurryharry@gmail.com>
+Date:   Mon Aug 31 23:00:37 2020 -0400
+
+    server: Optimized block list sql query
+    
+    server: Fixed block list sql query
+
 https://github.com/X9Developers/block-explorer/commit/81cc61ef91762bd335aecf847c4448c7381cbbd4
 commit 81cc61ef91762bd335aecf847c4448c7381cbbd4
 Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
