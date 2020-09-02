@@ -1,5 +1,15 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/9aad4e66f5677b3d6792f28c09c348624dd73295
+commit 9aad4e66f5677b3d6792f28c09c348624dd73295
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Sep 2 07:08:17 2020 -0600
+
+    server: Allow disabling the masternode synchronizer from env variables
+    
+    It's simpler to disable this synchronizer while using coins that doesn't
+    support masternodes, like btc/ltc/etc.
+
 https://github.com/X9Developers/block-explorer/commit/5501a435b6989594a81449c996e5e86a54f2e6fd
 commit 5501a435b6989594a81449c996e5e86a54f2e6fd
 Author: James Truong <trueeyedev@gmail.com>
