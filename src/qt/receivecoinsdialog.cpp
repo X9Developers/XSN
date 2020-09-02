@@ -65,6 +65,9 @@ ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *_platformStyle, QWid
     connect(copyAmountAction, SIGNAL(triggered()), this, SLOT(copyAmount()));
 
     connect(ui->clearButton, SIGNAL(clicked()), this, SLOT(clear()));
+
+    connect(ui->useBech32, SIGNAL(stateChanged(int)), this, SLOT(onUpdateBech32(int)));
+    connect(ui->useLegacy, SIGNAL(stateChanged(int)), this, SLOT(onUpdateLegacy(int)));
 }
 
 void ReceiveCoinsDialog::setModel(WalletModel *_model)
@@ -155,7 +158,9 @@ void ReceiveCoinsDialog::on_receiveButton_clicked()
     OutputType address_type;
     if (ui->useBech32->isChecked()) {
         address_type = OutputType::BECH32;
-    } else {
+    } else if(ui->useLegacy->isChecked()) {
+        address_type = OutputType::LEGACY;
+    }else {
         address_type = model->wallet().getDefaultAddressType();
         if (address_type == OutputType::BECH32) {
             address_type = OutputType::P2SH_SEGWIT;
@@ -269,6 +274,22 @@ void ReceiveCoinsDialog::showMenu(const QPoint &point)
         return;
     }
     contextMenu->exec(QCursor::pos());
+}
+
+// on check/uncheck "Use Bech32"
+void ReceiveCoinsDialog::onUpdateBech32(const int state)
+{
+    if(state == Qt::Checked) {
+        ui->useLegacy->setCheckState(Qt::Unchecked);
+    }
+}
+
+// on check/uncheck "Use Legacy"
+void ReceiveCoinsDialog::onUpdateLegacy(const int state)
+{
+    if(state == Qt::Checked) {
+        ui->useBech32->setCheckState(Qt::Unchecked);
+    }
 }
 
 // context menu action: copy URI
