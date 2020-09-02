@@ -19,6 +19,7 @@
 #include <timedata.h>
 #include <util.h>
 #include <utilstrencodings.h>
+#include <messagesigner.h>
 #ifdef ENABLE_WALLET
 #include <wallet/rpcwallet.h>
 #include <wallet/wallet.h>
@@ -187,8 +188,8 @@ static UniValue verifymessage(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_TYPE_ERROR, "Invalid address");
     }
 
-    const CKeyID *keyID = boost::get<CKeyID>(&destination);
-    if (!keyID) {
+    if (!boost::get<CKeyID>(&destination) && !boost::get<WitnessV0KeyHash>(&destination)
+        && !boost::get<CScriptID>(&destination)) {
         throw JSONRPCError(RPC_TYPE_ERROR, "Address does not refer to key");
     }
 
@@ -198,16 +199,8 @@ static UniValue verifymessage(const JSONRPCRequest& request)
     if (fInvalid)
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Malformed base64 encoding");
 
-    CHashWriter ss(SER_GETHASH, 0);
-    ss << strMessageMagic;
-    ss << strMessage;
-
-    CPubKey pubkey;
-    CPubKey::InputScriptType inputScriptType;
-    if (!pubkey.RecoverCompact(ss.GetHash(), vchSig, inputScriptType))
-        return false;
-
-    return (pubkey.GetID() == *keyID);
+    std::string strErrorRet;
+    return CMessageSigner::VerifyMessage(destination, vchSig, strMessage, strErrorRet);
 }
 
 static UniValue signmessagewithprivkey(const JSONRPCRequest& request)
