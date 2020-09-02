@@ -1,5 +1,20 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/c73bcc6725ad827e3e339abd49714e81d260e0a3
+commit c73bcc6725ad827e3e339abd49714e81d260e0a3
+Author: Alexander Bai <vhurryharry@gmail.com>
+Date:   Wed Sep 2 14:36:58 2020 -0400
+
+    server: Added merchantnodes api endpoint
+    
+    server: Fixed unit-tests, removed .sbtopts file
+    
+    server: Implemented Merchantnode synchronization service.
+    
+    server: Removed unused code
+    
+    server: Used in-memory merchantnodes to get count
+
 https://github.com/X9Developers/block-explorer/commit/76d552f9ab47302d0bdd8481560b0b30c59fab1d
 commit 76d552f9ab47302d0bdd8481560b0b30c59fab1d
 Author: Alexis Hernandez <alexis22229@gmail.com>
