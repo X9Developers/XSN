@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/28f20fc6891e9ad123d4e6c07b7cae8e5a0ba1c6
+commit 28f20fc6891e9ad123d4e6c07b7cae8e5a0ba1c6
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Sep 2 07:09:18 2020 -0600
+
+    infra: Update explorer configs
+    
+    Set the proper XSN_MASTERNODE_SYNCHRONIZER_ENABLED values.
+
 https://github.com/X9Developers/block-explorer/commit/9aad4e66f5677b3d6792f28c09c348624dd73295
 commit 9aad4e66f5677b3d6792f28c09c348624dd73295
 Author: Alexis Hernandez <alexis22229@gmail.com>
