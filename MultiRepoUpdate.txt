@@ -1,5 +1,21 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/81cc61ef91762bd335aecf847c4448c7381cbbd4
+commit 81cc61ef91762bd335aecf847c4448c7381cbbd4
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Thu Sep 3 22:57:54 2020 -0600
+
+    build(deps): bump node-sass from 4.9.4 to 4.14.1 in /web-ui (#189)
+    
+    Bumps [node-sass](https://github.com/sass/node-sass) from 4.9.4 to 4.14.1.
+    - [Release notes](https://github.com/sass/node-sass/releases)
+    - [Changelog](https://github.com/sass/node-sass/blob/master/CHANGELOG.md)
+    - [Commits](https://github.com/sass/node-sass/compare/v4.9.4...v4.14.1)
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+
 https://github.com/X9Developers/block-explorer/commit/28f20fc6891e9ad123d4e6c07b7cae8e5a0ba1c6
 commit 28f20fc6891e9ad123d4e6c07b7cae8e5a0ba1c6
 Author: Alexis Hernandez <alexis22229@gmail.com>
