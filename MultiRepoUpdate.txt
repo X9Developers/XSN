@@ -1,5 +1,20 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/caa634fab1b2214f661575e9d4e26f85740b4a17
+commit caa634fab1b2214f661575e9d4e26f85740b4a17
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Fri Sep 4 21:44:16 2020 -0600
+
+    build(deps): bump tree-kill from 1.2.0 to 1.2.2 in /web-ui (#190)
+    
+    Bumps [tree-kill](https://github.com/pkrumins/node-tree-kill) from 1.2.0 to 1.2.2.
+    - [Release notes](https://github.com/pkrumins/node-tree-kill/releases)
+    - [Commits](https://github.com/pkrumins/node-tree-kill/compare/v1.2.0...v1.2.2)
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+
 https://github.com/X9Developers/block-explorer/commit/3092dd53383e0412a49b2878fe908a51b61aa441
 commit 3092dd53383e0412a49b2878fe908a51b61aa441
 Author: Alexander Bai <vhurryharry@gmail.com>
