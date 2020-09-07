@@ -242,7 +242,7 @@ public:
     {
         LOCK2(cs_main, m_wallet.cs_wallet);
         auto pending = MakeUnique<PendingWalletTxImpl>(m_wallet);
-        if(!TPoSUtils::CreateTPoSTransaction(&m_wallet, pending->m_tx, pending->m_key, tpos_address, merchant_address, merchant_commission, false, fail_reason)) {
+        if(!TPoSUtils::CreateTPoSTransaction(&m_wallet, pending->m_tx, pending->m_key, tpos_address, merchant_address, merchant_commission, true, fail_reason)) {
             return {};
         }
         return std::move(pending);

@@ -3750,7 +3750,8 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CVali
     if(block.IsProofOfStake())
     {
         if(!CheckProofOfStake(pindex->pprev, block, hashProofOfStake, chainparams.GetConsensus())) {
-            return state.DoS(100, error("AcceptBlock(): check proof-of-stake failed for block %s\n", hash.ToString().c_str()));
+            return state.DoS(100, error("AcceptBlock(): check proof-of-stake failed for block %s\n", hash.ToString().c_str()),
+                             REJECT_INVALID);
         }
 
         if(!mapProofOfStake.count(hash)) // add to mapProofOfStake

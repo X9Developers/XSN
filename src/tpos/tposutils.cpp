@@ -61,8 +61,8 @@ bool TPoSUtils::GetTPoSPayments(const CWallet *wallet,
     CTxDestination address;
     auto scriptKernel = tx->vout.at(1).scriptPubKey;
     commissionAmount = stakeAmount = 0;
-    auto it = std::find_if(std::begin(tposContracts), std::end(tposContracts), [script = scriptKernel](const TPoSContract &entry) {
-        return entry.scriptTPoSAddress == script;
+    auto it = std::find_if(std::begin(tposContracts), std::end(tposContracts), [scriptKernel](const TPoSContract &entry) {
+        return entry.scriptTPoSAddress == scriptKernel;
     });
 
     if(it != std::end(tposContracts))
@@ -336,7 +336,7 @@ bool TPoSUtils::IsMerchantPaymentValid(CValidationState &state, const CBlock &bl
 });
 
     if(merchantPayment > 0) {
-        auto maxAllowedValue = (expectedReward / 100) * contract.nOperatorReward;
+        auto maxAllowedValue = GetOperatorPayment(expectedReward, contract.nOperatorReward);
         // ban, we know fur sure that merchant tries to get more than he is allowed
         if(merchantPayment > maxAllowedValue) {
             return state.DoS(100, error("IsMerchantPaymentValid -- ERROR: merchant was paid more than allowed: %s\n", EncodeDestination(merchantAddress).c_str()),
@@ -447,6 +447,7 @@ bool TPoSUtils::SignTPoSContract(CMutableTransaction &tx, CKeyStore *keystore, T
             it->scriptPubKey = GenerateLegacyContractScript(tposAddress, merchantAddress, contract.nOperatorReward, contract.vchSig);
             return true;
         } else if (contract.nVersion == 2) {
+
             auto prevout = tx.vin.front().prevout;
             std::string newHashMessage = prevout.hash.ToString() + ":" + std::to_string(prevout.n);
             auto type = contract.scriptTPoSAddress.IsPayToPublicKeyHash() ? CPubKey::InputScriptType::SPENDP2PKH : CPubKey::InputScriptType::SPENDWITNESS;
@@ -589,7 +590,7 @@ TPoSContract TPoSContract::FromTPoSContractTx(const CTransactionRef tx)
 
                             CBitcoinAddress tposAddress(ParseAddressFromMetadata(tokens[1]));
                             CBitcoinAddress merchantAddress(ParseAddressFromMetadata(tokens[2]));
-                            int commission = std::stoi(tokens[3]);
+                            int nStakePercentage = std::stoi(tokens[3]);
                             std::vector<unsigned char> vchSignature;
 
                             if (tokens.size() > 4) {
@@ -600,10 +601,10 @@ TPoSContract TPoSContract::FromTPoSContractTx(const CTransactionRef tx)
                             TPoSContract contract(tx,
                                                   merchantAddress.Get(),
                                                   tposAddress.Get(),
-                                                  commission, vchSignature);
+                                                  (100 - nStakePercentage), vchSignature);
                             contract.nVersion = 1; // legacy version
 
-                            if(contract.IsValid() && commission > 0 && commission < 100) {
+                            if(contract.IsValid()) {
                                 return contract;
                             }
                         }
