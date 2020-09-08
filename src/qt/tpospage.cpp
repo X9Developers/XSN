@@ -79,7 +79,9 @@ std::unique_ptr<interfaces::PendingWalletTx> TPoSPage::CreateCancelContractTrans
                                                                                        const TPoSContract &contract)
 {
     std::string strError;
-    auto questionString = QString("Are you sure you want to cancel contract with address: <b>%1</b>").arg(contract.tposAddress.ToString().c_str());
+    CTxDestination address;
+    ExtractDestination(contract.scriptTPoSAddress, address);
+    auto questionString = QString("Are you sure you want to cancel contract with address: <b>%1</b>").arg(EncodeDestination(address).c_str());
     // Display message box
     QMessageBox::StandardButton retval = QMessageBox::question(widget, QObject::tr("Confirm canceling tpos contract"),
                                                                questionString,

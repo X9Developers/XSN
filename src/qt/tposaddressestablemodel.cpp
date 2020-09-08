@@ -96,15 +96,16 @@ QVariant TPoSAddressesTableModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     auto entryIt = std::next(tposContracts.begin(), index.row());
-    CBitcoinAddress address = entryIt->second.tposAddress;
+    CTxDestination address;
+    ExtractDestination(entryIt->second.scriptTPoSAddress, address);
     auto it = amountsMap.find(address);
 
     switch(index.column())
     {
-    case Address: return QString::fromStdString(address.ToString());
+    case Address: return QString::fromStdString(EncodeDestination(address));
     case Amount: return it != std::end(amountsMap) ? formatAmount(it->second.totalAmount) : QString();
     case AmountStaked: return it != std::end(amountsMap) ? formatAmount(it->second.stakeAmount) : QString();
-    case CommissionPaid: return it != std::end(amountsMap) ? formatCommissionAmount(it->second.commissionAmount, entryIt->second.stakePercentage) : QString();
+    case CommissionPaid: return it != std::end(amountsMap) ? formatCommissionAmount(it->second.commissionAmount, entryIt->second.nOperatorReward) : QString();
     default:
         break;
     }
@@ -128,7 +129,8 @@ void TPoSAddressesTableModel::updateModel()
 void TPoSAddressesTableModel::updateAmount(int row)
 {
     auto entryIt = std::next(tposContracts.begin(), row);
-    CBitcoinAddress address = entryIt->second.tposAddress;
+    CTxDestination address;
+    ExtractDestination(entryIt->second.scriptTPoSAddress, address);
     amountsMap[address] = GetAmountForAddress(address);
     Q_EMIT dataChanged(index(row, Amount), index(row, CommissionPaid));
 }
@@ -145,7 +147,9 @@ void TPoSAddressesTableModel::refreshModel()
     amountsMap.clear();
     for(auto &&contract : tposContracts)
     {
-        amountsMap[contract.second.tposAddress] = GetAmountForAddress(contract.second.tposAddress);
+        CTxDestination tposAddress;
+        ExtractDestination(contract.second.scriptTPoSAddress, tposAddress);
+        amountsMap[tposAddress] = GetAmountForAddress(tposAddress);
     }
 }
 
@@ -176,22 +180,22 @@ void TPoSAddressesTableModel::NotifyTransactionChanged(const uint256& hash, Chan
     }
 }
 
-QString TPoSAddressesTableModel::formatCommissionAmount(CAmount commissionAmount, int percentage) const
+QString TPoSAddressesTableModel::formatCommissionAmount(CAmount commissionAmount, int nOperatorReward) const
 {
-    return QString("%1 (%2 %)").arg(formatAmount(commissionAmount)).arg(100 - percentage);
+    return QString("%1 (%2 %)").arg(formatAmount(commissionAmount)).arg(nOperatorReward);
 }
 
-TPoSAddressesTableModel::Entry TPoSAddressesTableModel::GetAmountForAddress(CBitcoinAddress address)
+TPoSAddressesTableModel::Entry TPoSAddressesTableModel::GetAmountForAddress(CTxDestination address)
 {
     Entry result = { 0, 0, 0 };
 
-    // xsn address
-    if (!address.IsValid())
-        return result;
-
     auto &walletInterface = walletModel->wallet();
 
-    CScript scriptPubKey = GetScriptForDestination(address.Get());
+    CScript scriptPubKey = GetScriptForDestination(address);
+
+    if (scriptPubKey.empty()) {
+        return result;
+    }
 
     // this loop can be optimized
     for (auto &&walletTx : walletInterface.getWalletTxs())
@@ -219,7 +223,7 @@ TPoSAddressesTableModel::Entry TPoSAddressesTableModel::GetAmountForAddress(CBit
             CTxDestination tposAddress;
             CTxDestination merchantAddress;
             if(walletInterface.getTPoSPayments(walletTx.tx, stakeAmount, commissionAmount, tposAddress, merchantAddress) &&
-                    tposAddress == address.Get())
+                    tposAddress == address)
             {
                 // at this moment nNet contains net stake reward
                 // commission was sent to merchant address, so it was base of tx
