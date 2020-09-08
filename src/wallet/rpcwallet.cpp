@@ -29,6 +29,7 @@
 #include <wallet/wallet.h>
 #include <wallet/walletdb.h>
 #include <wallet/walletutil.h>
+#include <messagesigner.h>
 
 #include <init.h>  // For StartShutdown
 
@@ -692,6 +693,21 @@ static UniValue signmessage(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_TYPE_ERROR, "Invalid address");
     }
 
+    CPubKey::InputScriptType scriptType;
+
+    if (boost::get<CKeyID>(&dest)) {
+        scriptType = CPubKey::InputScriptType::SPENDP2PKH;
+    }
+    else if (boost::get<WitnessV0KeyHash>(&dest)) {
+        scriptType = CPubKey::InputScriptType::SPENDWITNESS;
+    }
+    else if (boost::get<CScriptID>(&dest)) {
+        scriptType = CPubKey::InputScriptType::SPENDP2SHWITNESS;
+    }
+    else {
+        throw JSONRPCError(RPC_WALLET_ERROR, "Address does not refer to a key.");
+    }
+
     CKeyID keyID = GetKeyForDestination(*pwallet, dest);
     if(keyID.IsNull()) {
         throw JSONRPCError(RPC_WALLET_ERROR, "Invalid address, supporting p2pkh or p2wpkh");
@@ -702,14 +718,11 @@ static UniValue signmessage(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_WALLET_ERROR, "Private key not available");
     }
 
-    CHashWriter ss(SER_GETHASH, 0);
-    ss << strMessageMagic;
-    ss << strMessage;
-
     std::vector<unsigned char> vchSig;
-    if (!key.SignCompact(ss.GetHash(), vchSig))
+    if(!CMessageSigner::SignMessage(strMessage, vchSig, key, scriptType)) {
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Sign failed");
-
+    }
+    
     return EncodeBase64(vchSig.data(), vchSig.size());
 }
 

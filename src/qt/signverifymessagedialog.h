@@ -6,6 +6,7 @@
 #define BITCOIN_QT_SIGNVERIFYMESSAGEDIALOG_H
 
 #include <QDialog>
+#include <script/standard.h>
 
 class PlatformStyle;
 class WalletModel;
