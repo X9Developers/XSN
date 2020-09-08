@@ -3796,7 +3796,13 @@ bool ProcessNewBlock(const CChainParams& chainparams, const std::shared_ptr<cons
         CValidationState state;
         // Ensure that CheckBlock() passes before calling AcceptBlock, as
         // belt-and-suspenders.
-        bool ret = CheckBlock(*pblock, state, chainparams.GetConsensus());
+
+        if (mapBlockIndex.count(pblock->hashPrevBlock) == 0) {
+            return error("%s: ProcessNewBlock FAILED to find prev block", __func__);
+        }
+
+        bool ret = CheckBlock(*pblock, state, chainparams.GetConsensus()) &&
+                CheckBlockSignature(*pblock, state, chainparams.GetConsensus(), mapBlockIndex.at(pblock->hashPrevBlock));
 
         LOCK(cs_main);
 
