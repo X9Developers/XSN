@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/76d552f9ab47302d0bdd8481560b0b30c59fab1d
+commit 76d552f9ab47302d0bdd8481560b0b30c59fab1d
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Wed Sep 9 22:45:16 2020 -0600
+
+    server: Fix the config for the kamon slow queries threshold
+
 https://github.com/X9Developers/block-explorer/commit/28c89147be43c7557a005d1f36981468450044bd
 commit 28c89147be43c7557a005d1f36981468450044bd
 Author: Alexis Hernandez <alexis22229@gmail.com>
