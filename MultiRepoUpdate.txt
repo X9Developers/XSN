@@ -1,5 +1,32 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/7a9e3361a705c9bb1deb951b82b8fba2429b187a
+commit 7a9e3361a705c9bb1deb951b82b8fba2429b187a
+Author: Alexander Bai <vhurryharry@gmail.com>
+Date:   Sat Sep 12 13:09:32 2020 -0400
+
+    server: Added node statistics api.
+    
+    server: Added coins in masternodes/staking to node-stats
+    
+    server: Updated data type for coins in masternodes/staking
+    
+    server: Sync coins staking amount
+    
+    server: Used separate query for coins in addresses
+    
+    server: Fixed unit test
+    
+    server: Updated syncing coinsStaking
+    
+    server: Fixed unit test
+    
+    server: Updated coinsStaking value calculation
+    
+    server: Updated data types in the coinsStaking workflow
+    
+    server: Fixed formatting of StatisticsService
+
 https://github.com/X9Developers/block-explorer/commit/b7e4af6501ad1c404fca9412a9bf41f147ff3d21
 commit b7e4af6501ad1c404fca9412a9bf41f147ff3d21
 Author: Alexander Bai <vhurryharry@gmail.com>
