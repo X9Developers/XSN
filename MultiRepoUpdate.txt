@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/b7e4af6501ad1c404fca9412a9bf41f147ff3d21
+commit b7e4af6501ad1c404fca9412a9bf41f147ff3d21
+Author: Alexander Bai <vhurryharry@gmail.com>
+Date:   Tue Sep 15 23:06:23 2020 -0400
+
+    server: Added new api endpoint to get transactions by address
+
 https://github.com/X9Developers/block-explorer/commit/7f40f284a4a25172ff08cbd5afdbdd5b6c3534ba
 commit 7f40f284a4a25172ff08cbd5afdbdd5b6c3534ba
 Author: Alexander Bai <vhurryharry@gmail.com>
