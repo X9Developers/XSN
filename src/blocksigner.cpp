@@ -20,10 +20,11 @@ static CPubKey::InputScriptType GetScriptTypeFromDestination(const CTxDestinatio
     return CPubKey::InputScriptType::SPENDUNKNOWN;
 }
 
-CBlockSigner::CBlockSigner(CBlock &block, const CKeyStore *keystore, const TPoSContract &contract) :
+CBlockSigner::CBlockSigner(CBlock &block, const CKeyStore *keystore, const TPoSContract &contract, int chainHeight) :
     refBlock(block),
     refKeystore(keystore),
-    refContract(contract)
+    refContract(contract),
+    nChainHeight(chainHeight)
 {
 
 }
@@ -31,7 +32,7 @@ CBlockSigner::CBlockSigner(CBlock &block, const CKeyStore *keystore, const TPoSC
 bool CBlockSigner::SignBlock()
 {
     CKey keySecret;
-    CPubKey::InputScriptType scriptType;
+    CPubKey::InputScriptType scriptType { CPubKey::InputScriptType::SPENDUNKNOWN };
 
     if(refBlock.IsProofOfStake())
     {
@@ -45,15 +46,18 @@ bool CBlockSigner::SignBlock()
 
         if(refBlock.IsTPoSBlock())
         {
-            CKeyID merchantKeyID;
-            if(!refContract.merchantAddress.GetKeyID(merchantKeyID))
+            if(!refContract.scriptMerchantAddress.IsPayToPublicKeyHash()) {
                 return error("CBlockSigner::SignBlock() : merchant address is not P2PKH, critical error, can't accept.");
+            }
 
-            if(merchantKeyID != activeMerchantnode.pubKeyMerchantnode.GetID())
+            CTxDestination dest;
+            ExtractDestination(refContract.scriptMerchantAddress, dest);
+
+            if(dest != CTxDestination(activeMerchantnode.pubKeyMerchantnode.GetID())) {
                 return error("CBlockSigner::SignBlock() : contract address is different from merchantnode address, won't sign.");
+            }
 
             scriptType = CPubKey::InputScriptType::SPENDP2PKH;
-
             keySecret = activeMerchantnode.keyMerchantnode;
         }
         else
@@ -69,8 +73,13 @@ bool CBlockSigner::SignBlock()
             scriptType = GetScriptTypeFromDestination(destination);
         }
     }
-//?
-    return CHashSigner::SignHash(refBlock.IsTPoSBlock() ? refBlock.GetTPoSHash() : refBlock.GetHash(), keySecret, scriptType, refBlock.vchBlockSig);
+
+    const auto &hash = refBlock.IsTPoSBlock() ? refBlock.GetTPoSHash() : refBlock.GetHash();
+    if (IsTPoSNewSignaturesHardForkActivated(nChainHeight)) {
+        return CMessageSigner::SignMessage(std::string(hash.begin(), hash.end()), refBlock.vchBlockSig, keySecret, scriptType);
+    } else {
+        return CHashSigner::SignHash(hash, keySecret, scriptType, refBlock.vchBlockSig);
+    }
 }
 
 bool CBlockSigner::CheckBlockSignature() const
@@ -85,24 +94,26 @@ bool CBlockSigner::CheckBlockSignature() const
 
     CTxDestination destination;
 
-    if(!ExtractDestination(txout.scriptPubKey, destination))
-    {
+    if(!ExtractDestination(txout.scriptPubKey, destination)) {
         return error("CBlockSigner::CheckBlockSignature() : failed to extract destination from script: %s", txout.scriptPubKey.ToString());
     }
 
     auto hashMessage = refBlock.IsTPoSBlock() ? refBlock.GetTPoSHash() : refBlock.GetHash();
-    if(refBlock.IsProofOfStake())
-    {
-        if(refBlock.IsTPoSBlock())
-        {
-            destination = refContract.merchantAddress.Get();
+    if(refBlock.IsProofOfStake()) {
+        if(refBlock.IsTPoSBlock()) {
+            if (!ExtractDestination(refContract.scriptMerchantAddress, destination)) {
+                return error("CBlockSigner::CheckBlockSignature() : failed to extract destination from script: %s", refContract.scriptMerchantAddress.ToString());
+            }
         }
     }
-    else
-    {
+    else {
         return true;
     }
 
     std::string strError;
-    return CHashSigner::VerifyHash(hashMessage, destination, refBlock.vchBlockSig, strError);
+    if (IsTPoSNewSignaturesHardForkActivated(nChainHeight)) {
+        return CMessageSigner::VerifyMessage(destination, refBlock.vchBlockSig, std::string(hashMessage.begin(), hashMessage.end()), strError);
+    } else {
+        return CHashSigner::VerifyHash(hashMessage, destination, refBlock.vchBlockSig, strError);
+    }
 }

@@ -613,6 +613,14 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
         return state.Invalid(false, REJECT_DUPLICATE, "txn-already-in-mempool");
     }
 
+    if (TPoSUtils::IsTPoSContract(ptx)) {
+        TPoSContract contract;
+        std::string strError;
+        if (!TPoSUtils::CheckContract(ptx, contract, chainActive.Height(), true, false, strError)) {
+            return state.Invalid(false, REJECT_INVALID, "tpos-invalid-contract");
+        }
+    }
+
     // Check for conflicts with in-memory transactions
     std::set<uint256> setConflicts;
     for (const CTxIn &txin : tx.vin)
@@ -1814,6 +1822,37 @@ static unsigned int GetBlockScriptFlags(const CBlockIndex* pindex, const Consens
     return flags;
 }
 
+static bool CheckBlockSignature(const CBlock& block, CValidationState& state, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev, bool fCheckContractOutpoint = true)
+{
+    if (block.IsProofOfStake()) {
+        uint256 hash = block.GetHash();
+
+        TPoSContract contract;
+        int nBlockHeight = pindexPrev->nHeight + 1;
+        if(block.IsTPoSBlock()) {
+            bool fCheckTPoSSignature = block.GetBlockTime() >
+                    consensusParams.nTPoSContractSignatureDeploymentTime;
+
+            std::string strError;
+            if(!TPoSUtils::CheckContract(block.hashTPoSContractTx, contract, nBlockHeight, fCheckTPoSSignature, fCheckContractOutpoint, strError)) {
+                return state.DoS(100, error("CheckBlock(): check contract failed, %s for tpos block %s\n", strError, hash.ToString().c_str()));
+            }
+
+            block.txTPoSContract = contract.txContract;
+        }
+
+        CBlock blockTmp = block;
+
+        CBlockSigner signer(blockTmp, nullptr, contract, nBlockHeight);
+
+        if(!signer.CheckBlockSignature()) {
+            return state.DoS(100, error("CheckBlock(): block signature invalid"),
+                             REJECT_INVALID, "bad-block-signature");
+        }
+    }    
+
+    return true;
+}
 
 
 static int64_t nTimeCheck = 0;
@@ -1857,6 +1896,10 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
             return AbortNode(state, "Corrupt block found indicating potential hardware failure; shutting down");
         }
         return error("%s: Consensus::CheckBlock: %s", __func__, FormatStateMessage(state));
+    }
+
+    if (!fJustCheck && !CheckBlockSignature(block, state, chainparams.GetConsensus(), pindex->pprev)) {
+        return error("%s: Consensus::CheckBlockSignature: %s", __func__, FormatStateMessage(state));
     }
 
     // verify that the view's current state corresponds to the previous block
@@ -3214,7 +3257,7 @@ static bool CheckBlockHeader(const CBlockHeader& block, CValidationState& state,
     return true;
 }
 
-bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::Params& consensusParams, bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckContractOutpoint)
+bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::Params& consensusParams, bool fCheckPOW, bool fCheckMerkleRoot)
 {
     // These are checks that are independent of context.
 
@@ -3264,31 +3307,6 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
         for (unsigned int i = 2; i < block.vtx.size(); i++)
             if (block.vtx[i]->IsCoinStake())
                 return state.DoS(100, error("CheckBlock() : more than one coinstake"));
-
-        uint256 hash = block.GetHash();
-
-        TPoSContract contract;
-        if(block.IsTPoSBlock()) {
-            bool fCheckTPoSSignature = block.GetBlockTime() >
-                    Params().GetConsensus().nTPoSContractSignatureDeploymentTime;
-
-            std::string strError;
-            if(!TPoSUtils::CheckContract(block.hashTPoSContractTx, contract, fCheckTPoSSignature, fCheckContractOutpoint, strError)) {
-                state.DoS(100, error("CheckBlock(): check contract failed, %s for tpos block %s\n", strError, hash.ToString().c_str()));
-                return false;
-            }
-
-            block.txTPoSContract = contract.rawTx;
-        }
-
-        CBlock blockTmp = block;
-
-        CBlockSigner signer(blockTmp, nullptr, contract);
-
-        if(!signer.CheckBlockSignature()) {
-            return state.DoS(100, error("CheckBlock(): block signature invalid"),
-                             REJECT_INVALID, "bad-block-signature");
-        }
     }
 
     // Check transactions
@@ -3717,7 +3735,8 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CVali
     if (fNewBlock) *fNewBlock = true;
 
     if (!CheckBlock(block, state, chainparams.GetConsensus()) ||
-            !ContextualCheckBlock(block, state, chainparams.GetConsensus(), pindex->pprev)) {
+            !ContextualCheckBlock(block, state, chainparams.GetConsensus(), pindex->pprev) || 
+            !CheckBlockSignature(block, state, chainparams.GetConsensus(), pindex->pprev)) {
         if (state.IsInvalid() && !state.CorruptionPossible()) {
             pindex->nStatus |= BLOCK_FAILED_VALID;
             setDirtyBlockIndex.insert(pindex);
@@ -3731,7 +3750,8 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CVali
     if(block.IsProofOfStake())
     {
         if(!CheckProofOfStake(pindex->pprev, block, hashProofOfStake, chainparams.GetConsensus())) {
-            return state.DoS(100, error("AcceptBlock(): check proof-of-stake failed for block %s\n", hash.ToString().c_str()));
+            return state.DoS(100, error("AcceptBlock(): check proof-of-stake failed for block %s\n", hash.ToString().c_str()),
+                             REJECT_INVALID);
         }
 
         if(!mapProofOfStake.count(hash)) // add to mapProofOfStake
@@ -3776,7 +3796,13 @@ bool ProcessNewBlock(const CChainParams& chainparams, const std::shared_ptr<cons
         CValidationState state;
         // Ensure that CheckBlock() passes before calling AcceptBlock, as
         // belt-and-suspenders.
-        bool ret = CheckBlock(*pblock, state, chainparams.GetConsensus());
+
+        if (mapBlockIndex.count(pblock->hashPrevBlock) == 0) {
+            return error("%s: ProcessNewBlock FAILED to find prev block", __func__);
+        }
+
+        bool ret = CheckBlock(*pblock, state, chainparams.GetConsensus()) &&
+                CheckBlockSignature(*pblock, state, chainparams.GetConsensus(), mapBlockIndex.at(pblock->hashPrevBlock));
 
         LOCK(cs_main);
 
@@ -3819,6 +3845,8 @@ bool TestBlockValidity(CValidationState& state, const CChainParams& chainparams,
         return error("%s: Consensus::CheckBlock: %s", __func__, FormatStateMessage(state));
     if (!ContextualCheckBlock(block, state, chainparams.GetConsensus(), pindexPrev))
         return error("%s: Consensus::ContextualCheckBlock: %s", __func__, FormatStateMessage(state));
+    if (!CheckBlockSignature(block, state, chainparams.GetConsensus(), pindexPrev)) 
+        return error("%s: Consensus::CheckBlockSignature: %s", __func__, FormatStateMessage(state));
     if (!g_chainstate.ConnectBlock(block, state, &indexDummy, viewNew, chainparams, true))
         return false;
     assert(state.IsValid());
@@ -4237,7 +4265,7 @@ bool CVerifyDB::VerifyDB(const CChainParams& chainparams, CCoinsView *coinsview,
         if (!ReadBlockFromDisk(block, pindex, chainparams.GetConsensus()))
             return error("VerifyDB(): *** ReadBlockFromDisk failed at %d, hash=%s", pindex->nHeight, pindex->GetBlockHash().ToString());
         // check level 1: verify block validity
-        if (nCheckLevel >= 1 && !CheckBlock(block, state, chainparams.GetConsensus(), true, true, false))
+        if (nCheckLevel >= 1 && !CheckBlock(block, state, chainparams.GetConsensus(), true, true))
             return error("%s: *** found bad block at %d, hash=%s (%s)\n", __func__,
                          pindex->nHeight, pindex->GetBlockHash().ToString(), FormatStateMessage(state));
         // check level 2: verify undo validity

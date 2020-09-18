@@ -9,7 +9,7 @@ class CKeyStore;
 
 struct CBlockSigner {
 
-    CBlockSigner(CBlock &block, const CKeyStore *keystore, const TPoSContract &contract);
+    CBlockSigner(CBlock &block, const CKeyStore *keystore, const TPoSContract &contract, int chainHeight);
 
     bool SignBlock();
     bool CheckBlockSignature() const;
@@ -17,5 +17,6 @@ struct CBlockSigner {
     CBlock &refBlock;
     const CKeyStore *refKeystore;
     const TPoSContract &refContract;
+    int nChainHeight{0};
 };
 #endif // BLOCKSIGNER_H

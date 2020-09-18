@@ -63,16 +63,16 @@ private:
     void refreshModel();
     void updateAmountColumnTitle();
     void NotifyTransactionChanged(const uint256& hash, ChangeType status);
-    QString formatCommissionAmount(CAmount commissionAmount, int percentage) const;
+    QString formatCommissionAmount(CAmount commissionAmount, int nOperatorReward) const;
     QString formatAmount(CAmount amountAsStr) const;
-    Entry GetAmountForAddress(CBitcoinAddress address);
+    Entry GetAmountForAddress(CTxDestination address);
 
 private:
     std::unique_ptr<interfaces::Handler> transactionChangedHandler;
     WalletModel *walletModel;
     OptionsModel *optionsModel;
     const std::map<uint256, TPoSContract> &tposContracts;
-    std::map<CBitcoinAddress, Entry> amountsMap;
+    std::map<CTxDestination, Entry> amountsMap;
     QStringList columns;
 };
 

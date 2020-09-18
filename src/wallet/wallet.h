@@ -1032,17 +1032,12 @@ public:
     bool SignTransaction(CMutableTransaction& tx) EXCLUSIVE_LOCKS_REQUIRED(cs_wallet);
 
     /**
-     * Delegate which will be called before signing, but after funding transaction.
-     */
-    using OnTransactionToBeSigned = std::function<void(CMutableTransaction &)>;
-
-    /**
      * Create a new transaction paying the recipients with a set of coins
      * selected by SelectCoins(); Also create the change output, when needed
      * @note passing nChangePosInOut as -1 will result in setting a random position
      */
     bool CreateTransaction(const std::vector<CRecipient>& vecSend, CTransactionRef& tx, CReserveKey& reservekey, CAmount& nFeeRet, int& nChangePosInOut,
-                           std::string& strFailReason, const CCoinControl& coin_control, bool sign = true, OnTransactionToBeSigned onTxToBeSigned = OnTransactionToBeSigned());
+                           std::string& strFailReason, const CCoinControl& coin_control, bool sign = true);
     bool CreateCoinStake(unsigned int nBits, CAmount blockReward,
                          CMutableTransaction& txNew, unsigned int& nTxNewTime,
                          const TPoSContract &tposContract, std::vector<const CWalletTx *> &vwtxPrev,

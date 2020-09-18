@@ -99,6 +99,7 @@ public:
         consensus.nPosTargetSpacing = 1 * 60; // XSN: 1 minutes
         consensus.nPosTargetTimespan = 60 * 40;
         consensus.nPoSUpdgradeHFHeight = 898488; // 4 December 2019
+        consensus.nTPoSSignatureUpgradeHFHeight = 1348224; // tpos signature update HF, 8 October 2020
         consensus.nMerchantnodeMinimumConfirmations = 1;
         consensus.nMasternodeMinimumConfirmations = 15;
         consensus.nStakeMinAge = 60 * 60;
@@ -110,6 +111,7 @@ public:
         consensus.nMaxBlockSpacingFixDeploymentHeight = 674980; // apprx 28 of June
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
+        consensus.fPoSNoRetargeting = false;
         consensus.nRuleChangeActivationThreshold = 1080; // 75% of 2016
         consensus.nMinerConfirmationWindow = 1440; // nPowTargetTimespan / nPowTargetSpacing
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
@@ -235,6 +237,7 @@ public:
         consensus.nMasternodeMinimumConfirmations = 1;
         consensus.nMerchantnodeMinimumConfirmations = 1;
         consensus.fPowNoRetargeting = false;
+        consensus.fPoSNoRetargeting = false;
         consensus.nPowKGWHeight = 4001; // nPowKGWHeight >= nPowDGWHeight means "no KGW"
         consensus.nPowDGWHeight = 4001;
         consensus.nMaxBlockSpacingFixDeploymentHeight = 0;
@@ -289,11 +292,6 @@ public:
 
         vFixedSeeds.clear();
         vSeeds.clear();
-        // nodes with support for servicebits filtering should be at the top
-//        vSeeds.emplace_back("testnet-seed.xsn.jonasschnelli.ch");
-//        vSeeds.emplace_back("seed.txsn.petertodd.org");
-//        vSeeds.emplace_back("seed.testnet.xsn.sprovoost.nl");
-//        vSeeds.emplace_back("testnet-seed.bluematt.me"); // Just a static list of stable node(s), only supports x9
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,140);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,19);
@@ -360,13 +358,16 @@ public:
         consensus.nPowTargetSpacing = 1 * 60; // XSN: 1 minutes
         consensus.nPosTargetSpacing = 1 * 60; // PoSW: 1 minutes
         consensus.nPosTargetTimespan = 60 * 40;
+        consensus.nPoSUpdgradeHFHeight = 0;
+        consensus.nTPoSSignatureUpgradeHFHeight = 80;
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = true;
+        consensus.fPoSNoRetargeting = true;
         consensus.nPowKGWHeight = 4001; // nPowKGWHeight >= nPowDGWHeight means "no KGW"
         consensus.nPowDGWHeight = 4001;
         consensus.nLastPoWBlock = 75;
         consensus.nMaxBlockSpacingFixDeploymentHeight = 0;
-        consensus.nStakeMinAge = 60 * 60;
+        consensus.nStakeMinAge = 60;
         consensus.nStakeMaxAge = 60 * 60 * 24; // one day
         consensus.nCoinbaseMaturity = 20;
         consensus.nFirstBlocksEmpty = 0;
@@ -422,13 +423,13 @@ public:
             0
         };
 
-        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,140);
-        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,19);
-        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,239);
-        base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x35, 0x87, 0xCF};
-        base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,76);
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,16);
+        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,204);
+        base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x88, 0xB2, 0x1E};
+        base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x88, 0xAD, 0xE4};
 
-        bech32_hrp = "bcrt";
+        bech32_hrp = "xc";
 
         /* enable fallback fee on regtest */
         m_fallback_fee_enabled = true;

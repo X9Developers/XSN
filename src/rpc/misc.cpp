@@ -511,7 +511,7 @@ UniValue getstakingstatus(const JSONRPCRequest& request)
         auto helper = [&txId, &tposStatus] {
             TPoSContract contract;
             std::string strError;
-            if(!TPoSUtils::CheckContract(txId, contract, true, true, strError))
+            if(!TPoSUtils::CheckContract(txId, contract, chainActive.Tip()->nHeight, true, true, strError))
             {
                 tposStatus = strError;
                 return false;
@@ -532,9 +532,12 @@ UniValue getstakingstatus(const JSONRPCRequest& request)
                 return false;
             }
 
-            auto merchantnodePayee = CBitcoinAddress(activeMerchantnode.pubKeyMerchantnode.GetID());
+            auto merchantnodePayee = CTxDestination(activeMerchantnode.pubKeyMerchantnode.GetID());
 
-            if(contract.merchantAddress != merchantnodePayee)
+            CTxDestination merchantAddress;
+            ExtractDestination(contract.scriptMerchantAddress, merchantAddress);
+
+            if(merchantAddress != merchantnodePayee)
             {
                 tposStatus = "Merchantnode is not configured for contract: " + txId.ToString();
             }

@@ -163,7 +163,7 @@ void CWallet::LoadContractsFromDB()
                 auto tposContract = TPoSContract::FromTPoSContractTx(contractTx.tx);
                 if(tposContract.IsValid())
                 {
-                    auto script = GetScriptForDestination(tposContract.tposAddress.Get());
+                    auto script = tposContract.scriptTPoSAddress;
                     if(HaveWatchOnly(script))
                     {
                         RemoveWatchOnly(script);
@@ -475,9 +475,9 @@ void CWallet::FillCoinStakePayments(CMutableTransaction &transaction,
 
     unsigned int percentage = 100;
 
-    if(tposContract.IsValid())
-        percentage = tposContract.stakePercentage; // first vout is owner
-
+    if(tposContract.IsValid()) {
+        percentage = (100 - tposContract.nOperatorReward); // first vout is owner
+    }
 
     // if this is tpos, we need to age coin, without paying reward to this address.
     //                if(!tposContract.IsValid())
@@ -502,8 +502,11 @@ void CWallet::FillCoinStakePayments(CMutableTransaction &transaction,
     // here we need to send reward to merchant to his reward address
     if(tposContract.IsValid())
     {
-        transaction.vout.emplace_back(GetStakeReward(blockReward, 100 - tposContract.stakePercentage),
-                                      GetScriptForDestination(tposContract.merchantAddress.Get()));
+        auto nOperatorReward = GetStakeReward(blockReward, tposContract.nOperatorReward);
+        if (nOperatorReward > 0) {
+            transaction.vout.emplace_back(nOperatorReward,
+                                          tposContract.scriptMerchantAddress);
+        }
     }
 }
 
@@ -1493,8 +1496,7 @@ bool CWallet::AddToWalletIfTPoSContract(const CTransactionRef &tx)
 {
     AssertLockHeld(cs_wallet);
 
-    if(TPoSUtils::IsTPoSContract(tx))
-    {
+    if(TPoSUtils::IsTPoSContract(tx)) {
         // TODO: FIND CORRECT CONDITIONS TO erase contract
         //        if(!mempool.exists(tx.GetHash()))
         //        {
@@ -1511,38 +1513,31 @@ bool CWallet::AddToWalletIfTPoSContract(const CTransactionRef &tx)
         //            return true;
         //        }
         //        else
-        {
-            bool isMerchant = TPoSUtils::IsTPoSMerchantContract(this, tx);
-            bool isOwner = TPoSUtils::IsTPoSOwnerContract(this, tx);
+        bool isMerchant = TPoSUtils::IsTPoSMerchantContract(this, tx);
+        bool isOwner = TPoSUtils::IsTPoSOwnerContract(this, tx);
 
-            if(isMerchant || isOwner)
+        if(isMerchant || isOwner) {
+            TPoSContract contract;
+            std::string strError;
+
+            CWalletTx wtx(this, tx);
+            if(LoadTPoSContract(wtx))
             {
-                TPoSContract contract;
-                std::string strError;
-                if(!TPoSUtils::CheckContract(tx, contract, true, false, strError))
-                {
-                    return error(strError.c_str());
+                WalletBatch walletDb(*database);
+                walletDb.WriteTPoSContractTx(wtx.GetHash(), wtx);
+
+
+                if(isMerchant && !isOwner) {
+                    AddWatchOnly(contract.scriptTPoSAddress);
                 }
-
-                CWalletTx wtx(this, tx);
-                if(LoadTPoSContract(wtx))
-                {
-                    WalletBatch walletDb(*database);
-                    walletDb.WriteTPoSContractTx(wtx.GetHash(), wtx);
-
-
-                    if(isMerchant && !isOwner) {
-                        AddWatchOnly(GetScriptForDestination(contract.tposAddress.Get()));
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-
-
-                return true;
             }
+            else
+            {
+                return false;
+            }
+
+
+            return true;
         }
     }
 
@@ -2986,7 +2981,7 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, b
         }
         else {
             auto it = std::find_if(std::begin(tposOwnerContracts), std::end(tposOwnerContracts), [scriptPubKeyCoin](const std::pair<uint256, TPoSContract> &entry) {
-                return GetScriptForDestination(entry.second.tposAddress.Get()) == scriptPubKeyCoin;
+                return entry.second.scriptTPoSAddress == scriptPubKeyCoin;
             });
 
             if(it != std::end(tposOwnerContracts)) {
@@ -3309,7 +3304,7 @@ bool CWallet::GetBudgetSystemCollateralTX(CWalletTx& tx, uint256 hash, CAmount a
 }
 
 bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CTransactionRef& tx, CReserveKey& reservekey, CAmount& nFeeRet,
-                                int& nChangePosInOut, std::string& strFailReason, const CCoinControl& coin_control, bool sign, OnTransactionToBeSigned onTxToBeSigned)
+                                int& nChangePosInOut, std::string& strFailReason, const CCoinControl& coin_control, bool sign)
 {
     CAmount nValue = 0;
     int nChangePosRequest = nChangePosInOut;
@@ -3637,9 +3632,6 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CTransac
             txNew.vin.push_back(CTxIn(coin.outpoint, CScript(), nSequence));
         }
 
-        if(onTxToBeSigned)
-            onTxToBeSigned(txNew);
-
         if (sign)
         {
             CTransaction txNewConst(txNew);
@@ -3735,10 +3727,8 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
         setStakeCoins.clear();
 
         CScript scriptPubKey;
-        if(fIsTPoS)
-        {
-            scriptPubKey = GetScriptForDestination(tposContract.tposAddress.Get());
-            LogPrint(BCLog::KERNEL, "finding tpos, contract tposAddress: %s\n", tposContract.tposAddress.ToString().c_str());
+        if(fIsTPoS) {
+            scriptPubKey = tposContract.scriptTPoSAddress;
         }
 
         if (!SelectStakeCoins(setStakeCoins, nBalance /*- nReserveBalance*/, fGenerateSegwit, scriptPubKey)) {
@@ -3758,7 +3748,6 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
         MilliSleep(10000);
 
     bool fKernelFound = false;
-    CAmount nCredit = 0;
 
     COutPoint tposContractOutpoint = TPoSUtils::GetContractCollateralOutpoint(tposContract);
     for(const std::pair<const CWalletTx*, unsigned int> &pcoin : setStakeCoins)
@@ -4550,7 +4539,7 @@ bool CWallet::LoadTPoSContract(const CWalletTx &walletTx)
     auto contract = TPoSContract::FromTPoSContractTx(walletTx.tx);
     auto txHash = walletTx.GetHash();
 
-    if(contract.vchSignature.empty())
+    if(contract.vchSig.empty())
         return false;
 
     if(isMerchant) {
