@@ -585,8 +585,7 @@ static UniValue tposcontract(const JSONRPCRequest& request)
 
         CTransactionRef tx;
         uint256 hashBlock;
-        if(!GetTransaction(tposContractHashID, tx, Params().GetConsensus(), hashBlock, true))
-        {
+        if(!GetTransaction(tposContractHashID, tx, Params().GetConsensus(), hashBlock, true)) {
             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Failed to get transaction for tpos contract ");
         }
 
@@ -616,12 +615,33 @@ static UniValue tposcontract(const JSONRPCRequest& request)
     {
         if(request.params.size() < 2)
             throw JSONRPCError(RPC_INVALID_PARAMETER,
-                               "Expected format: tposcontract describe tposcontract_tx(hex)");
+                               "Expected format: tposcontract describe { \"hex\" : \"hex_encoded_transaction\" }"
+                               "\n                                     { \"txid\" : \"txid\" }");
 
-        CMutableTransaction mtx;
-        if (!DecodeHexTx(mtx, request.params[1].get_str()))
-            throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
-        CTransactionRef tx(MakeTransactionRef(std::move(mtx)));
+
+        UniValue obj;
+        obj.read(request.params[1].get_str());
+
+        const UniValue &hexObj = find_value(obj, "hex");
+        const UniValue &txIdObj = find_value(obj, "txid");
+
+        CTransactionRef tx;
+        if (!hexObj.isNull()) {
+            CMutableTransaction mtx;
+            if (!DecodeHexTx(mtx, request.params[1].get_str()))
+                throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
+            tx = MakeTransactionRef(std::move(mtx));
+        }
+        else if(!txIdObj.isNull()) {
+            auto txid = ParseHashStr(txIdObj.get_str(), "txid");
+            uint256 hashBlock;
+            if (!GetTransaction(txid, tx, Params().GetConsensus(), hashBlock, true)) {
+                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Failed to get transaction for tpos contract");
+            }
+        } else {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, expected txid or hex");
+        }
+
 
         return parseContract(TPoSContract::FromTPoSContractTx(tx));
     }
