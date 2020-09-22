@@ -1,5 +1,16 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/891c295cd4a28a71ed610e881d65e849236ed6be
+commit 891c295cd4a28a71ed610e881d65e849236ed6be
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Mon Sep 21 23:14:22 2020 -0600
+
+    server: Add the endpoint to get the tpos contract encoded.
+    
+    - The route is POST   /tposcontracts/encode
+    - Update blocks synchronizer to identify the new tpos contracts
+    - Added tests for new grpc services.
+
 https://github.com/X9Developers/block-explorer/commit/1e1386e77508c5df0a0960d44faa9d60a74488aa
 commit 1e1386e77508c5df0a0960d44faa9d60a74488aa
 Author: Alexis Hernandez <alexis22229@gmail.com>
