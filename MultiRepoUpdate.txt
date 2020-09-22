@@ -1,5 +1,16 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/0c165d1ba22b98b342dc60d9260a7ec2dc4e1202
+commit 0c165d1ba22b98b342dc60d9260a7ec2dc4e1202
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Mon Sep 21 23:26:36 2020 -0600
+
+    web-ui: Add the tpos contract form
+    
+    - Create the second transaction after the creation of the tpos contract
+    - Add the service to retrieve the tpos contracts for a given address
+    - Add a table with the tpos contracts of trezor addresses
+
 https://github.com/X9Developers/block-explorer/commit/27dbe06fd93be58048972e08663c9fc881cbafd4
 commit 27dbe06fd93be58048972e08663c9fc881cbafd4
 Author: Alexis Hernandez <alexis22229@gmail.com>
