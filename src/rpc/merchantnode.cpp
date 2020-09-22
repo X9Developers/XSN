@@ -488,8 +488,10 @@ static UniValue tposcontract(const JSONRPCRequest& request)
             return EncodeDestination(dest);
         };
 
+
+        object.push_back(Pair("valid", contract.IsValid()));
         object.push_back(Pair("version", contract.nVersion));
-        object.push_back(Pair("txid", contract.txContract->GetHash().ToString()));
+        object.push_back(Pair("txid", contract.txContract ? contract.txContract->GetHash().ToString() : "Invalid txid"));
         object.push_back(Pair("tposAddress", scriptToAddressString(contract.scriptTPoSAddress)));
         object.push_back(Pair("merchantAddress", scriptToAddressString(contract.scriptMerchantAddress)));
         object.push_back(Pair("commission", contract.nOperatorReward)); // show merchant commission
