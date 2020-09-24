@@ -4164,6 +4164,23 @@ static UniValue setstakesplitthreshold(const JSONRPCRequest& request)
     }
 }
 
+static UniValue eraseallwatches(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() != 0)
+        throw std::runtime_error(
+                "eraseallwatches\n"
+                "Deletes all watch-only addresses from wallet\n"
+                "\nResult:\n"
+                "n      (bool) success or not\n"
+                "\nExamples:\n" +
+                HelpExampleCli("eraseallwatches", "") + HelpExampleRpc("eraseallwatches", ""));
+
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    pwallet->DelAllWatchOnly();
+
+    return std::string{"true"};
+}
+
 // presstab HyperStake
 static UniValue getstakesplitthreshold(const JSONRPCRequest& request)
 {
@@ -4244,6 +4261,7 @@ static const CRPCCommand commands[] =
   { "wallet",             "rescanblockchain",                 &rescanblockchain,              {"start_height", "stop_height"} },
   { "wallet",             "setstakesplitthreshold",           &setstakesplitthreshold,        {"threshold_amount"}},
   { "wallet",             "getstakesplitthreshold",           &getstakesplitthreshold,        {} },
+  { "wallet",             "eraseallwatches",                  &eraseallwatches,               {} },
 
   /** Account functions (deprecated) */
   { "wallet",             "getaccountaddress",                &getlabeladdress,               {"account"} },

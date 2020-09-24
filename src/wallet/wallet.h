@@ -1135,6 +1135,8 @@ public:
 
     bool DelAddressBook(const CTxDestination& address);
 
+    void DelAllWatchOnly();
+
     const std::string& GetLabelName(const CScript& scriptPubKey) const;
 
     void Inventory(const uint256 &hash) override

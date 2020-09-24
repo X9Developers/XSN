@@ -153,21 +153,23 @@ public:
 void CWallet::LoadContractsFromDB()
 {
     LOCK(cs_wallet);
-    for(auto &&contractTx : std::move(tposContractsTxLoadedFromDB))
-    {
-        if(!LoadTPoSContract(contractTx))
-        {
+    for (auto &&contractTx : std::move(tposContractsTxLoadedFromDB)) {
+        if (!LoadTPoSContract(contractTx)) {
             // if contract was not added, there is a big chance that it's deprecated, let's cleanup watch only address
-            if(TPoSUtils::IsTPoSMerchantContract(this, contractTx.tx))
-            {
+            if (TPoSUtils::IsTPoSMerchantContract(this, contractTx.tx)) {
                 auto tposContract = TPoSContract::FromTPoSContractTx(contractTx.tx);
-                if(tposContract.IsValid())
-                {
+                if (tposContract.IsValid()) {
                     auto script = tposContract.scriptTPoSAddress;
-                    if(HaveWatchOnly(script))
-                    {
+                    if (HaveWatchOnly(script)) {
                         RemoveWatchOnly(script);
                     }
+                }
+            }
+        } else {
+            if (TPoSUtils::IsTPoSMerchantContract(this, contractTx.tx)) {
+                auto tposContract = TPoSContract::FromTPoSContractTx(contractTx.tx);
+                if (tposContract.IsValid() && !HaveWatchOnly(tposContract.scriptTPoSAddress)) {
+                    AddWatchOnly(tposContract.scriptTPoSAddress);
                 }
             }
         }
@@ -4016,6 +4018,20 @@ bool CWallet::DelAddressBook(const CTxDestination& address)
 
     WalletBatch(*database).ErasePurpose(EncodeDestination(address));
     return WalletBatch(*database).EraseName(EncodeDestination(address));
+}
+
+void CWallet::DelAllWatchOnly()
+{
+    WatchOnlySet setTmpWatchOnly;
+    {
+        LOCK(cs_wallet);
+        setWatchOnly.swap(setTmpWatchOnly);
+    }
+
+    WalletBatch batch(*database);
+    for (auto &&script : setTmpWatchOnly) {
+        batch.EraseWatchOnly(script);
+    }
 }
 
 const std::string& CWallet::GetLabelName(const CScript& scriptPubKey) const
