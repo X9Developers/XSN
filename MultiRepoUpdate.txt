@@ -1,5 +1,15 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/1e1386e77508c5df0a0960d44faa9d60a74488aa
+commit 1e1386e77508c5df0a0960d44faa9d60a74488aa
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Sep 25 12:52:17 2020 -0600
+
+    infra: Add deployment script for the beta frontend
+    
+    Which is used to showcase experimental changes before they are
+    ready to go to prod.
+
 https://github.com/X9Developers/block-explorer/commit/da179b4c9ed7e5dba63f20eb35260cf5621973f5
 commit da179b4c9ed7e5dba63f20eb35260cf5621973f5
 Author: Alexis Hernandez <alexis22229@gmail.com>
