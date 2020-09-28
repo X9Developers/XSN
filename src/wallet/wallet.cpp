@@ -1498,7 +1498,8 @@ bool CWallet::AddToWalletIfTPoSContract(const CTransactionRef &tx)
 {
     AssertLockHeld(cs_wallet);
 
-    if(TPoSUtils::IsTPoSContract(tx)) {
+    TPoSContract contract = TPoSContract::FromTPoSContractTx(tx);
+    if(contract.IsValid()) {
         // TODO: FIND CORRECT CONDITIONS TO erase contract
         //        if(!mempool.exists(tx.GetHash()))
         //        {
@@ -1519,15 +1520,12 @@ bool CWallet::AddToWalletIfTPoSContract(const CTransactionRef &tx)
         bool isOwner = TPoSUtils::IsTPoSOwnerContract(this, tx);
 
         if(isMerchant || isOwner) {
-            TPoSContract contract;
             std::string strError;
-
             CWalletTx wtx(this, tx);
             if(LoadTPoSContract(wtx))
             {
                 WalletBatch walletDb(*database);
                 walletDb.WriteTPoSContractTx(wtx.GetHash(), wtx);
-
 
                 if(isMerchant && !isOwner) {
                     AddWatchOnly(contract.scriptTPoSAddress);
