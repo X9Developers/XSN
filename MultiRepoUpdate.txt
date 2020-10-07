@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/27dbe06fd93be58048972e08663c9fc881cbafd4
+commit 27dbe06fd93be58048972e08663c9fc881cbafd4
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Oct 6 18:00:21 2020 -0600
+
+    infra: Upgrade xsn to 1.0.24
+
 https://github.com/X9Developers/block-explorer/commit/891c295cd4a28a71ed610e881d65e849236ed6be
 commit 891c295cd4a28a71ed610e881d65e849236ed6be
 Author: Adinael Perez Ruelas <adin692@gmail.com>
