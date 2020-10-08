@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/2091b8346236794204f3e7b46ce84be071a77ef7
+commit 2091b8346236794204f3e7b46ce84be071a77ef7
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Thu Oct 8 12:47:53 2020 -0600
+
+    server: Accept zero commision on tpos contracts
+
 https://github.com/X9Developers/block-explorer/commit/0c165d1ba22b98b342dc60d9260a7ec2dc4e1202
 commit 0c165d1ba22b98b342dc60d9260a7ec2dc4e1202
 Author: Adinael Perez Ruelas <adin692@gmail.com>
