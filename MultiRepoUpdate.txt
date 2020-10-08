@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/4f9e7f559ce4633fb1281e36bfaa5090ae81aa5e
+commit 4f9e7f559ce4633fb1281e36bfaa5090ae81aa5e
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Thu Oct 8 12:59:36 2020 -0600
+
+    web-ui: change commission validation from 1-99 to 0-100
+
 https://github.com/X9Developers/block-explorer/commit/2044fc134156eca2d540f3c3c4fc96e9d0a84187
 commit 2044fc134156eca2d540f3c3c4fc96e9d0a84187
 Author: Adinael Perez Ruelas <adin692@gmail.com>
