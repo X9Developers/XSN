@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/2044fc134156eca2d540f3c3c4fc96e9d0a84187
+commit 2044fc134156eca2d540f3c3c4fc96e9d0a84187
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Thu Oct 8 13:28:28 2020 -0600
+
+    server: fix commision percent constraint
+    
+    udpate constraint to accept values from 0 to 100
+
 https://github.com/X9Developers/block-explorer/commit/2091b8346236794204f3e7b46ce84be071a77ef7
 commit 2091b8346236794204f3e7b46ce84be071a77ef7
 Author: Adinael Perez Ruelas <adin692@gmail.com>
