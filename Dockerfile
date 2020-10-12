@@ -51,7 +51,7 @@ RUN apt-get update \
     && cd /tmp/xsncore \
 # Install xsnd
     && ./autogen.sh \
-    && ./configure --without-gui --prefix=/usr \
+    && ./configure --disable-tests --without-gui --prefix=/usr \
     && make -j$(nproc) \
     && make check \
     && make install \
