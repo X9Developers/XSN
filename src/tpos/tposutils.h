@@ -83,7 +83,7 @@ public:
                                       const CTxDestination &tposAddress,
                                       const CTxDestination &merchantAddress,
                                       int nOperatorReward,
-                                      bool createLegacyContract, std::string &strError);
+                                      std::string &strError);
 
     static CAmount GetOperatorPayment(CAmount basePayment, int nOperatorReward);
     static CAmount GetOwnerPayment(CAmount basePayment, int nOperatorReward);
@@ -104,7 +104,6 @@ public:
                                       const CTxDestination &tposAddress,
                                       const CTxDestination &merchantAddress,
                                       int merchantCommission,
-                                      bool createLegacyContract,
                                       std::string &strError);
 
     static bool CreateCancelContractTransaction(CWallet *wallet,

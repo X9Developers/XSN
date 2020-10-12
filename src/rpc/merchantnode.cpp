@@ -528,15 +528,11 @@ static UniValue tposcontract(const JSONRPCRequest& request)
     {
         if (request.params.size() < 4)
             throw JSONRPCError(RPC_INVALID_PARAMETER,
-                               "Expected format: tposcontract create tpos_address merchant_address commission use_legacy_contract");
+                               "Expected format: tposcontract create tpos_address merchant_address commission");
 
         CTxDestination tposAddress = DecodeDestination(request.params[1].get_str());
         CTxDestination merchantAddress = DecodeDestination(request.params[2].get_str());
         int commission = std::stoi(request.params[3].get_str());
-        bool use_legacy_contract = true;
-        if(request.params.size() > 4) {
-            use_legacy_contract = std::stoi(request.params[4].get_str()) > 0;
-        }
 
         CReserveKey reserveKey(pwallet);
 
@@ -545,7 +541,7 @@ static UniValue tposcontract(const JSONRPCRequest& request)
 
         if(TPoSUtils::CreateTPoSTransaction(pwallet, transaction,
                                             reserveKey, tposAddress,
-                                            merchantAddress, commission, use_legacy_contract, strError))
+                                            merchantAddress, commission, strError))
         {
             return EncodeHexTx(*transaction);
         }

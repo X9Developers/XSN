@@ -102,11 +102,11 @@ static void SignTransaction(CMutableTransaction& tx, const CKey& coinbaseKey)
     }
 }
 
-static CMutableTransaction CreateContractTx(const CTxDestination &tposAddress, const CTxDestination &merchantAddress, uint16_t nOperatorReward, bool legacyContract)
+static CMutableTransaction CreateContractTx(const CTxDestination &tposAddress, const CTxDestination &merchantAddress, uint16_t nOperatorReward)
 {
     CMutableTransaction tx;
     std::string strError;
-    TPoSUtils::CreateTPoSTransaction(tx, tposAddress, merchantAddress, nOperatorReward, legacyContract, strError);
+    TPoSUtils::CreateTPoSTransaction(tx, tposAddress, merchantAddress, nOperatorReward, strError);
     return tx;
 }
 
@@ -121,98 +121,6 @@ static void SignContract(CMutableTransaction &tx, const CKey &key, bool legacyCo
 
 BOOST_AUTO_TEST_SUITE(tpos_tests)
 
-BOOST_FIXTURE_TEST_CASE(tpos_create_legacy_contract, TestChain100Setup)
-{
-    m_coinbase_txns.emplace_back(CreateAndProcessBlock({}, GetScriptForRawPubKey(coinbaseKey.GetPubKey())).vtx[0]);
-    m_coinbase_txns.emplace_back(CreateAndProcessBlock({}, GetScriptForRawPubKey(coinbaseKey.GetPubKey())).vtx[0]);
-
-    CScript scriptPubKey = CScript() << ToByteVector(coinbaseKey.GetPubKey()) << OP_CHECKSIG;
-    auto utxos = BuildSimpleUtxoMap(m_coinbase_txns);
-
-    CKey tposAddressKey;
-    tposAddressKey.MakeNewKey(true);
-    CKey merchantAddressKey;
-    merchantAddressKey.MakeNewKey(true);
-
-    auto unsignedContract = CreateContractTx(tposAddressKey.GetPubKey().GetID(),
-                                             merchantAddressKey.GetPubKey().GetID(), 1, true);
-    TPoSContract tmp;
-    std::string strError;
-    BOOST_ASSERT(TPoSUtils::CheckContract(MakeTransactionRef(unsignedContract), tmp, 1, false, false, strError));
-    BOOST_ASSERT(!TPoSUtils::CheckContract(MakeTransactionRef(unsignedContract), tmp, 1, true, true, strError));
-
-    FundTransaction(unsignedContract, utxos, unsignedContract.vout[1].scriptPubKey);
-    SignContract(unsignedContract, tposAddressKey, true);
-    SignTransaction(unsignedContract, coinbaseKey);
-    BOOST_ASSERT(TPoSUtils::CheckContract(MakeTransactionRef(unsignedContract), tmp, 1, true, false, strError));
-    BOOST_ASSERT(TPoSUtils::CheckContract(MakeTransactionRef(unsignedContract), tmp, Params().GetConsensus().nTPoSSignatureUpgradeHFHeight, true, false, strError));
-
-    auto contract = TPoSContract::FromTPoSContractTx(MakeTransactionRef(unsignedContract));
-    BOOST_ASSERT(contract.IsValid());
-
-    CValidationState state;
-    LOCK(cs_main);
-
-    BOOST_CHECK_EQUAL(
-                true,
-                AcceptToMemoryPool(mempool, state, contract.txContract,
-                                   nullptr /* pfMissingInputs */,
-                                   nullptr /* plTxnReplaced */,
-                                   true /* bypass_limits */,
-                                   0 /* nAbsurdFee */));
-}
-
-BOOST_FIXTURE_TEST_CASE(tpos_create_invalid_legacy_contract, TestChain100Setup)
-{
-    m_coinbase_txns.emplace_back(CreateAndProcessBlock({}, GetScriptForRawPubKey(coinbaseKey.GetPubKey())).vtx[0]);
-    m_coinbase_txns.emplace_back(CreateAndProcessBlock({}, GetScriptForRawPubKey(coinbaseKey.GetPubKey())).vtx[0]);
-    m_coinbase_txns.emplace_back(CreateAndProcessBlock({}, GetScriptForRawPubKey(coinbaseKey.GetPubKey())).vtx[0]);
-
-    auto utxos = BuildSimpleUtxoMap(m_coinbase_txns);
-
-    CKey tposAddressKey;
-    tposAddressKey.MakeNewKey(true);
-    CKey merchantAddressKey;
-    merchantAddressKey.MakeNewKey(true);
-
-    auto createContract = [&](int nOperatorReward) {
-        return CreateContractTx(tposAddressKey.GetPubKey().GetID(),
-                                merchantAddressKey.GetPubKey().GetID(), nOperatorReward, true);
-    };
-
-    TPoSContract tmp;
-    std::string strError;
-    auto invalidContract = MakeTransactionRef(createContract(101));
-    BOOST_ASSERT(!TPoSContract::FromTPoSContractTx(invalidContract).IsValid());
-    BOOST_ASSERT(!TPoSUtils::CheckContract(invalidContract, tmp, 1, false, false, strError));
-
-    auto unsignedContract = createContract(1);
-
-    FundTransaction(unsignedContract, utxos, unsignedContract.vout[1].scriptPubKey);
-    unsignedContract.vin[0].prevout = COutPoint(m_coinbase_txns[2]->GetHash(), 0);
-    SignContract(unsignedContract, tposAddressKey, true);
-    BOOST_ASSERT(TPoSUtils::CheckContract(MakeTransactionRef(unsignedContract), tmp, 1, true, false, strError));
-    // replace input invalidating the signature
-    unsignedContract.vin[0].prevout = COutPoint(m_coinbase_txns[3]->GetHash(), 0);
-    BOOST_ASSERT(!TPoSUtils::CheckContract(MakeTransactionRef(unsignedContract), tmp, 1, true, false, strError));
-
-    SignTransaction(unsignedContract, coinbaseKey);
-
-    auto contract = TPoSContract::FromTPoSContractTx(MakeTransactionRef(unsignedContract));
-    BOOST_ASSERT(contract.IsValid());
-
-    CValidationState state;
-    LOCK(cs_main);
-
-    BOOST_CHECK_EQUAL(
-                false,
-                AcceptToMemoryPool(mempool, state, contract.txContract,
-                                   nullptr /* pfMissingInputs */,
-                                   nullptr /* plTxnReplaced */,
-                                   true /* bypass_limits */,
-                                   0 /* nAbsurdFee */));
-}
-
 BOOST_FIXTURE_TEST_CASE(tpos_create_new_contract, TestChain100Setup)
 {
     m_coinbase_txns.emplace_back(CreateAndProcessBlock({}, GetScriptForRawPubKey(coinbaseKey.GetPubKey())).vtx[0]);
@@ -224,7 +132,7 @@ BOOST_FIXTURE_TEST_CASE(tpos_create_new_contract, TestChain100Setup)
     tposAddressKey.MakeNewKey(true);
     CKey merchantAddressKey;
     merchantAddressKey.MakeNewKey(true);
-    auto unsignedContract = CreateContractTx(WitnessV0KeyHash(tposAddressKey.GetPubKey().GetID()), WitnessV0KeyHash(merchantAddressKey.GetPubKey().GetID()), 1, false);
+    auto unsignedContract = CreateContractTx(WitnessV0KeyHash(tposAddressKey.GetPubKey().GetID()), WitnessV0KeyHash(merchantAddressKey.GetPubKey().GetID()), 1);
     TPoSContract tmp;
     std::string strError;
     BOOST_ASSERT(TPoSUtils::CheckContract(MakeTransactionRef(unsignedContract), tmp, 1, false, false, strError));
@@ -357,7 +265,7 @@ BOOST_FIXTURE_TEST_CASE(tpos_contract_adjust_mn_payment, TestChain100Setup)
     auto merchantAddress = WitnessV0KeyHash(keyMerhchant.GetPubKey().GetID());
     auto scriptMerchant = GetScriptForDestination(merchantAddress);
 
-    auto txContract = CreateContractTx(coinbaseKey.GetPubKey().GetID(), merchantAddress, 50, false);
+    auto txContract = CreateContractTx(coinbaseKey.GetPubKey().GetID(), merchantAddress, 50);
     auto contract = TPoSContract::FromTPoSContractTx(MakeTransactionRef(txContract));
 
     BOOST_ASSERT(contract.IsValid());

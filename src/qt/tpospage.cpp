@@ -53,7 +53,7 @@ static QString PrepareCreateContractQuestionString(const CBitcoinAddress &tposAd
 }
 
 std::unique_ptr<interfaces::PendingWalletTx> TPoSPage::CreateContractTransaction(QWidget *widget,
-                                                                                 const CBitcoinAddress &tposAddress,
+                                                                                 const CTxDestination &tposAddress,
                                                                                  const CBitcoinAddress &merchantAddress,
                                                                                  int merchantCommission)
 {
@@ -68,7 +68,7 @@ std::unique_ptr<interfaces::PendingWalletTx> TPoSPage::CreateContractTransaction
     {
         return {};
     }
-    if(auto walletTx =  _walletModel->wallet().createTPoSContractTransaction(tposAddress.Get(), merchantAddress.Get(), merchantCommission, strError))  {
+    if(auto walletTx =  _walletModel->wallet().createTPoSContractTransaction(tposAddress, merchantAddress.Get(), merchantCommission, strError))  {
         return walletTx;
     }
 
@@ -154,7 +154,7 @@ void TPoSPage::SendToAddress(const CTxDestination &address, CAmount nValue, int 
     SendPendingTransaction(penWalletTx.get());
 }
 
-CBitcoinAddress TPoSPage::GetNewAddress()
+CTxDestination TPoSPage::GetNewAddress()
 {
     // Generate a new key that is added to wallet
     CPubKey newKey;
@@ -162,11 +162,10 @@ CBitcoinAddress TPoSPage::GetNewAddress()
         throw std::runtime_error("Error: Keypool ran out, please call keypoolrefill first");
     CKeyID keyID = newKey.GetID();
 
-
     _walletModel->wallet().setAddressBook(keyID, std::string(), "tpos address");
     //pwalletMain->SetAddressBook(keyID, std::string(), "tpos address");
 
-    return CBitcoinAddress(keyID);
+    return GetDestinationForKey(newKey, OutputType::BECH32);
 }
 
 TPoSPage::TPoSPage(QWidget *parent) :
@@ -208,11 +207,7 @@ void TPoSPage::onStakeClicked()
     {
         auto worker = [this]() {
             //            CReserveKey reserveKey(pwalletMain);
-            CBitcoinAddress tposAddress = GetNewAddress();
-            if(!tposAddress.IsValid())
-            {
-                throw std::runtime_error("Critical error, TPoS address is empty");
-            }
+            auto tposAddress = GetNewAddress();
             CBitcoinAddress merchantAddress(ui->merchantAddress->text().toStdString());
             if(!merchantAddress.IsValid())
             {

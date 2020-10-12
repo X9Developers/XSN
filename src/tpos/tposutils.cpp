@@ -118,7 +118,6 @@ bool TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
                                       const CTxDestination &tposAddress,
                                       const CTxDestination &merchantAddress,
                                       int merchantCommission,
-                                      bool createLegacyContract,
                                       std::string &strError)
 {
     if (wallet->IsLocked()) {
@@ -129,7 +128,7 @@ bool TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
     CAmount nFeeRequired;
 
     CMutableTransaction baseTx;
-    if(!CreateTPoSTransaction(baseTx, tposAddress, merchantAddress, merchantCommission, createLegacyContract, strError)) {
+    if(!CreateTPoSTransaction(baseTx, tposAddress, merchantAddress, merchantCommission, strError)) {
         return false;
     }
 
@@ -464,40 +463,26 @@ bool TPoSUtils::SignTPoSContract(CMutableTransaction &tx, CKeyStore *keystore, T
     return false;
 }
 
-bool TPoSUtils::CreateTPoSTransaction(CMutableTransaction &txOut, const CTxDestination &tposAddress, const CTxDestination &merchantAddress, int nOperatorReward, bool createLegacyContract, std::string &strError)
+bool TPoSUtils::CreateTPoSTransaction(CMutableTransaction &txOut, const CTxDestination &tposAddress,
+                                      const CTxDestination &merchantAddress, int nOperatorReward, std::string &strError)
 {
     CKey key;
     CKeyID keyID;
 
-    if (createLegacyContract) {
-        if(auto tmpKeyID = boost::get<CKeyID>(&tposAddress)) {
-            keyID = *tmpKeyID;
-        } else {
-            strError = "Error: TPoS Address is not P2PKH";
-            return false;
-        }
-    } else {
-        keyID = GetKeyForDestination(CBasicKeyStore{}, tposAddress);
-        if (keyID.IsNull()) {
-            strError = "Error: TPoS Address is not supported";
-            return false;
-        }
+    keyID = GetKeyForDestination(CBasicKeyStore{}, tposAddress);
+    if (keyID.IsNull()) {
+        strError = "Error: TPoS Address is not supported";
+        return false;
     }
 
     // dummy signature, just to know size
     std::vector<unsigned char> vchSignature(CPubKey::COMPACT_SIGNATURE_SIZE, '0');
 
     CScript metadataScriptPubKey;
-
-    if (createLegacyContract) {
-        metadataScriptPubKey = GenerateLegacyContractScript(tposAddress, merchantAddress,
-                                                            nOperatorReward, vchSignature);
-    } else {
-        metadataScriptPubKey << OP_RETURN
-                             << GenerateContractPayload(TPoSContract({}, merchantAddress,
-                                                                     tposAddress, nOperatorReward,
-                                                                     vchSignature));
-    }
+    metadataScriptPubKey << OP_RETURN
+                         << GenerateContractPayload(TPoSContract({}, merchantAddress,
+                                                                 tposAddress, nOperatorReward,
+                                                                 vchSignature));
 
     txOut = CMutableTransaction{};
     txOut.vout.emplace_back(0, metadataScriptPubKey);

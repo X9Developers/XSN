@@ -48,10 +48,10 @@ private:
     void onStakeError();
     void SendToAddress(const CTxDestination &address, CAmount nValue, int splitCount);
     void sendToTPoSAddress(const CBitcoinAddress &tposAddress);
-    CBitcoinAddress GetNewAddress();
+    CTxDestination GetNewAddress();
 
     std::unique_ptr<interfaces::PendingWalletTx> CreateContractTransaction(QWidget *widget,
-                                          const CBitcoinAddress &tposAddress,
+                                          const CTxDestination &tposAddress,
                                           const CBitcoinAddress &merchantAddress,
                                           int merchantCommission);
 
