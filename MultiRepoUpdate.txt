@@ -1,5 +1,21 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/78fb989ce8358f897165cdee7f5d811d0b3eb9f4
+commit 78fb989ce8358f897165cdee7f5d811d0b3eb9f4
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Mon Oct 19 14:57:30 2020 -0600
+
+    build(deps): bump webpack-subresource-integrity in /web-ui (#198)
+    
+    Bumps [webpack-subresource-integrity](https://github.com/waysact/webpack-subresource-integrity) from 1.2.0 to 1.5.1.
+    - [Release notes](https://github.com/waysact/webpack-subresource-integrity/releases)
+    - [Changelog](https://github.com/waysact/webpack-subresource-integrity/blob/master/CHANGELOG.md)
+    - [Commits](https://github.com/waysact/webpack-subresource-integrity/compare/v1.2.0...v1.5.1)
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+
 https://github.com/X9Developers/block-explorer/commit/4f9e7f559ce4633fb1281e36bfaa5090ae81aa5e
 commit 4f9e7f559ce4633fb1281e36bfaa5090ae81aa5e
 Author: Adinael Perez Ruelas <adin692@gmail.com>
