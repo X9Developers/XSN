@@ -1106,22 +1106,30 @@ void AdjustMasternodePayment(CMutableTransaction &tx, const CTxOut &txoutMastern
 {
     auto it = std::find(std::begin(tx.vout), std::end(tx.vout), txoutMasternodePayment);
 
-    if(it != std::end(tx.vout))
-    {
+    if (it != std::end(tx.vout)) {
         int mnPaymentOutIndex = std::distance(std::begin(tx.vout), it);
         auto masternodePayment = tx.vout[mnPaymentOutIndex].nValue;
 
-        int i = tx.vout.size() - 2;
-        if(tposContract.IsValid()) // here we have 3 outputs, first as stake reward, second as tpos reward, third as MN reward
-        {
-            tx.vout[i - 1].nValue -= TPoSUtils::GetOwnerPayment(masternodePayment, tposContract.nOperatorReward); // adjust reward for owner.
-            // it might be that last vout is masternode, since operator reward was 0
-            if (tx.vout[i].scriptPubKey == tposContract.scriptMerchantAddress) {
-                tx.vout[i].nValue -= TPoSUtils::GetOperatorPayment(masternodePayment, tposContract.nOperatorReward); // adjust reward for merchant
+        if (tposContract.IsValid()) {
+            // here we have 3 outputs, first as stake reward, second as tpos reward, third as MN reward
+            auto ownerOutIt = std::find_if(tx.vout.rbegin(),tx.vout.rend(), [&tposContract](const CTxOut &out) {
+                return out.scriptPubKey == tposContract.scriptTPoSAddress;
+            });
+
+            if (ownerOutIt != tx.vout.rend()) {
+                ownerOutIt->nValue -= TPoSUtils::GetOwnerPayment(masternodePayment, tposContract.nOperatorReward); // adjust reward for owner.
             }
-        }
-        else // here we have 2 outputs, first as stake reward, second as MN reward
-        {
+
+            auto merchantOutIt = std::find_if(std::begin(tx.vout), std::end(tx.vout), [&tposContract](const CTxOut &out) {
+                return out.scriptPubKey == tposContract.scriptMerchantAddress;
+            });
+
+            if (merchantOutIt != std::end(tx.vout)) {
+                merchantOutIt->nValue -= TPoSUtils::GetOperatorPayment(masternodePayment, tposContract.nOperatorReward); // adjust reward for merchant
+            }
+        } else {
+            // here we have 2 outputs, first as stake reward, second as MN reward
+            int i = tx.vout.size() - 2;
             tx.vout[i].nValue -= masternodePayment; // last vout is mn payment.
         }
     }
