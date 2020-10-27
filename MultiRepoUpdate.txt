@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/c81e70373c752bf21954b192ab2ca8d6edb63a3c
+commit c81e70373c752bf21954b192ab2ca8d6edb63a3c
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Tue Oct 27 13:13:36 2020 -0700
+
+    web-ui: Add the transaction id to the generated transaction label
+    
+    when the transaction id is generated the value was only showed in the notification service
+
 https://github.com/X9Developers/block-explorer/commit/32264fdf714a5935bf133a44ebcd28a47e7b2e3d
 commit 32264fdf714a5935bf133a44ebcd28a47e7b2e3d
 Author: Adinael Perez Ruelas <adin692@gmail.com>
