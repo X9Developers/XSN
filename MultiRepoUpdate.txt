@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/32264fdf714a5935bf133a44ebcd28a47e7b2e3d
+commit 32264fdf714a5935bf133a44ebcd28a47e7b2e3d
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Tue Oct 27 12:38:02 2020 -0700
+
+    web-ui: fix the send tab for trezor.
+
 https://github.com/X9Developers/block-explorer/commit/78fb989ce8358f897165cdee7f5d811d0b3eb9f4
 commit 78fb989ce8358f897165cdee7f5d811d0b3eb9f4
 Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
