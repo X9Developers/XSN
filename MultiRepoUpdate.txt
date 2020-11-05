@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/f8685b437a769937547bdf670aa404075703a2c5
+commit f8685b437a769937547bdf670aa404075703a2c5
+Author: Raul Lopez <raul.hll@hotmail.com>
+Date:   Thu Nov 5 12:02:14 2020 -0700
+
+    server: add more currencies to MarketStatistics
+    
+    now you can also query a specific currency in the /prices endpoint like this /prices?currency=usd
+
 https://github.com/X9Developers/block-explorer/commit/c81e70373c752bf21954b192ab2ca8d6edb63a3c
 commit c81e70373c752bf21954b192ab2ca8d6edb63a3c
 Author: Adinael Perez Ruelas <adin692@gmail.com>
