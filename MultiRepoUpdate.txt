@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/83da0d52a876bc37cc1567fe935ef7ce58d46862
+commit 83da0d52a876bc37cc1567fe935ef7ce58d46862
+Author: Raul Lopez <raul.hll@hotmail.com>
+Date:   Wed Nov 18 15:13:21 2020 -0700
+
+    server: upgrade kamon to 2.1.8
+
 https://github.com/X9Developers/block-explorer/commit/f8685b437a769937547bdf670aa404075703a2c5
 commit f8685b437a769937547bdf670aa404075703a2c5
 Author: Raul Lopez <raul.hll@hotmail.com>
