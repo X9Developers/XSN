@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/bd69acbead7a241457de76c67da53f699cb499c7
+commit bd69acbead7a241457de76c67da53f699cb499c7
+Author: Raul Lopez <raul.hll@hotmail.com>
+Date:   Fri Nov 20 14:21:14 2020 -0700
+
+    server: lower the update rate for the low priority currencies
+    
+    the old rate was going above our API quota
+
 https://github.com/X9Developers/block-explorer/commit/83da0d52a876bc37cc1567fe935ef7ce58d46862
 commit 83da0d52a876bc37cc1567fe935ef7ce58d46862
 Author: Raul Lopez <raul.hll@hotmail.com>
