@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/33ec5080e0fd90c44ff322d5e77b7157955ad250
+commit 33ec5080e0fd90c44ff322d5e77b7157955ad250
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Tue Nov 24 22:01:30 2020 -0700
+
+    infra: Add the weth API to nginx
+
 https://github.com/X9Developers/block-explorer/commit/bd69acbead7a241457de76c67da53f699cb499c7
 commit bd69acbead7a241457de76c67da53f699cb499c7
 Author: Raul Lopez <raul.hll@hotmail.com>
