@@ -1,5 +1,15 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/c5145a91b4e6f35bbf0bcaf0084d7c16da6399fb
+commit c5145a91b4e6f35bbf0bcaf0084d7c16da6399fb
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Mon Nov 30 21:41:24 2020 -0700
+
+    infra: Update btc/ltc config to disable the merchant node stats
+    
+    Such config applies only to masternode related coins, it makes no
+    sense to keep it enabled.
+
 https://github.com/X9Developers/block-explorer/commit/33ec5080e0fd90c44ff322d5e77b7157955ad250
 commit 33ec5080e0fd90c44ff322d5e77b7157955ad250
 Author: Alexis Hernandez <alexis22229@gmail.com>
