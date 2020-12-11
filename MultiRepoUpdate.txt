@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/4278d120e2d86c5e6f63be78250eadaf71fd065b
+commit 4278d120e2d86c5e6f63be78250eadaf71fd065b
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Thu Dec 10 17:02:16 2020 -0700
+
+    docs: create the docs folder
+    
+    Add a guite to create tpos contracts with the trezor wallet
+
 https://github.com/X9Developers/block-explorer/commit/c5145a91b4e6f35bbf0bcaf0084d7c16da6399fb
 commit c5145a91b4e6f35bbf0bcaf0084d7c16da6399fb
 Author: Alexis Hernandez <alexis22229@gmail.com>
