@@ -1,5 +1,14 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/c36f8713cdb1760860940f193a65f6778772ce60
+commit c36f8713cdb1760860940f193a65f6778772ce60
+Author: Raul Lopez <raul.hll@hotmail.com>
+Date:   Thu Dec 17 23:58:19 2020 -0700
+
+    server: Replace kamon spans with timers
+    
+    Kamon is changing the way its pricing works making spans to expensive so we are going back to timers
+
 https://github.com/X9Developers/block-explorer/commit/4278d120e2d86c5e6f63be78250eadaf71fd065b
 commit 4278d120e2d86c5e6f63be78250eadaf71fd065b
 Author: Adinael Perez Ruelas <adin692@gmail.com>
