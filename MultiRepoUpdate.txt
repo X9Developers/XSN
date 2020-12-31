@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/8aa7f2d87d7b31b554690a8f683c1c797998b8f0
+commit 8aa7f2d87d7b31b554690a8f683c1c797998b8f0
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Thu Dec 31 13:31:26 2020 -0700
+
+    infra: Fix the nginx config
+
 https://github.com/X9Developers/block-explorer/commit/07afd3ac54f12fc6771b5f0b4a4d2b7d0b18dbd3
 commit 07afd3ac54f12fc6771b5f0b4a4d2b7d0b18dbd3
 Author: Alexis Hernandez <alexis22229@gmail.com>
