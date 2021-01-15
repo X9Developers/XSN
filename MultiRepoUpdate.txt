@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/49916780a1ff9490d35d1cfc8073814ecb11195f
+commit 49916780a1ff9490d35d1cfc8073814ecb11195f
+Author: Alexis Hernandez <alexis22229@gmail.com>
+Date:   Fri Jan 15 11:39:08 2021 -0700
+
+    Private activity from https://github.com/X9Developers/block-explorer
+
 https://github.com/X9Developers/orderbook/commit/9f6ce3d622ceafe2a3c9fbe960acea323548a972
 commit 9f6ce3d622ceafe2a3c9fbe960acea323548a972
 Author: Alexis Hernandez <alexis22229@gmail.com>
