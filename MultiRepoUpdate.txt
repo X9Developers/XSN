@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/4829a2687ce6ae7afa0301d3f58800abe380a058
+commit 4829a2687ce6ae7afa0301d3f58800abe380a058
+Author: Adinael Perez Ruelas <adin692@gmail.com>
+Date:   Wed Feb 17 01:48:24 2021 -0700
+
+    Private activity from https://github.com/X9Developers/block-explorer
+
 https://github.com/X9Developers/block-explorer/commit/5b04a116806a0c882562e865409cbe73bb614e44
 commit 5b04a116806a0c882562e865409cbe73bb614e44
 Author: Raul Lopez <raul.hll@hotmail.com>
