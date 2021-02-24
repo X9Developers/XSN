@@ -1,5 +1,12 @@
 This text file will track changes from other XSN Repos.
 
+https://github.com/X9Developers/block-explorer/commit/5c6d20350a58a8feb8057e8fe62e53e57fff7db0
+commit 5c6d20350a58a8feb8057e8fe62e53e57fff7db0
+Author: Scala Steward <43047562+scala-steward@users.noreply.github.com>
+Date:   Wed Feb 24 04:13:03 2021 +0100
+
+    Private activity from https://github.com/X9Developers/block-explorer
+
 https://github.com/X9Developers/block-explorer/commit/08744072d4f6abf8622af1c1a45d1c07bc277fec
 commit 08744072d4f6abf8622af1c1a45d1c07bc277fec
 Author: Adinael Perez Ruelas <adin692@gmail.com>
