@@ -102,7 +102,7 @@ public:
         for (int i = 0; i < CHECKERS; i++) {
             if (InsecureRandBits(i) == 0) {
                 BOOST_CHECK_MESSAGE(checker[i].GetStateFor(vpblock.empty() ? nullptr : vpblock.back()) == ThresholdState::DEFINED, strprintf("Test %i for DEFINED", num));
-                BOOST_CHECK_MESSAGE(checker_always[i].GetStateFor(vpblock.empty() ? nullptr : vpblock.back()) == ThresholdState::ACTIVE, strprintf("Test %i for ACTIVE (always active)", num));
+                BOOST_CHECK_MESSAGE(vpblock.empty() || checker_always[i].GetStateFor(vpblock.back()) == ThresholdState::ACTIVE, strprintf("Test %i for ACTIVE (always active)", num));
             }
         }
         num++;
