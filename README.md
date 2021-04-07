@@ -3,10 +3,24 @@ XSN Core integration/staging tree
 
 [![Build Status](https://api.travis-ci.org/X9Developers/XSN.svg?branch=master)](https://travis-ci.org/X9Developers/XSN)
 
+## NOTE: Because Stakenet works extensively on off chain layer 2, development is across mutliple repositories (public and private) other than the main blockchain. 
+
+## See links below to find and follow current development work
+
+Web DEX interface: https://github.com/X9Developers/stakenet-web-ui
+
+
+Infrastructure/Explorer : https://github.com/X9Developers/block-explorer
+
+
+Test our closed-beta L2 light wallet (dev is in private repo) via discord here: https://discord.gg/cyF5yCA
+
+
 Stakenet Cloud
 ----------------
 
 https://stakenet.io
+
 
 What is XSN?
 ----------------
