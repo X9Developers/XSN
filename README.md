@@ -3,10 +3,23 @@ XSN Core integration/staging tree
 
 [![Build Status](https://api.travis-ci.org/X9Developers/XSN.svg?branch=master)](https://travis-ci.org/X9Developers/XSN)
 
+NOTE: Stakenet works extensively on off-chain Layer 2 (L2), as such development is across mutliple public and private repositories other than the main blockchain repository XSN.
+
+Below are a collection of links for our current public development work.
+
+- Web DEX interface: https://github.com/X9Developers/stakenet-web-ui
+
+- Infrastructure/Blockchain Explorer : https://github.com/X9Developers/block-explorer
+
+- DEX API Documentation for bot development: https://github.com/X9Developers/DexAPI
+
+- If you are interested in finding out more about our current closed Beta L2 Light Wallet, please contact us in our Discord found here: https://discord.gg/cyF5yCA. Please note, this is currently being developed in a private repository.
+
 Stakenet Cloud
 ----------------
 
 https://stakenet.io
+
 
 What is XSN?
 ----------------
@@ -117,13 +130,7 @@ docker start xsn
 Translations
 ------------
 
-Changes to translations as well as new translations can be submitted to
-[XSN Core's Transifex page](https://www.transifex.com/projects/p/xsn/).
-
-Translations are periodically pulled from Transifex and merged into the git repository. See the
-[translation process](doc/translation_process.md) for details on how this works.
+Please reach out to us in Discord if you wish to offer translations and see the below translation process for further details [translation process](doc/translation_process.md).
 
 **Important**: We do not accept translation changes as GitHub pull requests because the next
 pull from Transifex would automatically overwrite them again.
-
-Translators should also subscribe to the [mailing list](https://groups.google.com/forum/#!forum/xsn-translators).
