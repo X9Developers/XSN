@@ -103,6 +103,7 @@ struct Params {
     int nMaxBlockSpacingFixDeploymentHeight;
     int nPoSUpdgradeHFHeight;
     int nTPoSSignatureUpgradeHFHeight;
+    int nCoinstakeExtraInputsValidationHFHeight;
 };
 } // namespace Consensus
 

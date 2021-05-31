@@ -494,6 +494,30 @@ bool CheckKernelScript(CScript scriptVin, CScript scriptVout)
     return extractKeyID(scriptVin) == extractKeyID(scriptVout);
 }
 
+
+bool CheckKernelExtraInputs(const CTransactionRef& tx, const CScript& scriptKernel, const Consensus::Params& params)
+{
+    if (!tx->IsCoinStake())
+        return error("CheckKernelExtraInputs() : called on non-coinstake %s", tx->GetHash().ToString().c_str());
+
+    const auto& vin = tx->vin;
+    for (size_t i = 0; i < vin.size(); ++i) {
+        const auto& in = vin[i];
+        uint256 hashBlock;
+        CTransactionRef txPrev;
+
+        if (!GetTransaction(in.prevout.hash, txPrev, params, hashBlock, true))
+            return error("CheckKernelExtraInputs() : INFO: read txPrev failed");
+
+        const auto& prevOut = txPrev->vout[in.prevout.n];
+        if (scriptKernel != prevOut.scriptPubKey) {
+            return error("CheckKernelExtraInputs() : invalid input at position %d for coinstake %s", i, tx->GetHash().ToString().c_str());
+        }
+    }
+
+    return true;
+}
+
 // Check kernel hash target and coinstake signature
 bool CheckProofOfStake(const CBlockIndex *pindexPrev, const CBlock &block, uint256& hashProofOfStake, const Consensus::Params &params)
 {
@@ -527,6 +551,13 @@ bool CheckProofOfStake(const CBlockIndex *pindexPrev, const CBlock &block, uint2
         pindex = it->second;
     else
         return error("CheckProofOfStake() : read block failed");
+
+    if(IsCoinstakeExtraInputValidationHardForkActivated(pindex->nHeight)) {
+        // any coinstake transaction has to have scripts only from kernel.
+        if (!CheckKernelExtraInputs(tx, prevTxOut.scriptPubKey, params)) {
+            return error("CheckProofOfStake() : extra inputs check failed");
+        }
+    }
 
     // Read block header
     CBlock blockprev;
@@ -571,5 +602,10 @@ bool CheckStakeModifierCheckpoints(int nHeight, unsigned int nStakeModifierCheck
     if (mapStakeModifierCheckpoints.count(nHeight))
         return nStakeModifierChecksum == mapStakeModifierCheckpoints[nHeight];
     return true;
+}
+
+bool IsCoinstakeExtraInputValidationHardForkActivated(int nChainHeight)
+{
+    return nChainHeight >= Params().GetConsensus().nCoinstakeExtraInputsValidationHFHeight;
 }
 

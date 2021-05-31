@@ -100,6 +100,7 @@ public:
         consensus.nPosTargetTimespan = 60 * 40;
         consensus.nPoSUpdgradeHFHeight = 898488; // 4 December 2019
         consensus.nTPoSSignatureUpgradeHFHeight = 1348224; // tpos signature update HF, 8 October 2020
+        consensus.nCoinstakeExtraInputsValidationHFHeight = 1688696; // coinstake validation HF, 29 May 2021
         consensus.nMerchantnodeMinimumConfirmations = 1;
         consensus.nMasternodeMinimumConfirmations = 15;
         consensus.nStakeMinAge = 60 * 60;
@@ -245,6 +246,7 @@ public:
         consensus.nStakeMaxAge = 60 * 60 * 24; // one day
         consensus.nCoinbaseMaturity = 20;
         consensus.nTPoSContractSignatureDeploymentTime = 1522782000;
+        consensus.nCoinstakeExtraInputsValidationHFHeight = 0;
         consensus.nRuleChangeActivationThreshold = 30; // 75% for testchains
         consensus.nMinerConfirmationWindow = 40; // nPowTargetTimespan / nPowTargetSpacing
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
@@ -360,6 +362,7 @@ public:
         consensus.nPosTargetTimespan = 60 * 40;
         consensus.nPoSUpdgradeHFHeight = 0;
         consensus.nTPoSSignatureUpgradeHFHeight = 80;
+        consensus.nCoinstakeExtraInputsValidationHFHeight = 0;
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = true;
         consensus.fPoSNoRetargeting = true;

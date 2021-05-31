@@ -205,6 +205,21 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state, bool fChe
     return true;
 }
 
+static bool IsInputGovernanceLocked(COutPoint outpoint, int nSpendHeight) {
+    static std::set<COutPoint> setLockedOutpoints {
+         COutPoint(uint256S("e59e8e9ad8f289ca15bcaea450d9579e4de070308a19785c8d461a33abbe2717"), 1),
+         COutPoint(uint256S("ca971cc6cc76c0686224d54dec2067160fae5d057df44a9ba3d296f85879e047"), 1),
+         COutPoint(uint256S("ca971cc6cc76c0686224d54dec2067160fae5d057df44a9ba3d296f85879e047"), 2),
+         COutPoint(uint256S("2a87b52d96f5d38932dcdf10fddb54781301a2707af4a217050fc96881e5a786"), 0),
+    };
+
+    if (nSpendHeight < Consensus::Params().nCoinstakeExtraInputsValidationHFHeight) {
+        return false;
+    }
+
+    return setLockedOutpoints.count(outpoint);
+}
+
 bool Consensus::CheckTxInputs(const CTransaction& tx, CValidationState& state, const CCoinsViewCache& inputs, int nSpendHeight, CAmount& txfee)
 {
     // are the actual inputs available?
@@ -218,6 +233,10 @@ bool Consensus::CheckTxInputs(const CTransaction& tx, CValidationState& state, c
         const COutPoint &prevout = tx.vin[i].prevout;
         const Coin& coin = inputs.AccessCoin(prevout);
         assert(!coin.IsSpent());
+
+        if (IsInputGovernanceLocked(prevout, nSpendHeight)) {
+            return state.Invalid(false, REJECT_INVALID, "governance-spend-locked-outpoint", strprintf("tried to spend locked outpoint %s", prevout.ToString().c_str()));
+        }
 
         // If prev is coinbase, check that it's matured
         if (coin.IsCoinBase() || coin.IsCoinStake()) {

@@ -28,6 +28,8 @@ extern unsigned int getIntervalVersion(bool fTestNet);
 // ratio of group interval length between the last group and the first group
 static const int MODIFIER_INTERVAL_RATIO = 3;
 
+bool IsCoinstakeExtraInputValidationHardForkActivated(int nChainHeight);
+
 uint256 ComputeStakeModifierV3(const CBlockIndex* pindexPrev, const uint256& kernel);
 bool ComputeNextStakeModifier(const CBlockIndex* pindexCurrent, uint64_t& nStakeModifier, bool& fGeneratedStakeModifier);
 

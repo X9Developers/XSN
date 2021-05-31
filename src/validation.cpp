@@ -318,7 +318,7 @@ enum class FlushStateMode {
 static bool FlushStateToDisk(const CChainParams& chainParams, CValidationState &state, FlushStateMode mode, int nManualPruneHeight=0);
 static void FindFilesToPruneManual(std::set<int>& setFilesToPrune, int nManualPruneHeight);
 static void FindFilesToPrune(std::set<int>& setFilesToPrune, uint64_t nPruneAfterHeight);
-bool CheckInputs(const CTransaction& tx, CValidationState &state, const CCoinsViewCache &inputs, bool fScriptChecks, unsigned int flags, bool cacheSigStore, bool cacheFullScriptStore, PrecomputedTransactionData& txdata, std::vector<CScriptCheck> *pvChecks = nullptr);
+bool CheckInputs(const CTransaction& tx, CValidationState &state, const CCoinsViewCache &inputs, bool fScriptChecks, unsigned int flags, bool cacheSigStore, bool cacheFullScriptStore, bool isTPoSBlock, PrecomputedTransactionData& txdata, std::vector<CScriptCheck> *pvChecks = nullptr);
 static FILE* OpenUndoFile(const CDiskBlockPos &pos, bool fReadOnly = false);
 
 bool CheckFinalTx(const CTransaction &tx, int flags)
@@ -564,7 +564,7 @@ static bool CheckInputsFromMempoolAndCache(const CTransaction& tx, CValidationSt
         }
     }
 
-    return CheckInputs(tx, state, view, true, flags, cacheSigStore, true, txdata);
+    return CheckInputs(tx, state, view, true, flags, cacheSigStore, true, false, txdata);
 }
 
 static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool& pool, CValidationState& state, const CTransactionRef& ptx,
@@ -927,13 +927,13 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
         // Check against previous transactions
         // This is done last to help prevent CPU exhaustion denial-of-service attacks.
         PrecomputedTransactionData txdata(tx);
-        if (!CheckInputs(tx, state, view, true, scriptVerifyFlags, true, false, txdata)) {
+        if (!CheckInputs(tx, state, view, true, scriptVerifyFlags, true, false, false, txdata)) {
             // SCRIPT_VERIFY_CLEANSTACK requires SCRIPT_VERIFY_WITNESS, so we
             // need to turn both off, and compare against just turning off CLEANSTACK
             // to see if the failure is specifically due to witness validation.
             CValidationState stateDummy; // Want reported failures to be from first CheckInputs
-            if (!tx.HasWitness() && CheckInputs(tx, stateDummy, view, true, scriptVerifyFlags & ~(SCRIPT_VERIFY_WITNESS | SCRIPT_VERIFY_CLEANSTACK), true, false, txdata) &&
-                    !CheckInputs(tx, stateDummy, view, true, scriptVerifyFlags & ~SCRIPT_VERIFY_CLEANSTACK, true, false, txdata)) {
+            if (!tx.HasWitness() && CheckInputs(tx, stateDummy, view, true, scriptVerifyFlags & ~(SCRIPT_VERIFY_WITNESS | SCRIPT_VERIFY_CLEANSTACK), true, false, false, txdata) &&
+                    !CheckInputs(tx, stateDummy, view, true, scriptVerifyFlags & ~SCRIPT_VERIFY_CLEANSTACK, true, false, false, txdata)) {
                 // Only the witness is missing, so the transaction itself may be fine.
                 state.SetCorruptionPossible();
             }
@@ -964,7 +964,7 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
                 return error("%s: BUG! PLEASE REPORT THIS! ConnectInputs failed against latest-block but not STANDARD flags %s, %s",
                              __func__, hash.ToString(), FormatStateMessage(state));
             } else {
-                if (!CheckInputs(tx, state, view, true, MANDATORY_SCRIPT_VERIFY_FLAGS, true, false, txdata)) {
+                if (!CheckInputs(tx, state, view, true, MANDATORY_SCRIPT_VERIFY_FLAGS, true, false, false, txdata)) {
                     return error("%s: ConnectInputs failed against MANDATORY but not STANDARD flags due to promiscuous mempool %s, %s",
                                  __func__, hash.ToString(), FormatStateMessage(state));
                 } else {
@@ -1403,7 +1403,7 @@ void ReprocessBlocks(int nBlocks)
  *
  * Non-static (and re-declared) in src/test/txvalidationcache_tests.cpp
  */
-bool CheckInputs(const CTransaction& tx, CValidationState &state, const CCoinsViewCache &inputs, bool fScriptChecks, unsigned int flags, bool cacheSigStore, bool cacheFullScriptStore, PrecomputedTransactionData& txdata, std::vector<CScriptCheck> *pvChecks)
+bool CheckInputs(const CTransaction& tx, CValidationState &state, const CCoinsViewCache &inputs, bool fScriptChecks, unsigned int flags, bool cacheSigStore, bool cacheFullScriptStore, bool isTpoSBlock, PrecomputedTransactionData& txdata, std::vector<CScriptCheck> *pvChecks)
 {
     if (!tx.IsCoinBase())
     {
@@ -1440,7 +1440,7 @@ bool CheckInputs(const CTransaction& tx, CValidationState &state, const CCoinsVi
                 const Coin& coin = inputs.AccessCoin(prevout);
                 assert(!coin.IsSpent());
 
-                if(tx.IsCoinStake())
+                if(isTpoSBlock && tx.IsCoinStake())
                     continue;
 
                 // We very carefully only pass in things to CScriptCheck which
@@ -2116,9 +2116,17 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
                 nFees += view.GetValueIn(tx) - tx.GetValueOut();
             nValueIn += view.GetValueIn(tx);
 
+            bool isTPoSBlock = block.IsTPoSBlock();
+
+            // when HF gets activated we should pass to input validation function whenever it's a TPoS block or not
+            // before that we need to keep the old behaviour and treat all blocks as tpos
+            if (!IsCoinstakeExtraInputValidationHardForkActivated(pindex->nHeight)) {
+                isTPoSBlock = true;
+            }
+
             std::vector<CScriptCheck> vChecks;
             bool fCacheResults = fJustCheck; /* Don't cache results if we're actually connecting blocks (still consult the cache, though) */
-            if (!CheckInputs(tx, state, view, fScriptChecks, flags, fCacheResults, fCacheResults, txdata[i], nScriptCheckThreads ? &vChecks : nullptr))
+            if (!CheckInputs(tx, state, view, fScriptChecks, flags, fCacheResults, fCacheResults, isTPoSBlock, txdata[i], nScriptCheckThreads ? &vChecks : nullptr))
                 return error("ConnectBlock(): CheckInputs on %s failed with %s",
                              tx.GetHash().ToString(), FormatStateMessage(state));
             control.Add(vChecks);
