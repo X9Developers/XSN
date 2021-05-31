@@ -157,6 +157,7 @@ bool TPoSUtils::CreateTPoSTransaction(CWallet *wallet,
         return false;
     }
 
+    LOCK2(cs_main, wallet->cs_wallet);
     if(!wallet->SignTransaction(baseTx)) {
         strError = "Failed to sign transaction after filling";
         return false;
